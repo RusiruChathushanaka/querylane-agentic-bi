@@ -28,11 +28,22 @@ class MemoryStore:
             self.documents.pop((collection, key), None)
 
     async def list(
-        self, collection: str, limit: int = 1000, *, order_by: str | None = None, descending: bool = False
+        self,
+        collection: str,
+        limit: int = 1000,
+        *,
+        order_by: str | None = None,
+        descending: bool = False,
+        where: tuple[str, object] | None = None,
+        fields: list[str] | None = None,
     ) -> list[dict]:
         values = [v for (c, _), v in self.documents.items() if c == collection]
+        if where:
+            values = [v for v in values if v.get(where[0]) == where[1]]
         if order_by:
             values.sort(key=lambda value: value[order_by], reverse=descending)
+        if fields is not None:
+            values = [{key: value[key] for key in fields if key in value} for value in values]
         return copy.deepcopy(values[:limit])
 
     async def atomic(self, keys: list[Key], mutate: Mutation):
@@ -66,11 +77,24 @@ class FirestoreStore:
         await asyncio.to_thread(self.client.collection(collection).document(key).delete)
 
     async def list(
-        self, collection: str, limit: int = 1000, *, order_by: str | None = None, descending: bool = False
+        self,
+        collection: str,
+        limit: int = 1000,
+        *,
+        order_by: str | None = None,
+        descending: bool = False,
+        where: tuple[str, object] | None = None,
+        fields: list[str] | None = None,
     ) -> list[dict]:
         from google.cloud import firestore
 
         query = self.client.collection(collection)
+        if where:
+            from google.cloud.firestore_v1.base_query import FieldFilter
+
+            query = query.where(filter=FieldFilter(where[0], "==", where[1]))
+        if fields is not None:
+            query = query.select(fields)
         if order_by:
             query = query.order_by(
                 order_by, direction=firestore.Query.DESCENDING if descending else firestore.Query.ASCENDING

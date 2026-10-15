@@ -60,6 +60,8 @@ class Repository:
             "active_run": None,
             "lease_until": 0,
             "visibility": "public",
+            "skill_ids": [],
+            "skills_revision": 0,
         }
         await self.store.put("conversations", conversation_id, conversation)
         return conversation
@@ -82,6 +84,8 @@ class Repository:
         fork = await self.create_conversation(
             f"Fork: {original['title']}"[:100], original["source"], conversation_id
         )
+        fork["skill_ids"] = original.get("skill_ids", [])
+        await self.store.put("conversations", fork["id"], fork)
         for message in messages:
             await self.store.put(f"conversations/{fork['id']}/messages", message["id"], message)
         return fork
@@ -138,6 +142,7 @@ class Repository:
                 "cancel_requested": False,
                 "kind": "voice" if voice else "text",
                 "created_at": now_iso(),
+                "skill_ids": list(conversation.get("skill_ids", [])),
             }
             conversation.update(
                 active_run=run_id,

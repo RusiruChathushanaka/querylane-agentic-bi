@@ -4,9 +4,11 @@ Validated on 2026-10-15. Results distinguish local integration from deployed acc
 
 ## Automated checks
 
+The current local suite includes the skills-library release. Earlier deployed and 31-question model evaluations below remain dated baseline records; the new skills-specific real-model check uses synthetic fixture sources, as detailed in the skills section.
+
 | Check | Result | Scope |
 | --- | --- | --- |
-| Backend pytest | 85 passed | SQL restrictions, numerical fixtures, fusion cardinality/type/completeness checks, guest scopes, quotas, idempotency, leases, replay, forks, ADK persistence, failure recovery, voice handshake |
+| Backend pytest | 112 passed | Existing controls plus skill CRUD/revisions, edit conflicts/quotas, import validation, selection/snapshots, repair reuse, forks, and repeated voice analysis |
 | Ruff | Passed | Backend application, tests, smoke scripts |
 | Frontend ESLint / TypeScript | Passed | Application and generated components |
 | Next.js production build | Passed | Standalone configuration, application routes, runtime configuration |
@@ -74,3 +76,23 @@ Frontend lint, TypeScript, production build, and three voice preference regressi
 Stable light and dark settings screens and populated table/chart views report zero axe violations. The settings scans have no incomplete rules; SVG chart contrast remains an automated-review limitation. Axis and legend text use semantic foreground colors, and primary text/background contrast exceeds 5.3:1 in every accent and mode combination. Voice preference tests use mocked microphone and audio APIs; they do not replace the real-hardware voice acceptance checks above.
 
 The deployed release passes seven HTTP checks covering both services, runtime API configuration, connected analytical sources, the settings page, and the workspace. Real-browser checks confirm theme/density/chart/composer/voice preference persistence, mobile layout, an existing cross-source conversation, manual chart switching, and reset controls. Both deployed settings color modes report zero axe violations; the inspected new-revision logs contain no errors. This frontend-only verification required no new model calls or public conversations. The build uses source commit `2fade7a`; the previous frontend revision `agentic-bi-frontend-00001-6tf` remains recorded for rollback.
+
+## Motion and notification verification
+
+The subsequent [motion and feedback update](motion-and-feedback.md) is verified locally and has not been released to Cloud Run. [Its evaluation record](evaluation/motion-and-feedback.json) separates real local retail results from isolated analysis-event and synthetic voice-transport fixtures. Frontend lint, TypeScript, production build, and the existing three voice tests pass; the production dependency audit reports zero vulnerabilities.
+
+Browser checks cover beUI keyboard interaction, toast deduplication and dismissal, success/error/confirmed-cancellation lifecycles, voice permission recovery, microphone/session feedback, application/device reduced motion, reader-aware scrolling, and mobile layout. The real local total remains $118,951, and the monthly follow-up retains nine result rows. All recorded accessibility scans have zero reported violations; SVG/animated color-contrast checks include incomplete rules. Synthetic audio verifies static reduced-motion voice meters while connected; real microphone hardware remains a separate acceptance check.
+
+## Skills library verification
+
+The skills library is implemented and verified locally; it has **not been deployed to Cloud Run or pushed to GitHub in this change**. See the [skills reference](skills.md), [local verification](evaluation/skills-library.json), and [real Gemini evidence](evaluation/skills-gemini.json).
+
+Backend pytest passes **112 tests**, including CRUD/revisions, concurrent edits, transactional quotas/capacity, import validation, metadata-only selection, failure/no-match behavior, manual priority, unavailable attachments, forks, immutable repair/replay snapshots, numerical fixtures, and repeated voice-tool analysis. Ruff passes for application, tests, and scripts. The existing Starlette/httpx deprecation warning remains.
+
+Frontend lint, TypeScript, all three voice-preference tests, and production build pass. Production dependency audit reports zero vulnerabilities. Next.js compilation/runtime checks pass after correcting a reduced-motion hydration mismatch in the shared hook. Browser verification covers publication, editing, preview/export/import, stale-edit recovery without draft loss, discard/keep-editing, deletion with Undo offered, Recently deleted restoration, enabling/disabling, manual chat attachment, answer-version links, and unavailable-attachment removal.
+
+One real Gemini analysis using `gemini-3.8-flash` against synthetic fixture sources selected the relevant revenue skill automatically, excluded a PostgreSQL-only skill, generated a guarded query, and returned **$118,951.00**, matching the independent expected total. Its answer retained the selected revision and reporting assumptions. This uses memory storage; it does not replace deployed persistence verification or the earlier 31-case evaluation.
+
+Six axe scans (desktop library, dark editor, populated workspace, immutable version, mobile light library, mobile light editor) report **zero violations**. Modal scans retain an incomplete Radix focus-guard check; the chart has an incomplete contrast check. Keyboard focus remained in the editor. At 390px the library has no horizontal overflow, and OS reduced motion produces static entrance transforms. A Markdown preview test rendered zero unsafe nodes, executed no injected script, and made zero remote-image requests. Import/cancel did not publish the file.
+
+The named demo database was inspected read-only and confirmed as Standard edition / Native mode in `asia-southeast1`. No cloud resources, IAM grants, secrets, or indexes were created. Follow the [skills release steps](deployment-guide.md#skills-library-release) to deploy backend before frontend and verify Firestore history survives restart/scale. Real microphone/Gemini Live skill scenarios and screen-reader review remain acceptance gates; service-level voice tests do not prove microphone hardware behavior.

@@ -63,13 +63,14 @@ function save(preferences: Preferences) {
   }
   snapshot = { preferences, persistent };
   window.dispatchEvent(new Event(eventName));
+  return persistent;
 }
 
 export function updatePreference<K extends keyof Preferences>(
   key: K,
   value: Preferences[K],
 ) {
-  save(
+  return save(
     parsePreferences(
       JSON.stringify({ ...getSnapshot().preferences, [key]: value }),
     ),
@@ -77,7 +78,7 @@ export function updatePreference<K extends keyof Preferences>(
 }
 
 export function resetPreferences() {
-  save({ ...DEFAULT_PREFERENCES });
+  return save({ ...DEFAULT_PREFERENCES });
 }
 
 export function usePreferences() {

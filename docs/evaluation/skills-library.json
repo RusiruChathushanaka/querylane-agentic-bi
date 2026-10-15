@@ -1,0 +1,95 @@
+{
+  "verified_at": "2026-10-15T18:27:32.432004+00:00",
+  "scope": "Local Next.js 16.4.1 UI + FastAPI fixture/MemoryStore integration; separate real-Gemini check on fixture data. No Cloud Run deployment, production data mutation, or GitHub push.",
+  "checks": {
+    "backend_pytest_passed": 112,
+    "frontend_voice_tests_passed": 3,
+    "ruff": "passed",
+    "eslint": "passed",
+    "typescript": "passed",
+    "production_build": "passed",
+    "production_dependency_vulnerabilities": 0,
+    "next_compilation_issues": 0,
+    "next_runtime_errors_after_fixes": 0
+  },
+  "browser": {
+    "create_and_publish": true,
+    "edit_and_revision_history": true,
+    "concurrent_edit_draft_preserved": true,
+    "explicit_conflict_reload": true,
+    "unsaved_discard_and_keep_editing": true,
+    "delete_undo_offered": true,
+    "recently_deleted_restore": true,
+    "disable_enable": true,
+    "import_preview_without_save": true,
+    "export_download": true,
+    "manual_attachment_and_answer_version_link": true,
+    "deleted_revision_still_readable": true,
+    "disabled_attachment_warning_and_removal": true,
+    "mobile_width": 390,
+    "horizontal_overflow": false,
+    "light_and_dark_themes": true,
+    "system_reduced_motion_static_transforms": true,
+    "keyboard_focus_inside_dialog": true,
+    "unsafe_markdown_nodes_rendered": 0,
+    "unsafe_markdown_script_executed": false,
+    "remote_markdown_resource_requests": 0
+  },
+  "accessibility": {
+    "library": {
+      "violations": 0,
+      "incomplete": 0,
+      "incomplete_rules": []
+    },
+    "editor": {
+      "violations": 0,
+      "incomplete": 1,
+      "incomplete_rules": [
+        "aria-hidden-focus"
+      ]
+    },
+    "workspace": {
+      "violations": 0,
+      "incomplete": 1,
+      "incomplete_rules": [
+        "color-contrast"
+      ]
+    },
+    "version": {
+      "violations": 0,
+      "incomplete": 0,
+      "incomplete_rules": []
+    },
+    "mobile": {
+      "violations": 0,
+      "incomplete": 0,
+      "incomplete_rules": []
+    },
+    "mobile-editor": {
+      "violations": 0,
+      "incomplete": 1,
+      "incomplete_rules": [
+        "aria-hidden-focus"
+      ]
+    }
+  },
+  "real_gemini": {
+    "model": "gemini-3.8-flash",
+    "automatic_skill_selected": true,
+    "wrong_source_skill_excluded": true,
+    "expected_revenue": "118951.00",
+    "observed_revenue": "118951.00",
+    "status": "complete",
+    "evidence": "skills-gemini.json"
+  },
+  "fixes_from_browser_checks": [
+    "Replaced the library tab-only filter with a proper single-selection control.",
+    "Used semantic muted text for editor tabs to pass light-theme contrast.",
+    "Delayed Motion opt-in until hydration to keep server/client interactive attributes identical."
+  ],
+  "remaining_gates": [
+    "Deploy backend then frontend using the runbook and verify new collections persist across Cloud Run restart/scale.",
+    "Exercise a real microphone and Gemini Live with skills; automated tests cover repeated voice analysis on the shared service, not microphone hardware.",
+    "Complete a screen-reader review; modal axe scans retain a Radix focus-guard manual check, and chart contrast has an incomplete check."
+  ]
+}

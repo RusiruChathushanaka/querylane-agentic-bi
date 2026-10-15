@@ -12,6 +12,7 @@ from app.errors import AppError, StaleLease
 from app.fusion import fuse
 from app.models import Answer, ResultArtifact, VisualizationSpec
 from app.repository import active_lease, now_iso
+from app.skills import Skills, skill_reference
 
 logger = logging.getLogger(__name__)
 
@@ -21,6 +22,7 @@ class AnalysisService:
         self.repo, self.connectors, self.ai, self.settings = repository, connectors, ai, settings
         self.tasks: dict[str, asyncio.Task] = {}
         self.fusion_slots = asyncio.Semaphore(1)
+        self.skills = Skills(repository, settings)
 
     async def start(self, conversation_id, guest_id, question, key):
         run, created = await self.repo.begin(conversation_id, guest_id, question, key)
@@ -102,15 +104,44 @@ class AnalysisService:
         lease = active_lease.get()
         conversation = await self.repo.conversation(conversation_id)
         history = await self.repo.messages(conversation_id)
+        analysis_id = uuid.uuid4().hex
+        run = await self.repo.store.get("runs", lease["run_id"])
+        await self.repo.emit("progress", {"stage": "skills", "message": "Finding relevant skills"})
+        skills, skill_warnings = await self.skills.select(
+            question,
+            history,
+            conversation["source"],
+            (run or {}).get("skill_ids", conversation.get("skill_ids", [])),
+            self.ai,
+            analysis_id,
+        )
+        skills_used = [skill_reference(s, s["mode"]) for s in skills]
+        await self.repo.write(
+            f"runs/{lease['run_id']}/skill_snapshots",
+            analysis_id,
+            {
+                "id": analysis_id,
+                "skills": skills,
+                "warnings": skill_warnings,
+                "created_at": now_iso(),
+            },
+        )
+        await self.repo.emit(
+            "skills", {"skills_used": skills_used, "warnings": skill_warnings, "analysis_id": analysis_id}
+        )
         await self.repo.emit(
             "progress", {"stage": "schema", "message": "Inspecting sources and business context"}
         )
-        plan, retrieval = await self.ai.plan(question, history, conversation["source"], conversation_id)
+        plan, retrieval = await self.ai.plan(
+            question, history, conversation["source"], conversation_id, skills=skills, analysis_id=analysis_id
+        )
         if plan.clarification or not plan.queries:
             message = plan.clarification or "This question needs a more specific metric or data source."
-            await self.save_message(conversation_id, "assistant", message)
+            await self.save_message(
+                conversation_id, "assistant", message, skills_used=skills_used, skill_warnings=skill_warnings
+            )
             await self.repo.emit("answer", {"text": message, "followups": []})
-            return {"explanation": message}
+            return {"explanation": message, "skills_used": skills_used, "skill_warnings": skill_warnings}
         results = []
         for index, query in enumerate(plan.queries):
             for attempt in range(3):
@@ -147,7 +178,13 @@ class AnalysisService:
                     ):
                         raise
                     repaired, _ = await self.ai.plan(
-                        question, history, conversation["source"], conversation_id, feedback=str(exc)
+                        question,
+                        history,
+                        conversation["source"],
+                        conversation_id,
+                        feedback=str(exc),
+                        skills=skills,
+                        analysis_id=analysis_id,
                     )
                     if (
                         len(repaired.queries) != len(plan.queries)
@@ -228,6 +265,8 @@ class AnalysisService:
         value = artifact.model_dump(mode="json") | {
             "page_count": page_index + 1 if encoded_rows else 0,
             "retrieval": retrieval,
+            "skills_used": skills_used,
+            "skill_warnings": skill_warnings,
         }
         await self.repo.write("artifacts", artifact_id, value)
         message_id = await self.save_message(
@@ -235,6 +274,8 @@ class AnalysisService:
             "assistant",
             f"The query returned {len(rows):,} rows. Preparing the explanation…",
             artifact_id,
+            skills_used=skills_used,
+            skill_warnings=skill_warnings,
         )
         # Rows live in bounded pages; replay events must fit a Firestore document.
         await self.repo.emit("artifact", value)
@@ -243,7 +284,9 @@ class AnalysisService:
         )
         plan.assumptions = assumptions
         try:
-            answer = await self.ai.answer(question, plan, rows, diagnostics, conversation_id)
+            answer = await self.ai.answer(
+                question, plan, rows, diagnostics, conversation_id, skills=skills, analysis_id=analysis_id
+            )
         except (AppError, TimeoutError, APIError, ValidationError) as exc:
             logger.warning("Interpretation unavailable: %s", type(exc).__name__)
             answer = Answer(
@@ -258,6 +301,8 @@ class AnalysisService:
             artifact_id,
             answer.followups,
             message_id=message_id,
+            skills_used=skills_used,
+            skill_warnings=skill_warnings,
         )
         await self.repo.emit("answer", answer.model_dump())
         return {
@@ -265,10 +310,21 @@ class AnalysisService:
             "artifact_id": artifact_id,
             "assumptions": assumptions,
             "join_diagnostics": diagnostics,
+            "skills_used": skills_used,
+            "skill_warnings": skill_warnings,
         }
 
     async def save_message(
-        self, conversation_id, role, text, artifact_id=None, followups=None, message_id=None
+        self,
+        conversation_id,
+        role,
+        text,
+        artifact_id=None,
+        followups=None,
+        message_id=None,
+        *,
+        skills_used=None,
+        skill_warnings=None,
     ):
         lease = active_lease.get()
         key = message_id or uuid.uuid4().hex
@@ -289,6 +345,8 @@ class AnalysisService:
                 "followups": followups or [],
                 "created_at": previous["created_at"] if previous else now_iso(),
                 "status": "complete",
+                "skills_used": skills_used or [],
+                "skill_warnings": skill_warnings or [],
             },
         )
         return key

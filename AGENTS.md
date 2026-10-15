@@ -12,6 +12,8 @@ Before deployment, cloud provisioning, IAM/secret changes, rollback, or cloud tr
 
 ## Current documentation
 
+For skills-library changes, read [docs/skills.md](docs/skills.md). Preserve revision/snapshot evidence, public visibility, the three-skill budget, and the existing controlled query pipeline. Example skill seeding is an explicit operator action, not part of routine deployment or history reset.
+
 Use the `ctx7` CLI to fetch current documentation for library, framework, SDK, API, CLI, and cloud-service questions, including setup, configuration, migrations, and library-specific debugging. Prefer this to web search.
 
 1. Resolve the official library name with `npx ctx7@latest library <name> "<specific question>"` before using an ID, unless the user supplied the ID.

@@ -68,6 +68,9 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { api } from "@/lib/api";
 import type { Artifact } from "@/lib/types";
 import { usePreferences } from "@/hooks/use-preferences";
+import { AnimatedNumber } from "@/components/motion/animated-number";
+import { motion } from "motion/react";
+import { useAppMotion } from "@/hooks/use-app-motion";
 
 const colors = [
   "var(--chart-1)",
@@ -76,6 +79,7 @@ const colors = [
   "var(--chart-4)",
   "var(--chart-5)",
 ];
+const MotionCardContent = motion.create(CardContent);
 const numericType = /int|float|double|decimal|numeric|number|real/i;
 const human = (value: string) => value.replaceAll("_", " ");
 function display(value: unknown, format = "number", decimals = 2) {
@@ -94,6 +98,7 @@ function display(value: unknown, format = "number", decimals = 2) {
 
 export default function ResultCard({ artifact }: { artifact: Artifact }) {
   const { preferences } = usePreferences();
+  const { reduced } = useAppMotion();
   const decimals = Number(preferences.decimals);
   const [view, setView] = useState<string | null>(null);
   const [page, setPage] = useState(0);
@@ -182,6 +187,11 @@ export default function ResultCard({ artifact }: { artifact: Artifact }) {
 
   function changeView(value: string) {
     setView(value);
+    toast.success("Visualization updated", {
+      id: "visualization-choice",
+      description: `${value === "kpi" ? "KPI cards" : `${value[0].toUpperCase()}${value.slice(1)} view`} · underlying data and evidence are unchanged.`,
+      duration: 2600,
+    });
     if (value === "table" && artifact.page_count) setLoading(true);
   }
 
@@ -263,7 +273,12 @@ export default function ResultCard({ artifact }: { artifact: Artifact }) {
           )}
         </div>
       </CardHeader>
-      <CardContent>
+      <MotionCardContent
+        key={selected}
+        initial={reduced ? false : { opacity: 0.55 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: reduced ? 0 : 0.18 }}
+      >
         {!artifact.complete && (
           <Alert variant="destructive">
             <Info />
@@ -280,12 +295,22 @@ export default function ResultCard({ artifact }: { artifact: Artifact }) {
               <div key={column}>
                 <span>{human(column)}</span>
                 <strong>
-                  {display(
-                    artifact.rows[0]?.[column],
-                    ys.includes(column)
-                      ? artifact.visualization.format
-                      : "number",
-                    decimals,
+                  {artifact.rows[0]?.[column] != null &&
+                  Number.isFinite(Number(artifact.rows[0][column])) ? (
+                    <AnimatedNumber
+                      value={Number(artifact.rows[0][column])}
+                      format={(value) =>
+                        display(
+                          value,
+                          ys.includes(column)
+                            ? artifact.visualization.format
+                            : "number",
+                          decimals,
+                        )
+                      }
+                    />
+                  ) : (
+                    "—"
                   )}
                 </strong>
               </div>
@@ -516,7 +541,7 @@ export default function ResultCard({ artifact }: { artifact: Artifact }) {
             </div>
           </div>
         )}
-      </CardContent>
+      </MotionCardContent>
       <CardFooter className="evidence-footer">
         <details>
           <summary>
@@ -540,7 +565,9 @@ export default function ResultCard({ artifact }: { artifact: Artifact }) {
                     onClick={async () => {
                       try {
                         await navigator.clipboard.writeText(source.sql);
-                        toast.success("SQL copied");
+                        toast.success("SQL copied", {
+                          id: `copy-sql:${artifact.id}`,
+                        });
                       } catch {
                         toast.error(
                           "Clipboard is unavailable in this browser.",

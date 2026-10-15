@@ -45,12 +45,14 @@ This preview uses an operator access token only in memory. Restart it when that 
 ## Included behavior
 
 - Shared conversations, follow-ups, immutable result references, forks, and share links.
+- Public [skills library](docs/skills.md): versioned Markdown playbooks, import/export, automatic discovery, chat attachments, and recoverable deletion. Available at `/skills` after deploying this release.
 - ADK planning and interpretation with Gemini; schema embeddings and Firestore vector retrieval.
 - Guarded BigQuery/PostgreSQL connectors, independent query evidence, bounded result pages.
 - Automatically inferred, type-checked cross-source relationships; duplicate-key and incomplete-input rejection.
 - Bar, line, area, pie, scatter, table, and KPI views with accessible table alternatives.
 - Gemini Live voice bridge, PCM microphone streaming, transcripts, interruption, mute, and resumption.
 - Browser-local [settings](docs/settings.md): light/dark/system themes, accent colors, density, chart defaults, chat shortcuts, and voice preferences.
+- [Motion and feedback](docs/motion-and-feedback.md) using Framer Motion, beUI, and Sonner, with shared reduced-motion support and reader-aware result scrolling.
 - Anonymous guest tokens, shared usage counters, fenced conversation leases, and event replay.
 - CLI-only seed/reset commands and isolated cloud build/deployment scripts.
 

@@ -44,6 +44,9 @@ class Settings(BaseSettings):
     query_timeout_seconds: int = 30
     analysis_timeout_seconds: int = 180
     lease_seconds: int = 45
+    skill_catalog_limit: int = 100
+    skill_guest_hourly_limit: int = 20
+    skill_workspace_daily_limit: int = 100
 
     @property
     def origins(self) -> list[str]:

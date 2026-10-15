@@ -1,0 +1,114 @@
+{
+  "verified_at": "2026-10-15T22:59:52.767299+05:30",
+  "scope": "Local animation and notification implementation; deterministic fixture backend and isolated test-browser transport mocks; no Cloud Run deployment or GitHub push in this change",
+  "libraries": {
+    "motion": "14.3.0 (Framer Motion)",
+    "beui": [
+      "animated-number",
+      "color-selector",
+      "shared easing tokens"
+    ],
+    "sonner": "existing shadcn/Radix integration"
+  },
+  "checks": {
+    "eslint": "passed",
+    "typescript": "passed",
+    "production_build": "passed",
+    "existing_voice_tests": {
+      "passed": 3
+    },
+    "production_dependency_vulnerabilities": 0,
+    "next_runtime_errors": 0
+  },
+  "browser_scenarios_passed": [
+    "BeUI swatch selection through visible targets and native radio keyboard arrows",
+    "Repeated settings changes update one dismissible Sonner confirmation",
+    "Staged analysis events update the visible stage indicator and a single loading toast",
+    "Completion transitions the run toast to success",
+    "Query failure displays an error toast and persistent inline explanation",
+    "Stop request remains pending until the cancellation event; no premature stopped confirmation",
+    "Leaving a run dismisses its loading notification",
+    "App-level reduced motion stops all observed running animations",
+    "System reduced motion overrides the app setting and stops observed animations",
+    "Synthetic voice connection, mute, and session-end notifications",
+    "Synthetic voice meter reacts to levels, then remains static under reduced motion without disconnecting",
+    "Microphone denial replaces the loading notification with a recoverable error",
+    "Real fixture total revenue remains $118,951 in both visual and accessible KPI values",
+    "Real monthly follow-up and table switching retain nine source rows and result evidence",
+    "Delayed result rendering follows to within 20px of the conversation end",
+    "Reader scrolling retains its position when content resizes",
+    "390px mobile layout has no document horizontal overflow",
+    "React component tree includes MotionConfig, AnimatedNumber, and Workspace"
+  ],
+  "accessibility": {
+    "settings": {
+      "counts": {
+        "inapplicable": 48,
+        "incomplete": 0,
+        "passes": 41,
+        "violations": 0
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    "mobile": {
+      "counts": {
+        "inapplicable": 50,
+        "incomplete": 1,
+        "passes": 39,
+        "violations": 0
+      },
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    "workspace": {
+      "counts": {
+        "inapplicable": 47,
+        "incomplete": 0,
+        "passes": 42,
+        "violations": 0
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    "result": {
+      "counts": {
+        "inapplicable": 45,
+        "incomplete": 1,
+        "passes": 44,
+        "violations": 0
+      },
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    "final": {
+      "counts": {
+        "inapplicable": 40,
+        "incomplete": 0,
+        "passes": 49,
+        "violations": 0
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    "analysis_progress": {
+      "counts": {
+        "inapplicable": 47,
+        "incomplete": 0,
+        "passes": 42,
+        "violations": 0
+      },
+      "violations": [],
+      "incomplete": []
+    }
+  },
+  "limits": [
+    "Voice transport and audio-level checks use synthetic browser audio and a mocked WebSocket; physical microphone/speaker testing and real Gemini Live acceptance were not repeated.",
+    "Analysis lifecycle cases use isolated browser event-stream fixtures; deterministic retail correctness checks use the real local fixture backend.",
+    "Some automated color-contrast checks remain incomplete for SVG/animated content; all recorded scans report zero violations."
+  ]
+}

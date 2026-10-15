@@ -29,6 +29,8 @@ Voice options are read when starting or reconnecting a session. Turning off spok
 
 Preferences use `querylane-preferences-v1` and `querylane-theme` in localStorage. These are per-origin: localhost and the deployed app have separate preferences. They do not change other visitors’ preferences or server configuration. Browsers with blocked storage use in-memory preferences for the visit and show a persistence notice.
 
+Preference changes use a single Sonner confirmation that updates as you make changes. Reduced motion controls CSS transitions, Motion animations, beUI selection springs, and number counters together. See [motion and feedback](motion-and-feedback.md).
+
 **Reset preferences** restores the defaults after confirmation. It leaves shared conversations, results, data connections, and the guest session intact. Theme defaults follow the operating system, including system changes while the app is open. Corrupt or unsupported preference fields fall back individually to defaults.
 
 ## Development

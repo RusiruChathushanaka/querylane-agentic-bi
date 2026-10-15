@@ -14,6 +14,8 @@ flowchart LR
     Analysis --> Fusion[Typed fusion compiler / isolated DuckDB]
     API --> Store[Named Firestore database]
     Analysis --> Store
+    Analysis --> Skills[Skill metadata selection + immutable snapshots]
+    Skills --> Store
     ADK --> Store
     API --> Secrets[Secret Manager / workload identity]
 ```
@@ -24,6 +26,7 @@ The frontend contains no database credentials or Google model keys. `/api/config
 
 1. Atomically charge guest/workspace quotas, reserve an idempotent run ID, and acquire the conversation's fenced lease.
 2. Retrieve versioned schema context; use Gemini embeddings/vector search when available, retaining complete context for the small seeded schema.
+   Before schema planning, resolve shared manual skill attachments, select relevant additional skills from metadata in one bounded call, and persist exact revisions. At most three skills apply. Planner repairs and interpretation reuse these snapshots in analysis-scoped ADK sessions. Public playbooks cannot change application safeguards.
 3. Ask an ADK structured planner for a typed analysis plan. Tool-free planning uses one model call; at most two SQL repairs are permitted.
 4. Validate all SQL, then execute with restricted data access, time/scan/row/byte limits, and persisted job IDs.
 5. For two sources, register bounded, complete Arrow results in a fresh DuckDB child process. Compile an allowlisted typed fusion plan. Check key types, null semantics, cardinality, coverage, and output limits. No arbitrary model-generated Python or fusion SQL is executed.
@@ -35,6 +38,8 @@ LLM generation uses LOW thinking, bounded output, 45-second HTTP deadlines, a 55
 ## Persistence
 
 Firestore collections: `conversations` with `messages`; `runs` with `events` and `queries`; `artifacts` with `pages`; `adk_sessions` with `events`; `schema_chunks`; `quotas`; and private `voice_resumptions`.
+
+The [skills library](skills.md) adds `skills/{id}/revisions`, `runs/{id}/skill_snapshots`, and `system/skills_capacity`. Library mutations are transactional with optimistic revision checks and edit quotas. Only the backend accesses Firestore. Active discovery uses metadata projections; only selected instruction bodies enter model context. History reset preserves the library. Answers link to immutable revisions, including after soft deletion. Every voice data-tool invocation gets its own analysis ID and snapshot.
 
 Large results are stored in pages below 180 KiB. ADK events are separate documents, preserving ordered events and session state without persisting temporary state or raw audio. All writes during a run validate the current conversation lease. Transaction callbacks do not invoke models or databases.
 

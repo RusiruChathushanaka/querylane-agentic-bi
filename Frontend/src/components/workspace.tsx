@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import { AnimatePresence, motion } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   ArrowDown,
@@ -9,6 +10,7 @@ import {
   ArrowUp,
   AudioLines,
   BarChart3,
+  BookOpen,
   Check,
   ChevronRight,
   CircleHelp,
@@ -80,6 +82,12 @@ import type {
 } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { usePreferences } from "@/hooks/use-preferences";
+import { useAppMotion } from "@/hooks/use-app-motion";
+import { Reveal } from "@/components/motion/reveal";
+import { AnalysisProgress } from "@/components/motion/analysis-progress";
+import { SkillAttachments } from "@/components/skill-attachments";
+import { SkillEvidence } from "@/components/skill-evidence";
+import { SPRING_PRESS, EASE_OUT } from "@/lib/ease";
 
 const ResultCard = dynamic(() => import("./result-card"), {
   loading: () => <Skeleton className="result-loading" />,
@@ -144,6 +152,7 @@ function Mark({ small = false }: { small?: boolean }) {
 
 export default function Workspace() {
   const { preferences } = usePreferences();
+  const { reduced, hydrated } = useAppMotion();
   const [connections, setConnections] = useState<Connection[]>([]);
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [conversation, setConversation] = useState<Conversation | null>(null);
@@ -159,6 +168,9 @@ export default function Workspace() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [starting, setStarting] = useState(false);
+  const [forking, setForking] = useState(false);
+  const [stopping, setStopping] = useState(false);
+  const [updatingSkills, setUpdatingSkills] = useState(false);
   const [mode, setMode] = useState("");
   const [voiceState, setVoiceState] = useState("off");
   const [voiceText, setVoiceText] = useState("");
@@ -180,6 +192,26 @@ export default function Workspace() {
   const bottom = useRef<HTMLDivElement>(null);
   const input = useRef<HTMLTextAreaElement>(null);
   const activeConversation = useRef<string | null>(null);
+  const analysisToast = useRef<string | null>(null);
+  const followLatest = useRef(true);
+  const contentResize = useRef<ResizeObserver | null>(null);
+  const registerBottom = useCallback(
+    (node: HTMLDivElement | null) => {
+      contentResize.current?.disconnect();
+      bottom.current = node;
+      if (node && preferences.autoScroll && followLatest.current)
+        node.scrollIntoView({ behavior: "instant", block: "end" });
+      if (node?.parentElement && preferences.autoScroll) {
+        const observer = new ResizeObserver(() => {
+          if (followLatest.current && node.isConnected)
+            node.scrollIntoView({ behavior: "instant", block: "end" });
+        });
+        observer.observe(node.parentElement);
+        contentResize.current = observer;
+      }
+    },
+    [preferences.autoScroll],
+  );
 
   const refreshList = useCallback(async () => {
     const result = await api<{ conversations: Conversation[] }>(
@@ -220,6 +252,13 @@ export default function Workspace() {
       const streamController = new AbortController();
       controller.current = streamController;
       setRunId(id);
+      const feedbackId = `analysis:${id}`;
+      analysisToast.current = feedbackId;
+      let terminal = false;
+      toast.loading("Analyzing your question", {
+        id: feedbackId,
+        description: "Inspecting sources and preparing a read-only query.",
+      });
       try {
         await streamRun(id, streamController.signal, (event: StreamEvent) => {
           if (activeConversation.current !== chatId) return;
@@ -239,7 +278,32 @@ export default function Workspace() {
           if (event.type === "answer") {
             setProgress("Answer ready");
           }
-          if (event.type === "error") setError(String(event.data.message));
+          if (event.type === "complete") {
+            terminal = true;
+            toast.success("Answer ready", {
+              id: feedbackId,
+              description: "Results and query evidence are ready to explore.",
+              duration: 4500,
+            });
+          }
+          if (event.type === "error") {
+            terminal = true;
+            const detail = String(event.data.message);
+            if (event.data.code === "cancelled") {
+              toast.info("Analysis stopped", {
+                id: feedbackId,
+                description: "The run has confirmed cancellation.",
+                duration: 4500,
+              });
+            } else {
+              setError(detail);
+              toast.error("Analysis could not finish", {
+                id: feedbackId,
+                description: detail,
+                duration: 6000,
+              });
+            }
+          }
         });
         if (
           !streamController.signal.aborted &&
@@ -250,13 +314,26 @@ export default function Workspace() {
           await refreshList();
         }
       } catch (error) {
-        if (!streamController.signal.aborted)
+        if (!streamController.signal.aborted) {
+          terminal = true;
+          toast.error("Analysis connection interrupted", {
+            id: feedbackId,
+            description:
+              "Reopen the conversation to reconnect to the saved run.",
+            duration: 6000,
+          });
           setError(
             error instanceof Error
               ? error.message
               : "The analysis connection failed.",
           );
+        }
       } finally {
+        if (controller.current === streamController) {
+          if (!terminal) toast.dismiss(feedbackId);
+          analysisToast.current = null;
+          setStopping(false);
+        }
         if (
           !streamController.signal.aborted &&
           activeConversation.current === chatId
@@ -272,7 +349,9 @@ export default function Workspace() {
 
   const selectConversation = useCallback(
     async (id: string) => {
+      followLatest.current = true;
       controller.current?.abort();
+      if (analysisToast.current) toast.dismiss(analysisToast.current);
       voice.current?.stop();
       setVoiceState("off");
       setRunId(null);
@@ -297,6 +376,10 @@ export default function Workspace() {
             ? error.message
             : "Could not load this conversation.",
         );
+        toast.error("Conversation could not open", {
+          id: "conversation-load",
+          description: "Try opening it again from the public history.",
+        });
       }
     },
     [followRun, loadMessages],
@@ -321,12 +404,19 @@ export default function Workspace() {
       .catch((error) => {
         if (!cancelled) {
           setError(error.message);
+          toast.error("Workspace could not connect", {
+            id: "workspace-load",
+            description: error.message,
+            action: { label: "Retry", onClick: () => window.location.reload() },
+          });
           setLoading(false);
         }
       });
     return () => {
       cancelled = true;
       controller.current?.abort();
+      if (analysisToast.current) toast.dismiss(analysisToast.current);
+      toast.dismiss("voice-session");
       voice.current?.stop();
     };
   }, [selectConversation]);
@@ -344,13 +434,17 @@ export default function Workspace() {
   useEffect(() => {
     if (
       preferences.autoScroll &&
+      followLatest.current &&
       (messages.length || progress || draftArtifact)
     )
       bottom.current?.scrollIntoView({ behavior: "instant", block: "end" });
   }, [messages.length, progress, draftArtifact, preferences.autoScroll]);
 
   function newConversation() {
+    followLatest.current = true;
     controller.current?.abort();
+    if (analysisToast.current) toast.dismiss(analysisToast.current);
+    toast.dismiss("voice-session");
     voice.current?.stop();
     activeConversation.current = null;
     setConversation(null);
@@ -383,6 +477,7 @@ export default function Workspace() {
   async function ask(text = question) {
     if (
       !text.trim() ||
+      updatingSkills ||
       starting ||
       runId ||
       voiceState === "live" ||
@@ -390,6 +485,7 @@ export default function Workspace() {
     )
       return;
     setStarting(true);
+    followLatest.current = true;
     setError("");
     setQuestion("");
     setDraftArtifact(null);
@@ -410,6 +506,13 @@ export default function Workspace() {
       void followRun(response.run_id, chat.id);
     } catch (error) {
       setQuestion(text);
+      toast.error("Analysis could not start", {
+        id: "analysis-start",
+        description:
+          error instanceof Error
+            ? error.message
+            : "Your question is still in the composer. Try again.",
+      });
       setError(
         error instanceof Error
           ? error.message
@@ -421,7 +524,9 @@ export default function Workspace() {
   }
 
   async function fork() {
-    if (!conversation) return;
+    if (!conversation || forking) return;
+    setForking(true);
+    toast.loading("Forking this exploration", { id: "fork-conversation" });
     try {
       const created = await api<Conversation>(
         `/conversations/${conversation.id}/fork`,
@@ -429,26 +534,65 @@ export default function Workspace() {
       );
       await selectConversation(created.id);
       await refreshList();
-      toast.success("Conversation forked");
+      toast.success("Conversation forked", {
+        id: "fork-conversation",
+        description:
+          "Your new exploration includes the original context and results.",
+        duration: 4500,
+      });
     } catch (error) {
       toast.error(
         error instanceof Error
           ? error.message
           : "Could not fork this conversation.",
+        { id: "fork-conversation" },
       );
+    } finally {
+      setForking(false);
+    }
+  }
+
+  async function cancelAnalysis() {
+    if (!runId || stopping) return;
+    setStopping(true);
+    toast.loading("Stopping analysis…", {
+      id: `analysis:${runId}`,
+      description: "Waiting for the run to confirm cancellation.",
+    });
+    try {
+      await api(`/runs/${runId}/cancel`, { method: "POST" });
+    } catch (error) {
+      setStopping(false);
+      toast.error("Could not request a stop", {
+        id: `analysis:${runId}`,
+        description: error instanceof Error ? error.message : "Try again.",
+      });
     }
   }
 
   async function startVoice() {
-    if (runId || starting) return;
+    if (runId || starting || updatingSkills) return;
     setVoiceState("connecting");
     setError("");
     setVoiceText("");
+    toast.loading("Connecting to live voice", {
+      id: "voice-session",
+      description: "Allow microphone access when your browser asks.",
+    });
     try {
       const chat = await ensureConversation();
       const session = new LiveVoice(
         (event) => {
-          if (event.type === "ready") setVoiceState("live");
+          if (event.type === "ready") {
+            setVoiceState("live");
+            toast.success("Voice connected", {
+              id: "voice-session",
+              description: preferences.startMuted
+                ? "Your microphone is muted. Unmute when you’re ready."
+                : "You can speak now. Transcripts are visible in this public chat.",
+              duration: 5000,
+            });
+          }
           if (event.type === "transcript")
             setVoiceText((previous) =>
               (previous + String(event.text)).slice(-1000),
@@ -469,6 +613,11 @@ export default function Workspace() {
           ) {
             setVoiceState("disconnected");
             setError(String(event.message));
+            toast.error("Voice connection paused", {
+              id: "voice-session",
+              description: String(event.message),
+              duration: 6000,
+            });
             session.stop();
             void loadMessages(chat.id);
           }
@@ -492,6 +641,14 @@ export default function Workspace() {
       setError(
         error instanceof Error ? error.message : "Microphone could not start.",
       );
+      toast.error("Voice could not start", {
+        id: "voice-session",
+        description:
+          error instanceof Error
+            ? error.message
+            : "Check microphone permissions and try again.",
+        duration: 6000,
+      });
     }
   }
 
@@ -508,10 +665,18 @@ export default function Workspace() {
       setSchemaError(
         error instanceof Error ? error.message : "Schema unavailable.",
       );
+      toast.error("Schema could not load", {
+        id: `schema:${id}`,
+        description:
+          error instanceof Error
+            ? error.message
+            : "Try opening the source again.",
+      });
     }
   }
 
   const busy = Boolean(
+    updatingSkills ||
     runId || starting || voiceState === "live" || voiceState === "connecting",
   );
   const sidebar = (
@@ -656,6 +821,9 @@ export default function Workspace() {
       <div className="sidebar-footer">
         <Separator />
         <Button asChild variant="ghost" className="workspace-settings-link">
+          <Link href="/skills"><BookOpen data-icon="inline-start" /> Skills library</Link>
+        </Button>
+        <Button asChild variant="ghost" className="workspace-settings-link">
           <Link href="/settings">
             <Settings2 data-icon="inline-start" />
             Settings
@@ -720,8 +888,17 @@ export default function Workspace() {
             </Badge>
             {conversation && (
               <>
-                <Button variant="ghost" size="sm" onClick={() => void fork()}>
-                  <GitFork data-icon="inline-start" />
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  disabled={forking}
+                  onClick={() => void fork()}
+                >
+                  {forking ? (
+                    <LoaderCircle className="spin" data-icon="inline-start" />
+                  ) : (
+                    <GitFork data-icon="inline-start" />
+                  )}
                   Fork
                 </Button>
                 <Button
@@ -731,7 +908,9 @@ export default function Workspace() {
                   onClick={async () => {
                     try {
                       await navigator.clipboard.writeText(window.location.href);
-                      toast.success("Public conversation link copied");
+                      toast.success("Public conversation link copied", {
+                        id: "copy-conversation",
+                      });
                     } catch {
                       toast.error("Could not copy the link.");
                     }
@@ -786,7 +965,28 @@ export default function Workspace() {
             </Sheet>
           </div>
         </header>
-        <main id="main-content" tabIndex={0}>
+        <main
+          id="main-content"
+          tabIndex={0}
+          onPointerDown={() => {
+            followLatest.current = false;
+          }}
+          onWheel={(event) => {
+            if (event.deltaY < 0) followLatest.current = false;
+          }}
+          onTouchStart={() => {
+            followLatest.current = false;
+          }}
+          onKeyDown={(event) => {
+            if (["ArrowUp", "PageUp", "Home"].includes(event.key))
+              followLatest.current = false;
+          }}
+          onScroll={(event) => {
+            const node = event.currentTarget;
+            followLatest.current =
+              node.scrollHeight - node.scrollTop - node.clientHeight < 40;
+          }}
+        >
           <div className="workspace-content">
             {mode.includes("fixtures") && (
               <div className="local-mode">
@@ -810,246 +1010,286 @@ export default function Workspace() {
                 </Button>
               </Alert>
             )}
-            {!conversation && !messages.length ? (
-              <div className="welcome">
-                <div className="welcome-eyebrow">
-                  <span className="connection-dot" />
-                  RETAIL INTELLIGENCE<span>JAN–SEP 2026</span>
-                </div>
-                <div className="welcome-heading">
-                  <h1>
-                    Your data has a story.
-                    <br />
-                    <span>Ask the next question.</span>
-                  </h1>
-                  <p>
-                    Go from a question to a clear answer. Explore your warehouse
-                    <br className="desktop-break" /> and business data together,
-                    with the evidence to back it up.
-                  </p>
-                </div>
-                <div className="source-path">
-                  <div className="path-source">
-                    <span className="database-icon">
-                      <Database aria-hidden />
-                    </span>
-                    <div>
-                      <strong>BigQuery</strong>
-                      <small>Sales & products</small>
-                    </div>
+            <AnimatePresence initial={false} mode="wait">
+              {!conversation && !messages.length ? (
+                <Reveal className="welcome" key="welcome" initial={false}>
+                  <div className="welcome-eyebrow">
+                    <span className="connection-dot" />
+                    RETAIL INTELLIGENCE<span>JAN–SEP 2026</span>
                   </div>
-                  <span className="path-line" aria-hidden />
-                  <span className="path-junction">
-                    <Mark small />
-                  </span>
-                  <span className="path-line" aria-hidden />
-                  <div className="path-source">
-                    <span className="database-icon database-icon-teal">
-                      <Database aria-hidden />
-                    </span>
-                    <div>
-                      <strong>PostgreSQL</strong>
-                      <small>Customers & targets</small>
-                    </div>
+                  <div className="welcome-heading">
+                    <h1>
+                      Your data has a story.
+                      <br />
+                      <span>Ask the next question.</span>
+                    </h1>
+                    <p>
+                      Go from a question to a clear answer. Explore your
+                      warehouse
+                      <br className="desktop-break" /> and business data
+                      together, with the evidence to back it up.
+                    </p>
                   </div>
-                </div>
-                <div className="suggestions-label">
-                  A GOOD QUESTION IS ALL IT TAKES
-                  <ArrowDown aria-hidden />
-                </div>
-                <div className="suggestion-grid">
-                  {suggestions.map((suggestion) => (
-                    <button
-                      key={suggestion.title}
-                      className="suggestion-card"
-                      disabled={busy || loading}
-                      onClick={() => void ask(suggestion.question)}
-                    >
-                      <suggestion.icon aria-hidden />
-                      <strong>{suggestion.title}</strong>
-                      <p>{suggestion.detail}</p>
-                      <span>
-                        {suggestion.source}
-                        <ArrowRight aria-hidden />
+                  <div className="source-path">
+                    <div className="path-source">
+                      <span className="database-icon">
+                        <Database aria-hidden />
                       </span>
-                    </button>
-                  ))}
-                </div>
-                <div className="welcome-footnote">
-                  <Check aria-hidden />
-                  Read-only queries<span>·</span>
-                  <Check aria-hidden />
-                  Visible SQL & sources<span>·</span>
-                  <Check aria-hidden />
-                  Follow-up ready
-                </div>
-              </div>
-            ) : (
-              <div className="chat-content">
-                <div className="chat-heading">
-                  <div className="welcome-eyebrow">PUBLIC EXPLORATION</div>
-                  <h1>{conversation?.title ?? "New exploration"}</h1>
-                  <p>
-                    {source === "all"
-                      ? "BigQuery + PostgreSQL"
-                      : source === "bigquery"
-                        ? "BigQuery"
-                        : "PostgreSQL"}
-                    <span>·</span>Synthetic retail data<span>·</span>Visible to
-                    everyone
-                  </p>
-                </div>
-                {messages.length === 0 && !busy && (
-                  <Empty>
-                    <EmptyHeader>
-                      <EmptyTitle>Start this exploration</EmptyTitle>
-                      <EmptyDescription>
-                        Ask a retail question below, or start a live voice
-                        conversation.
-                      </EmptyDescription>
-                    </EmptyHeader>
-                  </Empty>
-                )}
-                {messages.map((message) => (
-                  <article
-                    key={message.id}
-                    className={cn(
-                      "message",
-                      message.role === "user"
-                        ? "user-message"
-                        : "assistant-message",
-                    )}
-                  >
-                    <div className="message-label">
-                      {message.role === "assistant" ? (
-                        <>
-                          <Mark small />
-                          Querylane
-                        </>
-                      ) : (
-                        <>
-                          <span className="guest-dot" />
-                          Guest question
-                        </>
-                      )}
+                      <div>
+                        <strong>BigQuery</strong>
+                        <small>Sales & products</small>
+                      </div>
                     </div>
-                    <p className="message-text">{message.text}</p>
-                    {message.artifact_id && artifacts[message.artifact_id] && (
-                      <ResultCard artifact={artifacts[message.artifact_id]} />
-                    )}
-                    {preferences.followups &&
-                      Boolean(message.followups?.length) && (
-                        <div className="followups">
-                          {message.followups?.map((followup) => (
-                            <Button
-                              key={followup}
-                              variant="outline"
-                              size="sm"
-                              disabled={busy}
-                              onClick={() => void ask(followup)}
-                            >
-                              {followup}
-                              <ArrowRight data-icon="inline-end" />
-                            </Button>
-                          ))}
-                        </div>
-                      )}
-                  </article>
-                ))}
-                {draftArtifact &&
-                  artifacts[draftArtifact] &&
-                  !messages.some(
-                    (message) => message.artifact_id === draftArtifact,
-                  ) && <ResultCard artifact={artifacts[draftArtifact]} />}
-                {runId && (
-                  <div className="analysis-progress">
-                    <Mark small />
-                    <div>
-                      <span>{progress || "Working on your question"}</span>
-                      <ol>
-                        {["schema", "query", "relationship", "answer"].map(
-                          (step, index) => (
-                            <li key={step} data-current={stage === step}>
-                              <span>{index + 1}</span>
-                              {
-                                ["Understand", "Query", "Validate", "Explain"][
-                                  index
-                                ]
-                              }
-                            </li>
-                          ),
-                        )}
-                      </ol>
+                    <span className="path-line" aria-hidden />
+                    <span className="path-junction">
+                      <Mark small />
+                    </span>
+                    <span className="path-line" aria-hidden />
+                    <div className="path-source">
+                      <span className="database-icon database-icon-teal">
+                        <Database aria-hidden />
+                      </span>
+                      <div>
+                        <strong>PostgreSQL</strong>
+                        <small>Customers & targets</small>
+                      </div>
                     </div>
-                    <LoaderCircle className="spin" aria-hidden />
                   </div>
-                )}
-                <div ref={bottom} />
-              </div>
-            )}
+                  <div className="suggestions-label">
+                    A GOOD QUESTION IS ALL IT TAKES
+                    <ArrowDown aria-hidden />
+                  </div>
+                  <div className="suggestion-grid">
+                    {suggestions.map((suggestion) => (
+                      <motion.button
+                        key={suggestion.title}
+                        className="suggestion-card"
+                        disabled={busy || loading}
+                        onClick={() => void ask(suggestion.question)}
+                        whileHover={reduced ? undefined : { y: -3 }}
+                        whileTap={reduced ? undefined : { scale: 0.985 }}
+                        transition={SPRING_PRESS}
+                      >
+                        <suggestion.icon aria-hidden />
+                        <strong>{suggestion.title}</strong>
+                        <p>{suggestion.detail}</p>
+                        <span>
+                          {suggestion.source}
+                          <ArrowRight aria-hidden />
+                        </span>
+                      </motion.button>
+                    ))}
+                  </div>
+                  <div className="welcome-footnote">
+                    <Check aria-hidden />
+                    Read-only queries<span>·</span>
+                    <Check aria-hidden />
+                    Visible SQL & sources<span>·</span>
+                    <Check aria-hidden />
+                    Follow-up ready
+                  </div>
+                </Reveal>
+              ) : (
+                <Reveal
+                  className="chat-content"
+                  key={conversation?.id ?? "new-chat"}
+                >
+                  <div className="chat-heading">
+                    <div className="welcome-eyebrow">PUBLIC EXPLORATION</div>
+                    <h1>{conversation?.title ?? "New exploration"}</h1>
+                    <p>
+                      {source === "all"
+                        ? "BigQuery + PostgreSQL"
+                        : source === "bigquery"
+                          ? "BigQuery"
+                          : "PostgreSQL"}
+                      <span>·</span>Synthetic retail data<span>·</span>Visible
+                      to everyone
+                    </p>
+                  </div>
+                  {messages.length === 0 && !busy && (
+                    <Empty>
+                      <EmptyHeader>
+                        <EmptyTitle>Start this exploration</EmptyTitle>
+                        <EmptyDescription>
+                          Ask a retail question below, or start a live voice
+                          conversation.
+                        </EmptyDescription>
+                      </EmptyHeader>
+                    </Empty>
+                  )}
+                  <AnimatePresence initial={false}>
+                    {messages.map((message) => (
+                      <motion.article
+                        key={message.id}
+                        initial={
+                          hydrated && !reduced ? { opacity: 0, y: 12 } : false
+                        }
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={reduced ? undefined : { opacity: 0 }}
+                        transition={{
+                          duration: reduced ? 0 : 0.24,
+                          ease: EASE_OUT,
+                        }}
+                        className={cn(
+                          "message",
+                          message.role === "user"
+                            ? "user-message"
+                            : "assistant-message",
+                        )}
+                      >
+                        <div className="message-label">
+                          {message.role === "assistant" ? (
+                            <>
+                              <Mark small />
+                              Querylane
+                            </>
+                          ) : (
+                            <>
+                              <span className="guest-dot" />
+                              Guest question
+                            </>
+                          )}
+                        </div>
+                        <p className="message-text">{message.text}</p>
+                        <SkillEvidence skills={message.skills_used} warnings={message.skill_warnings} />
+                        {message.artifact_id &&
+                          artifacts[message.artifact_id] && (
+                            <ResultCard
+                              artifact={artifacts[message.artifact_id]}
+                            />
+                          )}
+                        {preferences.followups &&
+                          Boolean(message.followups?.length) && (
+                            <div className="followups">
+                              {message.followups?.map((followup) => (
+                                <Button
+                                  key={followup}
+                                  variant="outline"
+                                  size="sm"
+                                  disabled={busy}
+                                  onClick={() => void ask(followup)}
+                                >
+                                  {followup}
+                                  <ArrowRight data-icon="inline-end" />
+                                </Button>
+                              ))}
+                            </div>
+                          )}
+                      </motion.article>
+                    ))}
+                  </AnimatePresence>
+                  {draftArtifact &&
+                    artifacts[draftArtifact] &&
+                    !messages.some(
+                      (message) => message.artifact_id === draftArtifact,
+                    ) && <ResultCard artifact={artifacts[draftArtifact]} />}
+                  <AnimatePresence initial={false}>
+                    {runId && (
+                      <Reveal key="progress">
+                        <AnalysisProgress
+                          stage={stage}
+                          message={
+                            stopping
+                              ? "Stopping the active analysis…"
+                              : progress
+                          }
+                        />
+                      </Reveal>
+                    )}
+                  </AnimatePresence>
+                  <div ref={registerBottom} />
+                </Reveal>
+              )}
+            </AnimatePresence>
           </div>
         </main>
         <footer className="composer-area">
-          {voiceState !== "off" && (
-            <div className="voice-panel">
-              <span className="voice-indicator">
-                <AudioLines aria-hidden />
-              </span>
-              <div className="voice-panel-text">
-                <strong>
-                  {voiceState === "live"
-                    ? "Live conversation"
-                    : voiceState === "connecting"
-                      ? "Connecting to Gemini…"
-                      : "Voice paused"}
-                </strong>
-                <p>
-                  {voiceText ||
-                    "Ask naturally. Your charts and evidence will appear above."}
-                </p>
-              </div>
-              <div className="voice-level" aria-hidden>
-                {[0.4, 0.8, 0.6, 1, 0.7, 0.9, 0.5].map((factor, index) => (
-                  <i
-                    key={index}
-                    style={{ height: `${4 + level * factor * 24}px` }}
-                  />
-                ))}
-              </div>
-              {voiceState === "disconnected" ? (
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => void startVoice()}
-                >
-                  Reconnect
-                </Button>
-              ) : (
+          <SkillAttachments conversation={conversation} source={conversation?.source ?? source} disabled={busy || loading}
+            ensureConversation={ensureConversation} onSavingChange={setUpdatingSkills} onSaved={chat => { if (activeConversation.current === chat.id) setConversation(chat); }} />
+          <AnimatePresence initial={false}>
+            {voiceState !== "off" && (
+              <Reveal className="voice-panel" key="voice-panel">
+                <span className="voice-indicator">
+                  <AudioLines aria-hidden />
+                </span>
+                <div className="voice-panel-text">
+                  <strong>
+                    {voiceState === "live"
+                      ? "Live conversation"
+                      : voiceState === "connecting"
+                        ? "Connecting to Gemini…"
+                        : "Voice paused"}
+                  </strong>
+                  <p>
+                    {voiceText ||
+                      "Ask naturally. Your charts and evidence will appear above."}
+                  </p>
+                </div>
+                <div className="voice-level" aria-hidden>
+                  {[0.4, 0.8, 0.6, 1, 0.7, 0.9, 0.5].map((factor, index) => (
+                    <motion.i
+                      key={index}
+                      initial={false}
+                      animate={{
+                        scaleY: reduced ? 0.28 : 0.14 + level * factor * 0.86,
+                      }}
+                      style={{ height: 28 }}
+                      transition={{
+                        duration: reduced ? 0 : 0.08,
+                        ease: "linear",
+                      }}
+                    />
+                  ))}
+                </div>
+                {voiceState === "disconnected" ? (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => void startVoice()}
+                  >
+                    Reconnect
+                  </Button>
+                ) : (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    aria-label={muted ? "Unmute microphone" : "Mute microphone"}
+                    aria-pressed={muted}
+                    onClick={() => {
+                      const next = voice.current?.toggleMute() ?? false;
+                      setMuted(next);
+                      toast.info(
+                        next ? "Microphone muted" : "Microphone live",
+                        { id: "voice-microphone", duration: 2500 },
+                      );
+                    }}
+                  >
+                    {muted ? <MicOff /> : <Mic />}
+                  </Button>
+                )}
                 <Button
                   variant="ghost"
                   size="icon"
-                  aria-label={muted ? "Unmute microphone" : "Mute microphone"}
-                  aria-pressed={muted}
-                  onClick={() => setMuted(voice.current?.toggleMute() ?? false)}
+                  aria-label="Stop voice"
+                  onClick={() => {
+                    voice.current?.stop();
+                    setVoiceState("off");
+                    setMuted(false);
+                    toast.info("Voice session ended", {
+                      id: "voice-session",
+                      description:
+                        "Your transcripts and results remain in this conversation.",
+                      duration: 4000,
+                    });
+                    if (conversation) void loadMessages(conversation.id);
+                  }}
                 >
-                  {muted ? <MicOff /> : <Mic />}
+                  <Square />
                 </Button>
-              )}
-              <Button
-                variant="ghost"
-                size="icon"
-                aria-label="Stop voice"
-                onClick={() => {
-                  voice.current?.stop();
-                  setVoiceState("off");
-                  setMuted(false);
-                  if (conversation) void loadMessages(conversation.id);
-                }}
-              >
-                <Square />
-              </Button>
-            </div>
-          )}
+              </Reveal>
+            )}
+          </AnimatePresence>
           <form
             className="composer"
             onSubmit={(event) => {
@@ -1089,7 +1329,14 @@ export default function Workspace() {
                   <Select
                     value={source}
                     disabled={busy || Boolean(conversation)}
-                    onValueChange={setSource}
+                    onValueChange={(value) => {
+                      setSource(value);
+                      toast.info("Data source selected", {
+                        id: "source-selection",
+                        description: `${value === "all" ? "BigQuery and PostgreSQL" : value === "bigquery" ? "BigQuery" : "PostgreSQL"} will be used for this exploration.`,
+                        duration: 3000,
+                      });
+                    }}
                   >
                     <SelectTrigger aria-label="Data sources for new exploration">
                       <Database aria-hidden />
@@ -1117,13 +1364,14 @@ export default function Workspace() {
                     <InputGroupButton
                       size="icon-sm"
                       aria-label="Stop analysis"
-                      onClick={() =>
-                        void api(`/runs/${runId}/cancel`, {
-                          method: "POST",
-                        }).catch((error) => toast.error(error.message))
-                      }
+                      disabled={stopping}
+                      onClick={() => void cancelAnalysis()}
                     >
-                      <Square />
+                      {stopping ? (
+                        <LoaderCircle className="spin" />
+                      ) : (
+                        <Square />
+                      )}
                     </InputGroupButton>
                   ) : (
                     <InputGroupButton

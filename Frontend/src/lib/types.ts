@@ -7,6 +7,8 @@ export type Conversation = {
   lease_until: number;
   visibility: string;
   parent_id?: string;
+  skill_ids?: string[];
+  skills_revision?: number;
 };
 export type Message = {
   id: string;
@@ -16,6 +18,8 @@ export type Message = {
   followups?: string[];
   created_at: string;
   run_id: string;
+  skills_used?: SkillReference[];
+  skill_warnings?: string[];
 };
 export type Connection = {
   id: string;
@@ -45,6 +49,8 @@ export type Artifact = {
   visualization: Visualization;
   assumptions: string[];
   retrieval?: string;
+  skills_used?: SkillReference[];
+  skill_warnings?: string[];
   join_diagnostics?: Record<string, unknown>;
   provenance: {
     source: string;
@@ -62,3 +68,28 @@ export type StreamEvent = {
   data: Record<string, unknown>;
   id?: number;
 };
+
+export type SkillContent = {
+  name: string;
+  description: string;
+  when_to_use: string;
+  source: "all" | "bigquery" | "postgres";
+  tags: string[];
+  instructions: string;
+};
+export type Skill = SkillContent & {
+  id: string;
+  enabled: boolean;
+  deleted: boolean;
+  revision: number;
+  created_at: string;
+  updated_at: string;
+};
+export type SkillReference = Pick<
+  Skill,
+  "id" | "name" | "description" | "revision"
+> & {
+  mode: "manual" | "automatic";
+};
+
+export type SkillSummary = Omit<Skill, "instructions">;

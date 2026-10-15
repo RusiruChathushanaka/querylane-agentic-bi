@@ -48,6 +48,16 @@ export BI_FRONTEND_URL='https://agentic-bi-frontend-wekihucn7q-as.a.run.app'
 
 These variables help with CLI commands only. **The Python scripts contain project/resource constants; changing shell variables does not retarget them.** See [Another environment or project](#another-environment-or-project).
 
+### Skills library release
+
+See [skills.md](skills.md) for behavior, APIs, and limits. Release the backend before the frontend: the UI needs the skills routes and authenticated `PATCH`/`DELETE` CORS support. This feature uses the existing named `agentic-bi-demo` Firestore database and runtime identity; it requires no additional service, IAM grant, secret, or vector index. Keep default single-field indexing available for the `deleted` field. Do not reset history or reseed analytical tables as part of this release.
+
+New collections are `skills` with immutable `revisions`, run-scoped `skill_snapshots`, and the `system/skills_capacity` document. Existing chats and artifacts need no migration: missing attachments/provenance default to empty. Optional backend environment values are `SKILL_CATALOG_LIMIT=100`, `SKILL_GUEST_HOURLY_LIMIT=20`, and `SKILL_WORKSPACE_DAILY_LIMIT=100`.
+
+After an authorized deployment, check create/edit/delete/restore, CORS preflight for `PATCH` and `DELETE`, skill attachments, one automatic selection, an answer's revision link, and history after restarting/scaling the backend. Test against the named database rather than accepting local memory mode as persistence evidence. For optional non-destructive example seeding, run `cd Backend` then `uv run python -m app.admin seed-skills` using operator credentials. It preserves existing examples, including public edits/deletions; routine deploy scripts do not run it.
+
+Rollback uses the previous frontend/backend revisions through the routine runbook. Keep the additive skills collections and revision documents; older application versions ignore these fields. `reset-history` explicitly preserves skills and their capacity counter. Update deployment records only after actually deploying and verifying serving revisions.
+
 ## Prerequisites
 
 Install Google Cloud CLI including `gcloud` and `bq`, Node/npm, Python 3.12, and `uv`. The current frontend uses Node 26. Local Docker is optional: Cloud Build builds the Dockerfiles remotely. Use the committed dependency lockfiles.

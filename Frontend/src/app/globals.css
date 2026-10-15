@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import "./skills.css";
 @custom-variant dark (&:is(.dark *));
 @theme inline {
   --color-background: var(--background);
@@ -577,7 +578,6 @@
 .suggestion-card:hover:not(:disabled) {
   border-color: var(--ring);
   box-shadow: 0 5px 18px color-mix(in oklab, var(--primary) 5%, transparent);
-  transform: translateY(-2px);
 }
 .suggestion-card > svg {
   position: absolute;
@@ -2304,5 +2304,238 @@
   }
   .settings-nav a[aria-current] {
     outline: 1px solid Highlight;
+  }
+}
+
+/* Product motion: short feedback, stable reading surfaces, shared selection. */
+@keyframes workspace-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  :root:not([data-reduce-motion="true"])
+    .welcome
+    > :is(
+      .welcome-heading,
+      .source-path,
+      .suggestions-label,
+      .suggestion-grid,
+      .welcome-footnote
+    ) {
+    animation: workspace-arrive 280ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .welcome > .source-path {
+    animation-delay: 40ms !important;
+  }
+  .welcome > .suggestions-label {
+    animation-delay: 75ms !important;
+  }
+  .welcome > .suggestion-grid {
+    animation-delay: 100ms !important;
+  }
+  .welcome > .welcome-footnote {
+    animation-delay: 140ms !important;
+  }
+}
+:root {
+  --swatch-cobalt: #315dee;
+  --swatch-teal: #11756e;
+  --swatch-violet: #7450bf;
+  --swatch-rose: #b53f65;
+}
+.analysis-progress.analysis-progress-card {
+  display: block;
+  padding: 19px 20px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--card);
+  margin: 20px 0;
+}
+.analysis-progress .analysis-progress-title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  position: relative;
+  min-height: 22px;
+  font-size: 11px;
+  font-weight: 500;
+}
+.analysis-activity {
+  display: inline-flex;
+  align-items: center;
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+}
+.analysis-activity i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--primary);
+}
+.analysis-progress .analysis-track {
+  height: 2px;
+  background: var(--muted);
+  margin: 16px 0 15px;
+  overflow: hidden;
+  border-radius: 3px;
+}
+.analysis-track > span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--primary);
+}
+.analysis-progress-card ol {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin: 0;
+}
+.analysis-progress-card li {
+  gap: 7px;
+  font-size: 10px;
+}
+.analysis-progress-card li > span:first-child {
+  width: 25px;
+  height: 25px;
+  border-radius: 7px;
+  flex-shrink: 0;
+}
+.analysis-progress-card li > span:not(:first-child) {
+  width: auto;
+  height: auto;
+  border: none;
+  border-radius: 0;
+  background: none;
+  font: inherit;
+}
+.analysis-progress-card li svg {
+  width: 12px;
+  height: 12px;
+}
+.analysis-progress-card li[data-complete="true"] {
+  color: var(--teal);
+}
+.analysis-progress-card li[data-complete="true"] > span:first-child {
+  background: var(--teal-light);
+  border-color: transparent;
+}
+.settings-nav a {
+  position: relative;
+  isolation: isolate;
+}
+.settings-nav a[aria-current] {
+  background: transparent;
+}
+.settings-nav-indicator {
+  position: absolute;
+  inset: 0;
+  background: var(--secondary);
+  border-radius: 8px;
+  z-index: -1;
+  pointer-events: none;
+}
+.beui-accent-options {
+  flex-shrink: 0;
+}
+.beui-accent-options > div {
+  gap: 10px;
+}
+.beui-accent-choice {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.beui-accent-choice small {
+  font-size: 9px;
+  color: var(--muted-foreground);
+}
+.beui-accent-choice [data-selected="true"] + small {
+  color: var(--foreground);
+}
+.beui-color-dot {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+}
+.beui-color-dot svg {
+  width: 13px;
+  height: 13px;
+  color: #fff;
+}
+.toaster [data-sonner-toast] {
+  font-family: var(--font-dm-sans), sans-serif;
+  border-radius: 12px;
+}
+.toaster [data-title] {
+  font-size: 12px;
+}
+.toaster .toast-description {
+  font-size: 11px;
+  color: var(--muted-foreground);
+  line-height: 1.7;
+}
+.toaster [data-type="success"] [data-icon] {
+  color: var(--teal);
+}
+.toaster [data-type="error"] [data-icon] {
+  color: var(--destructive);
+}
+.toaster [data-type="info"] [data-icon],
+.toaster [data-type="loading"] [data-icon] {
+  color: var(--primary);
+}
+@media (max-width: 520px) {
+  .analysis-progress.analysis-progress-card {
+    padding: 16px 12px;
+  }
+  .analysis-progress-card ol {
+    gap: 6px;
+  }
+  .analysis-progress-card li {
+    gap: 5px;
+    font-size: 8px;
+  }
+  .analysis-progress-card li > span:first-child {
+    width: 21px;
+    height: 21px;
+  }
+  .beui-accent-options > div {
+    gap: 14px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-motion-entry] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+:root[data-reduce-motion="true"] [data-motion-entry] {
+  opacity: 1 !important;
+  transform: none !important;
+}
+@media (forced-colors: active) {
+  .beui-color-dot {
+    forced-color-adjust: none;
+  }
+  [data-slot="color-swatch"][data-selected="true"] {
+    outline: 2px solid Highlight;
+    outline-offset: 4px;
+  }
+  .settings-nav a[aria-current] {
+    outline: 1px solid Highlight;
+  }
+  .analysis-track > span {
+    background: Highlight;
   }
 }

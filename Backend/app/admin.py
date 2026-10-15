@@ -209,6 +209,20 @@ async def reset():
     print("Demo history and quotas reset; schemas and source data preserved.")
 
 
+async def seed_skills():
+    from app.repository import Repository
+    from app.skill_examples import seed_examples
+    from app.storage import FirestoreStore
+
+    settings = Settings()
+    store = FirestoreStore(PROJECT, "agentic-bi-demo", credentials=operator_credentials())
+    try:
+        count = await seed_examples(Repository(store, settings), settings)
+        print(f"Checked {count} example skills; existing skills and revisions preserved.")
+    finally:
+        await store.close()
+
+
 async def check_models():
     credentials = operator_credentials()
     settings = Settings()
@@ -254,13 +268,14 @@ async def check_models():
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("command", choices=["seed", "index-schema", "check-models", "reset-history"])
+    parser.add_argument("command", choices=["seed", "seed-skills", "index-schema", "check-models", "reset-history"])
     parser.add_argument("--confirm-demo-reset", action="store_true")
     args = parser.parse_args()
     if args.command == "reset-history" and not args.confirm_demo_reset:
         parser.error("Reset requires --confirm-demo-reset and applies only to the named demo database.")
     operations = {
         "seed": seed,
+        "seed-skills": seed_skills,
         "index-schema": index_schema,
         "check-models": check_models,
         "reset-history": reset,

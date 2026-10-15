@@ -4,6 +4,14 @@ A shared workspace for asking business questions across retail data sources and 
 
 ## Language
 
+**Skill**: A publicly editable Markdown playbook with discovery metadata, business definitions, and analytical guidance. It adds no tools or executable code.
+
+**Skill Revision**: An immutable saved version, retained after edits, disabling, and deletion so historical evidence remains readable.
+
+**Skill Attachment**: A shared conversation preference that asks the agent to apply a particular skill, subject to source compatibility and availability.
+
+**Skill Snapshot**: The exact selected revisions captured for one analysis, including automatic/manual selection, reused for planning, repairs, and interpretation.
+
 **Data Source**: A database or analytical warehouse whose retail data can be queried in the workspace.
 _Avoid_: Application database, data lake
 

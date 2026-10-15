@@ -23,6 +23,7 @@ from app.errors import AppError
 from app.fixtures import SOURCE_TABLES
 from app.models import ConversationCreate, TurnCreate
 from app.repository import Repository
+from app.skills import skill_router
 from app.storage import FirestoreStore, MemoryStore
 from app.voice import voice_session
 
@@ -72,7 +73,7 @@ def create_app(settings: Settings | None = None, store_override=None, credential
     app.add_middleware(
         CORSMiddleware,
         allow_origins=settings.origins,
-        allow_methods=["GET", "POST", "OPTIONS"],
+        allow_methods=["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
         allow_headers=["Authorization", "Content-Type", "Last-Event-ID"],
         expose_headers=["X-Request-ID"],
     )
@@ -80,9 +81,10 @@ def create_app(settings: Settings | None = None, store_override=None, credential
     @app.middleware("http")
     async def request_boundary(request: Request, call_next):
         try:
-            if int(request.headers.get("content-length", "0")) > 32_768:
+            body_limit = 65_536 if request.url.path.startswith("/api/v1/skills") else 32_768
+            if int(request.headers.get("content-length", "0")) > body_limit:
                 return JSONResponse(
-                    {"error": {"code": "body_too_large", "message": "Request body exceeds 32 KiB."}},
+                    {"error": {"code": "body_too_large", "message": "Request body exceeds the size limit."}},
                     status_code=413,
                 )
         except ValueError:
@@ -132,6 +134,8 @@ def create_app(settings: Settings | None = None, store_override=None, credential
         if not authorization or not authorization.startswith("Bearer "):
             raise AppError("Start a guest session to continue.", 401, "guest_required")
         return verify(authorization[7:])
+
+    app.include_router(skill_router(guest))
 
     @app.get("/health/live")
     async def live():

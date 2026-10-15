@@ -3,6 +3,17 @@ import type { StreamEvent } from "./types";
 let basePromise: Promise<string> | undefined;
 let guestPromise: Promise<string> | undefined;
 
+export class ApiError extends Error {
+  constructor(
+    message: string,
+    public status: number,
+    public code?: string,
+  ) {
+    super(message);
+    this.name = "ApiError";
+  }
+}
+
 export function backendUrl(): Promise<string> {
   basePromise ??= fetch("/api/config", { cache: "no-store" })
     .then(async (response) => {
@@ -54,7 +65,11 @@ export async function api<T>(
   retry = true,
 ): Promise<T> {
   const headers = new Headers(init.headers);
-  if (init.method === "POST") {
+  if (
+    ["POST", "PATCH", "PUT", "DELETE"].includes(
+      (init.method ?? "GET").toUpperCase(),
+    )
+  ) {
     headers.set("Authorization", `Bearer ${await guestToken()}`);
     if (init.body) headers.set("Content-Type", "application/json");
   }
@@ -69,7 +84,11 @@ export async function api<T>(
   }
   const body = await response.json();
   if (!response.ok)
-    throw new Error(body.error?.message ?? "Request failed. Please try again.");
+    throw new ApiError(
+      body.error?.message ?? "Request failed. Please try again.",
+      response.status,
+      body.error?.code,
+    );
   return body as T;
 }
 

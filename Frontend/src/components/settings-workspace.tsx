@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useTheme } from "next-themes";
+import { LayoutGroup, motion } from "motion/react";
 import {
   ArrowLeft,
   ArrowUpRight,
@@ -64,10 +65,48 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
   useHydrated,
   usePreferences,
-  updatePreference,
+  updatePreference as persistPreference,
   resetPreferences,
 } from "@/hooks/use-preferences";
 import { ACCENTS, type Preferences } from "@/lib/preferences";
+import {
+  ColorSelector,
+  ColorSelectorItem,
+  ColorSelectorList,
+} from "@/components/motion/color-selector";
+import { AnimatedNumber } from "@/components/motion/animated-number";
+import { useAppMotion } from "@/hooks/use-app-motion";
+import { SPRING_LAYOUT } from "@/lib/ease";
+
+const preferenceLabels: Record<keyof Preferences, string> = {
+  accent: "Accent color",
+  density: "Workspace density",
+  reduceMotion: "Motion preference",
+  defaultSource: "Default data source",
+  visualization: "Preferred visualization",
+  decimals: "Number formatting",
+  followups: "Follow-up suggestions",
+  autoScroll: "Scrolling preference",
+  enterToSend: "Composer shortcut",
+  spokenResponses: "Spoken responses",
+  startMuted: "Microphone preference",
+};
+
+function updatePreference<K extends keyof Preferences>(
+  key: K,
+  value: Preferences[K],
+) {
+  const saved = persistPreference(key, value);
+  const options = {
+    id: "settings-preference",
+    description: saved
+      ? `${preferenceLabels[key]} updated for this browser.`
+      : "Allow browser storage to keep your preferences after reloading.",
+    duration: 2600,
+  };
+  if (saved) toast.success("Preferences saved", options);
+  else toast.info("Applied for this visit", options);
+}
 
 const sections = [
   { id: "appearance", label: "Appearance", icon: Palette, number: "01" },
@@ -170,12 +209,17 @@ function ThemePreview({ decimals }: { decimals: string }) {
         <div className="preview-metric">
           <span>Retail revenue</span>
           <strong>
-            {new Intl.NumberFormat("en-US", {
-              style: "currency",
-              currency: "USD",
-              minimumFractionDigits: Number(decimals),
-              maximumFractionDigits: Number(decimals),
-            }).format(82450.6)}
+            <AnimatedNumber
+              value={82450.6}
+              format={(value) =>
+                new Intl.NumberFormat("en-US", {
+                  style: "currency",
+                  currency: "USD",
+                  minimumFractionDigits: Number(decimals),
+                  maximumFractionDigits: Number(decimals),
+                }).format(value)
+              }
+            />
           </strong>
           <span className="preview-trend">
             <ArrowUpRight aria-hidden /> 12.8% vs. last month
@@ -204,12 +248,18 @@ export function SettingsWorkspace() {
   const { theme, setTheme, systemTheme } = useTheme();
   const [resetOpen, setResetOpen] = useState(false);
   const [active, setActive] = useState("appearance");
+  const { reduced } = useAppMotion();
 
   function reset() {
-    resetPreferences();
+    const saved = resetPreferences();
     setTheme("system");
     setResetOpen(false);
-    toast.success("Preferences restored to defaults");
+    toast.success("Preferences restored to defaults", {
+      id: "settings-preference",
+      description: saved
+        ? "Shared conversations and results are unchanged."
+        : "Defaults apply for this visit. Browser storage is unavailable.",
+    });
   }
 
   return (
@@ -230,20 +280,31 @@ export function SettingsWorkspace() {
           </Link>
         </Button>
         <div className="sidebar-label">YOUR PREFERENCES</div>
-        <nav aria-label="Settings sections" className="settings-nav">
-          {sections.map(({ id, label, icon: Icon, number }) => (
-            <a
-              key={id}
-              href={`#${id}`}
-              aria-current={active === id ? "location" : undefined}
-              onClick={() => setActive(id)}
-            >
-              <Icon aria-hidden />
-              <span>{label}</span>
-              <small>{number}</small>
-            </a>
-          ))}
-        </nav>
+        <Button asChild variant="ghost"><Link href="/skills">Skills library</Link></Button>
+        <LayoutGroup id="settings-navigation">
+          <nav aria-label="Settings sections" className="settings-nav">
+            {sections.map(({ id, label, icon: Icon, number }) => (
+              <a
+                key={id}
+                href={`#${id}`}
+                aria-current={active === id ? "location" : undefined}
+                onClick={() => setActive(id)}
+              >
+                {active === id && (
+                  <motion.span
+                    className="settings-nav-indicator"
+                    layoutId={reduced ? undefined : "active-section"}
+                    transition={SPRING_LAYOUT}
+                    aria-hidden
+                  />
+                )}
+                <Icon aria-hidden />
+                <span>{label}</span>
+                <small>{number}</small>
+              </a>
+            ))}
+          </nav>
+        </LayoutGroup>
         <div className="settings-local-note">
           <Monitor aria-hidden />
           <strong>Made for this browser</strong>
@@ -262,7 +323,12 @@ export function SettingsWorkspace() {
             <Globe2 data-icon="inline-start" /> Public demo
           </Badge>
         </header>
-        <main id="settings-main" className="settings-main">
+        <motion.main
+          id="settings-main"
+          className="settings-main"
+          initial={hydrated && !reduced ? { opacity: 0, y: 8 } : false}
+          animate={{ opacity: 1, y: 0 }}
+        >
           <div className="settings-heading">
             <div>
               <p className="settings-eyebrow">
@@ -338,7 +404,17 @@ export function SettingsWorkspace() {
                         value={hydrated ? (theme ?? "system") : ""}
                         disabled={!hydrated}
                         onValueChange={(value) => {
-                          if (value) setTheme(value);
+                          if (value) {
+                            setTheme(value);
+                            toast.success("Color mode updated", {
+                              id: "settings-preference",
+                              description:
+                                value === "system"
+                                  ? "Your workspace follows the device’s appearance."
+                                  : `${value === "dark" ? "Dark" : "Light"} mode is active.`,
+                              duration: 2600,
+                            });
+                          }
                         }}
                         aria-labelledby="color-mode-label"
                         aria-describedby="color-mode-hint"
@@ -378,9 +454,7 @@ export function SettingsWorkspace() {
                           character.
                         </FieldDescription>
                       </FieldContent>
-                      <ToggleGroup
-                        type="single"
-                        spacing={2}
+                      <ColorSelector
                         value={p.accent}
                         onValueChange={(value) => {
                           if (ACCENTS.includes(value as Preferences["accent"]))
@@ -390,25 +464,24 @@ export function SettingsWorkspace() {
                             );
                         }}
                         aria-labelledby="accent-label"
-                        className="accent-options"
+                        className="beui-accent-options"
                       >
-                        {ACCENTS.map((accent) => (
-                          <ToggleGroupItem
-                            value={accent}
-                            key={accent}
-                            aria-label={`${accent[0].toUpperCase()}${accent.slice(1)} accent`}
-                            className="accent-option"
-                          >
-                            <span data-swatch={accent}>
-                              <Check aria-hidden />
-                            </span>
-                            <small>
-                              {accent[0].toUpperCase()}
-                              {accent.slice(1)}
-                            </small>
-                          </ToggleGroupItem>
-                        ))}
-                      </ToggleGroup>
+                        <ColorSelectorList>
+                          {ACCENTS.map((accent) => (
+                            <div className="beui-accent-choice" key={accent}>
+                              <ColorSelectorItem
+                                value={accent}
+                                label={`${accent[0].toUpperCase()}${accent.slice(1)} accent`}
+                                color={`var(--swatch-${accent})`}
+                              />
+                              <small aria-hidden="true">
+                                {accent[0].toUpperCase()}
+                                {accent.slice(1)}
+                              </small>
+                            </div>
+                          ))}
+                        </ColorSelectorList>
+                      </ColorSelector>
                     </Field>
                     <ThemePreview decimals={p.decimals} />
                     <Field orientation="horizontal" className="settings-row">
@@ -665,7 +738,7 @@ export function SettingsWorkspace() {
             <Globe2 aria-hidden /> Personal preferences. A shared space for
             discovery.
           </p>
-        </main>
+        </motion.main>
       </div>
     </div>
   );

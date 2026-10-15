@@ -2,6 +2,9 @@
 
 import { useLayoutEffect } from "react";
 import { ThemeProvider } from "next-themes";
+import { MotionConfig } from "motion/react";
+import { useAppMotion } from "@/hooks/use-app-motion";
+import { EASE_OUT } from "@/lib/ease";
 import { usePreferences } from "@/hooks/use-preferences";
 import { THEME_KEY } from "@/lib/preferences";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -19,6 +22,7 @@ function AppearanceSync() {
 }
 
 export function AppProviders({ children }: { children: React.ReactNode }) {
+  const { reduced } = useAppMotion();
   return (
     <ThemeProvider
       attribute="class"
@@ -27,9 +31,20 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
       enableSystem
       disableTransitionOnChange
     >
-      <AppearanceSync />
-      <TooltipProvider>{children}</TooltipProvider>
-      <Toaster position="bottom-right" />
+      <MotionConfig
+        reducedMotion={reduced ? "always" : "user"}
+        transition={{ duration: reduced ? 0 : 0.24, ease: EASE_OUT }}
+      >
+        <AppearanceSync />
+        <TooltipProvider>{children}</TooltipProvider>
+        <Toaster
+          position="top-right"
+          offset={{ top: "84px", right: "24px" }}
+          mobileOffset={{ top: "72px", left: "12px", right: "12px" }}
+          closeButton
+          visibleToasts={3}
+        />
+      </MotionConfig>
     </ThemeProvider>
   );
 }

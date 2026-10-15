@@ -1,0 +1,282 @@
+{
+  "scope": "Real Gemini text model + synthetic fixture connectors + MemoryStore; no deployed Firestore writes",
+  "run": {
+    "id": "2e9796fa660c67de3f101dace8d63419",
+    "conversation_id": "906f5c7815654e81b025d0e2781010b9",
+    "question": "Show total revenue by region as a bar chart. Explain the reporting assumptions.",
+    "generation": 1,
+    "status": "complete",
+    "sequence": 8,
+    "cancel_requested": false,
+    "kind": "text",
+    "created_at": "2026-10-15T18:18:46.117013+00:00",
+    "skill_ids": [],
+    "finished_at": "2026-10-15T18:18:55.859519+00:00"
+  },
+  "events": [
+    {
+      "type": "progress",
+      "data": {
+        "stage": "skills",
+        "message": "Finding relevant skills"
+      }
+    },
+    {
+      "type": "skills",
+      "data": {
+        "skills_used": [
+          {
+            "id": "ffcb2a43a0cf4ac0b0748d5bb9dc09a3",
+            "name": "Revenue evidence guide",
+            "description": "Review revenue by region and reporting assumptions.",
+            "revision": 1,
+            "mode": "automatic"
+          }
+        ],
+        "warnings": [],
+        "analysis_id": "74aca10bae3d408f9997e2e88235ace0"
+      }
+    },
+    {
+      "type": "progress",
+      "data": {
+        "stage": "schema",
+        "message": "Inspecting sources and business context"
+      }
+    },
+    {
+      "type": "progress",
+      "data": {
+        "stage": "query",
+        "message": "Running a read-only bigquery query",
+        "source": "bigquery"
+      }
+    },
+    {
+      "type": "artifact",
+      "data": {
+        "id": "450141b265d64dda9b5560ed9f06a813",
+        "conversation_id": "906f5c7815654e81b025d0e2781010b9",
+        "title": "Total Revenue by Region",
+        "columns": [
+          {
+            "name": "region",
+            "type": "VARCHAR"
+          },
+          {
+            "name": "total_revenue",
+            "type": "DECIMAL(38,2)"
+          }
+        ],
+        "row_count": 4,
+        "preview_count": 4,
+        "complete": true,
+        "visualization": {
+          "type": "bar",
+          "title": "Total Revenue by Region (Jan\u2013Sep 2026)",
+          "x": "region",
+          "y": [
+            "total_revenue"
+          ],
+          "format": "currency"
+        },
+        "provenance": [
+          {
+            "source": "bigquery",
+            "sql": "SELECT region, ROUND(SUM(revenue), 2) AS total_revenue FROM `project-e8b1593d-009a-4822-abf`.agentic_bi_demo.orders GROUP BY region ORDER BY total_revenue DESC",
+            "columns": [
+              {
+                "name": "region",
+                "type": "VARCHAR"
+              },
+              {
+                "name": "total_revenue",
+                "type": "DECIMAL(38,2)"
+              }
+            ],
+            "row_count": 4,
+            "complete": true,
+            "executed_at": "2026-10-15T18:18:52.983022+00:00",
+            "elapsed_ms": 195,
+            "job_id": null,
+            "bytes_processed": null
+          }
+        ],
+        "assumptions": [
+          "Revenue represents gross order revenue in USD prior to any returns or refunds, queried directly from orders at order grain.",
+          "Data reflects the full synthetic period from January to September 2026.",
+          "All orders in the orders table are included in the aggregation."
+        ],
+        "join_diagnostics": null,
+        "created_at": "2026-10-15T18:18:52.983172+00:00",
+        "page_count": 1,
+        "retrieval": "full-schema",
+        "skills_used": [
+          {
+            "id": "ffcb2a43a0cf4ac0b0748d5bb9dc09a3",
+            "name": "Revenue evidence guide",
+            "description": "Review revenue by region and reporting assumptions.",
+            "revision": 1,
+            "mode": "automatic"
+          }
+        ],
+        "skill_warnings": []
+      }
+    },
+    {
+      "type": "progress",
+      "data": {
+        "stage": "answer",
+        "message": "Explaining the result and its assumptions"
+      }
+    },
+    {
+      "type": "answer",
+      "data": {
+        "explanation": "Total gross revenue across all four regions is $118,951.00 USD. By region:\n- West: $31,657.00\n- North: $29,959.00\n- South: $28,999.00\n- East: $28,336.00\n\nReporting Assumptions:\n- Revenue reflects gross order revenue in USD prior to any returns or refunds, queried at the order grain.\n- Figures represent synthetic data covering the period from January to September 2026.\n- All orders present in the orders table are included in the aggregation.",
+        "followups": [
+          "What is the average order value by region?",
+          "How does regional revenue trend on a month-over-month basis?",
+          "What is the total order volume per region?"
+        ]
+      }
+    },
+    {
+      "type": "complete",
+      "data": {
+        "run_id": "2e9796fa660c67de3f101dace8d63419"
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "id": "450141b265d64dda9b5560ed9f06a813",
+      "conversation_id": "906f5c7815654e81b025d0e2781010b9",
+      "title": "Total Revenue by Region",
+      "columns": [
+        {
+          "name": "region",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "total_revenue",
+          "type": "DECIMAL(38,2)"
+        }
+      ],
+      "row_count": 4,
+      "preview_count": 4,
+      "complete": true,
+      "visualization": {
+        "type": "bar",
+        "title": "Total Revenue by Region (Jan\u2013Sep 2026)",
+        "x": "region",
+        "y": [
+          "total_revenue"
+        ],
+        "format": "currency"
+      },
+      "provenance": [
+        {
+          "source": "bigquery",
+          "sql": "SELECT region, ROUND(SUM(revenue), 2) AS total_revenue FROM `project-e8b1593d-009a-4822-abf`.agentic_bi_demo.orders GROUP BY region ORDER BY total_revenue DESC",
+          "columns": [
+            {
+              "name": "region",
+              "type": "VARCHAR"
+            },
+            {
+              "name": "total_revenue",
+              "type": "DECIMAL(38,2)"
+            }
+          ],
+          "row_count": 4,
+          "complete": true,
+          "executed_at": "2026-10-15T18:18:52.983022+00:00",
+          "elapsed_ms": 195,
+          "job_id": null,
+          "bytes_processed": null
+        }
+      ],
+      "assumptions": [
+        "Revenue represents gross order revenue in USD prior to any returns or refunds, queried directly from orders at order grain.",
+        "Data reflects the full synthetic period from January to September 2026.",
+        "All orders in the orders table are included in the aggregation."
+      ],
+      "join_diagnostics": null,
+      "created_at": "2026-10-15T18:18:52.983172+00:00",
+      "page_count": 1,
+      "retrieval": "full-schema",
+      "skills_used": [
+        {
+          "id": "ffcb2a43a0cf4ac0b0748d5bb9dc09a3",
+          "name": "Revenue evidence guide",
+          "description": "Review revenue by region and reporting assumptions.",
+          "revision": 1,
+          "mode": "automatic"
+        }
+      ],
+      "skill_warnings": [],
+      "rows": [
+        {
+          "region": "West",
+          "total_revenue": "31657.00"
+        },
+        {
+          "region": "North",
+          "total_revenue": "29959.00"
+        },
+        {
+          "region": "South",
+          "total_revenue": "28999.00"
+        },
+        {
+          "region": "East",
+          "total_revenue": "28336.00"
+        }
+      ]
+    }
+  ],
+  "messages": [
+    {
+      "id": "2e9796fa660c67de3f101dace8d63419_user",
+      "run_id": "2e9796fa660c67de3f101dace8d63419",
+      "role": "user",
+      "text": "Show total revenue by region as a bar chart. Explain the reporting assumptions.",
+      "created_at": "2026-10-15T18:18:46.117029+00:00",
+      "status": "complete"
+    },
+    {
+      "id": "114c8d21b2e74941850bee21555d9559",
+      "run_id": "2e9796fa660c67de3f101dace8d63419",
+      "role": "assistant",
+      "text": "Total gross revenue across all four regions is $118,951.00 USD. By region:\n- West: $31,657.00\n- North: $29,959.00\n- South: $28,999.00\n- East: $28,336.00\n\nReporting Assumptions:\n- Revenue reflects gross order revenue in USD prior to any returns or refunds, queried at the order grain.\n- Figures represent synthetic data covering the period from January to September 2026.\n- All orders present in the orders table are included in the aggregation.",
+      "artifact_id": "450141b265d64dda9b5560ed9f06a813",
+      "followups": [
+        "What is the average order value by region?",
+        "How does regional revenue trend on a month-over-month basis?",
+        "What is the total order volume per region?"
+      ],
+      "created_at": "2026-10-15T18:18:52.983286+00:00",
+      "status": "complete",
+      "skills_used": [
+        {
+          "id": "ffcb2a43a0cf4ac0b0748d5bb9dc09a3",
+          "name": "Revenue evidence guide",
+          "description": "Review revenue by region and reporting assumptions.",
+          "revision": 1,
+          "mode": "automatic"
+        }
+      ],
+      "skill_warnings": []
+    }
+  ],
+  "verified_at": "2026-10-15T18:19:58.726136+00:00",
+  "assertions": {
+    "expected_total_revenue": "118951.00",
+    "observed_total_revenue": "118951.00",
+    "automatic_skill_revision": 1,
+    "wrong_source_skill_excluded": true,
+    "completed": true
+  },
+  "model": "gemini-3.8-flash"
+}
