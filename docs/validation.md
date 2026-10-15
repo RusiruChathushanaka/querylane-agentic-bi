@@ -67,8 +67,10 @@ The standard local command uses deterministic planning and in-memory synthetic s
 
 ## Browser settings verification
 
-The settings implementation was verified locally on 2026-10-15; it has not been deployed by this change. See [settings reference](settings.md) and [recorded results](evaluation/settings.json).
+The settings implementation was verified locally and deployed on 2026-10-15. Frontend revision `agentic-bi-frontend-00002-zhq` serves 100% of traffic; backend revision `agentic-bi-backend-00005-rqk` and its configuration are unchanged. See [settings reference](settings.md), [local results](evaluation/settings.json), and [deployed release checks](evaluation/settings-deployed.json).
 
 Frontend lint, TypeScript, production build, and three voice preference regression tests pass. Browser checks cover reload persistence, cross-tab updates, system theme changes, explicit theme overrides, new versus existing conversation sources, composer shortcuts, numeric formatting, manual chart switching, unsupported-view fallback, reset preservation, malformed storage, and blocked-storage recovery. Mobile checks at 320px and 390px found no horizontal document overflow.
 
 Stable light and dark settings screens and populated table/chart views report zero axe violations. The settings scans have no incomplete rules; SVG chart contrast remains an automated-review limitation. Axis and legend text use semantic foreground colors, and primary text/background contrast exceeds 5.3:1 in every accent and mode combination. Voice preference tests use mocked microphone and audio APIs; they do not replace the real-hardware voice acceptance checks above.
+
+The deployed release passes seven HTTP checks covering both services, runtime API configuration, connected analytical sources, the settings page, and the workspace. Real-browser checks confirm theme/density/chart/composer/voice preference persistence, mobile layout, an existing cross-source conversation, manual chart switching, and reset controls. Both deployed settings color modes report zero axe violations; the inspected new-revision logs contain no errors. This frontend-only verification required no new model calls or public conversations. The build uses source commit `2fade7a`; the previous frontend revision `agentic-bi-frontend-00001-6tf` remains recorded for rollback.

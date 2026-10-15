@@ -8,18 +8,37 @@
       "ready_revision": "agentic-bi-backend-00005-rqk",
       "service_account": "agentic-bi-backend@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
       "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend:1792075999",
-      "ready": true
+      "ready": true,
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100,
+          "revisionName": "agentic-bi-backend-00005-rqk"
+        }
+      ]
     },
     "agentic-bi-frontend": {
       "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app",
-      "ready_revision": "agentic-bi-frontend-00001-6tf",
+      "ready_revision": "agentic-bi-frontend-00002-zhq",
       "service_account": "agentic-bi-frontend@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
-      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend:1792075355",
-      "ready": true
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend:1792083529",
+      "ready": true,
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100,
+          "revisionName": "agentic-bi-frontend-00002-zhq"
+        }
+      ],
+      "previous_revision": "agentic-bi-frontend-00001-6tf",
+      "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:eda8139d0af4a73e8bd4c9dba9626f5a2617098c91d22d21f8d6b4d31353a058",
+      "source_commit": "2fade7ae5d1f5055faea4137ebebec3037c38021",
+      "build_id": "c5b5f4c0-43e0-4367-8b07-acbb89c6c987"
     }
   },
   "firestore": "agentic-bi-demo",
   "bigquery_dataset": "agentic_bi_demo",
   "cloud_sql_instance": "agentic-bi-demo-pg",
-  "vector_dimensions": 768
+  "vector_dimensions": 768,
+  "verified_at": "2026-10-15T22:33:51.551940+05:30"
 }

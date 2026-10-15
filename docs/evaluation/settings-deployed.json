@@ -1,0 +1,138 @@
+{
+  "date": "2026-10-15T22:32:09.449501+05:30",
+  "scope": "Frontend settings release; unchanged backend; no new model calls or public conversations",
+  "source_commit": "2fade7ae5d1f5055faea4137ebebec3037c38021",
+  "http_checks": {
+    "backend_live": {
+      "url": "https://agentic-bi-backend-wekihucn7q-as.a.run.app/health/live",
+      "http_status": 200,
+      "response": {
+        "status": "ok",
+        "service": "agentic-bi-backend"
+      }
+    },
+    "backend_ready": {
+      "url": "https://agentic-bi-backend-wekihucn7q-as.a.run.app/health/ready",
+      "http_status": 200,
+      "response": {
+        "status": "ready",
+        "mode": "gemini",
+        "storage": "firestore",
+        "visibility": "public"
+      }
+    },
+    "frontend_health": {
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/api/health",
+      "http_status": 200,
+      "response": {
+        "status": "ready",
+        "backend": 200
+      }
+    },
+    "runtime_config": {
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/api/config",
+      "http_status": 200,
+      "response": {
+        "backend_url": "https://agentic-bi-backend-wekihucn7q-as.a.run.app"
+      }
+    },
+    "connections": {
+      "url": "https://agentic-bi-backend-wekihucn7q-as.a.run.app/api/v1/connections",
+      "http_status": 200,
+      "response": {
+        "mode": "cloud",
+        "connections": [
+          {
+            "id": "bigquery",
+            "name": "Retail warehouse",
+            "engine": "BigQuery",
+            "tables": 4,
+            "connected": true,
+            "mode": "cloud"
+          },
+          {
+            "id": "postgres",
+            "name": "Business operations",
+            "engine": "PostgreSQL",
+            "tables": 4,
+            "connected": true,
+            "mode": "cloud"
+          }
+        ]
+      }
+    },
+    "settings_page": {
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/settings",
+      "http_status": 200
+    },
+    "workspace": {
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/",
+      "http_status": 200
+    }
+  },
+  "frontend_release": {
+    "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app",
+    "ready_revision": "agentic-bi-frontend-00002-zhq",
+    "service_account": "agentic-bi-frontend@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
+    "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend:1792083529",
+    "ready": true,
+    "traffic": [
+      {
+        "latestRevision": true,
+        "percent": 100,
+        "revisionName": "agentic-bi-frontend-00002-zhq"
+      }
+    ],
+    "previous_revision": "agentic-bi-frontend-00001-6tf",
+    "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:eda8139d0af4a73e8bd4c9dba9626f5a2617098c91d22d21f8d6b4d31353a058",
+    "source_commit": "2fade7ae5d1f5055faea4137ebebec3037c38021",
+    "build_id": "c5b5f4c0-43e0-4367-8b07-acbb89c6c987"
+  },
+  "backend_revision_unchanged": "agentic-bi-backend-00005-rqk",
+  "local_checks": {
+    "npm_ci": "passed",
+    "eslint": "passed",
+    "typescript": "passed",
+    "voice_tests": {
+      "passed": 3
+    },
+    "production_build": "passed",
+    "production_audit_vulnerabilities": 0
+  },
+  "browser_checks_passed": [
+    "All settings sections and labeled controls render over HTTPS",
+    "Dark mode, violet accent, compact density, table default, composer, and voice preferences survive reload",
+    "390px mobile settings and workspace have no document horizontal overflow",
+    "Existing cross-source results render with preferred table view and preserve their evidence",
+    "Manual table-to-bar switching preserves data and uses the selected accent",
+    "Workspace retains dark/violet appearance and configured composer shortcut hint",
+    "Reset preferences confirmation restores browser defaults"
+  ],
+  "accessibility": {
+    "settings_dark": {
+      "counts": {
+        "inapplicable": 53,
+        "incomplete": 0,
+        "passes": 36,
+        "violations": 0
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    "settings_light": {
+      "counts": {
+        "inapplicable": 55,
+        "incomplete": 0,
+        "passes": 34,
+        "violations": 0
+      },
+      "violations": [],
+      "incomplete": []
+    }
+  },
+  "frontend_revision_error_logs": 0,
+  "limits": [
+    "Real microphone hardware was not exercised for this frontend-only release; local voice preference tests use mocked audio and transport.",
+    "No new hosted model calls, public conversations, source data, secrets, IAM grants, or backend deployments were required."
+  ]
+}

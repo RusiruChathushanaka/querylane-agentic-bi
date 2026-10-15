@@ -94,6 +94,7 @@ cd ..
 cd Frontend
 npm ci
 npm run lint
+npm test
 npx tsc --noEmit
 npm run build
 cd ..
@@ -352,6 +353,8 @@ The runtime verifier creates `agentic-bi-demo-check`, a temporary private Cloud 
 The smoke test covers CORS, runtime URLs, hosted numerical answers, source query evidence, follow-ups, forks, idempotency, rejected voice origins/tokens, and real Gemini Live tool/audio/transcript output. The numerical evaluation checks 31 questions against independently calculated seed references. These commands make billed model/query calls, create visible public conversations, and consume configured quotas. They write reports under `docs/evaluation/`; preserve earlier reports when comparing a regression.
 
 In a browser, confirm both sources connect, ask a cross-source question, inspect SQL/assumptions/cardinality, switch chart/table, follow up, fork, and reconnect. Manually test microphone permission, actual spoken input/output, mute, interruption, and resumption over HTTPS. The automated voice test injects text into the live transport and does not certify microphone hardware.
+
+For a frontend-only [browser settings](settings.md) release, rerun the frontend checks and basic health checks, confirm the backend revision/configuration is unchanged, and verify the deployed settings controls, reload persistence, theme switching, and an existing public result. Check the settings page on desktop and mobile and confirm returning to the workspace retains the chosen appearance. These checks need no new model calls or public conversations. Rerun the broader hosted analysis/voice and private runtime checks when backend, connector, model, persistence, IAM, or protocol changes affect those paths. Preserve their existing reports when those components have not changed.
 
 Do not reset quotas to conceal a usage-limit failure. Record actual results and distinguish automated checks from remaining manual checks.
 

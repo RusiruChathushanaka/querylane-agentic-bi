@@ -4,6 +4,8 @@ Public retail analytics using Next.js + shadcn/ui, FastAPI, Google ADK, Gemini, 
 
 Open the [deployed application](https://agentic-bi-frontend-wekihucn7q-as.a.run.app) or the [validated cross-source example](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/?chat=d0f257e2cd6e4453921990b03a087536).
 
+Personalize the workspace in [Settings](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/settings). Appearance, chart, conversation, and voice preferences are saved per browser.
+
 ## Deployment reference
 
 Use the **[Deployment guide](docs/deployment-guide.md)** before deploying to Google Cloud Run or changing the supporting IAM, Firestore, BigQuery, Cloud SQL, Secret Manager, or build resources. It covers first-time provisioning, routine releases, configuration, acceptance checks, rollback, and troubleshooting.
