@@ -69,3 +69,5 @@ This command writes to the named cloud demo database using operator credentials.
 ## Verification
 
 Run backend pytest/Ruff and frontend lint, tests, type checks, and build. The skills tests cover CRUD, concurrency, quotas, metadata discovery, immutable snapshots, SQL repairs, malformed imports, forks, and repeated voice analysis. Browser verification and its limitations are recorded in [validation.md](validation.md).
+
+The library is [deployed on Cloud Run](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/skills). [Hosted skills evidence](evaluation/skills-deployed.json) covers real named-Firestore revisions/conflicts, import/export, automatic and manual selection, follow-ups, forks, immutable historical evidence, persistence across a new revision, and skill-guided Gemini Live analysis. The verification playbook was soft-deleted after the checks; its used versions remain readable. See the [release validation](validation.md#skills-and-animation-cloud-release--2026-10-16) for limits and related reports.

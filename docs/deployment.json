@@ -1,44 +1,66 @@
 {
   "project": "project-e8b1593d-009a-4822-abf",
   "region": "asia-southeast1",
-  "date": "2026-10-15",
+  "date": "2026-10-16",
   "services": {
     "agentic-bi-backend": {
       "url": "https://agentic-bi-backend-wekihucn7q-as.a.run.app",
-      "ready_revision": "agentic-bi-backend-00005-rqk",
+      "ready_revision": "agentic-bi-backend-00008-854",
       "service_account": "agentic-bi-backend@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
-      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend:1792075999",
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend:1792090770",
+      "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:8b079b46b401bc602b5428f56a8521beca330b7e7b15f6a9fc97ca3cb5099fb6",
+      "source_commit": "db894fd0742ea4a136cc34e974e4f750c1774685",
+      "build_id": "ad9991ec-862e-44ae-92f3-dc0eaec3d8fc",
       "ready": true,
       "traffic": [
         {
           "latestRevision": true,
           "percent": 100,
-          "revisionName": "agentic-bi-backend-00005-rqk"
+          "revisionName": "agentic-bi-backend-00008-854"
         }
+      ],
+      "previous_revision": "agentic-bi-backend-00005-rqk",
+      "intermediate_release_revisions": [
+        "agentic-bi-backend-00006-zwn",
+        "agentic-bi-backend-00007-z4d"
       ]
     },
     "agentic-bi-frontend": {
       "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app",
-      "ready_revision": "agentic-bi-frontend-00002-zhq",
+      "ready_revision": "agentic-bi-frontend-00004-7gh",
       "service_account": "agentic-bi-frontend@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
-      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend:1792083529",
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend:1792090935",
+      "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:0e13514d23b54bb26ef09e78af3ecb2fde9dd5df2ac215d8d2efd13f2be4faa4",
+      "source_commit": "db894fd0742ea4a136cc34e974e4f750c1774685",
+      "build_id": "75929cfe-2d8f-4be5-bbb6-3172c7a9f533",
       "ready": true,
       "traffic": [
         {
           "latestRevision": true,
           "percent": 100,
-          "revisionName": "agentic-bi-frontend-00002-zhq"
+          "revisionName": "agentic-bi-frontend-00004-7gh"
         }
       ],
-      "previous_revision": "agentic-bi-frontend-00001-6tf",
-      "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:eda8139d0af4a73e8bd4c9dba9626f5a2617098c91d22d21f8d6b4d31353a058",
-      "source_commit": "2fade7ae5d1f5055faea4137ebebec3037c38021",
-      "build_id": "c5b5f4c0-43e0-4367-8b07-acbb89c6c987"
+      "previous_revision": "agentic-bi-frontend-00002-zhq",
+      "intermediate_release_revisions": [
+        "agentic-bi-frontend-00003-vd2"
+      ]
     }
   },
   "firestore": "agentic-bi-demo",
   "bigquery_dataset": "agentic_bi_demo",
   "cloud_sql_instance": "agentic-bi-demo-pg",
   "vector_dimensions": 768,
-  "verified_at": "2026-10-15T22:33:51.551940+05:30"
+  "verified_at": "2026-10-16T00:37:28.885890+05:30",
+  "release": "Shared skills library, motion/beUI animations, and Sonner feedback",
+  "runtime_configuration_preserved": true,
+  "analytical_seed_or_history_reset": false,
+  "verification": [
+    "evaluation/skills-deployed-31.json",
+    "evaluation/skills-deployed.json",
+    "evaluation/cloud-runtime.json",
+    "evaluation/skills-release-smoke.json",
+    "evaluation/skills-release-browser.json",
+    "evaluation/skills-release-final.json"
+  ]
 }

@@ -1,14 +1,14 @@
 # Validation and remaining deployment gates
 
-Validated on 2026-10-15. Results distinguish local integration from deployed acceptance.
+Latest release validation: 2026-10-16. Earlier sections retain dated baseline evidence. Results distinguish local integration from deployed acceptance.
 
 ## Automated checks
 
-The current local suite includes the skills-library release. Earlier deployed and 31-question model evaluations below remain dated baseline records; the new skills-specific real-model check uses synthetic fixture sources, as detailed in the skills section.
+The current suite includes the deployed skills library and animation release. Original evaluation files below remain dated baseline records; the latest hosted-source results are linked in the release section.
 
 | Check | Result | Scope |
 | --- | --- | --- |
-| Backend pytest | 112 passed | Existing controls plus skill CRUD/revisions, edit conflicts/quotas, import validation, selection/snapshots, repair reuse, forks, and repeated voice analysis |
+| Backend pytest | 120 passed | Existing controls plus skill CRUD/revisions, edit conflicts/quotas, import validation, selection/snapshots, repair reuse, forks, and repeated voice analysis |
 | Ruff | Passed | Backend application, tests, smoke scripts |
 | Frontend ESLint / TypeScript | Passed | Application and generated components |
 | Next.js production build | Passed | Standalone configuration, application routes, runtime configuration |
@@ -79,15 +79,15 @@ The deployed release passes seven HTTP checks covering both services, runtime AP
 
 ## Motion and notification verification
 
-The subsequent [motion and feedback update](motion-and-feedback.md) is verified locally and has not been released to Cloud Run. [Its evaluation record](evaluation/motion-and-feedback.json) separates real local retail results from isolated analysis-event and synthetic voice-transport fixtures. Frontend lint, TypeScript, production build, and the existing three voice tests pass; the production dependency audit reports zero vulnerabilities.
+The [motion and feedback update](motion-and-feedback.md) was verified locally and released to Cloud Run on 2026-10-16. [Its evaluation record](evaluation/motion-and-feedback.json) separates real local retail results from isolated analysis-event and synthetic voice-transport fixtures. Frontend lint, TypeScript, production build, and the existing three voice tests pass; the production dependency audit reports zero vulnerabilities.
 
 Browser checks cover beUI keyboard interaction, toast deduplication and dismissal, success/error/confirmed-cancellation lifecycles, voice permission recovery, microphone/session feedback, application/device reduced motion, reader-aware scrolling, and mobile layout. The real local total remains $118,951, and the monthly follow-up retains nine result rows. All recorded accessibility scans have zero reported violations; SVG/animated color-contrast checks include incomplete rules. Synthetic audio verifies static reduced-motion voice meters while connected; real microphone hardware remains a separate acceptance check.
 
 ## Skills library verification
 
-The skills library is implemented and verified locally; it has **not been deployed to Cloud Run or pushed to GitHub in this change**. See the [skills reference](skills.md), [local verification](evaluation/skills-library.json), and [real Gemini evidence](evaluation/skills-gemini.json).
+The skills library was verified locally, pushed to GitHub, and deployed to Cloud Run on 2026-10-16. The following paragraphs describe the original local checks; hosted evidence is recorded in the release section. See the [skills reference](skills.md), [local verification](evaluation/skills-library.json), and [real Gemini evidence](evaluation/skills-gemini.json).
 
-Backend pytest passes **112 tests**, including CRUD/revisions, concurrent edits, transactional quotas/capacity, import validation, metadata-only selection, failure/no-match behavior, manual priority, unavailable attachments, forks, immutable repair/replay snapshots, numerical fixtures, and repeated voice-tool analysis. Ruff passes for application, tests, and scripts. The existing Starlette/httpx deprecation warning remains.
+The original skills implementation passed **112 backend tests** (the release suite now passes 120), including CRUD/revisions, concurrent edits, transactional quotas/capacity, import validation, metadata-only selection, failure/no-match behavior, manual priority, unavailable attachments, forks, immutable repair/replay snapshots, numerical fixtures, and repeated voice-tool analysis. Ruff passes for application, tests, and scripts. The existing Starlette/httpx deprecation warning remains.
 
 Frontend lint, TypeScript, all three voice-preference tests, and production build pass. Production dependency audit reports zero vulnerabilities. Next.js compilation/runtime checks pass after correcting a reduced-motion hydration mismatch in the shared hook. Browser verification covers publication, editing, preview/export/import, stale-edit recovery without draft loss, discard/keep-editing, deletion with Undo offered, Recently deleted restoration, enabling/disabling, manual chat attachment, answer-version links, and unavailable-attachment removal.
 
@@ -95,4 +95,23 @@ One real Gemini analysis using `gemini-3.8-flash` against synthetic fixture sour
 
 Six axe scans (desktop library, dark editor, populated workspace, immutable version, mobile light library, mobile light editor) report **zero violations**. Modal scans retain an incomplete Radix focus-guard check; the chart has an incomplete contrast check. Keyboard focus remained in the editor. At 390px the library has no horizontal overflow, and OS reduced motion produces static entrance transforms. A Markdown preview test rendered zero unsafe nodes, executed no injected script, and made zero remote-image requests. Import/cancel did not publish the file.
 
-The named demo database was inspected read-only and confirmed as Standard edition / Native mode in `asia-southeast1`. No cloud resources, IAM grants, secrets, or indexes were created. Follow the [skills release steps](deployment-guide.md#skills-library-release) to deploy backend before frontend and verify Firestore history survives restart/scale. Real microphone/Gemini Live skill scenarios and screen-reader review remain acceptance gates; service-level voice tests do not prove microphone hardware behavior.
+The named demo database was inspected read-only and confirmed as Standard edition / Native mode in `asia-southeast1`. No cloud resources, IAM grants, secrets, or indexes were created. The release followed the [skills release steps](deployment-guide.md#skills-library-release), deployed backend before frontend, and verified Firestore history across a new backend revision. Real Gemini Live skill analysis is now covered by hosted checks; microphone hardware scenarios and manual screen-reader review remain separate acceptance gates.
+
+## Skills and animation cloud release — 2026-10-16
+
+The shared skills library, Framer Motion/beUI animations, and Sonner feedback are released to the existing two Cloud Run services. [deployment.json](deployment.json) records the serving revisions, images, source commits, builds, and rollback predecessors. Existing identities, secret references, runtime limits, origins, and resource configuration were preserved. No analytical data or shared history was reset, and no example skills were seeded.
+
+- **120 backend tests** and Ruff pass. Eight release regressions cover read-phase Firestore contention, bounded retry/error translation, and terminal event-stream draining for success/failure/cancellation.
+- Frontend ESLint, TypeScript, all three voice-preference tests, and the production build pass. A sandbox port-binding failure was resolved by clearing generated production caches and rebuilding outside the sandbox; the final Cloud Build also compiles the release.
+- [Hosted numerical evaluation](evaluation/skills-deployed-31.json): **31/31** pass against independent seed fixtures on backend `00007-z4d`. The first release run also passed and is preserved in `skills-deployed-31-initial.json`.
+- [Hosted skills checks](evaluation/skills-deployed.json): **22/22** pass, including real named-Firestore CRUD, stale-edit rejection, import/export, automatic/manual selection, follow-ups, forks, historical revision links, and skill/answer persistence from backend `00006-zwn` to `00007-z4d`. Gemini Live produced audio, transcripts, and a skill-guided result of **$118,951**, independently checked by value because its generated column alias differed from the prompt. The temporary verification playbook was soft-deleted; immutable versions remain readable.
+- [Runtime checks](evaluation/cloud-runtime.json): **16/16** pass on `00007-z4d`, including independent-client persistence and one conversation winner with a `conversation_busy` loser. The temporary private verification job was removed.
+- [Final smoke checks](evaluation/skills-release-smoke.json): **16/16** pass on backend `00008-854`; they cover health, frontend/backend configuration, CORS, hosted numerical results, follow-ups, forks, idempotency, query/join evidence, voice origin/token rejection, and real Gemini Live tool/audio/transcript events.
+- [Final HTTP/configuration checks](evaluation/skills-release-final.json): **11/11** routes pass on frontend `00004-7gh` and backend `00008-854`; both serve 100% traffic with their pre-release runtime contracts preserved.
+- [Deployed browser checks](evaluation/skills-release-browser.json) cover public visibility, historical skill links, beUI themes and reload persistence, toast deduplication/header offsets, hover motion, reduced motion, mobile layout, and axe accessibility.
+
+Cloud verification caught two timing issues. The initial runtime probe returned a raw Firestore read-phase abort for the losing writer; fresh bounded transaction retries now let it observe the winner. The subsequent smoke probe found a saved answer whose stream closed before delivering the final event; the stream now drains through the committed run sequence before closing. The failing observations remain in `cloud-runtime-initial-skills.json` and `skills-release-smoke-intermediate.json`, alongside passing rechecks and deterministic regressions. A mobile loading-state accessibility finding was corrected by giving the labeled loading container a status role; the final deployed loading DOM and both final mobile axe scans pass. All recorded stable-page axe scans in this release have zero violations.
+
+The final backend log inspection recorded a `WebSocketDisconnect(1006)` traceback during a late close after the invalid-token client disconnected. Token rejection and valid live audio/tool/transcript checks pass. Suppressing this already-disconnected close-path noise is a maintenance follow-up, not a failed analysis.
+
+The final event-stream change does not alter SQL generation or query controls. The 31-case and skills-specific reports retain their actual tested backend revisions; the final smoke report tests the subsequent stream fix. Live transport tests inject text and do not prove microphone hardware behavior. Manual screen-reader checks, real-microphone scenarios, and the competition rehearsal remain as listed above.

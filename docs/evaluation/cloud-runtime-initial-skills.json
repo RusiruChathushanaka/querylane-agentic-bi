@@ -1,0 +1,37 @@
+{
+  "checks": {
+    "demo_firestore_allowed": true,
+    "firestore_denied_(default)": true,
+    "firestore_denied_cards-acceptance": true,
+    "firestore_denied_commercial-staging": true,
+    "bq_allowed": true,
+    "bq_denied_enterprise_bi": true,
+    "bq_denied_enterprise_commercial": true,
+    "bq_denied_enterprise_commercial_staging": true,
+    "admin_secret_metadata_denied": true,
+    "postgres_reader_restricted": true,
+    "postgres_reader_select_only": true,
+    "transactional_single_winner": false,
+    "running_status_snapshot": true,
+    "adk_cross_client_persistence": true,
+    "stale_adk_revision_denied": true,
+    "completed_run_survives_new_client": true
+  },
+  "passed": false,
+  "existing_business_data_requested": false,
+  "concurrency_outcomes": [
+    {
+      "type": "tuple",
+      "code": null,
+      "message": "acquired"
+    },
+    {
+      "type": "Aborted",
+      "code": 409,
+      "message": "409 Aborted due to cross-transaction contention. This occurs when multiple transactions attempt to access the same data, requiring Firestore to abort at least one in order to enforce serializability."
+    }
+  ],
+  "backend_revision": "agentic-bi-backend-00006-zwn",
+  "source_commit": "661910a9517498e48627062fc9b4fc61464d5469",
+  "resolution": "Read-phase Firestore aborts now retry a fresh transaction within a bounded budget; see cloud-runtime.json for passing deployed check."
+}

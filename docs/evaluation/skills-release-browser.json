@@ -1,0 +1,111 @@
+{
+  "date": "2026-10-16",
+  "frontend": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app",
+  "scope": "Hosted UI checks on initial skills/animation frontend; final accessibility-only revision rechecked for loading semantics, mobile layout, browser errors, and axe findings.",
+  "checks": {
+    "public_skills_notice": true,
+    "manual_and_automatic_skill_version_links": true,
+    "historical_answer_versions_after_skill_deletion": true,
+    "beui_visible_accent_labels_update_theme": true,
+    "accent_and_theme_reload_persistence": true,
+    "rapid_preferences_toast_deduplication": true,
+    "sonner_desktop_top_offset_84px": true,
+    "sonner_mobile_top_offset_72px": true,
+    "motion_hover_translation_px": -3,
+    "os_reduced_motion_static_after_navigation": true,
+    "application_reduce_motion_static_without_os_reduction": true,
+    "mobile_width_px": 390,
+    "mobile_no_horizontal_overflow": true,
+    "console_errors": [],
+    "deleted_skill_revision_content_readable": true,
+    "final_loading_container_has_status_role": true
+  },
+  "accessibility": {
+    "skills": {
+      "axe_version": "4.12.1",
+      "counts": {
+        "inapplicable": 50,
+        "incomplete": 0,
+        "passes": 39,
+        "violations": 0
+      }
+    },
+    "settings-dark": {
+      "axe_version": "4.12.1",
+      "counts": {
+        "inapplicable": 50,
+        "incomplete": 0,
+        "passes": 39,
+        "violations": 0
+      }
+    },
+    "answer": {
+      "axe_version": "4.12.1",
+      "counts": {
+        "inapplicable": 45,
+        "incomplete": 0,
+        "passes": 44,
+        "violations": 0
+      }
+    },
+    "skills-mobile-stable": {
+      "axe_version": "4.12.1",
+      "counts": {
+        "inapplicable": 52,
+        "incomplete": 0,
+        "passes": 37,
+        "violations": 0
+      }
+    },
+    "settings-light-mobile": {
+      "axe_version": "4.12.1",
+      "counts": {
+        "inapplicable": 52,
+        "incomplete": 0,
+        "passes": 37,
+        "violations": 0
+      }
+    },
+    "deleted-skill-version": {
+      "axe_version": "4.12.1",
+      "counts": {
+        "inapplicable": 55,
+        "incomplete": 0,
+        "passes": 34,
+        "violations": 0
+      }
+    },
+    "final-skills-mobile": {
+      "axe_version": "4.12.1",
+      "counts": {
+        "inapplicable": 52,
+        "incomplete": 0,
+        "passes": 37,
+        "violations": 0
+      }
+    },
+    "final-skills-mobile-stable": {
+      "axe_version": "4.12.1",
+      "counts": {
+        "inapplicable": 52,
+        "incomplete": 0,
+        "passes": 37,
+        "violations": 0
+      }
+    }
+  },
+  "initial_loading_state_finding": {
+    "rule": "aria-prohibited-attr",
+    "issue": "Loading skills label on a generic div",
+    "resolution": "Added status role; verified on final deployed loading DOM, with zero axe violations."
+  },
+  "limitations": [
+    "Microphone hardware and manual screen-reader coverage are separate acceptance checks.",
+    "Automatic reduced motion was checked after navigation; application reduced motion was also checked without OS reduction."
+  ],
+  "verified_at": "2026-10-16T00:37:28.885890+05:30",
+  "frontend_revision": "agentic-bi-frontend-00004-7gh",
+  "source_commit": "db894fd0742ea4a136cc34e974e4f750c1774685",
+  "initial_frontend_revision": "agentic-bi-frontend-00003-vd2",
+  "passed": true
+}

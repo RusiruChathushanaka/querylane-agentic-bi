@@ -21,14 +21,16 @@
   "existing_business_data_requested": false,
   "concurrency_outcomes": [
     {
-      "type": "AppError",
-      "code": "conversation_busy",
-      "message": "Someone is already exploring this chat. Wait or fork it to continue."
-    },
-    {
       "type": "tuple",
       "code": null,
       "message": "acquired"
+    },
+    {
+      "type": "AppError",
+      "code": "conversation_busy",
+      "message": "Someone is already exploring this chat. Wait or fork it to continue."
     }
-  ]
+  ],
+  "backend_revision": "agentic-bi-backend-00007-z4d",
+  "source_commit": "54112064258ad3a9ca9523950db2482ce9c586f0"
 }

@@ -1,0 +1,100 @@
+{
+  "verified_at": "2026-10-15T18:53:53.646508+00:00",
+  "backend": "https://agentic-bi-backend-wekihucn7q-as.a.run.app",
+  "frontend": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app",
+  "checks": {
+    "cors_patch": true,
+    "cors_delete": true,
+    "create_enabled_public_skill": true,
+    "stale_revision_rejected": true,
+    "disable_enable": true,
+    "markdown_roundtrip": true,
+    "metadata_only_listing": true,
+    "delete_restore": true,
+    "original_revision_immutable": true,
+    "automatic_skill_and_numerical_answer": true,
+    "hosted_query_evidence": true,
+    "skill_survives_new_cloud_run_revision": true,
+    "history_and_artifact_survive_new_revision": true,
+    "completed_retry_does_not_rerun": true,
+    "manual_skill_followup_new_revision": true,
+    "prior_answer_keeps_prior_skill_version": true,
+    "fork_retains_skills_and_immutable_artifact": true,
+    "live_voice_tool_audio_transcript": true,
+    "voice_uses_attached_skill": true,
+    "voice_numbers": true,
+    "test_skill_soft_deleted_after_verification": true,
+    "deleted_used_revision_readable": true
+  },
+  "artifacts": [
+    {
+      "id": "d280f77123924c39b3f0d2176e33e52f",
+      "skills_used": [
+        {
+          "revision": 6,
+          "mode": "automatic",
+          "name": "Release verification: revenue evidence",
+          "id": "d9a429af746c48519868a40affd8178c",
+          "description": "Explain gross revenue with source evidence and reporting assumptions."
+        }
+      ],
+      "rows": [
+        {
+          "revenue": "118951"
+        }
+      ]
+    },
+    {
+      "id": "9cf7219f2d4841cb9bbc4100faa92bb6",
+      "skills_used": [
+        {
+          "description": "Explain gross revenue with source evidence and reporting assumptions.",
+          "name": "Release verification: revenue evidence",
+          "id": "d9a429af746c48519868a40affd8178c",
+          "revision": 7,
+          "mode": "manual"
+        }
+      ],
+      "rows": [
+        {
+          "revenue": "13410"
+        }
+      ]
+    }
+  ],
+  "voice": {
+    "event_types": [
+      "artifact",
+      "audio",
+      "ready",
+      "transcript",
+      "turn_complete"
+    ],
+    "errors": [],
+    "artifact_id": "d3e03eb0d961463f904e6ad3500b31d2",
+    "skills_used": [
+      {
+        "description": "Explain gross revenue with source evidence and reporting assumptions.",
+        "name": "Release verification: revenue evidence",
+        "id": "d9a429af746c48519868a40affd8178c",
+        "revision": 7,
+        "mode": "manual"
+      }
+    ],
+    "input": "Text through real Gemini Live transport; microphone hardware not tested",
+    "raw_audio_recorded": false,
+    "rows": [
+      {
+        "total_gross_revenue": "118951"
+      }
+    ],
+    "expected_total": "118951.00",
+    "numeric_comparison": "Independent total fixture; source-generated alias may differ from the text request."
+  },
+  "conversation_id": "0ccdaaeaca144e09bcaec83cae418150",
+  "voice_conversation_id": "9fa2831c90ad4b43925bc7e16d57037f",
+  "skill_id": "d9a429af746c48519868a40affd8178c",
+  "passed": true,
+  "backend_revision": "agentic-bi-backend-00007-z4d",
+  "source_commit": "54112064258ad3a9ca9523950db2482ce9c586f0"
+}

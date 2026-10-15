@@ -1,0 +1,41 @@
+{
+  "backend": "https://agentic-bi-backend-wekihucn7q-as.a.run.app",
+  "frontend": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app",
+  "checks": {
+    "live": true,
+    "ready": true,
+    "frontend_backend": true,
+    "runtime_config": true,
+    "cors": true,
+    "real_connectors": true,
+    "cross_source_numbers": true,
+    "hosted_query_evidence": true,
+    "join_diagnostics": true,
+    "followup_numbers": true,
+    "fork_context": true,
+    "bigquery_numbers": true,
+    "postgres_numbers": true,
+    "voice_origin_denied": true,
+    "voice_bad_token_denied": true,
+    "live_tool_audio_transcript": true
+  },
+  "voice": {
+    "event_types": [
+      "artifact",
+      "audio",
+      "ready",
+      "transcript",
+      "turn_complete"
+    ],
+    "errors": [],
+    "raw_audio_recorded": false,
+    "input": "text through live transport; microphone hardware not tested"
+  },
+  "conversation_id": "5a4b21616f7d48f5a27d7b1ebe1e097b",
+  "passed": true,
+  "backend_revision": "agentic-bi-backend-00008-854",
+  "frontend_revision": "agentic-bi-frontend-00003-vd2",
+  "source_commit": "db894fd0742ea4a136cc34e974e4f750c1774685",
+  "frontend_source_commit": "661910a9517498e48627062fc9b4fc61464d5469",
+  "note": "Frontend accessibility-only final revision receives separate post-rollout HTTP/browser checks."
+}

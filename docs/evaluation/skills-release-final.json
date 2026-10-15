@@ -1,0 +1,61 @@
+{
+  "verified_at": "2026-10-16T00:36:55.921989+05:30",
+  "backend_revision": "agentic-bi-backend-00008-854",
+  "frontend_revision": "agentic-bi-frontend-00004-7gh",
+  "source_commit": "db894fd0742ea4a136cc34e974e4f750c1774685",
+  "http_checks": [
+    {
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/",
+      "status": 200
+    },
+    {
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/settings",
+      "status": 200
+    },
+    {
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/skills",
+      "status": 200
+    },
+    {
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/api/config",
+      "status": 200
+    },
+    {
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/api/health",
+      "status": 200
+    },
+    {
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/skills/d9a429af746c48519868a40affd8178c/revisions/6",
+      "status": 200
+    },
+    {
+      "url": "https://agentic-bi-backend-wekihucn7q-as.a.run.app/health/live",
+      "status": 200
+    },
+    {
+      "url": "https://agentic-bi-backend-wekihucn7q-as.a.run.app/health/ready",
+      "status": 200
+    },
+    {
+      "url": "https://agentic-bi-backend-wekihucn7q-as.a.run.app/api/v1/connections",
+      "status": 200
+    },
+    {
+      "url": "https://agentic-bi-backend-wekihucn7q-as.a.run.app/api/v1/skills",
+      "status": 200
+    },
+    {
+      "url": "https://agentic-bi-backend-wekihucn7q-as.a.run.app/api/v1/skills/d9a429af746c48519868a40affd8178c/revisions/6",
+      "status": 200
+    }
+  ],
+  "passed": true,
+  "runtime_configuration_preserved": {
+    "backend": true,
+    "frontend": true
+  },
+  "logs": {
+    "backend": "Final revision recorded WebSocketDisconnect(1006) while the invalid-token smoke client closed after receiving its rejection. The close path catches RuntimeError but not this disconnect; the valid live scenario passed.",
+    "follow_up": "Normalize already-disconnected handshake closure logging in a later maintenance change."
+  }
+}

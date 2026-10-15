@@ -45,7 +45,7 @@ This preview uses an operator access token only in memory. Restart it when that 
 ## Included behavior
 
 - Shared conversations, follow-ups, immutable result references, forks, and share links.
-- Public [skills library](docs/skills.md): versioned Markdown playbooks, import/export, automatic discovery, chat attachments, and recoverable deletion. Available at `/skills` after deploying this release.
+- Public [skills library](docs/skills.md): versioned Markdown playbooks, import/export, automatic discovery, chat attachments, and recoverable deletion. Open the [deployed skills library](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/skills).
 - ADK planning and interpretation with Gemini; schema embeddings and Firestore vector retrieval.
 - Guarded BigQuery/PostgreSQL connectors, independent query evidence, bounded result pages.
 - Automatically inferred, type-checked cross-source relationships; duplicate-key and incomplete-input rejection.
@@ -83,6 +83,6 @@ See [local setup](docs/setup.md), [deployment guide](docs/deployment-guide.md), 
 
 Both services are deployed in `asia-southeast1` in project `project-e8b1593d-009a-4822-abf`, using dedicated service accounts. The named Firestore database, vector index, BigQuery dataset, Cloud SQL database, secrets, build bucket, and image repository are configured. The scoped IAM grants were explicitly approved and applied.
 
-The deployed smoke test verifies hosted numbers, follow-ups, forks, browser CORS, and Gemini Live audio/transcripts. A separate private runtime check verifies denial on existing data resources and real Firestore concurrency. See `docs/evaluation/deployed.json` and `docs/evaluation/cloud-runtime.json`. The final hosted numerical evaluation passes 31/31 cases, all using vector retrieval. Cloud SQL and Cloud Run are billable resources; instance/query/public usage limits are configured, while billing alerts require the billing administrator.
+The deployed smoke test verifies hosted numbers, follow-ups, forks, browser CORS, and Gemini Live audio/transcripts. A separate private runtime check verifies denial on existing data resources and real Firestore concurrency. See [the skills/animation release checks](docs/validation.md#skills-and-animation-cloud-release--2026-10-16), `docs/evaluation/skills-release-smoke.json`, and `docs/evaluation/cloud-runtime.json`. The final hosted numerical evaluation passes 31/31 cases, all using vector retrieval. Cloud SQL and Cloud Run are billable resources; instance/query/public usage limits are configured, while billing alerts require the billing administrator.
 
 The existing Firestore databases and `enterprise_*` BigQuery datasets are outside this application's scope.

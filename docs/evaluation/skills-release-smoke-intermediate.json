@@ -1,0 +1,11 @@
+{
+  "backend": "https://agentic-bi-backend-wekihucn7q-as.a.run.app",
+  "backend_revision": "agentic-bi-backend-00007-z4d",
+  "source_commit": "54112064258ad3a9ca9523950db2482ce9c586f0",
+  "passed": false,
+  "failed_assertion": "Live event stream closed before its complete event; the persisted answer and replay were complete.",
+  "run_id": "c966ce693dddf42ab2b17e5bda0cc78b",
+  "conversation_id": "a18af13b16c1416490a3b9157600e6b8",
+  "replay_includes_complete": true,
+  "resolution": "Drain the run sequence committed after the event-list query before terminating the stream. Three regression tests reproduce completion/failure/cancellation."
+}

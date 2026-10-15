@@ -1,0 +1,34 @@
+{
+  "checks": {
+    "demo_firestore_allowed": true,
+    "firestore_denied_(default)": true,
+    "firestore_denied_cards-acceptance": true,
+    "firestore_denied_commercial-staging": true,
+    "bq_allowed": true,
+    "bq_denied_enterprise_bi": true,
+    "bq_denied_enterprise_commercial": true,
+    "bq_denied_enterprise_commercial_staging": true,
+    "admin_secret_metadata_denied": true,
+    "postgres_reader_restricted": true,
+    "postgres_reader_select_only": true,
+    "transactional_single_winner": true,
+    "running_status_snapshot": true,
+    "adk_cross_client_persistence": true,
+    "stale_adk_revision_denied": true,
+    "completed_run_survives_new_client": true
+  },
+  "passed": true,
+  "existing_business_data_requested": false,
+  "concurrency_outcomes": [
+    {
+      "type": "AppError",
+      "code": "conversation_busy",
+      "message": "Someone is already exploring this chat. Wait or fork it to continue."
+    },
+    {
+      "type": "tuple",
+      "code": null,
+      "message": "acquired"
+    }
+  ]
+}

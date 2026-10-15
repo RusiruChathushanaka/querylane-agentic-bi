@@ -2,7 +2,7 @@
 
 This is the primary deployment runbook for Querylane. Read it before deploying, changing cloud configuration, provisioning resources, updating secrets, or troubleshooting a release. Use the existing scripts and keep this guide synchronized with changes to them.
 
-Last reviewed: **2026-10-15**. [deployment.json](deployment.json) is the last recorded deployment, not live cloud state. [validation.md](validation.md) explains what has been verified and which manual checks remain.
+Last reviewed: **2026-10-16**. [deployment.json](deployment.json) is the last recorded deployment, not live cloud state. [validation.md](validation.md) explains what has been verified and which manual checks remain.
 
 | Task | Start here |
 | --- | --- |
@@ -437,6 +437,8 @@ Use `agentic-bi-frontend` in the log filter for frontend failures. Follow the bu
 | Browser reports `Failed to fetch`, but server health works | Check `BACKEND_URL`, exact browser origin, backend CORS allowlist, HTTPS, and the configuration revision. Reload after fixing the origin. WebSocket origin checks are separate from HTTP CORS. |
 | Voice connects but fails to analyze | Check live model/location access, text-model access for tools, source readiness, guest/workspace quotas, and the socket's first-frame authentication. Test real hardware separately. |
 | Answer works but retrieval reports fallback | Inspect embedding model/dimensions, the named database's vector index readiness, and SDK call compatibility. A passing numeric answer may have used the recorded fallback. |
+| Raw Firestore transaction abort | Preserve the bounded fresh-transaction retries in `FirestoreStore.atomic`. The pinned SDK retries aborted commits but can expose aborts during callback reads. Exhausted contention returns `409 transaction_busy`; do not grant additional IAM or retry model/SQL work. |
+| Stream closes before its final event | Replay from the last event ID without starting another turn. Keep the terminal sequence-drain check: completion can commit between polling events and reading run status. |
 | `conversation_busy` or interrupted analysis | Wait, fork, or start a new explicit turn after worker loss. Reconnect replays persisted events; it must not rerun SQL. Keep per-object ADK revisions and atomic run/lease status reads intact. |
 | SQL seed fails while altering a reader role | Use the implemented Cloud SQL-compatible role setup; the managed administrator cannot change superuser-only attributes. Do not elevate the reader. |
 | Model unavailable or access denied | Recheck the configured identifier, location, API enablement, and prediction permission. Record the failure; do not silently switch models. |
