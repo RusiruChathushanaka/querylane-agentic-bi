@@ -64,3 +64,11 @@ The scoped resources are active and billable. Request/scan/instance limits are c
 ## Local review modes
 
 The standard local command uses deterministic planning and in-memory synthetic sources. `app.cloud_preview` uses real Gemini with the same synthetic sources and memory history, and is labeled accordingly in the interface. Its operator token remains in memory and expires; restart the preview to refresh it. This local-only entry point must not be used for Cloud Run deployment.
+
+## Browser settings verification
+
+The settings implementation was verified locally on 2026-10-15; it has not been deployed by this change. See [settings reference](settings.md) and [recorded results](evaluation/settings.json).
+
+Frontend lint, TypeScript, production build, and three voice preference regression tests pass. Browser checks cover reload persistence, cross-tab updates, system theme changes, explicit theme overrides, new versus existing conversation sources, composer shortcuts, numeric formatting, manual chart switching, unsupported-view fallback, reset preservation, malformed storage, and blocked-storage recovery. Mobile checks at 320px and 390px found no horizontal document overflow.
+
+Stable light and dark settings screens and populated table/chart views report zero axe violations. The settings scans have no incomplete rules; SVG chart contrast remains an automated-review limitation. Axis and legend text use semantic foreground colors, and primary text/background contrast exceeds 5.3:1 in every accent and mode combination. Voice preference tests use mocked microphone and audio APIs; they do not replace the real-hardware voice acceptance checks above.

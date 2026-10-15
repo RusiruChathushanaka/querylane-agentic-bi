@@ -48,6 +48,7 @@ This preview uses an operator access token only in memory. Restart it when that 
 - Automatically inferred, type-checked cross-source relationships; duplicate-key and incomplete-input rejection.
 - Bar, line, area, pie, scatter, table, and KPI views with accessible table alternatives.
 - Gemini Live voice bridge, PCM microphone streaming, transcripts, interruption, mute, and resumption.
+- Browser-local [settings](docs/settings.md): light/dark/system themes, accent colors, density, chart defaults, chat shortcuts, and voice preferences.
 - Anonymous guest tokens, shared usage counters, fenced conversation leases, and event replay.
 - CLI-only seed/reset commands and isolated cloud build/deployment scripts.
 
@@ -67,6 +68,7 @@ uv run python -m scripts.smoke_voice
 ```bash
 cd Frontend
 npm run lint
+npm test
 npx tsc --noEmit
 npm run build
 ```

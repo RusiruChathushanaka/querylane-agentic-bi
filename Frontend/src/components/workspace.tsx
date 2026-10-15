@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   ArrowDown,
@@ -25,6 +26,7 @@ import {
   Plus,
   Radio,
   Search,
+  Settings2,
   ShieldCheck,
   Square,
   Target,
@@ -77,6 +79,7 @@ import type {
   StreamEvent,
 } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { usePreferences } from "@/hooks/use-preferences";
 
 const ResultCard = dynamic(() => import("./result-card"), {
   loading: () => <Skeleton className="result-loading" />,
@@ -140,13 +143,15 @@ function Mark({ small = false }: { small?: boolean }) {
 }
 
 export default function Workspace() {
+  const { preferences } = usePreferences();
   const [connections, setConnections] = useState<Connection[]>([]);
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [conversation, setConversation] = useState<Conversation | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [artifacts, setArtifacts] = useState<Record<string, Artifact>>({});
   const [question, setQuestion] = useState("");
-  const [source, setSource] = useState("all");
+  const [sourceOverride, setSource] = useState<string | null>(null);
+  const source = sourceOverride ?? preferences.defaultSource;
   const [runId, setRunId] = useState<string | null>(null);
   const [progress, setProgress] = useState("");
   const [stage, setStage] = useState("");
@@ -337,15 +342,19 @@ export default function Workspace() {
   }, [runId, voiceState, loadMessages, refreshList]);
 
   useEffect(() => {
-    if (messages.length || progress || draftArtifact)
+    if (
+      preferences.autoScroll &&
+      (messages.length || progress || draftArtifact)
+    )
       bottom.current?.scrollIntoView({ behavior: "instant", block: "end" });
-  }, [messages.length, progress, draftArtifact]);
+  }, [messages.length, progress, draftArtifact, preferences.autoScroll]);
 
   function newConversation() {
     controller.current?.abort();
     voice.current?.stop();
     activeConversation.current = null;
     setConversation(null);
+    setSource(null);
     setMessages([]);
     setQuestion("");
     setError("");
@@ -437,36 +446,44 @@ export default function Workspace() {
     setVoiceText("");
     try {
       const chat = await ensureConversation();
-      const session = new LiveVoice((event) => {
-        if (event.type === "ready") setVoiceState("live");
-        if (event.type === "transcript")
-          setVoiceText((previous) =>
-            (previous + String(event.text)).slice(-1000),
-          );
-        if (event.type === "artifact") {
-          const data = event.data as { id: string };
-          void loadArtifact(data.id);
-          setDraftArtifact(data.id);
-        }
-        if (event.type === "turn_complete") {
-          void loadMessages(chat.id).then(() => setDraftArtifact(null));
-          void refreshList();
-        }
-        if (
-          ["error", "session_limit", "disconnected", "reconnect"].includes(
-            event.type,
-          )
-        ) {
-          setVoiceState("disconnected");
-          setError(String(event.message));
-          session.stop();
-          void loadMessages(chat.id);
-        }
-        if (event.type === "stopped")
-          setVoiceState((current) =>
-            current === "disconnected" ? current : "off",
-          );
-      }, setLevel);
+      const session = new LiveVoice(
+        (event) => {
+          if (event.type === "ready") setVoiceState("live");
+          if (event.type === "transcript")
+            setVoiceText((previous) =>
+              (previous + String(event.text)).slice(-1000),
+            );
+          if (event.type === "artifact") {
+            const data = event.data as { id: string };
+            void loadArtifact(data.id);
+            setDraftArtifact(data.id);
+          }
+          if (event.type === "turn_complete") {
+            void loadMessages(chat.id).then(() => setDraftArtifact(null));
+            void refreshList();
+          }
+          if (
+            ["error", "session_limit", "disconnected", "reconnect"].includes(
+              event.type,
+            )
+          ) {
+            setVoiceState("disconnected");
+            setError(String(event.message));
+            session.stop();
+            void loadMessages(chat.id);
+          }
+          if (event.type === "stopped")
+            setVoiceState((current) =>
+              current === "disconnected" ? current : "off",
+            );
+        },
+        setLevel,
+        {
+          spokenResponses: preferences.spokenResponses,
+          startMuted: preferences.startMuted,
+        },
+      );
+      setMuted(preferences.startMuted);
       voice.current = session;
       await session.start(chat.id);
     } catch (error) {
@@ -638,6 +655,12 @@ export default function Workspace() {
       </nav>
       <div className="sidebar-footer">
         <Separator />
+        <Button asChild variant="ghost" className="workspace-settings-link">
+          <Link href="/settings">
+            <Settings2 data-icon="inline-start" />
+            Settings
+          </Link>
+        </Button>
         <div>
           <span className="public-avatar">
             <Globe2 aria-hidden />
@@ -686,6 +709,11 @@ export default function Workspace() {
             <strong>{conversation ? "Exploration" : "Overview"}</strong>
           </div>
           <div className="topbar-actions">
+            <Button asChild variant="ghost" size="icon">
+              <Link href="/settings" aria-label="Open settings">
+                <Settings2 />
+              </Link>
+            </Button>
             <Badge variant="secondary">
               <Globe2 data-icon="inline-start" />
               Public
@@ -909,22 +937,23 @@ export default function Workspace() {
                     {message.artifact_id && artifacts[message.artifact_id] && (
                       <ResultCard artifact={artifacts[message.artifact_id]} />
                     )}
-                    {Boolean(message.followups?.length) && (
-                      <div className="followups">
-                        {message.followups?.map((followup) => (
-                          <Button
-                            key={followup}
-                            variant="outline"
-                            size="sm"
-                            disabled={busy}
-                            onClick={() => void ask(followup)}
-                          >
-                            {followup}
-                            <ArrowRight data-icon="inline-end" />
-                          </Button>
-                        ))}
-                      </div>
-                    )}
+                    {preferences.followups &&
+                      Boolean(message.followups?.length) && (
+                        <div className="followups">
+                          {message.followups?.map((followup) => (
+                            <Button
+                              key={followup}
+                              variant="outline"
+                              size="sm"
+                              disabled={busy}
+                              onClick={() => void ask(followup)}
+                            >
+                              {followup}
+                              <ArrowRight data-icon="inline-end" />
+                            </Button>
+                          ))}
+                        </div>
+                      )}
                   </article>
                 ))}
                 {draftArtifact &&
@@ -1046,7 +1075,9 @@ export default function Workspace() {
                   onKeyDown={(event) => {
                     if (
                       event.key === "Enter" &&
-                      !event.shiftKey &&
+                      (event.ctrlKey ||
+                        event.metaKey ||
+                        (preferences.enterToSend && !event.shiftKey)) &&
                       !event.nativeEvent.isComposing
                     ) {
                       event.preventDefault();
@@ -1120,7 +1151,9 @@ export default function Workspace() {
             </span>
             <span>
               <Command aria-hidden />
-              Enter to send · Shift + Enter for a new line
+              {preferences.enterToSend
+                ? "Enter to send · Shift + Enter for a new line"
+                : "Ctrl / ⌘ + Enter to send · Enter for a new line"}
             </span>
           </div>
         </footer>

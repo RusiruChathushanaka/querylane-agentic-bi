@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { DM_Sans, IBM_Plex_Mono, Manrope } from "next/font/google";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { Toaster } from "@/components/ui/sonner";
+import { AppProviders } from "@/components/app-providers";
+import { appearanceScript } from "@/lib/preferences";
 import "./globals.css";
 const body = DM_Sans({ variable: "--font-dm-sans", subsets: ["latin"] });
 const mono = IBM_Plex_Mono({
@@ -23,11 +23,15 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${body.variable} ${mono.variable} ${heading.variable}`}
     >
+      <head>
+        <meta name="color-scheme" content="light dark" />
+        <script dangerouslySetInnerHTML={{ __html: appearanceScript }} />
+      </head>
       <body>
-        <TooltipProvider>{children}</TooltipProvider>
-        <Toaster position="bottom-right" />
+        <AppProviders>{children}</AppProviders>
       </body>
     </html>
   );

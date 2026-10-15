@@ -17,7 +17,10 @@ export class LiveVoice {
   constructor(
     private onEvent: (event: VoiceEvent) => void,
     private onLevel: (level: number) => void,
-  ) {}
+    private options: { spokenResponses?: boolean; startMuted?: boolean } = {},
+  ) {
+    this.muted = options.startMuted ?? false;
+  }
 
   async start(conversationId: string) {
     if (!navigator.mediaDevices?.getUserMedia || !window.AudioWorkletNode)
@@ -38,6 +41,9 @@ export class LiveVoice {
       this.microphone.getTracks().forEach((track) => track.stop());
       return;
     }
+    this.microphone.getAudioTracks().forEach((track) => {
+      track.enabled = !this.muted;
+    });
     const base = await backendUrl();
     const token = await guestToken();
     if (this.closed) return;
@@ -118,7 +124,8 @@ export class LiveVoice {
   }
 
   private play(encoded: string) {
-    if (!this.playback || this.closed) return;
+    if (!this.playback || this.closed || this.options.spokenResponses === false)
+      return;
     const bytes = Uint8Array.from(atob(encoded), (char) => char.charCodeAt(0));
     const view = new DataView(bytes.buffer);
     const audio = this.playback.createBuffer(

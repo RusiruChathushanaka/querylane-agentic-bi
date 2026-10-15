@@ -67,6 +67,7 @@ import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { api } from "@/lib/api";
 import type { Artifact } from "@/lib/types";
+import { usePreferences } from "@/hooks/use-preferences";
 
 const colors = [
   "var(--chart-1)",
@@ -77,21 +78,24 @@ const colors = [
 ];
 const numericType = /int|float|double|decimal|numeric|number|real/i;
 const human = (value: string) => value.replaceAll("_", " ");
-function display(value: unknown, format = "number") {
+function display(value: unknown, format = "number", decimals = 2) {
   if (value === null || value === undefined) return "—";
   const number = Number(value);
   if (!Number.isFinite(number) || value === "" || typeof value === "boolean")
     return String(value);
   return (
     new Intl.NumberFormat("en-US", {
-      maximumFractionDigits: 2,
+      maximumFractionDigits: decimals,
+      minimumFractionDigits: 0,
       ...(format === "currency" ? { style: "currency", currency: "USD" } : {}),
     }).format(number) + (format === "percent" ? "%" : "")
   );
 }
 
 export default function ResultCard({ artifact }: { artifact: Artifact }) {
-  const [view, setView] = useState(artifact.visualization.type);
+  const { preferences } = usePreferences();
+  const decimals = Number(preferences.decimals);
+  const [view, setView] = useState<string | null>(null);
   const [page, setPage] = useState(0);
   const [tableRows, setTableRows] = useState(artifact.rows.slice(0, 250));
   const [tableError, setTableError] = useState("");
@@ -120,7 +124,16 @@ export default function ResultCard({ artifact }: { artifact: Artifact }) {
     ...(pieable && artifact.row_count > 1 ? ["pie"] : []),
     ...(numeric.length >= 2 && artifact.row_count > 1 ? ["scatter"] : []),
   ];
-  const selected = options.includes(view) ? view : "table";
+  const preferred =
+    view ??
+    (preferences.visualization === "auto"
+      ? artifact.visualization.type
+      : preferences.visualization);
+  const selected = options.includes(preferred)
+    ? preferred
+    : options.includes(artifact.visualization.type)
+      ? artifact.visualization.type
+      : "table";
   const data = artifact.rows
     .slice(0, 60)
     .map((row) =>
@@ -188,7 +201,15 @@ export default function ResultCard({ artifact }: { artifact: Artifact }) {
         tickFormatter={ticks}
         width={56}
       />
-      <ChartTooltip content={<ChartTooltipContent />} />
+      <ChartTooltip
+        content={
+          <ChartTooltipContent
+            valueFormatter={(value) =>
+              display(value, artifact.visualization.format, decimals)
+            }
+          />
+        }
+      />
       <Legend />
     </>
   );
@@ -264,6 +285,7 @@ export default function ResultCard({ artifact }: { artifact: Artifact }) {
                     ys.includes(column)
                       ? artifact.visualization.format
                       : "number",
+                    decimals,
                   )}
                 </strong>
               </div>
@@ -272,7 +294,13 @@ export default function ResultCard({ artifact }: { artifact: Artifact }) {
         )}
         {selected === "table" && (
           <>
-            <div className="result-table" aria-busy={loading}>
+            <div
+              className="result-table"
+              aria-busy={loading}
+              tabIndex={0}
+              role="region"
+              aria-label={`${artifact.title} data table`}
+            >
               <Table>
                 <TableCaption>
                   {artifact.title}. Page {page + 1} of{" "}
@@ -298,6 +326,7 @@ export default function ResultCard({ artifact }: { artifact: Artifact }) {
                                 ys.includes(column.name)
                                   ? artifact.visualization.format
                                   : "number",
+                                decimals,
                               )
                             : String(row[column.name] ?? "—")}
                         </TableCell>
@@ -404,7 +433,19 @@ export default function ResultCard({ artifact }: { artifact: Artifact }) {
                       <Cell key={index} fill={colors[index % colors.length]} />
                     ))}
                   </Pie>
-                  <ChartTooltip content={<ChartTooltipContent />} />
+                  <ChartTooltip
+                    content={
+                      <ChartTooltipContent
+                        valueFormatter={(value) =>
+                          display(
+                            value,
+                            artifact.visualization.format,
+                            decimals,
+                          )
+                        }
+                      />
+                    }
+                  />
                   <Legend />
                 </PieChart>
               ) : (
@@ -422,7 +463,15 @@ export default function ResultCard({ artifact }: { artifact: Artifact }) {
                     name={human(numeric[1])}
                     tickFormatter={ticks}
                   />
-                  <ChartTooltip content={<ChartTooltipContent />} />
+                  <ChartTooltip
+                    content={
+                      <ChartTooltipContent
+                        valueFormatter={(value) =>
+                          display(value, "number", decimals)
+                        }
+                      />
+                    }
+                  />
                   <Scatter
                     data={data}
                     fill={colors[0]}

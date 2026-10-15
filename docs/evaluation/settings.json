@@ -1,0 +1,93 @@
+{
+  "date": "2026-10-15",
+  "scope": "Local settings implementation; deterministic fixture backend; not a Cloud Run deployment",
+  "checks": {
+    "eslint": "passed",
+    "typescript": "passed",
+    "production_build": "passed",
+    "voice_preference_tests": {
+      "passed": 3,
+      "model_calls": 0
+    }
+  },
+  "browser_scenarios_passed": [
+    "Preference controls update the workspace and persist after reload",
+    "Cross-tab theme, accent, and follow-up updates",
+    "Existing conversation source survives preference changes",
+    "Enter inserts newline when Enter-to-send is disabled; Ctrl+Enter submits",
+    "Preferred table presentation and zero-decimal numeric formatting",
+    "Manual visualization selection overrides browser default",
+    "Unsupported bar preference falls back to KPI for scalar revenue",
+    "Reset restores defaults without deleting conversation or guest session",
+    "Blocked preference storage uses memory with a visible notice",
+    "Invalid stored fields fall back individually to defaults",
+    "System mode responds to OS theme changes; explicit mode stays pinned",
+    "No horizontal document overflow at 320px and 390px"
+  ],
+  "accent_contrast_ratios": {
+    "cobalt": {
+      "light": 5.34,
+      "dark": 8.53
+    },
+    "teal": {
+      "light": 5.54,
+      "dark": 10.61
+    },
+    "violet": {
+      "light": 5.77,
+      "dark": 9.05
+    },
+    "rose": {
+      "light": 5.44,
+      "dark": 9.53
+    }
+  },
+  "accessibility": {
+    "settings_dark": {
+      "counts": {
+        "inapplicable": 53,
+        "incomplete": 0,
+        "passes": 36,
+        "violations": 0
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    "settings_light": {
+      "counts": {
+        "inapplicable": 53,
+        "incomplete": 0,
+        "passes": 36,
+        "violations": 0
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    "workspace_table": {
+      "counts": {
+        "inapplicable": 42,
+        "incomplete": 0,
+        "passes": 47,
+        "violations": 0
+      },
+      "violations": [],
+      "incomplete": []
+    },
+    "workspace_chart": {
+      "counts": {
+        "inapplicable": 46,
+        "incomplete": 1,
+        "passes": 43,
+        "violations": 0
+      },
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ]
+    }
+  },
+  "limits": [
+    "Voice preference tests mock microphone/audio/transport; real microphone hardware was not exercised in this settings change.",
+    "Automated chart contrast checks are incomplete for SVG elements; chart axes and legends use semantic text colors."
+  ]
+}
