@@ -4,8 +4,12 @@ from __future__ import annotations
 
 import asyncio
 import copy
+import random
+import time
 from collections.abc import Callable
 from typing import Any
+
+from app.errors import AppError
 
 Key = tuple[str, str]
 Mutation = Callable[[dict[Key, dict | None]], tuple[dict[Key, dict | None], Any]]
@@ -104,6 +108,7 @@ class FirestoreStore:
         )
 
     async def atomic(self, keys: list[Key], mutate: Mutation):
+        from google.api_core.exceptions import Aborted
         from google.cloud import firestore
 
         def execute():
@@ -123,7 +128,26 @@ class FirestoreStore:
                         transaction.set(ref, value)
                 return result
 
-            return operation(self.client.transaction())
+            # The SDK retries aborted commits, but an Aborted raised by a read
+            # in the callback escapes that retry loop. Re-read in a fresh
+            # transaction so a competing request observes the committed winner.
+            for attempt in range(3):
+                try:
+                    return operation(self.client.transaction())
+                except Aborted as exc:
+                    if attempt == 2:
+                        raise AppError(
+                            "The workspace is busy. Retry this action shortly.", 409, "transaction_busy"
+                        ) from exc
+                    time.sleep(random.uniform(0.025, 0.075) * 2**attempt)
+                except ValueError as exc:
+                    # Commit retries are already bounded by the SDK. Do not
+                    # multiply that budget or hide unrelated callback errors.
+                    if not isinstance(exc.__cause__, Aborted):
+                        raise
+                    raise AppError(
+                        "The workspace is busy. Retry this action shortly.", 409, "transaction_busy"
+                    ) from exc
 
         return await asyncio.to_thread(execute)
 
