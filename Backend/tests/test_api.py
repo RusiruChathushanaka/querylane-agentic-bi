@@ -125,3 +125,32 @@ def test_voice_unknown_conversation(client):
 def test_production_cannot_start_with_fixture_backends():
     with pytest.raises(ValueError, match="Production requires"):
         create_app(Settings(environment="production"))
+
+
+@pytest.mark.parametrize("terminal", ["complete", "failed", "cancelled"])
+def test_stream_drains_events_committed_between_poll_and_terminal_read(client, monkeypatch, terminal):
+    """A worker may finish after the event query but before the status read."""
+    repo = client.app.state.services.repo
+    calls = 0
+    listed = 0
+    final_type = "complete" if terminal == "complete" else "error"
+
+    async def status(run_id):
+        nonlocal calls
+        calls += 1
+        return {"id": run_id, "status": "running" if calls == 1 else terminal, "sequence": 2}
+
+    async def events(collection):
+        nonlocal listed
+        listed += 1
+        prefix = [{"id": 1, "type": "progress", "data": {"stage": "query"}}]
+        return prefix if listed == 1 else prefix + [{"id": 2, "type": final_type, "data": {}}]
+
+    monkeypatch.setattr(repo, "run", status)
+    monkeypatch.setattr(repo.store, "list", events)
+    response = client.get("/api/v1/runs/finishing/events")
+    assert f"event: {final_type}" in response.text
+    assert response.text.count("id: 1\n") == 1
+    assert response.text.count("id: 2\n") == 1
+    replay = client.get("/api/v1/runs/finishing/events?after=2")
+    assert replay.text == ""

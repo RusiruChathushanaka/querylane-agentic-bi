@@ -273,6 +273,11 @@ def create_app(settings: Settings | None = None, store_override=None, credential
                         yield f"id: {cursor}\nevent: {event['type']}\ndata: {json.dumps(event['data'])}\n\n"
                 run = await repo.run(run_id)
                 if run["status"] != "running":
+                    # The worker can commit its final events after our list query
+                    # and finish before this status read. Drain that committed
+                    # sequence before closing, including on reconnect/replay.
+                    if cursor < run["sequence"]:
+                        continue
                     if run["status"] == "interrupted":
                         yield f"event: error\ndata: {json.dumps({'code': 'interrupted', 'message': run['error']})}\n\n"
                     break

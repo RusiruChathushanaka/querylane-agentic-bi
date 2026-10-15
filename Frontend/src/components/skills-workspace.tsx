@@ -474,7 +474,7 @@ export function SkillsWorkspace() {
             <Button onClick={() => void refresh()}>Try again</Button>
           </div>
         ) : loading ? (
-          <div className="skills-grid" aria-label="Loading skills">
+          <div className="skills-grid" role="status" aria-label="Loading skills">
             {[0, 1, 2].map((key) => (
               <Skeleton key={key} className="h-64 rounded-xl" />
             ))}
