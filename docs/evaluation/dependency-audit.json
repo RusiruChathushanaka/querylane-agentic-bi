@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-15",
+  "production": {
+    "info": 0,
+    "low": 0,
+    "moderate": 0,
+    "high": 0,
+    "critical": 0,
+    "total": 0
+  },
+  "including_development": {
+    "info": 0,
+    "low": 0,
+    "moderate": 0,
+    "high": 9,
+    "critical": 0,
+    "total": 9
+  },
+  "unresolved_development_advisory": "braces; no patched registry version available at verification"
+}

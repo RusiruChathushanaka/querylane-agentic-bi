@@ -1,0 +1,103 @@
+{
+  "axeVersion": "4.12.1",
+  "counts": {
+    "inapplicable": 45,
+    "incomplete": 1,
+    "passes": 44,
+    "violations": 0
+  },
+  "violations": [],
+  "incomplete": [
+    {
+      "help": "Elements must meet minimum color contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=axeAPI",
+      "id": "color-contrast",
+      "impact": "serious",
+      "nodeCount": 11,
+      "nodes": [
+        {
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node",
+          "html": "<span class=\"recharts-legend-item-text\" style=\"color: var(--chart-1);\">actual revenue</span>",
+          "target": [
+            "div[data-chart=\"chart-_r_p_\"] > .recharts-responsive-container > div > .recharts-wrapper[width=\"776\"][height=\"270\"] > .recharts-legend-wrapper > .recharts-default-legend > .legend-item-0.recharts-legend-item > .recharts-legend-item-text"
+          ]
+        },
+        {
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node",
+          "html": "<span class=\"recharts-legend-item-text\" style=\"color: var(--chart-2);\">target revenue</span>",
+          "target": [
+            "div[data-chart=\"chart-_r_p_\"] > .recharts-responsive-container > div > .recharts-wrapper[width=\"776\"][height=\"270\"] > .recharts-legend-wrapper > .recharts-default-legend > .legend-item-1.recharts-legend-item > .recharts-legend-item-text"
+          ]
+        },
+        {
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node",
+          "html": "<tspan x=\"145\" dy=\"0.71em\">North</tspan>",
+          "target": [
+            "div[data-chart=\"chart-_r_p_\"] > .recharts-responsive-container > div > .recharts-wrapper[width=\"776\"][height=\"270\"] > svg[role=\"application\"][viewBox=\"0 0 776 270\"][width=\"776\"] > .recharts-zIndex-layer_2000 > .recharts-xAxis-tick-labels.recharts-cartesian-axis-tick-labels > .recharts-cartesian-axis-tick-label.recharts-layer:nth-child(1) > text[x=\"145\"][height=\"30\"][orientation=\"bottom\"] > tspan[x=\"145\"][dy=\"0.71em\"]"
+          ]
+        },
+        {
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node",
+          "html": "<tspan x=\"323\" dy=\"0.71em\">South</tspan>",
+          "target": [
+            "div[data-chart=\"chart-_r_p_\"] > .recharts-responsive-container > div > .recharts-wrapper[width=\"776\"][height=\"270\"] > svg[role=\"application\"][viewBox=\"0 0 776 270\"][width=\"776\"] > .recharts-zIndex-layer_2000 > .recharts-xAxis-tick-labels.recharts-cartesian-axis-tick-labels > .recharts-cartesian-axis-tick-label.recharts-layer:nth-child(2) > text[x=\"323\"][height=\"30\"][orientation=\"bottom\"] > tspan[x=\"323\"][dy=\"0.71em\"]"
+          ]
+        },
+        {
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node",
+          "html": "<tspan x=\"501\" dy=\"0.71em\">East</tspan>",
+          "target": [
+            "div[data-chart=\"chart-_r_p_\"] > .recharts-responsive-container > div > .recharts-wrapper[width=\"776\"][height=\"270\"] > svg[role=\"application\"][viewBox=\"0 0 776 270\"][width=\"776\"] > .recharts-zIndex-layer_2000 > .recharts-xAxis-tick-labels.recharts-cartesian-axis-tick-labels > .recharts-cartesian-axis-tick-label.recharts-layer:nth-child(3) > text[x=\"501\"][height=\"30\"][orientation=\"bottom\"] > tspan[x=\"501\"][dy=\"0.71em\"]"
+          ]
+        },
+        {
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node",
+          "html": "<tspan x=\"679\" dy=\"0.71em\">West</tspan>",
+          "target": [
+            "div[data-chart=\"chart-_r_p_\"] > .recharts-responsive-container > div > .recharts-wrapper[width=\"776\"][height=\"270\"] > svg[role=\"application\"][viewBox=\"0 0 776 270\"][width=\"776\"] > .recharts-zIndex-layer_2000 > .recharts-xAxis-tick-labels.recharts-cartesian-axis-tick-labels > .recharts-cartesian-axis-tick-label.recharts-layer:nth-child(4) > text[x=\"679\"][height=\"30\"][orientation=\"bottom\"] > tspan[x=\"679\"][dy=\"0.71em\"]"
+          ]
+        },
+        {
+          "failureSummary": "Fix any of the following:\n  Element content is too short to determine if it is actual text content",
+          "html": "<tspan x=\"48\" dy=\"0.355em\">0</tspan>",
+          "target": [
+            "div[data-chart=\"chart-_r_p_\"] > .recharts-responsive-container > div > .recharts-wrapper[width=\"776\"][height=\"270\"] > svg[role=\"application\"][viewBox=\"0 0 776 270\"][width=\"776\"] > .recharts-zIndex-layer_2000 > .recharts-yAxis-tick-labels.recharts-cartesian-axis-tick-labels > .recharts-cartesian-axis-tick-label.recharts-layer:nth-child(1) > text[y=\"220\"][width=\"56\"][orientation=\"left\"] > tspan[dy=\"0.355em\"]"
+          ]
+        },
+        {
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node",
+          "html": "<tspan x=\"48\" dy=\"0.355em\">1.5K</tspan>",
+          "target": [
+            "div[data-chart=\"chart-_r_p_\"] > .recharts-responsive-container > div > .recharts-wrapper[width=\"776\"][height=\"270\"] > svg[role=\"application\"][viewBox=\"0 0 776 270\"][width=\"776\"] > .recharts-zIndex-layer_2000 > .recharts-yAxis-tick-labels.recharts-cartesian-axis-tick-labels > .recharts-cartesian-axis-tick-label.recharts-layer:nth-child(2) > text[y=\"168\"][width=\"56\"][orientation=\"left\"] > tspan[dy=\"0.355em\"]"
+          ]
+        },
+        {
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node",
+          "html": "<tspan x=\"48\" dy=\"0.355em\">3K</tspan>",
+          "target": [
+            "div[data-chart=\"chart-_r_p_\"] > .recharts-responsive-container > div > .recharts-wrapper[width=\"776\"][height=\"270\"] > svg[role=\"application\"][viewBox=\"0 0 776 270\"][width=\"776\"] > .recharts-zIndex-layer_2000 > .recharts-yAxis-tick-labels.recharts-cartesian-axis-tick-labels > .recharts-cartesian-axis-tick-label.recharts-layer:nth-child(3) > text[y=\"116\"][width=\"56\"][orientation=\"left\"] > tspan[dy=\"0.355em\"]"
+          ]
+        },
+        {
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node",
+          "html": "<tspan x=\"48\" dy=\"0.355em\">4.5K</tspan>",
+          "target": [
+            "div[data-chart=\"chart-_r_p_\"] > .recharts-responsive-container > div > .recharts-wrapper[width=\"776\"][height=\"270\"] > svg[role=\"application\"][viewBox=\"0 0 776 270\"][width=\"776\"] > .recharts-zIndex-layer_2000 > .recharts-yAxis-tick-labels.recharts-cartesian-axis-tick-labels > .recharts-cartesian-axis-tick-label.recharts-layer:nth-child(4) > text[y=\"64\"][width=\"56\"][orientation=\"left\"] > tspan[dy=\"0.355em\"]"
+          ]
+        }
+      ],
+      "tags": [
+        "cat.color",
+        "wcag2aa",
+        "wcag143",
+        "TTv5",
+        "TT13.c",
+        "EN-301-549",
+        "EN-9.1.4.3",
+        "ACT",
+        "RGAAv4",
+        "RGAA-3.2.1"
+      ]
+    }
+  ]
+}

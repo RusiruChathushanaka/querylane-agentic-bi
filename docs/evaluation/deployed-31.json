@@ -1,0 +1,287 @@
+{
+  "backend": "https://agentic-bi-backend-wekihucn7q-as.a.run.app",
+  "data": "hosted BigQuery and PostgreSQL; independent Python seed references",
+  "cases": [
+    {
+      "id": "revenue-2026-01",
+      "question": "What is total revenue in January 2026? Alias the result revenue.",
+      "passed": true,
+      "conversation_id": "57fbd4cf5d9e43dfbc6e5b844b4f2f01",
+      "artifact_id": "24899bbcb4414c33a28c1b73cc0e8cc5",
+      "retrieval": "gemini-embedding + full-schema",
+      "elapsed_seconds": 11.9
+    },
+    {
+      "id": "revenue-2026-02",
+      "question": "What is total revenue in February 2026? Alias the result revenue.",
+      "passed": true,
+      "conversation_id": "53f054371f104dadad5d9ef7e9604895",
+      "artifact_id": "22004e694b274573882e696da353481e",
+      "retrieval": "gemini-embedding + full-schema",
+      "elapsed_seconds": 13.06
+    },
+    {
+      "id": "revenue-2026-03",
+      "question": "What is total revenue in March 2026? Alias the result revenue.",
+      "passed": true,
+      "conversation_id": "a76f3084e8734e31b6358b9aeecc890a",
+      "artifact_id": "28962c1062984699826474d12d983b7e",
+      "retrieval": "gemini-embedding + full-schema",
+      "elapsed_seconds": 23.39
+    },
+    {
+      "id": "revenue-2026-04",
+      "question": "What is total revenue in April 2026? Alias the result revenue.",
+      "passed": true,
+      "conversation_id": "54f81f111d5a4602a7bc34ffcbb36ccf",
+      "artifact_id": "60bc15034e0e405b8c440c27667d319c",
+      "retrieval": "gemini-embedding + full-schema",
+      "elapsed_seconds": 10.03
+    },
+    {
+      "id": "revenue-2026-05",
+      "question": "What is total revenue in May 2026? Alias the result revenue.",
+      "passed": true,
+      "conversation_id": "a60d5b99619845629bd0ca1c9d515771",
+      "artifact_id": "d47f3bf2f90c4761930ced06a48009b1",
+      "retrieval": "gemini-embedding + full-schema",
+      "elapsed_seconds": 10.04
+    },
+    {
+      "id": "revenue-2026-06",
+      "question": "What is total revenue in June 2026? Alias the result revenue.",
+      "passed": true,
+      "conversation_id": "7127c088c9874b40b819b9e1164a55a5",
+      "artifact_id": "a94e16674ea34c87a35c1542945a3c12",
+      "retrieval": "gemini-embedding + full-schema",
+      "elapsed_seconds": 9.45
+    },
+    {
+      "id": "revenue-2026-07",
+      "question": "What is total revenue in July 2026? Alias the result revenue.",
+      "passed": true,
+      "conversation_id": "27914d099c4e46689e0ec8b365002e60",
+      "artifact_id": "dda00ca6d3634fa2b011aefd4cefd6ce",
+      "retrieval": "gemini-embedding + full-schema",
+      "elapsed_seconds": 9.68
+    },
+    {
+      "id": "revenue-2026-08",
+      "question": "What is total revenue in August 2026? Alias the result revenue.",
+      "passed": true,
+      "conversation_id": "f927139d1ada44cc89baa24de2906012",
+      "artifact_id": "b1e5437d33de4a4e8ab981e0597453fd",
+      "retrieval": "gemini-embedding + full-schema",
+      "elapsed_seconds": 8.77
+    },
+    {
+      "id": "revenue-2026-09",
+      "question": "What is total revenue in September 2026? Alias the result revenue.",
+      "passed": true,
+      "conversation_id": "47febbf3d51644ad816adb3a423ac895",
+      "artifact_id": "da159068f07e4c17a01982ca99297b54",
+      "retrieval": "gemini-embedding + full-schema",
+      "elapsed_seconds": 9.23
+    },
+    {
+      "id": "region-North",
+      "question": "What is total revenue in North? Alias the result revenue.",
+      "passed": true,
+      "conversation_id": "75e90ba1d5594cd280e1fa2c763fb0af",
+      "artifact_id": "80fe361afc4149a6bcf41eb561b02a25",
+      "retrieval": "gemini-embedding + full-schema",
+      "elapsed_seconds": 15.16
+    },
+    {
+      "id": "region-South",
+      "question": "What is total revenue in South? Alias the result revenue.",
+      "passed": true,
+      "conversation_id": "ce07575306f94bbc8f16dee2b151be20",
+      "artifact_id": "da30ab8a6f424e7cbca954b996aa6f47",
+      "retrieval": "gemini-embedding + full-schema",
+      "elapsed_seconds": 14.38
+    },
+    {
+      "id": "region-East",
+      "question": "What is total revenue in East? Alias the result revenue.",
+      "passed": true,
+      "conversation_id": "2c10a55872ac4067938c211ca3f25ce0",
+      "artifact_id": "e42f915efa444dc28bc08da62ec376c1",
+      "retrieval": "gemini-embedding + full-schema",
+      "elapsed_seconds": 9.97
+    },
+    {
+      "id": "region-West",
+      "question": "What is total revenue in West? Alias the result revenue.",
+      "passed": true,
+      "conversation_id": "f70752c6409048ae89fee7d7185c184a",
+      "artifact_id": "2c4d921a6adf4ad3a5d6fc68e7e1e462",
+      "retrieval": "gemini-embedding + full-schema",
+      "elapsed_seconds": 28.12
+    },
+    {
+      "id": "targets-2026-01",
+      "question": "Compare regional revenue with targets in January 2026. Return region, revenue, target_revenue.",
+      "passed": true,
+      "conversation_id": "d703cb49c6544e8d869622b743fc6cf7",
+      "artifact_id": "e2bfaf14b5a34f02bda255714cf0210f",
+      "retrieval": "gemini-embedding + full-schema",
+      "elapsed_seconds": 36.28
+    },
+    {
+      "id": "targets-2026-02",
+      "question": "Compare regional revenue with targets in February 2026. Return region, revenue, target_revenue.",
+      "passed": true,
+      "conversation_id": "26f472685ae94460b81830d705a5034f",
+      "artifact_id": "9b57d0adc9d342a59167ea7f26291061",
+      "retrieval": "gemini-embedding + full-schema",
+      "elapsed_seconds": 16.47
+    },
+    {
+      "id": "targets-2026-03",
+      "question": "Compare regional revenue with targets in March 2026. Return region, revenue, target_revenue.",
+      "passed": true,
+      "conversation_id": "0ff610b03de949fd8289def0fa70bf0c",
+      "artifact_id": "1c8c68b90fd048cbabdff7688962e565",
+      "retrieval": "gemini-embedding + full-schema",
+      "elapsed_seconds": 17.56
+    },
+    {
+      "id": "targets-2026-04",
+      "question": "Compare regional revenue with targets in April 2026. Return region, revenue, target_revenue.",
+      "passed": true,
+      "conversation_id": "1b3c67ca457043e0b0b848c575a92f3c",
+      "artifact_id": "ee02823e0a194ce7b8545466298204cc",
+      "retrieval": "gemini-embedding + full-schema",
+      "elapsed_seconds": 17.19
+    },
+    {
+      "id": "targets-2026-05",
+      "question": "Compare regional revenue with targets in May 2026. Return region, revenue, target_revenue.",
+      "passed": true,
+      "conversation_id": "26b9a08d4ed845a7a428fc65d0abb55e",
+      "artifact_id": "c2e3952fdab34ba581aa87d447df8327",
+      "retrieval": "gemini-embedding + full-schema",
+      "elapsed_seconds": 18.02
+    },
+    {
+      "id": "targets-2026-06",
+      "question": "Compare regional revenue with targets in June 2026. Return region, revenue, target_revenue.",
+      "passed": true,
+      "conversation_id": "a2d75227490649b795be525b78cee9d7",
+      "artifact_id": "cf9d2a0fcce64078a9bd612652778bf2",
+      "retrieval": "gemini-embedding + full-schema",
+      "elapsed_seconds": 15.93
+    },
+    {
+      "id": "targets-2026-07",
+      "question": "Compare regional revenue with targets in July 2026. Return region, revenue, target_revenue.",
+      "passed": true,
+      "conversation_id": "ab9e7440d9db4d8fbf4525b603fdb721",
+      "artifact_id": "fa7e6b7f2a584e4795d51d6bccac7d06",
+      "retrieval": "gemini-embedding + full-schema",
+      "elapsed_seconds": 16.81
+    },
+    {
+      "id": "targets-2026-08",
+      "question": "Compare regional revenue with targets in August 2026. Return region, revenue, target_revenue.",
+      "passed": true,
+      "conversation_id": "2547cf2104d54bf793840777d398dae6",
+      "artifact_id": "e4ed963e1b5b4e1297c4f6e1ebee7578",
+      "retrieval": "gemini-embedding + full-schema",
+      "elapsed_seconds": 14.71
+    },
+    {
+      "id": "targets-2026-09",
+      "question": "Compare regional revenue with targets in September 2026. Return region, revenue, target_revenue.",
+      "passed": true,
+      "conversation_id": "f5e7b4b5f3594fd1889f3ca233b28877",
+      "artifact_id": "e4f7e9ca2a8448a4a74bd37b809f4399",
+      "retrieval": "gemini-embedding + full-schema",
+      "elapsed_seconds": 13.33
+    },
+    {
+      "id": "monthly-trend",
+      "question": "Show monthly revenue as a line chart. Return month and revenue.",
+      "passed": true,
+      "conversation_id": "f4995a0ed2ce4a8c905c932c9771e87f",
+      "artifact_id": "e00cf77606d54c68808a2af155bf2f31",
+      "retrieval": "gemini-embedding + full-schema",
+      "elapsed_seconds": 22.02
+    },
+    {
+      "id": "categories",
+      "question": "Break down revenue by product category. Return category and revenue.",
+      "passed": true,
+      "conversation_id": "a3998a2b72c74fabb2a24b786acb7796",
+      "artifact_id": "882141d7097c47deb619f45346883dc6",
+      "retrieval": "gemini-embedding + full-schema",
+      "elapsed_seconds": 10.46
+    },
+    {
+      "id": "categories-table",
+      "question": "Show revenue by product category in a table. Return category and revenue.",
+      "passed": true,
+      "conversation_id": "0a4b1cb25cc84da9af224e5027bfbab9",
+      "artifact_id": "dc13fcf564e94a0cbce93de508820c3b",
+      "retrieval": "gemini-embedding + full-schema",
+      "elapsed_seconds": 10.28
+    },
+    {
+      "id": "customer-segments",
+      "question": "What is revenue by customer segment? Return segment and revenue.",
+      "passed": true,
+      "conversation_id": "b1887e07ee1546d2930a90c2e1e9a784",
+      "artifact_id": "981a805462f341f993f75f46e467719d",
+      "retrieval": "gemini-embedding + full-schema",
+      "elapsed_seconds": 20.64
+    },
+    {
+      "id": "refunds",
+      "question": "What is the total refund amount? Alias it refund_amount.",
+      "passed": true,
+      "conversation_id": "cc8631c9490a4b409dd7e7d800332e8f",
+      "artifact_id": "659b1bb4768648428880f4f89d3563da",
+      "retrieval": "gemini-embedding + full-schema",
+      "elapsed_seconds": 15.42
+    },
+    {
+      "id": "total-revenue",
+      "question": "What is total gross revenue? Alias it revenue.",
+      "passed": true,
+      "conversation_id": "86e2375ede12466f9a5a3f6004034e2c",
+      "artifact_id": "7efd2f541a014736aa0e8676a92ed574",
+      "retrieval": "gemini-embedding + full-schema",
+      "elapsed_seconds": 9.29
+    },
+    {
+      "id": "revenue-kpi",
+      "question": "Show a KPI for total gross sales revenue. Alias it revenue.",
+      "passed": true,
+      "conversation_id": "6e2c7c44a34240da937d65b88af1f4ff",
+      "artifact_id": "13ced01bc02c43729574ae5c2b518a67",
+      "retrieval": "gemini-embedding + full-schema",
+      "elapsed_seconds": 10.58
+    },
+    {
+      "id": "customers-table",
+      "question": "Count customers by segment. Return segment and customers.",
+      "passed": true,
+      "conversation_id": "e839c437d5b846c9b0a5acee5a5e43d3",
+      "artifact_id": "064374e120ea4a99828d6f652e65d898",
+      "retrieval": "gemini-embedding + full-schema",
+      "elapsed_seconds": 8.78
+    },
+    {
+      "id": "customers-chart",
+      "question": "Show customer counts by segment in a chart. Return segment and customers.",
+      "passed": true,
+      "conversation_id": "4a5682b997d34c488dbeb4d76d188ecc",
+      "artifact_id": "cfd25642642a41e19f9817e9c4856546",
+      "retrieval": "gemini-embedding + full-schema",
+      "elapsed_seconds": 8.91
+    }
+  ],
+  "passed": 31,
+  "total": 31
+}

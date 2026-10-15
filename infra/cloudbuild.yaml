@@ -1,0 +1,10 @@
+steps:
+  - name: gcr.io/cloud-builders/docker
+    args: [build, --tag, '${_IMAGE}', '${_DIRECTORY}']
+  - name: gcr.io/cloud-builders/docker
+    args: [push, '${_IMAGE}']
+images: ['${_IMAGE}']
+logsBucket: 'gs://${PROJECT_ID}-agentic-bi-build/logs'
+options:
+  logging: GCS_ONLY
+timeout: 1200s

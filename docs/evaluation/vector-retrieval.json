@@ -1,0 +1,11 @@
+{
+  "retrieval": "gemini-embedding + full-schema",
+  "title": "Total Gross Revenue (September 2026)",
+  "rows": [
+    {
+      "total_gross_revenue": "13410"
+    }
+  ],
+  "artifact_id": "af1979d4d1f94f5f922115250d046136",
+  "passed": true
+}

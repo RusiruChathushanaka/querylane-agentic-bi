@@ -1,0 +1,10 @@
+{
+  "ready": true,
+  "artifact": true,
+  "audio": true,
+  "transcript": true,
+  "turn_complete": true,
+  "errors": [],
+  "audio_recorded": false,
+  "input": "text sent through the live transport; microphone hardware not tested"
+}

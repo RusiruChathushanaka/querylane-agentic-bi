@@ -1,0 +1,247 @@
+{
+  "mode": "gemini",
+  "text_model": "gemini-3.8-flash",
+  "data": "synthetic fixtures; reference values independently aggregated in Python",
+  "cases": [
+    {
+      "id": "revenue-2026-01",
+      "question": "What is total revenue in January 2026? Alias the result revenue.",
+      "passed": false,
+      "elapsed_seconds": 43.12,
+      "expected": [
+        {
+          "revenue": "13223.00"
+        }
+      ],
+      "actual": [],
+      "events": [
+        {
+          "id": 1,
+          "type": "progress",
+          "data": {
+            "stage": "schema",
+            "message": "Inspecting sources and business context"
+          },
+          "created_at": "2026-10-15T14:05:21.706985+00:00"
+        },
+        {
+          "id": 2,
+          "type": "error",
+          "data": {
+            "code": "model_error",
+            "message": "Gemini could not complete this analysis. Try again later."
+          },
+          "created_at": "2026-10-15T14:06:04.828924+00:00"
+        }
+      ]
+    },
+    {
+      "id": "revenue-2026-02",
+      "question": "What is total revenue in February 2026? Alias the result revenue.",
+      "passed": true,
+      "elapsed_seconds": 11.99
+    },
+    {
+      "id": "revenue-2026-03",
+      "question": "What is total revenue in March 2026? Alias the result revenue.",
+      "passed": true,
+      "elapsed_seconds": 12.65
+    },
+    {
+      "id": "revenue-2026-04",
+      "question": "What is total revenue in April 2026? Alias the result revenue.",
+      "passed": true,
+      "elapsed_seconds": 28.29
+    },
+    {
+      "id": "revenue-2026-05",
+      "question": "What is total revenue in May 2026? Alias the result revenue.",
+      "passed": true,
+      "elapsed_seconds": 12.9
+    },
+    {
+      "id": "revenue-2026-06",
+      "question": "What is total revenue in June 2026? Alias the result revenue.",
+      "passed": true,
+      "elapsed_seconds": 17.53
+    },
+    {
+      "id": "revenue-2026-07",
+      "question": "What is total revenue in July 2026? Alias the result revenue.",
+      "passed": true,
+      "elapsed_seconds": 30.27
+    },
+    {
+      "id": "revenue-2026-08",
+      "question": "What is total revenue in August 2026? Alias the result revenue.",
+      "passed": true,
+      "elapsed_seconds": 22.4
+    },
+    {
+      "id": "revenue-2026-09",
+      "question": "What is total revenue in September 2026? Alias the result revenue.",
+      "passed": true,
+      "elapsed_seconds": 13.25
+    },
+    {
+      "id": "region-North",
+      "question": "What is total revenue in North? Alias the result revenue.",
+      "passed": false,
+      "elapsed_seconds": 42.33,
+      "expected": [
+        {
+          "revenue": "29959.00"
+        }
+      ],
+      "actual": [],
+      "events": [
+        {
+          "id": 1,
+          "type": "progress",
+          "data": {
+            "stage": "schema",
+            "message": "Inspecting sources and business context"
+          },
+          "created_at": "2026-10-15T14:06:18.078621+00:00"
+        },
+        {
+          "id": 2,
+          "type": "error",
+          "data": {
+            "code": "model_error",
+            "message": "Gemini could not complete this analysis. Try again later."
+          },
+          "created_at": "2026-10-15T14:07:00.405079+00:00"
+        }
+      ]
+    },
+    {
+      "id": "region-South",
+      "question": "What is total revenue in South? Alias the result revenue.",
+      "passed": true,
+      "elapsed_seconds": 15.77
+    },
+    {
+      "id": "region-East",
+      "question": "What is total revenue in East? Alias the result revenue.",
+      "passed": true,
+      "elapsed_seconds": 46.12
+    },
+    {
+      "id": "region-West",
+      "question": "What is total revenue in West? Alias the result revenue.",
+      "passed": true,
+      "elapsed_seconds": 13.31
+    },
+    {
+      "id": "targets-2026-01",
+      "question": "Compare regional revenue with targets in January 2026. Return region, revenue, target_revenue.",
+      "passed": true,
+      "elapsed_seconds": 51.2
+    },
+    {
+      "id": "targets-2026-02",
+      "question": "Compare regional revenue with targets in February 2026. Return region, revenue, target_revenue.",
+      "passed": true,
+      "elapsed_seconds": 14.57
+    },
+    {
+      "id": "targets-2026-03",
+      "question": "Compare regional revenue with targets in March 2026. Return region, revenue, target_revenue.",
+      "passed": true,
+      "elapsed_seconds": 29.33
+    },
+    {
+      "id": "targets-2026-04",
+      "question": "Compare regional revenue with targets in April 2026. Return region, revenue, target_revenue.",
+      "passed": true,
+      "elapsed_seconds": 11.82
+    },
+    {
+      "id": "targets-2026-05",
+      "question": "Compare regional revenue with targets in May 2026. Return region, revenue, target_revenue.",
+      "passed": true,
+      "elapsed_seconds": 12.87
+    },
+    {
+      "id": "targets-2026-06",
+      "question": "Compare regional revenue with targets in June 2026. Return region, revenue, target_revenue.",
+      "passed": true,
+      "elapsed_seconds": 54.96
+    },
+    {
+      "id": "targets-2026-07",
+      "question": "Compare regional revenue with targets in July 2026. Return region, revenue, target_revenue.",
+      "passed": true,
+      "elapsed_seconds": 47.94
+    },
+    {
+      "id": "targets-2026-08",
+      "question": "Compare regional revenue with targets in August 2026. Return region, revenue, target_revenue.",
+      "passed": true,
+      "elapsed_seconds": 35.25
+    },
+    {
+      "id": "targets-2026-09",
+      "question": "Compare regional revenue with targets in September 2026. Return region, revenue, target_revenue.",
+      "passed": true,
+      "elapsed_seconds": 9.67
+    },
+    {
+      "id": "monthly-trend",
+      "question": "Show monthly revenue as a line chart. Return month and revenue.",
+      "passed": true,
+      "elapsed_seconds": 18.67
+    },
+    {
+      "id": "categories",
+      "question": "Break down revenue by product category. Return category and revenue.",
+      "passed": true,
+      "elapsed_seconds": 27.33
+    },
+    {
+      "id": "categories-table",
+      "question": "Show revenue by product category in a table. Return category and revenue.",
+      "passed": true,
+      "elapsed_seconds": 15.81
+    },
+    {
+      "id": "customer-segments",
+      "question": "What is revenue by customer segment? Return segment and revenue.",
+      "passed": true,
+      "elapsed_seconds": 19.41
+    },
+    {
+      "id": "refunds",
+      "question": "What is the total refund amount? Alias it refund_amount.",
+      "passed": true,
+      "elapsed_seconds": 48.33
+    },
+    {
+      "id": "total-revenue",
+      "question": "What is total gross revenue? Alias it revenue.",
+      "passed": true,
+      "elapsed_seconds": 8.47
+    },
+    {
+      "id": "revenue-kpi",
+      "question": "Show a KPI for total gross sales revenue. Alias it revenue.",
+      "passed": true,
+      "elapsed_seconds": 22.6
+    },
+    {
+      "id": "customers-table",
+      "question": "Count customers by segment. Return segment and customers.",
+      "passed": true,
+      "elapsed_seconds": 6.93
+    },
+    {
+      "id": "customers-chart",
+      "question": "Show customer counts by segment in a chart. Return segment and customers.",
+      "passed": true,
+      "elapsed_seconds": 18.78
+    }
+  ],
+  "passed": 29,
+  "total": 31
+}

@@ -1,0 +1,1134 @@
+"use client";
+
+import dynamic from "next/dynamic";
+import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  ArrowDown,
+  ArrowRight,
+  ArrowUp,
+  AudioLines,
+  BarChart3,
+  Check,
+  ChevronRight,
+  CircleHelp,
+  Command,
+  Database,
+  GitFork,
+  Globe2,
+  Layers3,
+  Link2,
+  LoaderCircle,
+  Menu,
+  MessageSquare,
+  Mic,
+  MicOff,
+  Plus,
+  Radio,
+  Search,
+  ShieldCheck,
+  Square,
+  Target,
+  TrendingUp,
+  Users,
+  X,
+} from "lucide-react";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Separator } from "@/components/ui/separator";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupTextarea,
+} from "@/components/ui/input-group";
+import { Field, FieldLabel } from "@/components/ui/field";
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyTitle,
+} from "@/components/ui/empty";
+import { api, streamRun } from "@/lib/api";
+import { LiveVoice } from "@/lib/voice";
+import type {
+  Artifact,
+  Connection,
+  Conversation,
+  Message,
+  StreamEvent,
+} from "@/lib/types";
+import { cn } from "@/lib/utils";
+
+const ResultCard = dynamic(() => import("./result-card"), {
+  loading: () => <Skeleton className="result-loading" />,
+});
+const suggestions = [
+  {
+    icon: TrendingUp,
+    title: "See the bigger picture",
+    question: "Show monthly revenue as a line chart",
+    detail: "Explore how sales changed over time",
+    source: "BigQuery",
+  },
+  {
+    icon: Target,
+    title: "Actuals meet ambition",
+    question: "Compare regional revenue with targets",
+    detail: "Bring warehouse sales and targets together",
+    source: "Cross-source",
+  },
+  {
+    icon: Users,
+    title: "Know your customers",
+    question: "What is revenue by customer segment?",
+    detail: "Connect sales to customer profiles",
+    source: "Cross-source",
+  },
+  {
+    icon: BarChart3,
+    title: "Find what sells",
+    question: "Break down revenue by product category",
+    detail: "Discover your strongest product categories",
+    source: "BigQuery",
+  },
+];
+
+function Mark({ small = false }: { small?: boolean }) {
+  return (
+    <span
+      className={cn("brand-mark", small && "brand-mark-small")}
+      aria-hidden="true"
+    >
+      <svg viewBox="0 0 32 32" fill="none">
+        <path
+          d="M8 7v7a5 5 0 0 0 5 5h11M8 25v-6a5 5 0 0 1 5-5h11"
+          stroke="currentColor"
+          strokeWidth="2.6"
+          strokeLinecap="round"
+        />
+        <circle cx="8" cy="7" r="2.5" fill="currentColor" />
+        <circle cx="8" cy="25" r="2.5" fill="currentColor" />
+        <path
+          d="m21 11 4 3-4 3m0-1 4 3-4 3"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </span>
+  );
+}
+
+export default function Workspace() {
+  const [connections, setConnections] = useState<Connection[]>([]);
+  const [conversations, setConversations] = useState<Conversation[]>([]);
+  const [conversation, setConversation] = useState<Conversation | null>(null);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [artifacts, setArtifacts] = useState<Record<string, Artifact>>({});
+  const [question, setQuestion] = useState("");
+  const [source, setSource] = useState("all");
+  const [runId, setRunId] = useState<string | null>(null);
+  const [progress, setProgress] = useState("");
+  const [stage, setStage] = useState("");
+  const [draftArtifact, setDraftArtifact] = useState<string | null>(null);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [starting, setStarting] = useState(false);
+  const [mode, setMode] = useState("");
+  const [voiceState, setVoiceState] = useState("off");
+  const [voiceText, setVoiceText] = useState("");
+  const [level, setLevel] = useState(0);
+  const [muted, setMuted] = useState(false);
+  const [search, setSearch] = useState("");
+  const [schemaSource, setSchemaSource] = useState("bigquery");
+  const [schema, setSchema] = useState<
+    {
+      table: string;
+      description: string;
+      columns: { name: string; type: string }[];
+    }[]
+  >([]);
+  const [schemaError, setSchemaError] = useState("");
+  const controller = useRef<AbortController | null>(null);
+  const artifactCache = useRef<Record<string, Artifact>>({});
+  const voice = useRef<LiveVoice | null>(null);
+  const bottom = useRef<HTMLDivElement>(null);
+  const input = useRef<HTMLTextAreaElement>(null);
+  const activeConversation = useRef<string | null>(null);
+
+  const refreshList = useCallback(async () => {
+    const result = await api<{ conversations: Conversation[] }>(
+      "/conversations",
+    );
+    setConversations(result.conversations);
+  }, []);
+
+  const loadArtifact = useCallback(async (id: string) => {
+    if (artifactCache.current[id]) return;
+    const artifact = await api<Artifact>(`/artifacts/${id}`);
+    artifactCache.current[id] = artifact;
+    setArtifacts((previous) => ({ ...previous, [id]: artifact }));
+  }, []);
+
+  const loadMessages = useCallback(
+    async (id: string) => {
+      const result = await api<{
+        conversation: Conversation;
+        messages: Message[];
+      }>(`/conversations/${id}`);
+      if (activeConversation.current !== id) return result;
+      setConversation(result.conversation);
+      setMessages(result.messages);
+      await Promise.all(
+        result.messages
+          .filter((message) => message.artifact_id)
+          .map((message) => loadArtifact(message.artifact_id!)),
+      );
+      return result;
+    },
+    [loadArtifact],
+  );
+
+  const followRun = useCallback(
+    async (id: string, chatId: string) => {
+      controller.current?.abort();
+      const streamController = new AbortController();
+      controller.current = streamController;
+      setRunId(id);
+      try {
+        await streamRun(id, streamController.signal, (event: StreamEvent) => {
+          if (activeConversation.current !== chatId) return;
+          if (event.type === "progress") {
+            setProgress(String(event.data.message));
+            setStage(String(event.data.stage ?? "schema"));
+          }
+          if (event.type === "artifact") {
+            const artifactId = String(event.data.id);
+            void loadArtifact(artifactId)
+              .then(() => {
+                if (activeConversation.current === chatId)
+                  setDraftArtifact(artifactId);
+              })
+              .catch((error) => setError(error.message));
+          }
+          if (event.type === "answer") {
+            setProgress("Answer ready");
+          }
+          if (event.type === "error") setError(String(event.data.message));
+        });
+        if (
+          !streamController.signal.aborted &&
+          activeConversation.current === chatId
+        ) {
+          await loadMessages(chatId);
+          setDraftArtifact(null);
+          await refreshList();
+        }
+      } catch (error) {
+        if (!streamController.signal.aborted)
+          setError(
+            error instanceof Error
+              ? error.message
+              : "The analysis connection failed.",
+          );
+      } finally {
+        if (
+          !streamController.signal.aborted &&
+          activeConversation.current === chatId
+        ) {
+          setRunId(null);
+          setProgress("");
+          setStage("");
+        }
+      }
+    },
+    [loadArtifact, loadMessages, refreshList],
+  );
+
+  const selectConversation = useCallback(
+    async (id: string) => {
+      controller.current?.abort();
+      voice.current?.stop();
+      setVoiceState("off");
+      setRunId(null);
+      setDraftArtifact(null);
+      setError("");
+      setMessages([]);
+      activeConversation.current = id;
+      history.replaceState(null, "", `?chat=${id}`);
+      try {
+        const result = await loadMessages(id);
+        if (activeConversation.current === id) {
+          setSource(result.conversation.source);
+          if (
+            result.conversation.active_run &&
+            result.conversation.lease_until * 1000 > Date.now()
+          )
+            void followRun(result.conversation.active_run, id);
+        }
+      } catch (error) {
+        setError(
+          error instanceof Error
+            ? error.message
+            : "Could not load this conversation.",
+        );
+      }
+    },
+    [followRun, loadMessages],
+  );
+
+  useEffect(() => {
+    let cancelled = false;
+    Promise.all([
+      api<{ mode: string; connections: Connection[] }>("/connections"),
+      api<{ conversations: Conversation[] }>("/conversations"),
+    ])
+      .then(([sources, chats]) => {
+        if (cancelled) return;
+        setConnections(sources.connections);
+        setMode(sources.mode);
+        setConversations(chats.conversations);
+        setLoading(false);
+        const chatId = new URLSearchParams(window.location.search).get("chat");
+        if (chatId && /^[a-f0-9]{32}$/.test(chatId))
+          void selectConversation(chatId);
+      })
+      .catch((error) => {
+        if (!cancelled) {
+          setError(error.message);
+          setLoading(false);
+        }
+      });
+    return () => {
+      cancelled = true;
+      controller.current?.abort();
+      voice.current?.stop();
+    };
+  }, [selectConversation]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (document.visibilityState !== "visible") return;
+      void refreshList().catch(() => {});
+      if (activeConversation.current && !runId && voiceState === "off")
+        void loadMessages(activeConversation.current).catch(() => {});
+    }, 8000);
+    return () => clearInterval(interval);
+  }, [runId, voiceState, loadMessages, refreshList]);
+
+  useEffect(() => {
+    if (messages.length || progress || draftArtifact)
+      bottom.current?.scrollIntoView({ behavior: "instant", block: "end" });
+  }, [messages.length, progress, draftArtifact]);
+
+  function newConversation() {
+    controller.current?.abort();
+    voice.current?.stop();
+    activeConversation.current = null;
+    setConversation(null);
+    setMessages([]);
+    setQuestion("");
+    setError("");
+    setRunId(null);
+    setProgress("");
+    setDraftArtifact(null);
+    setVoiceState("off");
+    history.replaceState(null, "", "/");
+    input.current?.focus();
+  }
+
+  async function ensureConversation() {
+    if (conversation && activeConversation.current === conversation.id)
+      return conversation;
+    const created = await api<Conversation>("/conversations", {
+      method: "POST",
+      body: JSON.stringify({ source }),
+    });
+    activeConversation.current = created.id;
+    setConversation(created);
+    history.replaceState(null, "", `?chat=${created.id}`);
+    await refreshList();
+    return created;
+  }
+
+  async function ask(text = question) {
+    if (
+      !text.trim() ||
+      starting ||
+      runId ||
+      voiceState === "live" ||
+      voiceState === "connecting"
+    )
+      return;
+    setStarting(true);
+    setError("");
+    setQuestion("");
+    setDraftArtifact(null);
+    try {
+      const chat = await ensureConversation();
+      const response = await api<{ run_id: string }>(
+        `/conversations/${chat.id}/turns`,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            question: text.trim(),
+            idempotency_key: crypto.randomUUID(),
+          }),
+        },
+      );
+      await loadMessages(chat.id);
+      setProgress("Inspecting sources and business context");
+      void followRun(response.run_id, chat.id);
+    } catch (error) {
+      setQuestion(text);
+      setError(
+        error instanceof Error
+          ? error.message
+          : "Could not start the analysis.",
+      );
+    } finally {
+      setStarting(false);
+    }
+  }
+
+  async function fork() {
+    if (!conversation) return;
+    try {
+      const created = await api<Conversation>(
+        `/conversations/${conversation.id}/fork`,
+        { method: "POST" },
+      );
+      await selectConversation(created.id);
+      await refreshList();
+      toast.success("Conversation forked");
+    } catch (error) {
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Could not fork this conversation.",
+      );
+    }
+  }
+
+  async function startVoice() {
+    if (runId || starting) return;
+    setVoiceState("connecting");
+    setError("");
+    setVoiceText("");
+    try {
+      const chat = await ensureConversation();
+      const session = new LiveVoice((event) => {
+        if (event.type === "ready") setVoiceState("live");
+        if (event.type === "transcript")
+          setVoiceText((previous) =>
+            (previous + String(event.text)).slice(-1000),
+          );
+        if (event.type === "artifact") {
+          const data = event.data as { id: string };
+          void loadArtifact(data.id);
+          setDraftArtifact(data.id);
+        }
+        if (event.type === "turn_complete") {
+          void loadMessages(chat.id).then(() => setDraftArtifact(null));
+          void refreshList();
+        }
+        if (
+          ["error", "session_limit", "disconnected", "reconnect"].includes(
+            event.type,
+          )
+        ) {
+          setVoiceState("disconnected");
+          setError(String(event.message));
+          session.stop();
+          void loadMessages(chat.id);
+        }
+        if (event.type === "stopped")
+          setVoiceState((current) =>
+            current === "disconnected" ? current : "off",
+          );
+      }, setLevel);
+      voice.current = session;
+      await session.start(chat.id);
+    } catch (error) {
+      voice.current?.stop();
+      setVoiceState("off");
+      setError(
+        error instanceof Error ? error.message : "Microphone could not start.",
+      );
+    }
+  }
+
+  async function openSchema(id: string) {
+    setSchemaSource(id);
+    setSchema([]);
+    setSchemaError("");
+    try {
+      setSchema(
+        (await api<{ tables: typeof schema }>(`/connections/${id}/schema`))
+          .tables,
+      );
+    } catch (error) {
+      setSchemaError(
+        error instanceof Error ? error.message : "Schema unavailable.",
+      );
+    }
+  }
+
+  const busy = Boolean(
+    runId || starting || voiceState === "live" || voiceState === "connecting",
+  );
+  const sidebar = (
+    <>
+      <div className="brand">
+        <Mark />
+        <span>
+          Querylane
+          <span className="brand-subtitle">Agentic business intelligence</span>
+        </span>
+        <Badge variant="outline">DEMO</Badge>
+      </div>
+      <Button className="new-chat" variant="outline" onClick={newConversation}>
+        <Plus data-icon="inline-start" />
+        New exploration<kbd>↗</kbd>
+      </Button>
+      <div className="sidebar-label">WORKSPACE</div>
+      <Button
+        variant="secondary"
+        className="workspace-item"
+        onClick={newConversation}
+      >
+        <MessageSquare data-icon="inline-start" />
+        Ask your data
+      </Button>
+      <div className="sidebar-label source-label">
+        DATA SOURCES<Badge variant="outline">{connections.length}</Badge>
+      </div>
+      <Sheet>
+        <div className="source-list">
+          {loading ? (
+            <>
+              <Skeleton className="source-skeleton" />
+              <Skeleton className="source-skeleton" />
+            </>
+          ) : (
+            connections.map((connection) => (
+              <SheetTrigger asChild key={connection.id}>
+                <button
+                  className="source-item"
+                  onClick={() => void openSchema(connection.id)}
+                >
+                  <span
+                    className={cn(
+                      "database-icon",
+                      connection.id === "postgres" && "database-icon-teal",
+                    )}
+                  >
+                    <Database aria-hidden />
+                  </span>
+                  <span>
+                    <strong>{connection.engine}</strong>
+                    <small>{connection.name}</small>
+                  </span>
+                  <span
+                    className={cn(
+                      "connection-dot",
+                      !connection.connected && "connection-dot-error",
+                    )}
+                    aria-label={
+                      connection.connected ? "Connected" : "Disconnected"
+                    }
+                  />
+                </button>
+              </SheetTrigger>
+            ))
+          )}
+        </div>
+        <SheetContent>
+          <SheetHeader>
+            <SheetTitle>
+              {schemaSource === "bigquery"
+                ? "Retail warehouse"
+                : "Business operations"}
+            </SheetTitle>
+            <SheetDescription>
+              Read-only schema · synthetic retail data
+            </SheetDescription>
+          </SheetHeader>
+          <div className="schema-content">
+            {schemaError && (
+              <Alert variant="destructive">
+                <AlertDescription>{schemaError}</AlertDescription>
+              </Alert>
+            )}
+            {!schema.length && !schemaError && (
+              <Skeleton className="result-loading" />
+            )}
+            {schema.map((table) => (
+              <details key={table.table}>
+                <summary>
+                  <TableIcon />
+                  {table.table}
+                  <Badge variant="secondary">{table.columns.length}</Badge>
+                </summary>
+                <p>{table.description}</p>
+                <ul>
+                  {table.columns.map((column) => (
+                    <li key={column.name}>
+                      <code>{column.name}</code>
+                      <span>{column.type}</span>
+                    </li>
+                  ))}
+                </ul>
+              </details>
+            ))}
+          </div>
+        </SheetContent>
+      </Sheet>
+      <div className="sidebar-label history-label">
+        PUBLIC EXPLORATIONS<span>{conversations.length}</span>
+      </div>
+      <div className="history-search">
+        <Search aria-hidden />
+        <input
+          aria-label="Search public conversations"
+          placeholder="Find a conversation"
+          value={search}
+          onChange={(event) => setSearch(event.target.value)}
+        />
+      </div>
+      <nav className="conversation-list" aria-label="Public conversations">
+        {conversations
+          .filter((chat) =>
+            chat.title.toLowerCase().includes(search.toLowerCase()),
+          )
+          .map((chat) => (
+            <Button
+              variant={conversation?.id === chat.id ? "secondary" : "ghost"}
+              key={chat.id}
+              onClick={() => void selectConversation(chat.id)}
+            >
+              <MessageSquare data-icon="inline-start" />
+              <span className="truncate">{chat.title}</span>
+              {chat.active_run && <span className="connection-dot" />}
+            </Button>
+          ))}
+        {!loading && !conversations.length && (
+          <p>Your first question starts a new exploration.</p>
+        )}
+      </nav>
+      <div className="sidebar-footer">
+        <Separator />
+        <div>
+          <span className="public-avatar">
+            <Globe2 aria-hidden />
+          </span>
+          <span>
+            <strong>Public demo workspace</strong>
+            <small>Shared questions. Shared discoveries.</small>
+          </span>
+        </div>
+        <span className="footer-note">
+          <ShieldCheck aria-hidden />
+          Read-only access to synthetic data
+        </span>
+      </div>
+    </>
+  );
+
+  return (
+    <div className="app-shell">
+      <a className="skip-link" href="#main-content">
+        Skip to conversation
+      </a>
+      <aside className="desktop-sidebar">{sidebar}</aside>
+      <div className="workspace-main">
+        <header className="topbar">
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="mobile-menu"
+                aria-label="Open workspace navigation"
+              >
+                <Menu />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="mobile-sidebar">
+              <SheetTitle className="sr-only">Workspace navigation</SheetTitle>
+              {sidebar}
+            </SheetContent>
+          </Sheet>
+          <div className="breadcrumb">
+            <Layers3 aria-hidden />
+            <span>Retail workspace</span>
+            <ChevronRight aria-hidden />
+            <strong>{conversation ? "Exploration" : "Overview"}</strong>
+          </div>
+          <div className="topbar-actions">
+            <Badge variant="secondary">
+              <Globe2 data-icon="inline-start" />
+              Public
+            </Badge>
+            {conversation && (
+              <>
+                <Button variant="ghost" size="sm" onClick={() => void fork()}>
+                  <GitFork data-icon="inline-start" />
+                  Fork
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  aria-label="Copy conversation link"
+                  onClick={async () => {
+                    try {
+                      await navigator.clipboard.writeText(window.location.href);
+                      toast.success("Public conversation link copied");
+                    } catch {
+                      toast.error("Could not copy the link.");
+                    }
+                  }}
+                >
+                  <Link2 />
+                </Button>
+              </>
+            )}
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  aria-label="How this workspace works"
+                >
+                  <CircleHelp />
+                </Button>
+              </SheetTrigger>
+              <SheetContent>
+                <SheetHeader>
+                  <SheetTitle>Your data, explained</SheetTitle>
+                  <SheetDescription>
+                    Ask a question, inspect the evidence, and keep exploring.
+                  </SheetDescription>
+                </SheetHeader>
+                <div className="help-content">
+                  <h2>Two sources, one conversation</h2>
+                  <p>
+                    BigQuery holds orders, products, and returns. PostgreSQL
+                    holds customer profiles, revenue targets, and campaigns.
+                  </p>
+                  <h2>Every answer has evidence</h2>
+                  <p>
+                    Open SQL & evidence to inspect executed queries, source
+                    timestamps, row counts, and assumptions. Inferred
+                    relationships are labeled and checked for duplicate keys.
+                  </p>
+                  <h2>This workspace is public</h2>
+                  <p>
+                    All visitors can read conversations and ask follow-ups. Use
+                    synthetic retail data only. Fork a chat to explore another
+                    direction.
+                  </p>
+                  <h2>Talk naturally</h2>
+                  <p>
+                    Start voice to speak with Gemini. You can interrupt, mute,
+                    or stop. Transcripts are saved; raw audio is not recorded.
+                  </p>
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
+        </header>
+        <main id="main-content" tabIndex={0}>
+          <div className="workspace-content">
+            {mode.includes("fixtures") && (
+              <div className="local-mode">
+                <Radio aria-hidden />
+                {mode === "local-fixtures"
+                  ? "Local sample mode · deterministic queries, no live AI calls"
+                  : "Gemini preview · local synthetic fixtures · in-memory chats"}
+              </div>
+            )}
+            {error && (
+              <Alert variant="destructive" className="workspace-error">
+                <AlertTitle>Could not complete that request</AlertTitle>
+                <AlertDescription>{error}</AlertDescription>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  aria-label="Dismiss error"
+                  onClick={() => setError("")}
+                >
+                  <X />
+                </Button>
+              </Alert>
+            )}
+            {!conversation && !messages.length ? (
+              <div className="welcome">
+                <div className="welcome-eyebrow">
+                  <span className="connection-dot" />
+                  RETAIL INTELLIGENCE<span>JAN–SEP 2026</span>
+                </div>
+                <div className="welcome-heading">
+                  <h1>
+                    Your data has a story.
+                    <br />
+                    <span>Ask the next question.</span>
+                  </h1>
+                  <p>
+                    Go from a question to a clear answer. Explore your warehouse
+                    <br className="desktop-break" /> and business data together,
+                    with the evidence to back it up.
+                  </p>
+                </div>
+                <div className="source-path">
+                  <div className="path-source">
+                    <span className="database-icon">
+                      <Database aria-hidden />
+                    </span>
+                    <div>
+                      <strong>BigQuery</strong>
+                      <small>Sales & products</small>
+                    </div>
+                  </div>
+                  <span className="path-line" aria-hidden />
+                  <span className="path-junction">
+                    <Mark small />
+                  </span>
+                  <span className="path-line" aria-hidden />
+                  <div className="path-source">
+                    <span className="database-icon database-icon-teal">
+                      <Database aria-hidden />
+                    </span>
+                    <div>
+                      <strong>PostgreSQL</strong>
+                      <small>Customers & targets</small>
+                    </div>
+                  </div>
+                </div>
+                <div className="suggestions-label">
+                  A GOOD QUESTION IS ALL IT TAKES
+                  <ArrowDown aria-hidden />
+                </div>
+                <div className="suggestion-grid">
+                  {suggestions.map((suggestion) => (
+                    <button
+                      key={suggestion.title}
+                      className="suggestion-card"
+                      disabled={busy || loading}
+                      onClick={() => void ask(suggestion.question)}
+                    >
+                      <suggestion.icon aria-hidden />
+                      <strong>{suggestion.title}</strong>
+                      <p>{suggestion.detail}</p>
+                      <span>
+                        {suggestion.source}
+                        <ArrowRight aria-hidden />
+                      </span>
+                    </button>
+                  ))}
+                </div>
+                <div className="welcome-footnote">
+                  <Check aria-hidden />
+                  Read-only queries<span>·</span>
+                  <Check aria-hidden />
+                  Visible SQL & sources<span>·</span>
+                  <Check aria-hidden />
+                  Follow-up ready
+                </div>
+              </div>
+            ) : (
+              <div className="chat-content">
+                <div className="chat-heading">
+                  <div className="welcome-eyebrow">PUBLIC EXPLORATION</div>
+                  <h1>{conversation?.title ?? "New exploration"}</h1>
+                  <p>
+                    {source === "all"
+                      ? "BigQuery + PostgreSQL"
+                      : source === "bigquery"
+                        ? "BigQuery"
+                        : "PostgreSQL"}
+                    <span>·</span>Synthetic retail data<span>·</span>Visible to
+                    everyone
+                  </p>
+                </div>
+                {messages.length === 0 && !busy && (
+                  <Empty>
+                    <EmptyHeader>
+                      <EmptyTitle>Start this exploration</EmptyTitle>
+                      <EmptyDescription>
+                        Ask a retail question below, or start a live voice
+                        conversation.
+                      </EmptyDescription>
+                    </EmptyHeader>
+                  </Empty>
+                )}
+                {messages.map((message) => (
+                  <article
+                    key={message.id}
+                    className={cn(
+                      "message",
+                      message.role === "user"
+                        ? "user-message"
+                        : "assistant-message",
+                    )}
+                  >
+                    <div className="message-label">
+                      {message.role === "assistant" ? (
+                        <>
+                          <Mark small />
+                          Querylane
+                        </>
+                      ) : (
+                        <>
+                          <span className="guest-dot" />
+                          Guest question
+                        </>
+                      )}
+                    </div>
+                    <p className="message-text">{message.text}</p>
+                    {message.artifact_id && artifacts[message.artifact_id] && (
+                      <ResultCard artifact={artifacts[message.artifact_id]} />
+                    )}
+                    {Boolean(message.followups?.length) && (
+                      <div className="followups">
+                        {message.followups?.map((followup) => (
+                          <Button
+                            key={followup}
+                            variant="outline"
+                            size="sm"
+                            disabled={busy}
+                            onClick={() => void ask(followup)}
+                          >
+                            {followup}
+                            <ArrowRight data-icon="inline-end" />
+                          </Button>
+                        ))}
+                      </div>
+                    )}
+                  </article>
+                ))}
+                {draftArtifact &&
+                  artifacts[draftArtifact] &&
+                  !messages.some(
+                    (message) => message.artifact_id === draftArtifact,
+                  ) && <ResultCard artifact={artifacts[draftArtifact]} />}
+                {runId && (
+                  <div className="analysis-progress">
+                    <Mark small />
+                    <div>
+                      <span>{progress || "Working on your question"}</span>
+                      <ol>
+                        {["schema", "query", "relationship", "answer"].map(
+                          (step, index) => (
+                            <li key={step} data-current={stage === step}>
+                              <span>{index + 1}</span>
+                              {
+                                ["Understand", "Query", "Validate", "Explain"][
+                                  index
+                                ]
+                              }
+                            </li>
+                          ),
+                        )}
+                      </ol>
+                    </div>
+                    <LoaderCircle className="spin" aria-hidden />
+                  </div>
+                )}
+                <div ref={bottom} />
+              </div>
+            )}
+          </div>
+        </main>
+        <footer className="composer-area">
+          {voiceState !== "off" && (
+            <div className="voice-panel">
+              <span className="voice-indicator">
+                <AudioLines aria-hidden />
+              </span>
+              <div className="voice-panel-text">
+                <strong>
+                  {voiceState === "live"
+                    ? "Live conversation"
+                    : voiceState === "connecting"
+                      ? "Connecting to Gemini…"
+                      : "Voice paused"}
+                </strong>
+                <p>
+                  {voiceText ||
+                    "Ask naturally. Your charts and evidence will appear above."}
+                </p>
+              </div>
+              <div className="voice-level" aria-hidden>
+                {[0.4, 0.8, 0.6, 1, 0.7, 0.9, 0.5].map((factor, index) => (
+                  <i
+                    key={index}
+                    style={{ height: `${4 + level * factor * 24}px` }}
+                  />
+                ))}
+              </div>
+              {voiceState === "disconnected" ? (
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => void startVoice()}
+                >
+                  Reconnect
+                </Button>
+              ) : (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  aria-label={muted ? "Unmute microphone" : "Mute microphone"}
+                  aria-pressed={muted}
+                  onClick={() => setMuted(voice.current?.toggleMute() ?? false)}
+                >
+                  {muted ? <MicOff /> : <Mic />}
+                </Button>
+              )}
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label="Stop voice"
+                onClick={() => {
+                  voice.current?.stop();
+                  setVoiceState("off");
+                  setMuted(false);
+                  if (conversation) void loadMessages(conversation.id);
+                }}
+              >
+                <Square />
+              </Button>
+            </div>
+          )}
+          <form
+            className="composer"
+            onSubmit={(event) => {
+              event.preventDefault();
+              void ask();
+            }}
+          >
+            <Field>
+              <FieldLabel className="sr-only" htmlFor="question">
+                Ask a question about retail data
+              </FieldLabel>
+              <InputGroup>
+                <InputGroupTextarea
+                  ref={input}
+                  id="question"
+                  placeholder="Ask anything about your retail data…"
+                  value={question}
+                  maxLength={4000}
+                  disabled={busy}
+                  rows={2}
+                  aria-describedby="public-chat-hint"
+                  onChange={(event) => setQuestion(event.target.value)}
+                  onKeyDown={(event) => {
+                    if (
+                      event.key === "Enter" &&
+                      !event.shiftKey &&
+                      !event.nativeEvent.isComposing
+                    ) {
+                      event.preventDefault();
+                      void ask();
+                    }
+                  }}
+                />
+                <InputGroupAddon align="block-end">
+                  <Select
+                    value={source}
+                    disabled={busy || Boolean(conversation)}
+                    onValueChange={setSource}
+                  >
+                    <SelectTrigger aria-label="Data sources for new exploration">
+                      <Database aria-hidden />
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectItem value="all">All sources</SelectItem>
+                        <SelectItem value="bigquery">BigQuery</SelectItem>
+                        <SelectItem value="postgres">PostgreSQL</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                  <span className="composer-spacer" />
+                  <InputGroupButton
+                    size="sm"
+                    aria-label="Start live voice conversation"
+                    disabled={busy || loading}
+                    onClick={() => void startVoice()}
+                  >
+                    <AudioLines data-icon="inline-start" />
+                    <span>Voice</span>
+                  </InputGroupButton>
+                  {runId ? (
+                    <InputGroupButton
+                      size="icon-sm"
+                      aria-label="Stop analysis"
+                      onClick={() =>
+                        void api(`/runs/${runId}/cancel`, {
+                          method: "POST",
+                        }).catch((error) => toast.error(error.message))
+                      }
+                    >
+                      <Square />
+                    </InputGroupButton>
+                  ) : (
+                    <InputGroupButton
+                      size="icon-sm"
+                      variant="default"
+                      type="submit"
+                      aria-label="Send question"
+                      disabled={busy || !question.trim() || loading}
+                    >
+                      {starting ? (
+                        <LoaderCircle className="spin" />
+                      ) : (
+                        <ArrowUp />
+                      )}
+                    </InputGroupButton>
+                  )}
+                </InputGroupAddon>
+              </InputGroup>
+            </Field>
+          </form>
+          <div className="composer-hint" id="public-chat-hint">
+            <span>
+              <Globe2 aria-hidden />
+              Public workspace. Questions and answers are visible to everyone.
+            </span>
+            <span>
+              <Command aria-hidden />
+              Enter to send · Shift + Enter for a new line
+            </span>
+          </div>
+        </footer>
+      </div>
+    </div>
+  );
+}
+
+function TableIcon() {
+  return <Database aria-hidden />;
+}

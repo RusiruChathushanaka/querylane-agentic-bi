@@ -1,0 +1,27 @@
+{
+  "mode": "gemini",
+  "text_model": "gemini-3.8-flash",
+  "data": "synthetic fixtures; reference values independently aggregated in Python",
+  "cases": [
+    {
+      "id": "revenue-2026-01",
+      "question": "What is total revenue in January 2026? Alias the result revenue.",
+      "passed": true,
+      "elapsed_seconds": 63.2
+    },
+    {
+      "id": "revenue-2026-02",
+      "question": "What is total revenue in February 2026? Alias the result revenue.",
+      "passed": true,
+      "elapsed_seconds": 59.37
+    },
+    {
+      "id": "revenue-2026-03",
+      "question": "What is total revenue in March 2026? Alias the result revenue.",
+      "passed": true,
+      "elapsed_seconds": 69.81
+    }
+  ],
+  "passed": 3,
+  "total": 3
+}

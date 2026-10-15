@@ -1,0 +1,303 @@
+{
+  "backend": "https://agentic-bi-backend-wekihucn7q-as.a.run.app",
+  "data": "hosted BigQuery and PostgreSQL; independent Python seed references",
+  "cases": [
+    {
+      "id": "revenue-2026-01",
+      "question": "What is total revenue in January 2026? Alias the result revenue.",
+      "passed": true,
+      "conversation_id": "1cf595c763dd4bb39bf22cb6eec671e2",
+      "artifact_id": "1869ff5b9971468bb2652d50b8786a62",
+      "retrieval": "full-schema fallback (vector index or embedding unavailable)",
+      "elapsed_seconds": 26.52
+    },
+    {
+      "id": "revenue-2026-02",
+      "question": "What is total revenue in February 2026? Alias the result revenue.",
+      "passed": true,
+      "conversation_id": "d78b932dfecd45409d5c4c8c7984aa11",
+      "artifact_id": "bccf52e0761747fc8dc8d26686ad78b0",
+      "retrieval": "full-schema fallback (vector index or embedding unavailable)",
+      "elapsed_seconds": 26.78
+    },
+    {
+      "id": "revenue-2026-03",
+      "question": "What is total revenue in March 2026? Alias the result revenue.",
+      "passed": true,
+      "conversation_id": "27a5d8589adf4404b7034e32824674dd",
+      "artifact_id": "5fa559514cc7484494142d0b63d5a050",
+      "retrieval": "full-schema fallback (vector index or embedding unavailable)",
+      "elapsed_seconds": 21.11
+    },
+    {
+      "id": "revenue-2026-04",
+      "question": "What is total revenue in April 2026? Alias the result revenue.",
+      "passed": true,
+      "conversation_id": "3e07653ecfba42629c5bb84f3d7f23c9",
+      "artifact_id": "422ddce00af6422cbdc007518f55fab0",
+      "retrieval": "full-schema fallback (vector index or embedding unavailable)",
+      "elapsed_seconds": 22.58
+    },
+    {
+      "id": "revenue-2026-05",
+      "question": "What is total revenue in May 2026? Alias the result revenue.",
+      "passed": true,
+      "conversation_id": "2a1f6d4bc26c442b918123311b618a4c",
+      "artifact_id": "8ca4137b0c414b4886c8d51921a985dc",
+      "retrieval": "full-schema fallback (vector index or embedding unavailable)",
+      "elapsed_seconds": 19.31
+    },
+    {
+      "id": "revenue-2026-06",
+      "question": "What is total revenue in June 2026? Alias the result revenue.",
+      "passed": true,
+      "conversation_id": "a2944be00763480eaeb57991cf9b58b2",
+      "artifact_id": "f68b94eb8e0c4c96ad198654c9e05bac",
+      "retrieval": "full-schema fallback (vector index or embedding unavailable)",
+      "elapsed_seconds": 12.38
+    },
+    {
+      "id": "revenue-2026-07",
+      "question": "What is total revenue in July 2026? Alias the result revenue.",
+      "passed": true,
+      "conversation_id": "17d180be483f409b8e32240f1e44452b",
+      "artifact_id": "0289386a0c3a41c7a85709486e5da25c",
+      "retrieval": "full-schema fallback (vector index or embedding unavailable)",
+      "elapsed_seconds": 15.0
+    },
+    {
+      "id": "revenue-2026-08",
+      "question": "What is total revenue in August 2026? Alias the result revenue.",
+      "passed": true,
+      "conversation_id": "a0100ccb151b4c41a5a7237be4b806b2",
+      "artifact_id": "0860669215034109beeec4dc915aa829",
+      "retrieval": "full-schema fallback (vector index or embedding unavailable)",
+      "elapsed_seconds": 11.18
+    },
+    {
+      "id": "revenue-2026-09",
+      "question": "What is total revenue in September 2026? Alias the result revenue.",
+      "passed": true,
+      "conversation_id": "352b45f16b164734be679ae95b25ea1e",
+      "artifact_id": "c4353f977d5f4d28bced55bc201330a7",
+      "retrieval": "full-schema fallback (vector index or embedding unavailable)",
+      "elapsed_seconds": 11.45
+    },
+    {
+      "id": "region-North",
+      "question": "What is total revenue in North? Alias the result revenue.",
+      "passed": false,
+      "conversation_id": "5e023759e42744acbe5a5ff47a836086",
+      "errors": [
+        {
+          "code": "interrupted",
+          "message": "The worker stopped. Start a new turn; reconnecting will not rerun queries."
+        }
+      ],
+      "artifact_id": "a71646d5ed374f57ae087f1a7d840b02",
+      "retrieval": "full-schema fallback (vector index or embedding unavailable)",
+      "expected": [
+        {
+          "revenue": "29959.00"
+        }
+      ],
+      "actual": [
+        {
+          "revenue": "29959"
+        }
+      ],
+      "elapsed_seconds": 9.78
+    },
+    {
+      "id": "region-South",
+      "question": "What is total revenue in South? Alias the result revenue.",
+      "passed": true,
+      "conversation_id": "44c9ba110d4e4394b77d5295a7bbb249",
+      "artifact_id": "9790f3a3cfab4839918c5c3788ce8214",
+      "retrieval": "full-schema fallback (vector index or embedding unavailable)",
+      "elapsed_seconds": 11.49
+    },
+    {
+      "id": "region-East",
+      "question": "What is total revenue in East? Alias the result revenue.",
+      "passed": true,
+      "conversation_id": "826a70510df844bb8797e93a4f1f5777",
+      "artifact_id": "b7eed07ecd254ff4b80df26d9bade2a1",
+      "retrieval": "full-schema fallback (vector index or embedding unavailable)",
+      "elapsed_seconds": 12.96
+    },
+    {
+      "id": "region-West",
+      "question": "What is total revenue in West? Alias the result revenue.",
+      "passed": true,
+      "conversation_id": "cab78ec0d3f34fb89ff9df00aaa07ae1",
+      "artifact_id": "872455963b1b407daa08b1451880e6d8",
+      "retrieval": "full-schema fallback (vector index or embedding unavailable)",
+      "elapsed_seconds": 13.0
+    },
+    {
+      "id": "targets-2026-01",
+      "question": "Compare regional revenue with targets in January 2026. Return region, revenue, target_revenue.",
+      "passed": true,
+      "conversation_id": "7e600fb9b0844ec5827aa152789ae232",
+      "artifact_id": "83dbd00eed7a40f4a9327d775932c8fa",
+      "retrieval": "full-schema fallback (vector index or embedding unavailable)",
+      "elapsed_seconds": 24.24
+    },
+    {
+      "id": "targets-2026-02",
+      "question": "Compare regional revenue with targets in February 2026. Return region, revenue, target_revenue.",
+      "passed": true,
+      "conversation_id": "f9ab5ae5dc4147cfab582370797d560a",
+      "artifact_id": "4831f8a92c3747f4a6a81553506c6e26",
+      "retrieval": "full-schema fallback (vector index or embedding unavailable)",
+      "elapsed_seconds": 28.99
+    },
+    {
+      "id": "targets-2026-03",
+      "question": "Compare regional revenue with targets in March 2026. Return region, revenue, target_revenue.",
+      "passed": true,
+      "conversation_id": "fb3da6d3989a43188f077b3e3e3bffb7",
+      "artifact_id": "acc9ed6d3a3042baa1f5633657b68544",
+      "retrieval": "full-schema fallback (vector index or embedding unavailable)",
+      "elapsed_seconds": 13.92
+    },
+    {
+      "id": "targets-2026-04",
+      "question": "Compare regional revenue with targets in April 2026. Return region, revenue, target_revenue.",
+      "passed": true,
+      "conversation_id": "335a0e23e378432e95e5832507b58c0a",
+      "artifact_id": "c3fd175ca88b4dcb8703ce71ccfef08c",
+      "retrieval": "full-schema fallback (vector index or embedding unavailable)",
+      "elapsed_seconds": 14.25
+    },
+    {
+      "id": "targets-2026-05",
+      "question": "Compare regional revenue with targets in May 2026. Return region, revenue, target_revenue.",
+      "passed": true,
+      "conversation_id": "0b88bb1158674c89b2c86e1ffc5ef2ec",
+      "artifact_id": "8e9d031c9b7c4ec0a06a1bccba5fe10e",
+      "retrieval": "full-schema fallback (vector index or embedding unavailable)",
+      "elapsed_seconds": 17.59
+    },
+    {
+      "id": "targets-2026-06",
+      "question": "Compare regional revenue with targets in June 2026. Return region, revenue, target_revenue.",
+      "passed": true,
+      "conversation_id": "f19dc812c50246a2b4e104026b8ecb04",
+      "artifact_id": "ca4a593b646948a68598a9eb5e05a996",
+      "retrieval": "full-schema fallback (vector index or embedding unavailable)",
+      "elapsed_seconds": 21.44
+    },
+    {
+      "id": "targets-2026-07",
+      "question": "Compare regional revenue with targets in July 2026. Return region, revenue, target_revenue.",
+      "passed": true,
+      "conversation_id": "82357dfd89d64500bc98378161f2483d",
+      "artifact_id": "59bcb11f81a244c1b58da17c00136847",
+      "retrieval": "full-schema fallback (vector index or embedding unavailable)",
+      "elapsed_seconds": 14.32
+    },
+    {
+      "id": "targets-2026-08",
+      "question": "Compare regional revenue with targets in August 2026. Return region, revenue, target_revenue.",
+      "passed": true,
+      "conversation_id": "ca8cb9165dd347e388392363e3fa435a",
+      "artifact_id": "75b6190df87a4a2ead17a00f95320965",
+      "retrieval": "full-schema fallback (vector index or embedding unavailable)",
+      "elapsed_seconds": 20.96
+    },
+    {
+      "id": "targets-2026-09",
+      "question": "Compare regional revenue with targets in September 2026. Return region, revenue, target_revenue.",
+      "passed": true,
+      "conversation_id": "b66c7c88b9154a45bbb35fbb8e2cb911",
+      "artifact_id": "b1116c6af2b34bb486254eff3d60b3ff",
+      "retrieval": "full-schema fallback (vector index or embedding unavailable)",
+      "elapsed_seconds": 19.11
+    },
+    {
+      "id": "monthly-trend",
+      "question": "Show monthly revenue as a line chart. Return month and revenue.",
+      "passed": true,
+      "conversation_id": "ec5f2e72695a4d9b9b7e8bad090befba",
+      "artifact_id": "cadc489ae8074f9989224a00f4c64887",
+      "retrieval": "full-schema fallback (vector index or embedding unavailable)",
+      "elapsed_seconds": 13.13
+    },
+    {
+      "id": "categories",
+      "question": "Break down revenue by product category. Return category and revenue.",
+      "passed": true,
+      "conversation_id": "c4a8e2d8726f439299ab948301adc77d",
+      "artifact_id": "734c513580064a7f9d726f155c54ea14",
+      "retrieval": "full-schema fallback (vector index or embedding unavailable)",
+      "elapsed_seconds": 12.04
+    },
+    {
+      "id": "categories-table",
+      "question": "Show revenue by product category in a table. Return category and revenue.",
+      "passed": true,
+      "conversation_id": "e6147dc5c91540afb9413f4360ba0117",
+      "artifact_id": "0f5f0ec366d54e30a8616bde29a550b2",
+      "retrieval": "full-schema fallback (vector index or embedding unavailable)",
+      "elapsed_seconds": 23.38
+    },
+    {
+      "id": "customer-segments",
+      "question": "What is revenue by customer segment? Return segment and revenue.",
+      "passed": true,
+      "conversation_id": "ecc5395f541c4f998f59a8f10540f243",
+      "artifact_id": "14690c51dedd4481947f1f702cc440d9",
+      "retrieval": "full-schema fallback (vector index or embedding unavailable)",
+      "elapsed_seconds": 15.31
+    },
+    {
+      "id": "refunds",
+      "question": "What is the total refund amount? Alias it refund_amount.",
+      "passed": true,
+      "conversation_id": "e023da8627564e8a99a448acddcb7439",
+      "artifact_id": "d8dc09432a064a709107fccef8e037d1",
+      "retrieval": "full-schema fallback (vector index or embedding unavailable)",
+      "elapsed_seconds": 21.32
+    },
+    {
+      "id": "total-revenue",
+      "question": "What is total gross revenue? Alias it revenue.",
+      "passed": true,
+      "conversation_id": "126fa500c74c47b2993bd2034e8ce8bb",
+      "artifact_id": "3415d7924d6a4432ae79fcc793c62cbe",
+      "retrieval": "full-schema fallback (vector index or embedding unavailable)",
+      "elapsed_seconds": 9.85
+    },
+    {
+      "id": "revenue-kpi",
+      "question": "Show a KPI for total gross sales revenue. Alias it revenue.",
+      "passed": true,
+      "conversation_id": "be8c15b132de41118d5359a6fa2a443f",
+      "artifact_id": "8d20422c1cb545a28adf3058e4f382e5",
+      "retrieval": "full-schema fallback (vector index or embedding unavailable)",
+      "elapsed_seconds": 11.86
+    },
+    {
+      "id": "customers-table",
+      "question": "Count customers by segment. Return segment and customers.",
+      "passed": true,
+      "conversation_id": "abb124b846ff45fca3cb91a9eb7117aa",
+      "artifact_id": "2b7a842558ab46039b427b4b56b73421",
+      "retrieval": "full-schema fallback (vector index or embedding unavailable)",
+      "elapsed_seconds": 10.11
+    },
+    {
+      "id": "customers-chart",
+      "question": "Show customer counts by segment in a chart. Return segment and customers.",
+      "passed": true,
+      "conversation_id": "50b0d5f01c6c4787aa2d0e1e5f422e36",
+      "artifact_id": "802871f94cbe4ee9b16a98abaec0e43a",
+      "retrieval": "full-schema fallback (vector index or embedding unavailable)",
+      "elapsed_seconds": 11.2
+    }
+  ],
+  "passed": 30,
+  "total": 31
+}

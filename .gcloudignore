@@ -1,0 +1,14 @@
+.git
+.agents
+.codex
+**/node_modules
+**/.next
+**/.venv
+**/__pycache__
+**/.pytest_cache
+**/.ruff_cache
+**/.env
+**/.env.*
+**/*.log
+.DS_Store
+artifacts

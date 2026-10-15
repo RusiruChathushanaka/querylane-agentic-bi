@@ -1,0 +1,21 @@
+{
+  "mode": "gemini",
+  "text_model": "gemini-3.8-flash",
+  "data": "synthetic fixtures; reference values independently aggregated in Python",
+  "cases": [
+    {
+      "id": "revenue-2026-01",
+      "question": "What is total revenue in January 2026? Alias the result revenue.",
+      "passed": true,
+      "elapsed_seconds": 21.46
+    },
+    {
+      "id": "region-North",
+      "question": "What is total revenue in North? Alias the result revenue.",
+      "passed": true,
+      "elapsed_seconds": 10.3
+    }
+  ],
+  "passed": 2,
+  "total": 2
+}

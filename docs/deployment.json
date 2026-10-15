@@ -1,0 +1,25 @@
+{
+  "project": "project-e8b1593d-009a-4822-abf",
+  "region": "asia-southeast1",
+  "date": "2026-10-15",
+  "services": {
+    "agentic-bi-backend": {
+      "url": "https://agentic-bi-backend-wekihucn7q-as.a.run.app",
+      "ready_revision": "agentic-bi-backend-00005-rqk",
+      "service_account": "agentic-bi-backend@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend:1792075999",
+      "ready": true
+    },
+    "agentic-bi-frontend": {
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app",
+      "ready_revision": "agentic-bi-frontend-00001-6tf",
+      "service_account": "agentic-bi-frontend@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend:1792075355",
+      "ready": true
+    }
+  },
+  "firestore": "agentic-bi-demo",
+  "bigquery_dataset": "agentic_bi_demo",
+  "cloud_sql_instance": "agentic-bi-demo-pg",
+  "vector_dimensions": 768
+}
