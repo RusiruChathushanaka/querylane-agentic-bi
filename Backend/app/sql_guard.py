@@ -109,7 +109,9 @@ def validate_sql(
             raise AppError("Query contains a forbidden operation.", code="unsafe_sql")
         if isinstance(node, exp.Dot) and isinstance(node.expression, exp.Func):
             raise AppError("Schema-qualified or remote function calls are not allowed.", code="unsafe_sql")
-        if isinstance(node, exp.Func):
+        # SQLGlot models logical connectors as Func subclasses too. Their
+        # children still pass through this walk and the function allowlist.
+        if isinstance(node, exp.Func) and not isinstance(node, (exp.And, exp.Or)):
             name = node.name.upper() if isinstance(node, exp.Anonymous) else node.sql_name().upper()
             if name not in SAFE_FUNCTIONS:
                 raise AppError(f"Function {name} is not approved for demo queries.", code="unsafe_sql")

@@ -132,3 +132,24 @@ async def test_empty_results_are_complete():
         "bigquery", "SELECT order_id FROM orders WHERE month='1900-01'", "empty"
     )
     assert result.complete and result.rows == []
+
+
+@pytest.mark.parametrize("source,table", [("bigquery", "orders"), ("postgres", "customer_profiles")])
+def test_logical_filters_are_operators_not_unapproved_functions(source, table):
+    sql = (
+        f"SELECT * FROM {table} WHERE (customer_id = 'C1' OR customer_id = 'C2') AND customer_id IS NOT NULL"
+    )
+    guarded = validate_sql(sql, source, PROJECT, DATASET)
+    assert " AND " in guarded and " OR " in guarded
+
+
+@pytest.mark.parametrize(
+    "predicate",
+    [
+        "customer_id = 'C1' AND pg_sleep(10) = 0",
+        "customer_id = 'C1' OR pg_read_file('/etc/passwd') IS NOT NULL",
+    ],
+)
+def test_logical_filters_do_not_hide_unsafe_nested_calls(predicate):
+    with pytest.raises(AppError, match="not approved"):
+        validate_sql(f"SELECT * FROM customer_profiles WHERE {predicate}", "postgres", PROJECT, DATASET)
