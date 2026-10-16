@@ -38,12 +38,18 @@ class MemoryStore:
         *,
         order_by: str | None = None,
         descending: bool = False,
-        where: tuple[str, object] | None = None,
+        where: tuple[str, object] | tuple[str, str, object] | None = None,
         fields: list[str] | None = None,
     ) -> list[dict]:
         values = [v for (c, _), v in self.documents.items() if c == collection]
         if where:
-            values = [v for v in values if v.get(where[0]) == where[1]]
+            field, op, value = (where[0], "==", where[1]) if len(where) == 2 else where
+            if op == "==":
+                values = [v for v in values if v.get(field) == value]
+            elif op == ">":
+                values = [v for v in values if v.get(field) is not None and v[field] > value]
+            else:
+                raise ValueError("Unsupported storage filter.")
         if order_by:
             values.sort(key=lambda value: value[order_by], reverse=descending)
         if fields is not None:
@@ -63,6 +69,21 @@ class MemoryStore:
     async def close(self):
         pass
 
+    async def iter_documents(self, collection):
+        # Snapshot the identifiers; maintenance fences prevent new owned writes.
+        keys = [key for col, key in self.documents if col == collection]
+        for key in keys:
+            value = await self.get(collection, key)
+            if value is not None:
+                yield key, value
+
+    async def delete_tree(self, path):
+        async with self.lock:
+            for key in list(self.documents):
+                full = f"{key[0]}/{key[1]}"
+                if full == path or full.startswith(path + "/"):
+                    del self.documents[key]
+
 
 class FirestoreStore:
     def __init__(self, project: str, database: str, credentials=None):
@@ -80,6 +101,19 @@ class FirestoreStore:
     async def delete(self, collection: str, key: str) -> None:
         await asyncio.to_thread(self.client.collection(collection).document(key).delete)
 
+    async def iter_documents(self, collection):
+        # Separate bounded RPCs: deleting a page may take longer than a stream's
+        # deadline. Snapshot cursors remain valid after deleting that document.
+        query = self.client.collection(collection).order_by("__name__").limit(100)
+        while batch := await asyncio.to_thread(lambda: list(query.stream())):
+            for snapshot in batch:
+                yield snapshot.id, snapshot.to_dict()
+            query = query.start_after(batch[-1])
+
+    async def delete_tree(self, path):
+        ref = self.client.collection(path) if len(path.split("/")) % 2 else self.client.document(path)
+        await asyncio.to_thread(self.client.recursive_delete, ref)
+
     async def list(
         self,
         collection: str,
@@ -87,7 +121,7 @@ class FirestoreStore:
         *,
         order_by: str | None = None,
         descending: bool = False,
-        where: tuple[str, object] | None = None,
+        where: tuple[str, object] | tuple[str, str, object] | None = None,
         fields: list[str] | None = None,
     ) -> list[dict]:
         from google.cloud import firestore
@@ -96,7 +130,10 @@ class FirestoreStore:
         if where:
             from google.cloud.firestore_v1.base_query import FieldFilter
 
-            query = query.where(filter=FieldFilter(where[0], "==", where[1]))
+            field, op, value = (where[0], "==", where[1]) if len(where) == 2 else where
+            if op not in {"==", ">"}:
+                raise ValueError("Unsupported storage filter.")
+            query = query.where(filter=FieldFilter(field, op, value))
         if fields is not None:
             query = query.select(fields)
         if order_by:

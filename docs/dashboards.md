@@ -1,0 +1,45 @@
+# Shared dashboards
+
+Dashboards collect saved analytical results. Every visitor can create, view, rename, arrange, delete, and restore them without signing in. The interface states **Public — anyone can view and edit**. Guest tokens enforce edit limits and attribute changes internally; no identity or ownership is claimed. Do not enter confidential information.
+
+## Create and pin
+
+Open **Dashboards** from the workspace, Skills, or Settings. Create a named dashboard with an optional description. Names are trimmed, required, and limited to 80 characters; descriptions allow 500. Duplicate names are supported.
+
+Ask the analyst a question through text or voice. On a saved chart, KPI, or table choose **Pin to dashboard**, select a destination, review its scope and completeness, and confirm. The picker can create a dashboard inline. Creation and pinning are distinct requests: if the second fails, the empty dashboard remains available for Retry.
+
+A result can belong to several dashboards, with one card per artifact within each dashboard. Retrying does not duplicate it. An already-pinned result links to the dashboard, where Edit layout & cards → Save card view explicitly changes its presentation. A new deliberate pin after removal restores the card; replaying the old pin request does not resurrect it.
+
+## Saved views and exploration
+
+Pinning records chart family, date range, primary/visible measures, category order/Top N, scatter axes, highlights, and number precision. Source evidence and data stay in the original immutable artifact. Creating/pinning/viewing/arranging/unpinning runs **no source SQL or Gemini request**.
+
+The card uses saved analytical defaults even when a visitor's browser prefers a different chart type or comparison visibility. Theme, accent, density and reduced motion stay local. Compact cards expose exact values, series controls, exports and Expand; expanded charts expose the complete range/axis controls. Temporary exploration changes only the local view. Save card view in edit mode publishes a new default; editing card details can change its title, note, width, highlight default and precision.
+
+Card widths are Standard or Wide, with a single column on mobile. Use Earlier/Later for keyboard-accessible arrangement; order changes save immediately and announce position. Each card retains original query timestamps, source profile, completeness and join assumptions. A dashboard is not a synchronized database snapshot and does not combine unrelated card totals.
+
+PNG exports describe the current chart view; CSV exports the full saved result regardless of the displayed range or sampling. Existing limits, numerical rules and formula protection apply. Tables retain semantic headers and keyboard-scrollable overflow. A failed card has its own Retry state.
+
+## Shared edits and recovery
+
+Rename, layout, card edits, deletion and restoration check the current dashboard revision. A stale save returns `409 dashboard_conflict` and preserves the draft. Reload latest explicitly; another visitor's edit never silently replaces an open draft. Exact mutation retries reuse request IDs and do not charge quota twice. Unchanged saves do not increment the revision or consume mutation quota.
+
+Unpin removes the card only. Undo and Recently removed cards restore it within the recovery window, subject to available capacity. The source answer and copies on other boards remain intact. Dashboard deletion is soft; Recently deleted can restore its cards. Recovery defaults to 30 days. The configured limits default to 100 active dashboards, 20 cards per dashboard, 50 changes per guest/hour and 300 workspace changes/day (`DASHBOARD_*` in the backend environment example).
+
+All reads use FastAPI; there is no browser Firestore access. The bounded library reads metadata, not result pages. Visible cards load through a shared two-request queue with deduplication and subscriber-aware cancellation. Metadata refreshes on focus/navigation and through Reload latest; it never refreshes source data. A newer shared revision is announced without overwriting the current view.
+
+## Retention and operator maintenance
+
+`dashboard_artifact_refs` counts active and recoverable card references. Soft deletion keeps the count until an explicitly authorized purge. History reset preserves dashboards, retained artifact metadata/pages, Skills/revisions and capacity records while deleting unreferenced chat history. The card's original conversation may disappear, but data/SQL/assumptions/skill evidence and any recorded question remain available.
+
+Follow [the deployment guide](deployment-guide.md) before operator actions. `reset-history`, `purge-dashboards` and `clear-maintenance` have no HTTP endpoint. Reset/purge acquire a shared maintenance fence and drain in-flight analytics/author leases. New analysis and dashboard writes receive a maintenance response until completion. A failed command deliberately leaves the fence active; stop/inspect the old operator process, fix the issue, then use the explicit recovery command before retrying. Never clear it while a previous maintenance process could still be deleting documents.
+
+Firestore scans use separate cursor-paginated RPCs, so deletion of a cursor document does not skip the next page or keep a stream open across slow deletions. Recently deleted/removed queries filter and order on `recover_until`, using its standard single-field index; active dashboard discovery uses the single `deleted` equality filter and metadata projection. There is no new composite-index requirement for these queries under normal Standard-edition indexing.
+
+## Interfaces and evidence
+
+See [the implementation plan](dashboard-plan.md) for the full route table and [ADR 0005](adr/0005-saved-result-dashboards.md) for the main decisions. Mutation bodies include `request_id` and, except creation, `expected_revision`. DELETE supplies them as query parameters. Exact request IDs are retained for 24 hours; cleanup of expired records is explicit.
+
+New artifacts record the actual question, run and analysis IDs. Historical artifacts remain readable without these fields. No public connection/credential management, automatic refresh, arbitrary chart expressions, agent write tools, or source-data mutation is added.
+
+This feature is implemented and verified locally; see [validation](validation.md#shared-dashboards--local-implementation-2026-10-16). A Cloud Run release and GitHub publication are separate requested actions; preserve the larger `timeseries` profile on a future release. Local emulator tests use a demo project and `(default)` because the emulator does not support multiple named databases; production continues to target the existing `agentic-bi-demo` database.

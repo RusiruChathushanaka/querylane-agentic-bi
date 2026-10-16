@@ -1,0 +1,24 @@
+{
+  "verified_at": "2026-10-16T21:28:31.269071+05:30",
+  "backend": "http://127.0.0.1:8006",
+  "checks": {
+    "metadata_has_no_preview_rows": true,
+    "idempotent_pin": true,
+    "shared_public_result": true,
+    "stale_revision_denied": true,
+    "unpin_only_one_board": true,
+    "old_pin_retry_cannot_resurrect": true,
+    "restore_card": true,
+    "artifact_evidence_unchanged": true,
+    "saved_csv_available": true,
+    "dashboard_restore_keeps_card": true
+  },
+  "created_dashboards": [
+    "acaec4cd14c4401c9d712fd83793cbc3",
+    "5dabe9064dcf43f9a8309318f0676d75"
+  ],
+  "source_queries_requested": false,
+  "model_calls_requested": false,
+  "cleanup": "Verification dashboards soft-deleted; recovery references remain until an authorized expiry purge.",
+  "passed": true
+}

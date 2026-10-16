@@ -75,3 +75,13 @@ Author sessions logically expire after six hours. An operator cleanup command re
 ## Saved-result chart presentation
 
 The [chart presentation service](charts.md) reads immutable artifact pages without executing source SQL or invoking models. It validates optional measure metadata, computes deterministic comparisons on the full selected saved result, and bounds plotted output to 2,000 observations. The chart-data and CSV endpoints retain existing query/fusion resource limits and public visibility. Presentation preferences and exploration controls remain local; historical artifact documents remain unchanged. PNG export runs in the browser with native SVG/canvas APIs.
+
+## Shared saved-result dashboards
+
+The Dashboards module accepts validated presentation state and immutable artifact references, with no connector or AI dependency. Parent dashboard revisions serialize public edits; stable request IDs make lost-response retries idempotent. Child items own card metadata/view/width, while the parent owns order. Active/recoverable cards retain their artifacts through reference records. Source evidence and saved pages are never duplicated or rewritten. See [dashboard usage](dashboards.md) and [ADR 0005](adr/0005-saved-result-dashboards.md).
+
+Firestore adds `dashboards` with `items`, `dashboard_artifact_refs` and `dashboard_requests`, plus capacity/maintenance records in `system` and counters in `quotas`. Reads remain backend-only. Recently deleted queries use the `recover_until` single-field range/order index; active summaries use the `deleted` equality index.
+
+An operator-only maintenance fence is read transactionally by new analysis/conversation/author leases and dashboard mutations. Reset drains bounded active work, then removes only unreferenced artifacts and history. Retained result pages, dashboards and Skills survive. Failed maintenance stays fenced for explicit inspection/recovery. Expired card/dashboard purge releases references without deleting source data or implicitly refreshing results.
+
+Conversation and dashboard cards share the chart renderer and versioned view contract. Saved dashboard scope/series/precision/highlights override browser analytical defaults, while themes and motion remain personal. Metadata-only artifact reads, IntersectionObserver visibility and a shared two-request queue avoid bulk preview downloads. Expanded charts retain all controls and per-card exports.

@@ -277,6 +277,9 @@ class AnalysisService:
                 f"artifacts/{artifact_id}/pages", str(page_index), {"index": page_index, "rows": page}
             )
         value = artifact.model_dump(mode="json") | {
+            "question": question,
+            "analysis_id": analysis_id,
+            "run_id": lease["run_id"],
             "data_profile": self.settings.data_profile,
             "data_coverage": self.connectors.coverage,
             "ai": model_evidence(self.settings),

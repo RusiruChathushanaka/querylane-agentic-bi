@@ -29,6 +29,7 @@ import {
   Radio,
   Search,
   Settings2,
+  PanelsTopLeft,
   ShieldCheck,
   Square,
   Target,
@@ -848,6 +849,11 @@ export default function Workspace() {
       </nav>
       <div className="sidebar-footer">
         <Separator />
+        <Button asChild variant="ghost" className="workspace-settings-link">
+          <Link href="/dashboards">
+            <PanelsTopLeft data-icon="inline-start" /> Dashboards
+          </Link>
+        </Button>
         <Button asChild variant="ghost" className="workspace-settings-link">
           <Link href="/skills">
             <BookOpen data-icon="inline-start" /> Skills library

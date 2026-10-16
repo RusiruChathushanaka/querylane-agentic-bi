@@ -23,6 +23,7 @@ from app.analysis import AnalysisService
 from app.chart_presentation import csv_line, present, saved_rows
 from app.config import Settings, get_settings
 from app.connectors import Connectors
+from app.dashboards import Dashboards, dashboard_router
 from app.errors import AppError
 from app.fixtures import SOURCE_TABLES
 from app.model_selection import TEXT_MODELS, resolve_text_model
@@ -42,6 +43,7 @@ def create_app(settings: Settings | None = None, store_override=None, credential
     settings = settings or get_settings()
     settings.validate_runtime()
     signer = URLSafeTimedSerializer(settings.guest_signing_key, salt="agentic-bi-guest-v1")
+    chart_slots = asyncio.Semaphore(2)
 
     @asynccontextmanager
     async def lifespan(app):
@@ -67,6 +69,7 @@ def create_app(settings: Settings | None = None, store_override=None, credential
             ai=ai,
             analysis=analysis,
             credentials=credentials,
+            dashboards=Dashboards(store, settings, chart_slots),
         )
         try:
             yield
@@ -80,7 +83,7 @@ def create_app(settings: Settings | None = None, store_override=None, credential
     app.add_middleware(
         CORSMiddleware,
         allow_origins=settings.origins,
-        allow_methods=["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
+        allow_methods=["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
         allow_headers=["Authorization", "Content-Type", "Last-Event-ID"],
         expose_headers=["X-Request-ID"],
     )
@@ -144,6 +147,7 @@ def create_app(settings: Settings | None = None, store_override=None, credential
 
     app.include_router(author_router(guest))
     app.include_router(skill_router(guest))
+    app.include_router(dashboard_router(guest))
 
     @app.get("/health/live")
     async def live():
@@ -312,11 +316,13 @@ def create_app(settings: Settings | None = None, store_override=None, credential
         )
 
     @app.get("/api/v1/artifacts/{artifact_id}")
-    async def artifact(artifact_id: str, request: Request):
+    async def artifact(artifact_id: str, request: Request, metadata_only: bool = False):
         store = request.app.state.services.store
         artifact = await store.get("artifacts", artifact_id)
         if not artifact:
             raise AppError("Result not found.", 404, "not_found")
+        if metadata_only:
+            return artifact | {"rows": []}
         rows = []
         for index in range(artifact["page_count"]):
             page = await store.get(f"artifacts/{artifact_id}/pages", str(index))
@@ -324,8 +330,6 @@ def create_app(settings: Settings | None = None, store_override=None, credential
             if len(rows) >= settings.preview_rows:
                 break
         return artifact | {"rows": rows[: settings.preview_rows]}
-
-    chart_slots = asyncio.Semaphore(2)
 
     @app.get("/api/v1/artifacts/{artifact_id}/chart-data")
     async def chart_data(

@@ -1,0 +1,151 @@
+{
+  "verified_at": "2026-10-16T16:22:06.290636+00:00",
+  "release_status": "Local implementation only; no Cloud Run deployment or GitHub push",
+  "frontend": "http://127.0.0.1:3005",
+  "backend": "http://127.0.0.1:8006",
+  "environment": {
+    "sources": "deterministic local timeseries fixtures",
+    "ai": "fixture; no live models",
+    "storage": "Firestore emulator demo-querylane/(default)",
+    "cloud_database_inspected_read_only": {
+      "database": "agentic-bi-demo",
+      "edition": "STANDARD",
+      "type": "FIRESTORE_NATIVE",
+      "location": "asia-southeast1"
+    }
+  },
+  "checks": {
+    "shared_library_and_five_named_dashboards": true,
+    "monthly_45_daily_1369_kpi_bar_and_table_cards": true,
+    "same_artifact_on_multiple_dashboards": true,
+    "selected_2024_scope_has_12_months_after_reload": true,
+    "inline_dashboard_creation_then_pin": true,
+    "already_pinned_action_links_to_saved_card": true,
+    "unpin_undo_and_recently_removed_restore": true,
+    "library_delete_and_restore": true,
+    "second_anonymous_visitor_shared_access": true,
+    "stale_editor_preserves_local_draft": true,
+    "keyboard_reorder_restores_focus_and_announces_position": true,
+    "card_width_note_highlights_precision_persist": true,
+    "original_chat_unavailable_after_reset_with_saved_evidence_retained": true,
+    "failed_saved_page_isolated_to_one_card_then_retry_recovers": true,
+    "expanded_view_and_actual_png_download_visually_inspected": true,
+    "csv_contains_full_saved_result_not_chart_scope": true,
+    "metadata_only_lazy_loading_and_bounded_reader": true,
+    "all_four_accents_light_dark_reduced_motion": true,
+    "mobile_390_no_page_overflow": true,
+    "react_saved_view_state_inspected": true
+  },
+  "accessibility": {
+    "library-final": {
+      "counts": {
+        "inapplicable": 51,
+        "incomplete": 0,
+        "passes": 38,
+        "violations": 0
+      },
+      "incomplete_rules": []
+    },
+    "detail-final": {
+      "counts": {
+        "inapplicable": 49,
+        "incomplete": 1,
+        "passes": 40,
+        "violations": 0
+      },
+      "incomplete_rules": [
+        "color-contrast"
+      ]
+    },
+    "mobile": {
+      "counts": {
+        "inapplicable": 47,
+        "incomplete": 1,
+        "passes": 42,
+        "violations": 0
+      },
+      "incomplete_rules": [
+        "color-contrast"
+      ]
+    },
+    "five-mobile": {
+      "counts": {
+        "inapplicable": 41,
+        "incomplete": 1,
+        "passes": 48,
+        "violations": 0
+      },
+      "incomplete_rules": [
+        "color-contrast"
+      ]
+    },
+    "light-mobile": {
+      "counts": {
+        "inapplicable": 47,
+        "incomplete": 1,
+        "passes": 42,
+        "violations": 0
+      },
+      "incomplete_rules": [
+        "color-contrast"
+      ]
+    }
+  },
+  "downloads": {
+    "png": "Native browser download, visually inspected; January\u2013December 2024, 12 plotted, units/legend/scope included",
+    "csv_rows": 45,
+    "csv_revenue_usd": "354425112.20"
+  },
+  "automated": {
+    "backend": {
+      "passed": 215,
+      "skipped": 1
+    },
+    "dashboard_memory_and_firestore_emulator": {
+      "passed": 35,
+      "skipped": 1
+    },
+    "frontend": {
+      "passed": 25
+    },
+    "ruff": "passed",
+    "eslint": "passed, no warnings",
+    "typescript": "passed",
+    "production_build": "passed"
+  },
+  "next_diagnostics": {
+    "get_compilation_issues": {
+      "issues": []
+    },
+    "get_errors": {
+      "configErrors": [],
+      "sessionErrors": []
+    },
+    "get_routes": {
+      "appRouter": [
+        "/",
+        "/api/config",
+        "/api/health",
+        "/dashboards",
+        "/dashboards/[id]",
+        "/favicon.ico",
+        "/icon.svg",
+        "/settings",
+        "/skills",
+        "/skills/[id]/revisions/[revision]"
+      ]
+    }
+  },
+  "related_reports": [
+    "dashboards-api.json",
+    "dashboards-reset.json"
+  ],
+  "limitations": [
+    "Firestore emulator uses (default); named-database IAM/index behavior requires hosted release checks",
+    "SVG contrast has automated manual-review uncertainty",
+    "Full screen-reader and Safari/Firefox testing unperformed",
+    "Physical microphone input and live models not retested for this saved-artifact feature",
+    "No Cloud Run deployment or GitHub publication requested for this implementation"
+  ],
+  "passed": true
+}

@@ -3,6 +3,7 @@
 .codex
 **/node_modules
 **/.next
+**/.next-*
 **/.venv
 **/__pycache__
 **/.pytest_cache

@@ -1,0 +1,32 @@
+{
+  "environment": "local Firestore emulator only, demo-querylane/(default)",
+  "checks": {
+    "all_five_artifacts_and_pages_unchanged": true,
+    "dashboards_unchanged": true,
+    "unretained_artifact_removed": true,
+    "unretained_pages_removed": true,
+    "skills_preserved": true,
+    "conversations_removed": true,
+    "maintenance_cleared": true,
+    "five_cards_readable_without_original_chats": true
+  },
+  "reset_result": {
+    "preserved_artifacts": 5,
+    "removed_artifacts": 1
+  },
+  "artifact_digests_before": {
+    "af5d74a662794e0aa2f8db92a3bc359c": "e7d0d12d4fb016b2f88e03e54cb512e702293a8461bc53a7fd464c10c004e008",
+    "69e611a3c48d49b4989c484cdb53abcd": "87cd431e8891e74a1e16134cb44fc126ac02b4abb4560badfc00a7c3ff4c6319",
+    "4e7dc45fd2e648af97b07cc12d2901f8": "f080f486f0c3a5e87d7079240d88648e97ec4f91b4c15c8273196bab220eb729",
+    "07115632e58243d0a6b43442c80e6335": "a97b6d4dd9eaf4c2f33906134fe7b545ab62afa80be55858cd8b260de0e69cba",
+    "abb8922aed4b4404a93a6d319c978773": "64db2ed113dbcd4a458abedd2994fb28a723804697317fb2e983f2b3caf9d949"
+  },
+  "artifact_digests_after": {
+    "af5d74a662794e0aa2f8db92a3bc359c": "e7d0d12d4fb016b2f88e03e54cb512e702293a8461bc53a7fd464c10c004e008",
+    "69e611a3c48d49b4989c484cdb53abcd": "87cd431e8891e74a1e16134cb44fc126ac02b4abb4560badfc00a7c3ff4c6319",
+    "4e7dc45fd2e648af97b07cc12d2901f8": "f080f486f0c3a5e87d7079240d88648e97ec4f91b4c15c8273196bab220eb729",
+    "07115632e58243d0a6b43442c80e6335": "a97b6d4dd9eaf4c2f33906134fe7b545ab62afa80be55858cd8b260de0e69cba",
+    "abb8922aed4b4404a93a6d319c978773": "64db2ed113dbcd4a458abedd2994fb28a723804697317fb2e983f2b3caf9d949"
+  },
+  "passed": true
+}

@@ -44,6 +44,8 @@ This preview uses an operator access token only in memory. Restart it when that 
 
 ## Included behavior
 
+- Public [dashboard library](docs/dashboards.md): create shared dashboards, pin saved chart/KPI/table views, arrange cards, and recover removed items. Pinning/viewing runs no new analysis. Implemented locally; cloud release follows the deployment guide.
+
 - [Expanded retail history](docs/retail-timeseries.md): 573,348 orders across 2023–2026, 1.3 million line items, dated refunds, stores, promotions, and a daily calendar. Reproducible Parquet generation, validation, insert-only cloud upload, and date-range extension scripts preserve the original demo tables.
 
 - Shared conversations, follow-ups, immutable result references, forks, and share links.

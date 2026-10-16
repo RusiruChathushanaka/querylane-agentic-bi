@@ -1,0 +1,124 @@
+"""Operator-only, reference-aware cleanup. Failed operations stay fenced for recovery."""
+
+import asyncio
+import time
+import uuid
+
+from app.errors import AppError
+from app.repository import now_iso
+
+MAINTENANCE = ("system", "history_maintenance")
+
+
+def check_maintenance(value):
+    if value and value.get("active"):
+        raise AppError("Workspace maintenance is in progress. Retry shortly.", 503, "maintenance")
+
+
+async def enter_maintenance(store, operation):
+    owner = uuid.uuid4().hex
+
+    def claim(docs):
+        check_maintenance(docs[MAINTENANCE])
+        return {
+            MAINTENANCE: {"active": True, "operation": operation, "owner": owner, "started_at": now_iso()}
+        }, owner
+
+    return await store.atomic([MAINTENANCE], claim)
+
+
+async def clear_maintenance(store, owner=None):
+    def release(docs):
+        current = docs[MAINTENANCE]
+        if owner is not None and (not current or current.get("owner") != owner):
+            raise AppError("Maintenance ownership changed.", 409, "maintenance_conflict")
+        return {MAINTENANCE: {"active": False, "finished_at": now_iso()}}, None
+
+    await store.atomic([MAINTENANCE], release)
+
+
+async def wait_for_idle(store, timeout=240):
+    deadline = time.monotonic() + timeout
+    while True:
+        active = False
+        for collection in ("conversations", "skill_author_sessions"):
+            async for _, value in store.iter_documents(collection):
+                if value.get("active_run") and value.get("lease_until", 0) > time.time():
+                    active = True
+                    break
+        if not active:
+            return
+        if time.monotonic() >= deadline:
+            raise AppError(
+                "Active work did not drain. Maintenance remains fenced; inspect and recover explicitly.",
+                409,
+                "maintenance_busy",
+            )
+        await asyncio.sleep(min(1, max(0, deadline - time.monotonic())))
+
+
+async def reset_history(store, *, timeout=240):
+    owner = await enter_maintenance(store, "reset-history")
+    # Do not clear the fence on failure: an operator must inspect an interrupted reset.
+    await wait_for_idle(store, timeout)
+    kept = set()
+    async for artifact_id, ref in store.iter_documents("dashboard_artifact_refs"):
+        if ref.get("count", 0) > 0:
+            kept.add(artifact_id)
+    removed = 0
+    async for artifact_id, _ in store.iter_documents("artifacts"):
+        if artifact_id not in kept:
+            await store.delete_tree(f"artifacts/{artifact_id}")
+            removed += 1
+    for collection in (
+        "conversations",
+        "runs",
+        "adk_sessions",
+        "voice_resumptions",
+        "quotas",
+        "skill_author_sessions",
+    ):
+        await store.delete_tree(collection)
+    await clear_maintenance(store, owner)
+    return {"preserved_artifacts": len(kept), "removed_artifacts": removed}
+
+
+async def purge_dashboards(store, *, timeout=240, now=None):
+    owner = await enter_maintenance(store, "purge-dashboards")
+    await wait_for_idle(store, timeout)
+    stamp = time.time() if now is None else now
+    removed = 0
+    async for board_id, board in store.iter_documents("dashboards"):
+        expired_board = board.get("deleted") and board.get("recover_until", float("inf")) <= stamp
+        async for item_id, item in store.iter_documents(f"dashboards/{board_id}/items"):
+            if not expired_board and not (
+                item.get("removed") and item.get("recover_until", float("inf")) <= stamp
+            ):
+                continue
+            item_key = (f"dashboards/{board_id}/items", item_id)
+            ref_key = ("dashboard_artifact_refs", item["artifact_id"])
+
+            def purge(docs):
+                if not docs[MAINTENANCE] or docs[MAINTENANCE].get("owner") != owner:
+                    raise AppError("Maintenance ownership changed.", 409)
+                if not docs[item_key]:
+                    return {}, None
+                count = (docs[ref_key] or {}).get("count", 0)
+                if count < 1:
+                    raise AppError(
+                        "Retained artifact references are inconsistent; inspect before purging.", 409
+                    )
+                return {
+                    item_key: None,
+                    ref_key: {"id": item["artifact_id"], "count": count - 1} if count > 1 else None,
+                }, None
+
+            await store.atomic([MAINTENANCE, item_key, ref_key], purge)
+            removed += 1
+        if expired_board:
+            await store.delete_tree(f"dashboards/{board_id}")
+    async for request_id, request in store.iter_documents("dashboard_requests"):
+        if request.get("expires_at", float("inf")) <= stamp:
+            await store.delete("dashboard_requests", request_id)
+    await clear_maintenance(store, owner)
+    return {"purged_items": removed}

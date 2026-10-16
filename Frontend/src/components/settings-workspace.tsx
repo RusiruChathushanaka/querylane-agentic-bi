@@ -285,6 +285,9 @@ export function SettingsWorkspace() {
         </Button>
         <div className="sidebar-label">YOUR PREFERENCES</div>
         <Button asChild variant="ghost">
+          <Link href="/dashboards">Dashboards</Link>
+        </Button>
+        <Button asChild variant="ghost">
           <Link href="/skills">Skills library</Link>
         </Button>
         <LayoutGroup id="settings-navigation">
@@ -585,8 +588,24 @@ export function SettingsWorkspace() {
                         ["line", "Line chart"],
                       ]}
                     />
-                    <SwitchSetting id="chartHighlights" label="Automatic chart highlights" description="Emphasize peaks and leading values with factual insight chips." value={p.chartHighlights} onChange={(value) => updatePreference("chartHighlights", value)} />
-                    <SwitchSetting id="chartComparisons" label="Show chart comparisons" description="Display available target and comparison series by default." value={p.chartComparisons} onChange={(value) => updatePreference("chartComparisons", value)} />
+                    <SwitchSetting
+                      id="chartHighlights"
+                      label="Automatic chart highlights"
+                      description="Emphasize peaks and leading values with factual insight chips."
+                      value={p.chartHighlights}
+                      onChange={(value) =>
+                        updatePreference("chartHighlights", value)
+                      }
+                    />
+                    <SwitchSetting
+                      id="chartComparisons"
+                      label="Show chart comparisons"
+                      description="Display available target and comparison series by default."
+                      value={p.chartComparisons}
+                      onChange={(value) =>
+                        updatePreference("chartComparisons", value)
+                      }
+                    />
                     <ChoiceSetting
                       id="decimals"
                       label="Decimal places"

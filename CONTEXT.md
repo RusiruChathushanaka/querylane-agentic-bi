@@ -58,3 +58,15 @@ _Avoid_: Net revenue, profit
 
 - **Chart Presentation**: A bounded view of an immutable Result Artifact. Range selection, Top N, and sampling change display only; summaries use the full selected saved rows, and CSV exports all saved rows.
 - **Measure Metadata**: Validated units, rate scale, additivity, and comparator relationships used for formatting and factual chart insights; it cannot authorize queries or tools.
+
+**Dashboard**: A named, publicly editable collection of saved analytical cards. Opening it does not refresh its source data.
+_Avoid_: Live report, private workspace
+
+**Dashboard Item**: One retained artifact reference and its validated saved chart view, display title/note, width, and position within a dashboard. Unpinning removes this card, not its result.
+_Avoid_: New query, copied dataset
+
+**Saved Chart View**: A versioned presentation choice over an immutable artifact: chart family, range, measures, order, axes, highlights, and precision. Temporary exploration becomes shared only after an explicit save.
+_Avoid_: SQL filter, current database snapshot
+
+**Retained Artifact**: A result protected from history cleanup while an active or recoverable dashboard item references it. Its saved pages, query evidence, assumptions, and skill references remain inspectable after the original chat is removed.
+_Avoid_: Refreshed result, duplicated rows

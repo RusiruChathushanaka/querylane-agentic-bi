@@ -48,6 +48,8 @@ class Repository:
         return result
 
     async def create_conversation(self, title: str, source: str, parent: str | None = None):
+        from app.maintenance import MAINTENANCE, check_maintenance
+
         conversation_id = uuid.uuid4().hex
         conversation = {
             "id": conversation_id,
@@ -63,7 +65,12 @@ class Repository:
             "skill_ids": [],
             "skills_revision": 0,
         }
-        await self.store.put("conversations", conversation_id, conversation)
+
+        def create(docs):
+            check_maintenance(docs[MAINTENANCE])
+            return {("conversations", conversation_id): conversation}, None
+
+        await self.store.atomic([MAINTENANCE], create)
         return conversation
 
     async def messages(self, conversation_id: str):
@@ -99,6 +106,7 @@ class Repository:
         voice: bool = False,
         model: str | None = None,
     ):
+        from app.maintenance import MAINTENANCE, check_maintenance
         from app.model_selection import resolve_text_model
 
         text_model = resolve_text_model(self.settings, model)
@@ -113,7 +121,7 @@ class Repository:
         ]
         if voice:
             quotas.append((f"voice_{day}", self.settings.voice_daily_limit))
-        keys = [conversation_key, run_key] + [("quotas", key) for key, _ in quotas]
+        keys = [conversation_key, run_key, MAINTENANCE] + [("quotas", key) for key, _ in quotas]
 
         def mutate(docs):
             existing = docs[run_key]
@@ -123,6 +131,7 @@ class Repository:
                         "Idempotency key already belongs to another question.", 409, "idempotency_conflict"
                     )
                 return {}, (existing, False)
+            check_maintenance(docs[MAINTENANCE])
             conversation = docs[conversation_key]
             if not conversation:
                 raise AppError("Conversation not found.", 404, "not_found")

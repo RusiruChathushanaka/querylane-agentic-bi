@@ -2,6 +2,7 @@ import secrets
 from functools import lru_cache
 from typing import Literal
 
+from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -47,6 +48,11 @@ class Settings(BaseSettings):
     analysis_timeout_seconds: int = 180
     lease_seconds: int = 45
     skill_catalog_limit: int = 100
+    dashboard_limit: int = Field(default=100, ge=1, le=1000)
+    dashboard_item_limit: int = Field(default=20, ge=1, le=20)
+    dashboard_guest_hourly_limit: int = Field(default=50, ge=1)
+    dashboard_workspace_daily_limit: int = Field(default=300, ge=1)
+    dashboard_recovery_days: int = Field(default=30, ge=1, le=365)
     skill_guest_hourly_limit: int = 20
     skill_workspace_daily_limit: int = 100
     author_guest_hourly_limit: int = 3

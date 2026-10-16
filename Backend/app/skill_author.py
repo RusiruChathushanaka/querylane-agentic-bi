@@ -10,6 +10,7 @@ from fastapi import APIRouter, Depends, Request
 from pydantic import Field
 
 from app.errors import AppError
+from app.maintenance import MAINTENANCE, check_maintenance
 from app.models import StrictModel
 from app.repository import check_lease, now_iso
 from app.skills import SkillContent
@@ -84,11 +85,12 @@ class SkillAuthor:
             (f"author_create_guest_{guest_id}_{hour}", self.settings.author_guest_hourly_limit),
             (f"author_create_workspace_{hour[:8]}", self.settings.author_workspace_daily_limit),
         ]
-        keys = [doc_key] + [("quotas", name) for name, _ in quotas]
+        keys = [doc_key, MAINTENANCE] + [("quotas", name) for name, _ in quotas]
 
         def mutate(docs):
             if docs[doc_key]:
                 return {}, snapshot(owned(docs[doc_key], guest_id))
+            check_maintenance(docs[MAINTENANCE])
             updates = self.quota_updates(docs, quotas)
             value = {
                 "id": session_id,
@@ -136,6 +138,7 @@ class SkillAuthor:
         ]
 
         def mutate(docs):
+            check_maintenance(docs[MAINTENANCE])
             value = owned(docs[key], guest_id)
             self.editable(value)
             self.idle(value)
@@ -154,7 +157,7 @@ class SkillAuthor:
             }
             return updates | {key: value}, (lease, value)
 
-        return await self.store.atomic([key] + [("quotas", q) for q, _ in quotas], mutate)
+        return await self.store.atomic([key, MAINTENANCE] + [("quotas", q) for q, _ in quotas], mutate)
 
     @staticmethod
     def idle(value):
@@ -189,6 +192,8 @@ class SkillAuthor:
         key = (COLLECTION, session_id)
 
         def operation(docs):
+            if not lease:
+                check_maintenance(docs[MAINTENANCE])
             value = owned(docs[key], guest_id)
             self.editable(value)
             if lease:
@@ -199,7 +204,7 @@ class SkillAuthor:
             value["updated_at"] = now_iso()
             return {key: value}, snapshot(value)
 
-        return await self.store.atomic([key], operation)
+        return await self.store.atomic([key, MAINTENANCE], operation)
 
     def update_budget(self, value):
         if value["updates"] >= self.settings.author_update_limit:

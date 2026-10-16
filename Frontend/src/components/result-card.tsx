@@ -42,7 +42,6 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { api } from "@/lib/api";
 import type { Artifact } from "@/lib/types";
 import { usePreferences } from "@/hooks/use-preferences";
 import { AnimatedNumber } from "@/components/motion/animated-number";
@@ -50,6 +49,10 @@ import { motion } from "motion/react";
 import { useAppMotion } from "@/hooks/use-app-motion";
 import { SavedCsvDownload } from "@/components/charts/saved-csv-download";
 import InsightfulChart from "@/components/charts/insightful-chart";
+import { PinToDashboard } from "@/components/pin-to-dashboard";
+import { initialChartView } from "@/lib/chart-view-state";
+import { savedResult } from "@/lib/saved-result-loader";
+import type { ChartCapture, ChartViewState } from "@/lib/dashboard-types";
 import { formatMeasure } from "@/lib/chart-format";
 
 const MotionCardContent = motion.create(CardContent);
@@ -72,14 +75,21 @@ function display(value: unknown, format = "number", decimals = 2) {
 export default function ResultCard({
   artifact,
   onExplore,
+  initialState,
+  onCapture,
+  allowPin = true,
 }: {
+  initialState?: ChartViewState;
+  onCapture?: (capture: ChartCapture) => void;
+  allowPin?: boolean;
   artifact: Artifact;
   onExplore?: (question: string) => void;
 }) {
   const { preferences } = usePreferences();
   const { reduced } = useAppMotion();
-  const decimals = Number(preferences.decimals);
-  const [view, setView] = useState<string | null>(null);
+  const decimals = initialState?.decimals ?? Number(preferences.decimals);
+  const [captured, setCaptured] = useState<ChartCapture | null>(null);
+  const [view, setView] = useState<string | null>(initialState?.view ?? null);
   const [page, setPage] = useState(0);
   const [tableRows, setTableRows] = useState(artifact.rows.slice(0, 250));
   const [tableError, setTableError] = useState("");
@@ -94,7 +104,7 @@ export default function ResultCard({
   const ys = artifact.visualization.y.length
     ? artifact.visualization.y.filter((column) => numeric.includes(column))
     : numeric.slice(0, 2);
-  const chartable = Boolean(x && ys.length && artifact.rows.length);
+  const chartable = Boolean(x && ys.length && artifact.row_count);
   const pieable =
     chartable &&
     artifact.complete &&
@@ -125,10 +135,12 @@ export default function ResultCard({
       : "table";
 
   useEffect(() => {
-    if (selected !== "table" || !artifact.page_count) return;
+    if (!["table", "kpi"].includes(selected) || !artifact.page_count) return;
     let cancelled = false;
-    api<{ rows: Record<string, unknown>[] }>(
+    const controller = new AbortController();
+    savedResult<{ rows: Record<string, unknown>[] }>(
       `/artifacts/${artifact.id}/pages/${page}`,
+      controller.signal,
     )
       .then((result) => {
         if (!cancelled) {
@@ -145,8 +157,20 @@ export default function ResultCard({
       });
     return () => {
       cancelled = true;
+      controller.abort();
     };
   }, [selected, artifact.id, artifact.page_count, page]);
+
+  const tableState = JSON.stringify({
+    ...(initialState ?? initialChartView(artifact, preferences, selected)),
+    view: selected,
+    start: null,
+    end: null,
+  });
+  useEffect(() => {
+    if (selected === "table")
+      onCapture?.({ state: JSON.parse(tableState), ready: true });
+  }, [selected, tableState, onCapture]);
 
   function valueDisplay(value: unknown, column: string) {
     const measure = artifact.visualization.measures?.find(
@@ -181,6 +205,23 @@ export default function ResultCard({
             <CardDescription>QUERY RESULT</CardDescription>
             <CardTitle>{artifact.title}</CardTitle>
           </div>
+          {allowPin && (
+            <PinToDashboard
+              artifact={artifact}
+              capture={
+                selected === "table"
+                  ? { state: JSON.parse(tableState), ready: true }
+                  : captured?.state.view === selected
+                    ? captured
+                    : {
+                        state:
+                          initialState ??
+                          initialChartView(artifact, preferences, selected),
+                        ready: false,
+                      }
+              }
+            />
+          )}
           {selected === "table" && <SavedCsvDownload artifact={artifact} />}
           <Select value={selected} onValueChange={changeView}>
             <SelectTrigger aria-label={`Visualization for ${artifact.title}`}>
@@ -242,22 +283,31 @@ export default function ResultCard({
         )}
         {selected === "kpi" && (
           <div className="result-kpis">
-            {numeric.map((column) => (
-              <div key={column}>
-                <span>{human(column)}</span>
-                <strong>
-                  {artifact.rows[0]?.[column] != null &&
-                  Number.isFinite(Number(artifact.rows[0][column])) ? (
-                    <AnimatedNumber
-                      value={Number(artifact.rows[0][column])}
-                      format={(value) => valueDisplay(value, column)}
-                    />
-                  ) : (
-                    "—"
-                  )}
-                </strong>
-              </div>
-            ))}
+            {numeric
+              .filter((column) =>
+                (
+                  initialState?.visible_measures ??
+                  (captured?.state.view === "kpi"
+                    ? captured.state.visible_measures
+                    : ys)
+                ).includes(column),
+              )
+              .map((column) => (
+                <div key={column}>
+                  <span>{human(column)}</span>
+                  <strong>
+                    {tableRows[0]?.[column] != null &&
+                    Number.isFinite(Number(tableRows[0][column])) ? (
+                      <AnimatedNumber
+                        value={Number(tableRows[0][column])}
+                        format={(value) => valueDisplay(value, column)}
+                      />
+                    ) : (
+                      "—"
+                    )}
+                  </strong>
+                </div>
+              ))}
           </div>
         )}
         {selected === "table" && (
@@ -333,6 +383,8 @@ export default function ResultCard({
             artifact={artifact}
             view={selected}
             onExplore={onExplore}
+            initialState={initialState}
+            onCapture={onCapture ?? setCaptured}
           />
         )}
         {!artifact.row_count && (

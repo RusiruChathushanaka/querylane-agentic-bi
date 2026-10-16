@@ -204,20 +204,26 @@ async def index_schema():
 
 
 async def reset():
-    client = firestore.Client(project=PROJECT, database="agentic-bi-demo", credentials=operator_credentials())
-    # Recursive delete is limited to collections owned by this demo database.
-    for name in [
-        "conversations",
-        "runs",
-        "artifacts",
-        "adk_sessions",
-        "voice_resumptions",
-        "quotas",
-        "skill_author_sessions",
-    ]:
-        client.recursive_delete(client.collection(name))
-    client.close()
-    print("Demo history and quotas reset; schemas and source data preserved.")
+    await dashboard_maintenance("reset-history")
+
+
+async def dashboard_maintenance(operation):
+    from app.maintenance import clear_maintenance, purge_dashboards, reset_history
+    from app.storage import FirestoreStore
+
+    store = FirestoreStore(PROJECT, "agentic-bi-demo", credentials=operator_credentials())
+    try:
+        if operation == "clear-maintenance":
+            await clear_maintenance(store)
+            print(
+                "Maintenance fence cleared. Ensure the previous operator process has stopped before recovery."
+            )
+        else:
+            result = await (reset_history(store) if operation == "reset-history" else purge_dashboards(store))
+            print(json.dumps(result))
+            print("Dashboards, retained result evidence, Skills and source data preserved.")
+    finally:
+        await store.close()
 
 
 async def seed_skills():
@@ -323,12 +329,19 @@ def main():
             "check-models",
             "cleanup-skill-authors",
             "reset-history",
+            "purge-dashboards",
+            "clear-maintenance",
         ],
     )
     parser.add_argument("--confirm-demo-reset", action="store_true")
     args = parser.parse_args()
-    if args.command == "reset-history" and not args.confirm_demo_reset:
-        parser.error("Reset requires --confirm-demo-reset and applies only to the named demo database.")
+    if (
+        args.command in {"reset-history", "purge-dashboards", "clear-maintenance"}
+        and not args.confirm_demo_reset
+    ):
+        parser.error(
+            f"{args.command} requires --confirm-demo-reset and applies only to the named demo database."
+        )
     operations = {
         "seed": seed,
         "seed-skills": seed_skills,
@@ -336,6 +349,8 @@ def main():
         "check-models": check_models,
         "cleanup-skill-authors": cleanup_skill_authors,
         "reset-history": reset,
+        "purge-dashboards": lambda: dashboard_maintenance("purge-dashboards"),
+        "clear-maintenance": lambda: dashboard_maintenance("clear-maintenance"),
     }
     asyncio.run(operations[args.command]())
 

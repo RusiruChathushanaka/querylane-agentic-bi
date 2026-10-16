@@ -77,3 +77,16 @@ BACKEND_URL=http://127.0.0.1:8002 PORT=3002 HOSTNAME=127.0.0.1 node .next/standa
 ```
 
 Open `http://127.0.0.1:3002/skills` → **Create with voice**. The preview uses temporary in-memory operator credentials; restart the backend after they expire. Its conversations, author drafts, and skills are memory-only and disappear on backend restart. It does not change the hosted library. For persistent hosting, follow the deployment guide rather than deploying `app.cloud_preview`.
+
+## Isolated dashboard verification
+
+Normal development still uses the documented backend/frontend commands. To keep a separate preview or build from sharing another Next.js process's output, set `QUERYLANE_NEXT_DIST_DIR=.next-dashboards` for that process. The default remains `.next`; alternate `.next-*` output is excluded from Git, ESLint and Cloud Build uploads. For example:
+
+```bash
+cd Frontend
+QUERYLANE_NEXT_DIST_DIR=.next-dashboards BACKEND_URL=http://127.0.0.1:8006 npm run dev -- --hostname 127.0.0.1 --port 3005
+```
+
+For local persistence tests, start a Firestore emulator using a demo project on a loopback address. With `FIRESTORE_EMULATOR_HOST=127.0.0.1:8088`, run `cd Backend && uv run pytest tests/test_dashboards.py -q`. The suite exercises MemoryStore and FirestoreStore in isolated test namespaces. It uses `(default)` only because the emulator does not support multiple named databases; hosted configuration remains `agentic-bi-demo`. Do not point these tests at a real project. Java is required by the emulator; no Java dependency is added to either application container.
+
+The opt-in `scripts.smoke_dashboards` check accepts an existing artifact and tests only saved-result operations; see the deployment guide for its public verification records and cleanup behavior. No test or preview starts automatically on app startup.

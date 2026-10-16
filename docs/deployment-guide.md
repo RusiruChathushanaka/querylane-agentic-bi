@@ -434,6 +434,16 @@ For a frontend rollback, use `agentic-bi-frontend` and its own known-good revisi
 
 A traffic rollback does not undo schema/data changes, IAM, seeding, or secret rotation. Check API/schema/secret compatibility first. Existing WebSockets/in-flight requests can remain on their original revision; let bounded work finish or handle reconnection. The deploy helper does not explicitly reset traffic assignments after a rollback: inspect traffic after the next successful release and intentionally route to the verified candidate revision if necessary.
 
+## Dashboard library release
+
+See [dashboard usage](dashboards.md) and [ADR 0005](adr/0005-saved-result-dashboards.md). This feature adds backend-only dashboard, item, idempotency and retained-reference documents to the existing named `agentic-bi-demo` database. The chart renderer and immutable artifact pages are reused; no analytical table, source upload, new model, secret or runtime IAM grant is required. Queries use automatic single-field indexes (`deleted` or `recover_until`); verify the named database's indexing policy during hosted acceptance.
+
+Deploy the backward-compatible backend before frontend. Preserve `--data-profile timeseries` and the current source limits. Do not seed dashboards or run maintenance as part of deployment. Verify creation, pinning a selected chart view, another visitor's access, stale-edit recovery, unpin/Undo, exports, lazy loading and existing chart behavior. `cd Backend && uv run python -m scripts.smoke_dashboards --backend "$BI_BACKEND_URL" --artifact-id EXISTING_SAVED_ARTIFACT_ID` runs an opt-in saved-result-only API check. It makes public verification dashboards, soft-deletes them afterward and leaves their recovery references until an authorized expiry purge; it does not run analyses or reset history. Use an actual saved artifact ID and record the serving revisions with the report.
+
+Before release run backend tests, the emulator-backed dashboard suite, frontend tests/lint/types/build and the browser loop. An isolated emulator history reset must preserve pinned pages/evidence before considering the lifecycle complete. Do not test destructive reset against hosted shared history as routine acceptance. Update actual deployment records only after a requested, verified cloud release.
+
+Rollback retains the additive dashboard documents and their artifacts. **Do not use an older `app.admin reset-history` implementation after rollback:** it deletes all artifacts. Use a reference-aware maintenance command from this feature's source and stop traffic/active work appropriately. Dashboard viewing never refreshes source data.
+
 ## Maintenance and data operations
 
 For an authorized shared-history reset only:
@@ -444,7 +454,23 @@ uv run python -m app.admin reset-history --confirm-demo-reset
 cd ..
 ```
 
-This deletes demo conversations, results, runs, ADK sessions, resumptions, and usage counters while preserving source tables and embeddings. There is no public reset endpoint. Coordinate with active users and retain any required evidence first. The separate `seed` command resets source tables.
+This removes conversations, runs, unreferenced artifacts, ADK sessions, resumptions, usage counters and author interviews. It preserves dashboards/items, active or recoverable artifact references and their full pages, Skills/revisions, capacity records, source tables and embeddings. Original chat links can become unavailable; saved dashboard evidence remains readable. There is no public reset endpoint.
+
+Reset first claims `system/history_maintenance` and drains in-flight work. New analyses/author leases and dashboard mutations are temporarily rejected. A failure leaves maintenance active deliberately. Inspect logs and verify the previous operator process has stopped before explicit recovery:
+
+```bash
+cd Backend
+uv run python -m app.admin clear-maintenance --confirm-demo-reset
+# Fix the underlying problem, then explicitly retry the intended operation.
+```
+
+To permanently purge dashboard/card tombstones after their recovery window and release their artifact references, use the separate authorized command:
+
+```bash
+uv run python -m app.admin purge-dashboards --confirm-demo-reset
+```
+
+Purging does not delete analytical source data or immediately remove newly unreferenced artifacts; a later authorized history reset may remove those artifacts. Expired dashboard request IDs (24-hour retry retention) are also cleaned during this explicit purge. Never clear a maintenance fence while another reset/purge process could still be deleting data. No purge/reset runs automatically on application startup or deployment. The legacy `seed` command still resets source tables and must not be used to extend time-series data.
 
 Reindex only after relevant schema/model/dimension changes; changing dimensions requires matching embeddings, index, configuration, and tests. Preserve source-side read permissions, SQL AST validation, BigQuery dry-run/max-billed-byte controls, PostgreSQL read-only transactions/timeouts, and fusion limits.
 

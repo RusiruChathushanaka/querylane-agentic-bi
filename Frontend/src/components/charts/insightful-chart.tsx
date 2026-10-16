@@ -40,7 +40,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { api, backendUrl } from "@/lib/api";
+import { backendUrl } from "@/lib/api";
 import {
   chartNotes,
   changeLabel,
@@ -50,6 +50,8 @@ import {
   unitKey,
 } from "@/lib/chart-format";
 import { downloadBlob, exportChartPng } from "@/lib/chart-export";
+import { savedResult } from "@/lib/saved-result-loader";
+import type { ChartCapture, ChartViewState } from "@/lib/dashboard-types";
 import { usePreferences } from "@/hooks/use-preferences";
 import type { Artifact, ChartData, ChartMeasure, ChartRow } from "@/lib/types";
 
@@ -473,28 +475,48 @@ export default function InsightfulChart({
   artifact,
   view,
   onExplore,
+  initialState,
+  onCapture,
 }: {
+  initialState?: ChartViewState;
+  onCapture?: (capture: ChartCapture) => void;
   artifact: Artifact;
   view: string;
   onExplore?: (question: string) => void;
 }) {
   const { preferences } = usePreferences();
   const id = useId();
-  const [range, setRange] = useState({ start: "", end: "" });
-  const [primary, setPrimary] = useState("");
-  const [order, setOrder] = useState("value_desc");
-  const [top, setTop] = useState("10");
-  const [hidden, setHidden] = useState<Record<string, boolean>>({});
+  const [range, setRange] = useState({
+    start: initialState?.start ?? "",
+    end: initialState?.end ?? "",
+  });
+  const [primary, setPrimary] = useState(initialState?.primary ?? "");
+  const [order, setOrder] = useState(initialState?.order ?? "value_desc");
+  const [top, setTop] = useState(String(initialState?.top ?? 10));
+  const [hidden, setHidden] = useState<Record<string, boolean>>(() =>
+    initialState
+      ? Object.fromEntries(
+          (artifact.visualization.y ?? []).map((field) => [
+            field,
+            !initialState.visible_measures.includes(field),
+          ]),
+        )
+      : {},
+  );
   const [pin, setPin] = useState<ChartRow | null>(null);
   const [expanded, setExpanded] = useState(false);
   const [exporting, setExporting] = useState(false);
   const [exportDialog, setExportDialog] = useState<"png" | "csv" | null>(null);
-  const [scatterAxes, setScatterAxes] = useState({ x: "", y: "" });
+  const [scatterAxes, setScatterAxes] = useState({
+    x: initialState?.scatter_x ?? "",
+    y: initialState?.scatter_y ?? "",
+  });
   const [loaded, setLoaded] = useState<{
     key: string;
     data?: ChartData;
     error?: string;
   } | null>(null);
+  const [brushPending, setBrushPending] = useState(false);
   const [retry, setRetry] = useState(0);
   const brushTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const params = new URLSearchParams({
@@ -509,9 +531,10 @@ export default function InsightfulChart({
   useEffect(() => {
     const controller = new AbortController();
     const query = key.split("?")[1];
-    api<ChartData>(`/artifacts/${artifact.id}/chart-data?${query}`, {
-      signal: controller.signal,
-    })
+    savedResult<ChartData>(
+      `/artifacts/${artifact.id}/chart-data?${query}`,
+      controller.signal,
+    )
       .then((data) => setLoaded({ key, data }))
       .catch((error) => {
         if (!controller.signal.aborted)
@@ -533,8 +556,8 @@ export default function InsightfulChart({
     (m) =>
       !(
         hidden[m.field] ??
-        (!preferences.chartComparisons &&
-          ["target", "comparison"].includes(m.role))
+        (initialState ? !initialState.visible_measures.includes(m.field) :
+          !preferences.chartComparisons && ["target", "comparison"].includes(m.role))
       ),
   );
   const colors = Object.fromEntries(
@@ -547,7 +570,8 @@ export default function InsightfulChart({
   );
   const activeMeasure = measures.find((m) => m.field === current);
   const temporal = data?.visualization.dimension_kind === "temporal";
-  const decimals = Number(preferences.decimals);
+  const decimals = initialState?.decimals ?? Number(preferences.decimals);
+  const highlights = initialState?.highlights ?? preferences.chartHighlights;
   const notes = data ? chartNotes(data) : "";
   const groups = Object.values(
     shown.reduce<Record<string, ChartMeasure[]>>((groups, m) => {
@@ -564,14 +588,54 @@ export default function InsightfulChart({
   const effectiveView = view === "pie" && !data?.composition ? "bar" : view;
   const pinned = pin && data?.rows.find((r) => r._key === pin._key && !r._gap);
   const reset = () => {
-    setRange({ start: "", end: "" });
-    setPrimary("");
-    setOrder("value_desc");
-    setTop("10");
-    setHidden({});
+    if (brushTimer.current) clearTimeout(brushTimer.current);
+    setBrushPending(false);
+    setRange({
+      start: initialState?.start ?? "",
+      end: initialState?.end ?? "",
+    });
+    setPrimary(initialState?.primary ?? "");
+    setOrder(initialState?.order ?? "value_desc");
+    setTop(String(initialState?.top ?? 10));
+    setHidden(
+      initialState
+        ? Object.fromEntries(
+            measures.map((m) => [
+              m.field,
+              !initialState.visible_measures.includes(m.field),
+            ]),
+          )
+        : {},
+    );
     setPin(null);
-    setScatterAxes({ x: "", y: "" });
+    setScatterAxes({
+      x: initialState?.scatter_x ?? "",
+      y: initialState?.scatter_y ?? "",
+    });
   };
+  const capturedState = JSON.stringify({
+    version: 1,
+    view,
+    start: range.start || null,
+    end: range.end || null,
+    primary: current || null,
+    visible_measures: shown.map((m) => m.field),
+    order,
+    top: Number(top),
+    scatter_x: view === "scatter" ? scatterX : null,
+    scatter_y: view === "scatter" ? scatterY : null,
+    highlights,
+    decimals,
+  });
+  const captureReady =
+    Boolean(data) &&
+    !brushPending &&
+    !error &&
+    shown.length > 0 &&
+    !(data?.warning && !data?.rows.length);
+  useEffect(() => {
+    onCapture?.({ state: JSON.parse(capturedState), ready: captureReady });
+  }, [capturedState, captureReady, onCapture]);
   const subtitle = activeMeasure
     ? `${activeMeasure.label} · ${activeMeasure.unit === "currency" ? activeMeasure.currency : activeMeasure.unit}${temporal ? ` · ${data?.visualization.granularity ?? "observed"} observations` : ""}`
     : "Saved query result";
@@ -800,7 +864,7 @@ export default function InsightfulChart({
                 population totals and shares are unavailable.
               </p>
             )}
-            {preferences.chartHighlights && activeMeasure && (
+            {highlights && activeMeasure && (
               <ul
                 className="chart-insights"
                 aria-label="Factual chart insights"
@@ -946,14 +1010,14 @@ export default function InsightfulChart({
                         colors={colors}
                         primary={current}
                         highlight={
-                          preferences.chartHighlights &&
-                          group.some((m) => m.field === current)
+                          highlights && group.some((m) => m.field === current)
                         }
                         decimals={decimals}
                         scatterX={scatterX}
                         scatterY={scatterY}
                         onPin={setPin}
                         onRange={(start, end) => {
+                          setBrushPending(true);
                           if (brushTimer.current)
                             clearTimeout(brushTimer.current);
                           brushTimer.current = setTimeout(() => {
@@ -968,6 +1032,7 @@ export default function InsightfulChart({
                                   : end.slice(0, 10),
                             });
                             setPin(null);
+                            setBrushPending(false);
                           }, 400);
                         }}
                       />

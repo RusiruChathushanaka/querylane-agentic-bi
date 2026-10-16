@@ -1,0 +1,184 @@
+{
+  "project": "project-e8b1593d-009a-4822-abf",
+  "region": "asia-southeast1",
+  "date": "2026-10-16",
+  "services": {
+    "agentic-bi-backend": {
+      "url": "https://agentic-bi-backend-wekihucn7q-as.a.run.app",
+      "ready_revision": "agentic-bi-backend-00011-tzb",
+      "service_account": "agentic-bi-backend@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend:1792158943",
+      "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:78cf3364679a879daed035f195ce3fc780e9d14287705a744d21e5af5bdda453",
+      "source_commit": "d04246681620b0b4929f292468a7091e77e4fc29",
+      "build_id": "3cbb135e-9f96-493c-a136-73428130f3a3",
+      "ready": true,
+      "traffic": [
+        {
+          "percent": 100,
+          "revisionName": "agentic-bi-backend-00011-tzb"
+        }
+      ],
+      "previous_revision": "agentic-bi-backend-00008-854",
+      "runtime_environment": [
+        {
+          "name": "ENVIRONMENT",
+          "value": "production"
+        },
+        {
+          "name": "STORAGE_BACKEND",
+          "value": "firestore"
+        },
+        {
+          "name": "DATA_BACKEND",
+          "value": "cloud"
+        },
+        {
+          "name": "DATA_PROFILE",
+          "value": "timeseries"
+        },
+        {
+          "name": "SOURCE_ROW_LIMIT",
+          "value": "30000"
+        },
+        {
+          "name": "AI_BACKEND",
+          "value": "gemini"
+        },
+        {
+          "name": "GOOGLE_CLOUD_PROJECT",
+          "value": "project-e8b1593d-009a-4822-abf"
+        },
+        {
+          "name": "FIRESTORE_DATABASE",
+          "value": "agentic-bi-demo"
+        },
+        {
+          "name": "BIGQUERY_DATASET",
+          "value": "agentic_bi_demo"
+        },
+        {
+          "name": "BIGQUERY_LOCATION",
+          "value": "asia-southeast1"
+        },
+        {
+          "name": "CLOUD_SQL_INSTANCE",
+          "value": "project-e8b1593d-009a-4822-abf:asia-southeast1:agentic-bi-demo-pg"
+        },
+        {
+          "name": "ALLOWED_ORIGINS",
+          "value": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app"
+        },
+        {
+          "name": "TEXT_MODEL",
+          "value": "gemini-3.8-flash"
+        },
+        {
+          "name": "TEXT_MODEL_LOCATION",
+          "value": "global"
+        },
+        {
+          "name": "LIVE_MODEL",
+          "value": "gemini-live-2.5-flash-native-audio"
+        },
+        {
+          "name": "LIVE_MODEL_LOCATION",
+          "value": "us-central1"
+        },
+        {
+          "name": "GUEST_SIGNING_KEY",
+          "valueFrom": {
+            "secretKeyRef": {
+              "key": "latest",
+              "name": "agentic-bi-guest-signing"
+            }
+          }
+        },
+        {
+          "name": "POSTGRES_PASSWORD",
+          "valueFrom": {
+            "secretKeyRef": {
+              "key": "latest",
+              "name": "agentic-bi-postgres-reader"
+            }
+          }
+        }
+      ],
+      "container_concurrency": 8,
+      "timeout_seconds": 3600,
+      "resources": {
+        "limits": {
+          "cpu": "1",
+          "memory": "2Gi"
+        }
+      },
+      "intermediate_release_revisions": [
+        "agentic-bi-backend-00009-g7q",
+        "agentic-bi-backend-00010-8pl"
+      ]
+    },
+    "agentic-bi-frontend": {
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app",
+      "ready_revision": "agentic-bi-frontend-00005-d6f",
+      "service_account": "agentic-bi-frontend@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend:1792157532",
+      "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:42f8cc5dcf0540428e1e327c057a5eb7f3580d436ab8c83447a1c2a258ec5f63",
+      "source_commit": "1b842471067ee787542fd854e9e47948f41b5ba6",
+      "build_id": "0093b544-583b-46dd-a082-501d5bba2602",
+      "ready": true,
+      "traffic": [
+        {
+          "percent": 100,
+          "revisionName": "agentic-bi-frontend-00005-d6f"
+        }
+      ],
+      "previous_revision": "agentic-bi-frontend-00004-7gh",
+      "runtime_environment": [
+        {
+          "name": "BACKEND_URL",
+          "value": "https://agentic-bi-backend-wekihucn7q-as.a.run.app"
+        }
+      ],
+      "container_concurrency": 40,
+      "timeout_seconds": 300,
+      "resources": {
+        "limits": {
+          "cpu": "1000m",
+          "memory": "512Mi"
+        }
+      }
+    }
+  },
+  "firestore": "agentic-bi-demo",
+  "bigquery_dataset": "agentic_bi_demo",
+  "cloud_sql_instance": "agentic-bi-demo-pg",
+  "vector_dimensions": 768,
+  "verified_at": "2026-10-16T19:31:52.931255+05:30",
+  "release": "Interactive charts and larger generated retail dataset",
+  "runtime_configuration_preserved": true,
+  "analytical_seed_or_history_reset": false,
+  "verification": [
+    "evaluation/charts.json",
+    "evaluation/charts-deployed.json",
+    "evaluation/charts-deployed-browser.json",
+    "evaluation/cloud-runtime.json",
+    "evaluation/charts-deployed-initial.json"
+  ],
+  "configuration_changes": {
+    "DATA_PROFILE": "timeseries",
+    "SOURCE_ROW_LIMIT": 30000
+  },
+  "data_profile": "timeseries",
+  "postgres_schema": "retail_timeseries",
+  "data_coverage": {
+    "start": "2023-01-01",
+    "end": "2026-09-30",
+    "orders": 573348,
+    "order_items": 1317941,
+    "returns": 97122,
+    "customers": 25000,
+    "calendar_days": 1369,
+    "months": 45,
+    "merchandise_revenue": "354425112.20"
+  },
+  "rollback_record": "evaluation/deployment-before-charts.json"
+}
