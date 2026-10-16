@@ -187,12 +187,21 @@ class AI:
         self, name: str, instruction: str, prompt: str, output_type, conversation_id: str
     ):
         model = Gemini(model=active_text_model.get() or self.settings.text_model, client=self.client)
+        # The nested fusion + visualization schema exceeds Vertex's structured
+        # output complexity limit. JSON mode keeps planning available without
+        # weakening local Pydantic validation or any execution safeguards.
+        json_plan = output_type is AnalysisPlan
+        if json_plan:
+            instruction += "\nReturn one JSON object matching this JSON Schema (no Markdown):\n" + json.dumps(
+                output_type.model_json_schema(), separators=(",", ":")
+            )
         agent = LlmAgent(
             name=name,
             model=model,
             instruction=instruction,
-            output_schema=output_type,
+            output_schema=None if json_plan else output_type,
             generate_content_config=types.GenerateContentConfig(
+                response_mime_type="application/json" if json_plan else None,
                 thinking_config=types.ThinkingConfig(thinking_level=types.ThinkingLevel.LOW),
                 max_output_tokens=4096 if name == "query_planner" else 1536,
                 http_options=types.HttpOptions(

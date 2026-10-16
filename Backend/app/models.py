@@ -78,7 +78,7 @@ class VisualizationSpec(StrictModel):
     x: str | None = None
     y: list[str] = Field(default_factory=list, max_length=4)
     format: Literal["number", "currency", "percent"] = "number"
-    version: Literal[2] | None = None
+    version: int | None = Field(default=None, ge=2, le=2)
     dimension_kind: Literal["temporal", "category", "numeric"] | None = None
     granularity: Literal["day", "week", "month", "quarter", "year"] | None = None
     partial_periods: list[str] = Field(default_factory=list, max_length=100)

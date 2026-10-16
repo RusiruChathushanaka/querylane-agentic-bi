@@ -1,7 +1,7 @@
 """Run inside a temporary Cloud Run job under the demo backend identity.
 
-Checks existing-resource denial with metadata/transaction requests only. No
-existing business documents or table rows are requested.
+Checks out-of-scope resource denial with metadata/transaction requests only.
+Only the authorized synthetic demo sources are queried for aggregate checks.
 """
 
 import asyncio

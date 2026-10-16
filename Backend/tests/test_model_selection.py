@@ -208,3 +208,45 @@ async def test_sql_repair_keeps_selected_model_and_read_only_guards():
     assert observed == [LITE, LITE]
     assert (await repo.run(run["id"]))["status"] == "complete"
     assert active_text_model.get() is None
+
+
+@pytest.mark.parametrize("invalid", [False, True])
+async def test_complex_plan_uses_json_mode_and_still_validates_locally(monkeypatch, invalid):
+    from types import SimpleNamespace
+
+    from google.genai import types
+    from pydantic import ValidationError
+
+    from app.models import AnalysisPlan
+
+    captured = []
+    payload = fixture_plan("Revenue by month", [], "bigquery").model_dump(mode="json")
+    if invalid:
+        payload["visualization"]["type"] = "executable-script"
+
+    class FakeRunner:
+        def __init__(self, *, agent, **kwargs):
+            captured.append(agent)
+
+        async def run_async(self, **kwargs):
+            yield SimpleNamespace(
+                error_code=None,
+                is_final_response=lambda: True,
+                content=types.Content(parts=[types.Part(text=json.dumps(payload))]),
+            )
+
+    monkeypatch.setattr("app.ai.Gemini", lambda **kwargs: FLASH)
+    monkeypatch.setattr("app.ai.Runner", FakeRunner)
+    settings = Settings()
+    store = MemoryStore()
+    ai = AI(settings, FirestoreSessionService(store), Connectors(settings), store)
+    if invalid:
+        with pytest.raises(ValidationError):
+            await ai._structured_once("query_planner", "Policy", "Question", AnalysisPlan, "json-plan")
+    else:
+        result = await ai._structured_once("query_planner", "Policy", "Question", AnalysisPlan, "json-plan")
+        assert result.queries and result.visualization.type in {"line", "bar", "table"}
+    agent = captured[0]
+    assert agent.output_schema is None
+    assert agent.generate_content_config.response_mime_type == "application/json"
+    assert '"$defs"' in agent.instruction and '"VisualizationSpec"' in agent.instruction

@@ -251,3 +251,24 @@ def test_single_kpi_is_not_described_as_a_leading_category():
     art["columns"] = [{"name": "revenue", "type": "NUMERIC"}]
     art["visualization"].update(type="kpi", x=None, dimension_kind="category", granularity=None)
     assert present(art, rows)["insights"] == []
+
+
+def test_analysis_schema_converts_through_installed_vertex_sdk_without_network():
+    from google.auth.credentials import AnonymousCredentials
+    from google.genai import Client, _transformers
+    from pydantic import ValidationError
+
+    from app.models import AnalysisPlan, VisualizationSpec
+
+    client = Client(
+        vertexai=True, project="schema-test", location="global", credentials=AnonymousCredentials()
+    )
+    try:
+        schema = _transformers.t_schema(client._api_client, AnalysisPlan)
+        assert schema.properties["visualization"].properties["version"] is not None
+        assert VisualizationSpec(type="table", title="Version", version=2).version == 2
+        for invalid in (1, 3):
+            with pytest.raises(ValidationError):
+                VisualizationSpec(type="table", title="Version", version=invalid)
+    finally:
+        client.close()
