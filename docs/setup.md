@@ -56,3 +56,24 @@ For direct local PostgreSQL, use `DATA_BACKEND=cloud`, configure the real BigQue
 ## Verification
 
 Use the commands in the [root README](../README.md#verify) for local checks. Cloud deployment and hosted acceptance use the [Deployment guide](deployment-guide.md#acceptance-checks). Historical results and manual verification limits are recorded in [validation.md](validation.md).
+
+## Voice skill author preview
+
+The standard fixture backend deliberately cannot run a live interview. For a local Gemini preview on synthetic data, authenticate the operator with the documented Google Cloud setup, then run:
+
+```bash
+ALLOWED_ORIGINS=http://127.0.0.1:3002 Backend/.venv/bin/python -m uvicorn app.cloud_preview:app --app-dir Backend --host 127.0.0.1 --port 8002
+```
+
+Run the frontend with `BACKEND_URL=http://127.0.0.1:8002` and a matching origin. A second standalone preview avoids changing the existing dev server:
+
+```bash
+cd Frontend
+npm run build
+mkdir -p .next/standalone/.next
+cp -R .next/static .next/standalone/.next/
+cp -R public .next/standalone/
+BACKEND_URL=http://127.0.0.1:8002 PORT=3002 HOSTNAME=127.0.0.1 node .next/standalone/server.js
+```
+
+Open `http://127.0.0.1:3002/skills` → **Create with voice**. The preview uses temporary in-memory operator credentials; restart the backend after they expire. Its conversations, author drafts, and skills are memory-only and disappear on backend restart. It does not change the hosted library. For persistent hosting, follow the deployment guide rather than deploying `app.cloud_preview`.

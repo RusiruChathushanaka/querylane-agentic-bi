@@ -1,0 +1,38 @@
+{
+  "legacy_bigquery": {
+    "orders": 720,
+    "revenue": "118951"
+  },
+  "sources": {
+    "sales_orders": {
+      "rows_count": 573348,
+      "unique_keys": 573348
+    },
+    "sales_order_items": {
+      "rows_count": 1317941,
+      "unique_keys": 1317941
+    },
+    "sales_returns": {
+      "rows_count": 97122,
+      "unique_keys": 97122
+    }
+  },
+  "state": {
+    "status": "ready",
+    "anchor_start": "2023-01-01",
+    "end_date": "2026-09-30"
+  },
+  "legacy_postgres": {
+    "customer_profiles": 80,
+    "regional_targets": 36,
+    "campaigns": 4,
+    "region_aliases": 4
+  },
+  "pg_primary_keys": 6,
+  "pg_foreign_keys": 2,
+  "legacy_preserved": true,
+  "unique_keys": true,
+  "staging_tables_remaining": [],
+  "cloud_run_profile_changed": false,
+  "schema_embeddings_changed": false
+}

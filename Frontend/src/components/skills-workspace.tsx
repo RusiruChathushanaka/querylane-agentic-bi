@@ -17,6 +17,7 @@ import {
   Globe2,
   History,
   LoaderCircle,
+  Mic,
   Plus,
   Power,
   RotateCcw,
@@ -29,6 +30,7 @@ import { api, ApiError, backendUrl } from "@/lib/api";
 import type { Skill, SkillContent, SkillSummary } from "@/lib/types";
 import { Reveal } from "@/components/motion/reveal";
 import { SkillMarkdown } from "@/components/skill-markdown";
+import { SkillVoiceAuthor } from "@/components/skill-voice-author";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -92,6 +94,7 @@ export function SkillsWorkspace() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [search, setSearch] = useState("");
+  const [voiceAuthor, setVoiceAuthor] = useState(false);
   const [source, setSource] = useState("all");
   const [editor, setEditor] = useState<{
     skill?: Skill;
@@ -400,6 +403,9 @@ export function SkillsWorkspace() {
             </p>
           </div>
           <div className="skills-heading-actions">
+            <Button variant="secondary" onClick={() => setVoiceAuthor(true)}>
+              <Mic aria-hidden /> Create with voice
+            </Button>
             <input
               ref={file}
               type="file"
@@ -474,7 +480,11 @@ export function SkillsWorkspace() {
             <Button onClick={() => void refresh()}>Try again</Button>
           </div>
         ) : loading ? (
-          <div className="skills-grid" role="status" aria-label="Loading skills">
+          <div
+            className="skills-grid"
+            role="status"
+            aria-label="Loading skills"
+          >
             {[0, 1, 2].map((key) => (
               <Skeleton key={key} className="h-64 rounded-xl" />
             ))}
@@ -617,6 +627,11 @@ export function SkillsWorkspace() {
           Attach up to three to any exploration.
         </p>
       </main>
+      <SkillVoiceAuthor
+        open={voiceAuthor}
+        onOpenChange={setVoiceAuthor}
+        onPublished={() => void refresh()}
+      />
       <Dialog
         open={Boolean(editor)}
         onOpenChange={(open) => {

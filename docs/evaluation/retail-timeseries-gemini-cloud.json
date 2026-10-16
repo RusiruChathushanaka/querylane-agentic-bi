@@ -1,0 +1,36 @@
+{
+  "checked_at": "2026-10-16T11:50:40.364889+00:00",
+  "source_backend": "cloud",
+  "history_storage": "ephemeral memory",
+  "identity": "operator credentials for BigQuery/Gemini; bi_reader for PostgreSQL",
+  "checks": [
+    {
+      "model": "gemini-3.8-flash",
+      "status": "complete",
+      "rows": 45,
+      "numeric_match": true,
+      "yoy_match": true,
+      "passed": true,
+      "errors": [],
+      "sql": [
+        "SELECT month, SUM(revenue) AS revenue FROM `project-e8b1593d-009a-4822-abf`.agentic_bi_demo.sales_orders WHERE status = 'completed' GROUP BY month ORDER BY month"
+      ]
+    },
+    {
+      "model": "gemini-3.5-flash-lite",
+      "status": "complete",
+      "rows": 45,
+      "numeric_match": true,
+      "yoy_match": true,
+      "passed": true,
+      "errors": [],
+      "sql": [
+        "WITH monthly_sales AS (SELECT month, ROUND(SUM(revenue), 2) AS revenue FROM `project-e8b1593d-009a-4822-abf`.agentic_bi_demo.sales_orders WHERE status = 'completed' GROUP BY month), lagged_sales AS (SELECT month, revenue, LAG(revenue, 12) OVER (ORDER BY month) AS previous_revenue FROM monthly_sales) SELECT month, revenue, previous_revenue, ROUND(SAFE_DIVIDE(revenue - previous_revenue, previous_revenue) * 100, 2) AS yoy_percent FROM lagged_sales ORDER BY month"
+      ]
+    }
+  ],
+  "reader_permissions": {
+    "can_read": true,
+    "can_write": false
+  }
+}

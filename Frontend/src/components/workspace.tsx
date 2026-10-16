@@ -37,6 +37,7 @@ import {
   X,
 } from "lucide-react";
 import { toast } from "sonner";
+import { MessageContent } from "@/components/markdown-content";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -172,6 +173,7 @@ export default function Workspace() {
   const [stopping, setStopping] = useState(false);
   const [updatingSkills, setUpdatingSkills] = useState(false);
   const [mode, setMode] = useState("");
+  const [dataPeriod, setDataPeriod] = useState("SYNTHETIC RETAIL");
   const [voiceState, setVoiceState] = useState("off");
   const [voiceText, setVoiceText] = useState("");
   const [level, setLevel] = useState(0);
@@ -388,13 +390,14 @@ export default function Workspace() {
   useEffect(() => {
     let cancelled = false;
     Promise.all([
-      api<{ mode: string; connections: Connection[] }>("/connections"),
+      api<{ mode: string; period?: string; connections: Connection[] }>("/connections"),
       api<{ conversations: Conversation[] }>("/conversations"),
     ])
       .then(([sources, chats]) => {
         if (cancelled) return;
         setConnections(sources.connections);
         setMode(sources.mode);
+        setDataPeriod(sources.period ?? "SYNTHETIC RETAIL");
         setConversations(chats.conversations);
         setLoading(false);
         const chatId = new URLSearchParams(window.location.search).get("chat");
@@ -498,6 +501,10 @@ export default function Workspace() {
           body: JSON.stringify({
             question: text.trim(),
             idempotency_key: crypto.randomUUID(),
+            model:
+              preferences.textModel === "default"
+                ? undefined
+                : preferences.textModel,
           }),
         },
       );
@@ -630,6 +637,10 @@ export default function Workspace() {
         {
           spokenResponses: preferences.spokenResponses,
           startMuted: preferences.startMuted,
+          analysisModel:
+            preferences.textModel === "default"
+              ? undefined
+              : preferences.textModel,
         },
       );
       setMuted(preferences.startMuted);
@@ -677,7 +688,10 @@ export default function Workspace() {
 
   const busy = Boolean(
     updatingSkills ||
-    runId || starting || voiceState === "live" || voiceState === "connecting",
+      runId ||
+      starting ||
+      voiceState === "live" ||
+      voiceState === "connecting",
   );
   const sidebar = (
     <>
@@ -821,7 +835,9 @@ export default function Workspace() {
       <div className="sidebar-footer">
         <Separator />
         <Button asChild variant="ghost" className="workspace-settings-link">
-          <Link href="/skills"><BookOpen data-icon="inline-start" /> Skills library</Link>
+          <Link href="/skills">
+            <BookOpen data-icon="inline-start" /> Skills library
+          </Link>
         </Button>
         <Button asChild variant="ghost" className="workspace-settings-link">
           <Link href="/settings">
@@ -1015,7 +1031,7 @@ export default function Workspace() {
                 <Reveal className="welcome" key="welcome" initial={false}>
                   <div className="welcome-eyebrow">
                     <span className="connection-dot" />
-                    RETAIL INTELLIGENCE<span>JAN–SEP 2026</span>
+                    RETAIL INTELLIGENCE<span>{dataPeriod}</span>
                   </div>
                   <div className="welcome-heading">
                     <h1>
@@ -1151,8 +1167,16 @@ export default function Workspace() {
                             </>
                           )}
                         </div>
-                        <p className="message-text">{message.text}</p>
-                        <SkillEvidence skills={message.skills_used} warnings={message.skill_warnings} />
+                        <MessageContent
+                          role={message.role}
+                          className="message-text"
+                        >
+                          {message.text}
+                        </MessageContent>
+                        <SkillEvidence
+                          skills={message.skills_used}
+                          warnings={message.skill_warnings}
+                        />
                         {message.artifact_id &&
                           artifacts[message.artifact_id] && (
                             <ResultCard
@@ -1205,8 +1229,16 @@ export default function Workspace() {
           </div>
         </main>
         <footer className="composer-area">
-          <SkillAttachments conversation={conversation} source={conversation?.source ?? source} disabled={busy || loading}
-            ensureConversation={ensureConversation} onSavingChange={setUpdatingSkills} onSaved={chat => { if (activeConversation.current === chat.id) setConversation(chat); }} />
+          <SkillAttachments
+            conversation={conversation}
+            source={conversation?.source ?? source}
+            disabled={busy || loading}
+            ensureConversation={ensureConversation}
+            onSavingChange={setUpdatingSkills}
+            onSaved={(chat) => {
+              if (activeConversation.current === chat.id) setConversation(chat);
+            }}
+          />
           <AnimatePresence initial={false}>
             {voiceState !== "off" && (
               <Reveal className="voice-panel" key="voice-panel">

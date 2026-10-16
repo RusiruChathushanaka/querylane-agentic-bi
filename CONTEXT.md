@@ -6,6 +6,12 @@ A shared workspace for asking business questions across retail data sources and 
 
 **Skill**: A publicly editable Markdown playbook with discovery metadata, business definitions, and analytical guidance. It adds no tools or executable code.
 
+**Skill Author Session**: A guest-scoped, expiring interview that captures requirements, transcripts, and an unpublished draft. It is separate from public analytics conversations.
+
+**Skill Draft**: Editable playbook content prepared from an interview; unavailable to analytics until the visitor explicitly publishes it.
+
+**Skill Publication**: An atomic transition from one reviewed draft revision to one enabled shared skill and its immutable first revision.
+
 **Skill Revision**: An immutable saved version, retained after edits, disabling, and deletion so historical evidence remains readable.
 
 **Skill Attachment**: A shared conversation preference that asks the agent to apply a particular skill, subject to source compatibility and availability.
@@ -14,6 +20,14 @@ A shared workspace for asking business questions across retail data sources and 
 
 **Data Source**: A database or analytical warehouse whose retail data can be queried in the workspace.
 _Avoid_: Application database, data lake
+
+**Data Profile**: An operator-selected source contract: the original `legacy` demo or the additional `timeseries` sales tables and `retail_timeseries` PostgreSQL schema. It is not a browser preference.
+
+**Retail Data Bundle**: A versioned, reproducible set of typed Parquet source files, schema, checksums, and reconciliation ledger. Extending its as-of end adds sales and late-arriving refunds without changing old records.
+
+**Merchandise Revenue**: In the time-series profile, sales after discounts and before refunds, tax, and shipping. `gross_sales` is the separate before-discount amount.
+
+**Refund Date**: The date a refund was processed. It differs from the original order date; net revenue must state which date window or purchase cohort is used.
 
 **Connection**: An administrator-configured association between the workspace and a data source.
 _Avoid_: User account, login

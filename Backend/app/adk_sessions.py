@@ -40,7 +40,7 @@ class FirestoreSessionService(BaseSessionService):
         keys = [("adk_sessions", key)]
         lease = active_lease.get()
         if lease:
-            keys.append(("conversations", lease["conversation_id"]))
+            keys.append((lease.get("collection", "conversations"), lease["conversation_id"]))
 
         def mutate(docs):
             if lease:
@@ -132,7 +132,7 @@ class FirestoreSessionService(BaseSessionService):
         lease = active_lease.get()
         keys = [("adk_sessions", key)]
         if lease:
-            keys.append(("conversations", lease["conversation_id"]))
+            keys.append((lease.get("collection", "conversations"), lease["conversation_id"]))
 
         def mutate(docs):
             if lease:

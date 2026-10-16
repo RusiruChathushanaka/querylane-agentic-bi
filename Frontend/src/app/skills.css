@@ -281,51 +281,6 @@
 .skill-markdown {
   line-height: 1.85;
   font-size: 14px;
-  overflow-wrap: anywhere;
-}
-.skill-markdown h2,
-.skill-markdown h3,
-.skill-markdown h4,
-.skill-markdown h5,
-.skill-markdown h6 {
-  font-family: var(--font-manrope), sans-serif;
-  font-weight: 650;
-  font-size: 16px;
-  margin: 22px 0 10px;
-}
-.skill-markdown p {
-  margin: 12px 0;
-}
-.skill-markdown ul {
-  list-style: disc;
-  padding-left: 22px;
-}
-.skill-markdown ol {
-  list-style: decimal;
-  padding-left: 22px;
-}
-.skill-markdown li {
-  margin: 4px 0;
-}
-.skill-markdown pre {
-  background: var(--secondary);
-  border: 1px solid var(--border);
-  padding: 14px;
-  overflow-x: auto;
-  border-radius: 8px;
-}
-.skill-markdown code {
-  font-family: var(--font-plex-mono), monospace;
-  font-size: 12px;
-}
-.skill-markdown a {
-  color: var(--primary);
-  text-decoration: underline;
-}
-.skill-markdown blockquote {
-  border-left: 3px solid var(--primary);
-  padding-left: 16px;
-  color: var(--muted-foreground);
 }
 .skill-version {
   max-width: 900px;
@@ -495,4 +450,212 @@
     justify-content: flex-start;
     line-height: 1.7;
   }
+}
+
+/* Voice author: a compact conversation with a separate, deliberate publication review. */
+.skill-author-dialog {
+  width: min(960px, calc(100vw - 32px));
+  max-width: 960px;
+  max-height: 92dvh;
+  overflow-y: auto;
+}
+.skill-author-privacy {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 1.7;
+}
+.skill-author-conversation,
+.skill-author-review {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
+}
+.skill-author-label {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+.skill-author-brief {
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--muted);
+}
+.skill-author-brief > p:last-child,
+.skill-author-review > p {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 1.7;
+  margin-top: 14px;
+}
+.skill-author-checklist {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  list-style: none;
+  padding: 0;
+}
+.skill-author-checklist li {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+.skill-author-checklist li[data-complete="true"] {
+  color: var(--foreground);
+}
+.skill-author-checklist svg {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+}
+.skill-author-transcript {
+  height: clamp(200px, 30dvh, 330px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.skill-author-transcript:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+.skill-author-welcome {
+  margin: auto;
+  text-align: center;
+  max-width: 430px;
+  padding: 20px;
+}
+.skill-author-welcome > svg {
+  display: block;
+  margin: 0 auto 12px;
+  color: var(--primary);
+}
+.skill-author-welcome h3 {
+  font-size: 18px;
+}
+.skill-author-welcome p {
+  color: var(--muted-foreground);
+  font-size: 13px;
+  line-height: 1.8;
+  margin-top: 10px;
+}
+.skill-author-message {
+  max-width: 90%;
+  align-self: flex-start;
+  background: var(--muted);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  overflow-wrap: anywhere;
+}
+.skill-author-message[data-role="user"] {
+  align-self: flex-end;
+  border: 1px solid var(--border);
+  background: var(--background);
+}
+.skill-author-message > strong {
+  font-size: 11px;
+  color: var(--muted-foreground);
+}
+.skill-author-message > p {
+  margin-top: 5px;
+  font-size: 13px;
+  line-height: 1.8;
+  white-space: pre-wrap;
+}
+.skill-author-message > .markdown-content {
+  margin-top: 5px;
+  font-size: 13px;
+  line-height: 1.8;
+}
+.skill-author-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.skill-author-connection,
+.skill-author-start-actions,
+.skill-author-publish-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.skill-author-connection {
+  justify-content: space-between;
+}
+.skill-author-reply {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.skill-author-meter {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 24px;
+}
+.skill-author-meter span {
+  width: 3px;
+  height: 24px;
+  border-radius: 3px;
+  background: var(--primary);
+  transform-origin: center;
+}
+.skill-author-instructions {
+  min-height: 260px;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 12px;
+}
+.skill-author-preview {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+.skill-author-preview > h3 {
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+.skill-author-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+  padding: 30px 16px;
+}
+.skill-author-success > svg {
+  color: var(--primary);
+  width: 30px;
+  height: 30px;
+}
+@media (max-width: 640px) {
+  .skill-author-dialog {
+    width: calc(100vw - 20px);
+    padding: 18px;
+    max-height: 94dvh;
+  }
+  .skill-author-checklist {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .skill-author-message {
+    max-width: 100%;
+  }
+  .skill-author-start-actions > button,
+  .skill-author-publish-actions > button {
+    flex: 1 1 auto;
+  }
+}
+.skill-author-preview:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
 }

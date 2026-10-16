@@ -1,0 +1,55 @@
+{
+  "checked_at": "2026-10-15T21:01:30.980380+00:00",
+  "project": "project-e8b1593d-009a-4822-abf",
+  "location": "global",
+  "data": "local synthetic fixtures",
+  "storage": "ephemeral memory",
+  "results": [
+    {
+      "model": "gemini-3.8-flash",
+      "status": "complete",
+      "expected_revenue": 118951,
+      "observed_revenue": null,
+      "row_values": [
+        {
+          "total_revenue": null
+        }
+      ],
+      "ai_evidence": {
+        "backend": "gemini",
+        "text_model": "gemini-3.8-flash",
+        "selected_text_model": "gemini-3.8-flash"
+      },
+      "errors": [],
+      "passed": false
+    },
+    {
+      "model": "gemini-3.5-flash-lite",
+      "status": "complete",
+      "expected_revenue": 118951,
+      "observed_revenue": null,
+      "row_values": [
+        {
+          "total_revenue": null
+        }
+      ],
+      "ai_evidence": {
+        "backend": "gemini",
+        "text_model": "gemini-3.5-flash-lite",
+        "selected_text_model": "gemini-3.5-flash-lite"
+      },
+      "errors": [],
+      "passed": false
+    }
+  ],
+  "diagnostic": {
+    "model": "gemini-3.5-flash-lite",
+    "full_pipeline_probe_sql": "SELECT SUM(revenue) AS total_revenue FROM `project-e8b1593d-009a-4822-abf`.agentic_bi_demo.orders WHERE status = 'Completed'",
+    "result": [
+      {
+        "total_revenue": null
+      }
+    ],
+    "cause": "Status literal case was not defined in source metadata; actual seeded status is lowercase completed."
+  }
+}

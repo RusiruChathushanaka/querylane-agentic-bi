@@ -1,0 +1,65 @@
+{
+  "version": "retail-timeseries-v1",
+  "status": "ready",
+  "configuration_id": "fa172291135dfb0b00e9a020cf07ccd1b0e49b5e70e7f627682e9e3b01be3912",
+  "bigquery": [
+    {
+      "table": "sales_products",
+      "rows": 200
+    },
+    {
+      "table": "calendar",
+      "rows": 1369
+    },
+    {
+      "table": "sales_orders",
+      "rows": 573348
+    },
+    {
+      "table": "sales_order_items",
+      "rows": 1317941
+    },
+    {
+      "table": "sales_returns",
+      "rows": 97122
+    }
+  ],
+  "postgres": [
+    {
+      "table": "stores",
+      "rows": 24,
+      "inserted": 24
+    },
+    {
+      "table": "customer_profiles",
+      "rows": 25000,
+      "inserted": 25000
+    },
+    {
+      "table": "regional_targets",
+      "rows": 180,
+      "inserted": 180
+    },
+    {
+      "table": "store_targets",
+      "rows": 1080,
+      "inserted": 1080
+    },
+    {
+      "table": "campaigns",
+      "rows": 180,
+      "inserted": 180
+    },
+    {
+      "table": "promotions",
+      "rows": 180,
+      "inserted": 180
+    }
+  ],
+  "revenue": "354425112.2",
+  "batch_hash": "01163d6edfbe5c7ca2f4a6090fc6254aecfa2422a36bc2f45b55a0a324e71578",
+  "activation": {
+    "DATA_PROFILE": "timeseries",
+    "POSTGRES_SCHEMA": "retail_timeseries"
+  }
+}

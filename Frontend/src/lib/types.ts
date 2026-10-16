@@ -38,6 +38,11 @@ export type Visualization = {
   format: "number" | "currency" | "percent";
 };
 export type Artifact = {
+  ai?: {
+    backend: "fixture" | "gemini";
+    text_model: string | null;
+    selected_text_model: string;
+  };
   id: string;
   title: string;
   columns: { name: string; type: string }[];
@@ -93,3 +98,32 @@ export type SkillReference = Pick<
 };
 
 export type SkillSummary = Omit<Skill, "instructions">;
+
+export type AuthorBrief = {
+  name: string;
+  description: string;
+  purpose: string;
+  when_to_use: string;
+  source: "" | SkillContent["source"];
+  workflow: string;
+  definitions: string;
+  examples: string;
+  tags: string;
+};
+export type AuthorSession = {
+  id: string;
+  revision: number;
+  status: "collecting" | "draft_ready" | "published";
+  brief: AuthorBrief;
+  draft: SkillContent | null;
+  transcript: {
+    role: "user" | "assistant";
+    text: string;
+    created_at: string;
+  }[];
+  missing_fields: string[];
+  connected: boolean;
+  turns: number;
+  expires_at: number;
+  published_skill_id: string | null;
+};

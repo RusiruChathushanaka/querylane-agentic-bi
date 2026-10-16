@@ -5,10 +5,15 @@ import { resolve } from "node:path";
 import vm from "node:vm";
 import ts from "typescript";
 
-function voiceHarness(options) {
-  const track = { enabled: true, stop() {} };
+function voiceHarness(options, behavior = {}) {
+  const track = { enabled: true, stop() { effects.tracksStopped++; } };
   const effects = {
     buffers: 0,
+    tracksStopped: 0,
+    contextsClosed: 0,
+    microphoneRequests: 0,
+    frames: [],
+    closed: 0,
     events: [],
     mutedAtConnect: null,
     socket: null,
@@ -17,7 +22,7 @@ function voiceHarness(options) {
     currentTime = 0;
     destination = {};
     async resume() {}
-    async close() {}
+    async close() { effects.contextsClosed++; }
     createBuffer() {
       effects.buffers++;
       return { getChannelData: () => new Float32Array(1), duration: 1 / 24000 };
@@ -29,12 +34,13 @@ function voiceHarness(options) {
   class Socket {
     static OPEN = 1;
     readyState = 1;
-    constructor() {
+    constructor(url) {
+      effects.url = url.href;
       effects.mutedAtConnect = !track.enabled;
       effects.socket = this;
     }
-    send() {}
-    close() {}
+    send(data) { effects.frames.push(JSON.parse(data)); }
+    close() { effects.closed++; }
   }
   const compiledModule = { exports: {} };
   const context = {
@@ -46,10 +52,12 @@ function voiceHarness(options) {
     }),
     navigator: {
       mediaDevices: {
-        getUserMedia: async () => ({
-          getTracks: () => [track],
-          getAudioTracks: () => [track],
-        }),
+        getUserMedia: async () => {
+          effects.microphoneRequests++;
+          if (behavior.denyMicrophone) throw new Error("Microphone permission denied");
+          if (behavior.waitForPermission) await behavior.waitForPermission;
+          return { getTracks: () => [track], getAudioTracks: () => [track] };
+        },
       },
     },
     window: { AudioWorkletNode: class {} },
@@ -57,6 +65,8 @@ function voiceHarness(options) {
     WebSocket: Socket,
     URL,
     atob,
+    setTimeout,
+    clearTimeout,
   };
   const source = readFileSync(
     resolve(import.meta.dirname, "../src/lib/voice.ts"),
@@ -115,4 +125,70 @@ test("default voice preferences preserve audible responses and an enabled microp
   });
   assert.equal(effects.buffers, 1);
   voice.stop();
+});
+
+test("typing interview uses author endpoint and text frames without requesting microphone access", async () => {
+  const { voice, effects } = voiceHarness({ textOnly: true, endpoint: "/api/v1/skills/author-sessions/example/voice" });
+  await voice.start("example");
+  assert.equal(effects.microphoneRequests, 0);
+  assert.equal(effects.url, "ws://localhost:8000/api/v1/skills/author-sessions/example/voice");
+  assert.equal(voice.sendText("Revenue"), false);
+  await effects.socket.onmessage({ data: JSON.stringify({ type: "ready" }) });
+  assert.equal(voice.sendText("Revenue"), true);
+  assert.deepEqual(effects.frames.at(-1), { type: "text", text: "Revenue" });
+  voice.stop();
+});
+
+test("microphone denial closes the playback context before surfacing the error", async () => {
+  const { voice, effects } = voiceHarness({}, { denyMicrophone: true });
+  await assert.rejects(voice.start("example"), /permission denied/);
+  assert.equal(effects.contextsClosed, 1);
+  assert.equal(effects.socket, null);
+});
+
+test("closing while permission is pending stops late microphone tracks and never connects", async () => {
+  let allow;
+  const permission = new Promise((resolve) => { allow = resolve; });
+  const { voice, effects } = voiceHarness({}, { waitForPermission: permission });
+  const start = voice.start("example");
+  await Promise.resolve();
+  voice.stop(); allow(); await start;
+  assert.equal(effects.tracksStopped, 1);
+  assert.equal(effects.contextsClosed, 1);
+  assert.equal(effects.socket, null);
+});
+
+test("graceful pause accepts the final server draft while releasing audio immediately", async () => {
+  const { voice, effects } = voiceHarness({ textOnly: true });
+  await voice.start("example");
+  await effects.socket.onmessage({ data: JSON.stringify({ type: "ready" }) });
+  voice.stop(true);
+  assert.equal(effects.contextsClosed, 1);
+  assert.equal(effects.closed, 0);
+  assert.equal(effects.frames.at(-1).type, "stop");
+  await effects.socket.onmessage({ data: JSON.stringify({ type: "stopped", session: { revision: 3 } }) });
+  effects.socket.onclose();
+  assert.equal(effects.events.find((event) => event.session)?.session.revision, 3);
+  voice.stop();
+  assert.equal(effects.contextsClosed, 1);
+});
+
+test("interruption clears queued spoken audio without ending the interview", async () => {
+  const { voice, effects } = voiceHarness({ textOnly: true });
+  await voice.start("example");
+  await effects.socket.onmessage({ data: JSON.stringify({ type: "ready" }) });
+  await effects.socket.onmessage({ data: JSON.stringify({ type: "audio", data: "AAAA" }) });
+  await effects.socket.onmessage({ data: JSON.stringify({ type: "interrupted" }) });
+  assert.equal(effects.buffers, 1);
+  assert.equal(effects.closed, 0);
+  assert.equal(voice.sendText("Please correct the definition"), true);
+  voice.stop();
+});
+
+test("analysis model is included in the analyst voice handshake", async () => {
+  const harness = voiceHarness({ textOnly: true, analysisModel: "gemini-3.5-flash-lite" });
+  await harness.voice.start("chat");
+  harness.effects.socket.onopen();
+  assert.equal(harness.effects.frames[0].model, "gemini-3.5-flash-lite");
+  harness.voice.stop();
 });

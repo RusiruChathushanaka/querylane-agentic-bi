@@ -1,0 +1,52 @@
+{
+  "checked_at": "2026-10-15T21:04:36.135858+00:00",
+  "project": "project-e8b1593d-009a-4822-abf",
+  "location": "global",
+  "data": "local synthetic fixtures",
+  "storage": "ephemeral memory",
+  "question": "What is total revenue across all completed orders? Return a KPI.",
+  "results": [
+    {
+      "model": "gemini-3.8-flash",
+      "status": "complete",
+      "expected_revenue": 118951,
+      "observed_revenue": 118951,
+      "row_values": [
+        {
+          "total_revenue": "118951.00"
+        }
+      ],
+      "sql": [
+        "SELECT SUM(revenue) AS total_revenue FROM `project-e8b1593d-009a-4822-abf`.agentic_bi_demo.orders WHERE status = 'completed'"
+      ],
+      "ai_evidence": {
+        "backend": "gemini",
+        "text_model": "gemini-3.8-flash",
+        "selected_text_model": "gemini-3.8-flash"
+      },
+      "errors": [],
+      "passed": true
+    },
+    {
+      "model": "gemini-3.5-flash-lite",
+      "status": "complete",
+      "expected_revenue": 118951,
+      "observed_revenue": 118951,
+      "row_values": [
+        {
+          "total_revenue": "118951.00"
+        }
+      ],
+      "sql": [
+        "SELECT SUM(revenue) AS total_revenue FROM `project-e8b1593d-009a-4822-abf`.agentic_bi_demo.orders WHERE status = 'completed'"
+      ],
+      "ai_evidence": {
+        "backend": "gemini",
+        "text_model": "gemini-3.5-flash-lite",
+        "selected_text_model": "gemini-3.5-flash-lite"
+      },
+      "errors": [],
+      "passed": true
+    }
+  ]
+}

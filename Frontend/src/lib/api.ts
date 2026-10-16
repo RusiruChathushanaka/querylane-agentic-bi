@@ -68,7 +68,8 @@ export async function api<T>(
   if (
     ["POST", "PATCH", "PUT", "DELETE"].includes(
       (init.method ?? "GET").toUpperCase(),
-    )
+    ) ||
+    headers.has("Authorization")
   ) {
     headers.set("Authorization", `Bearer ${await guestToken()}`);
     if (init.body) headers.set("Content-Type", "application/json");
@@ -90,6 +91,16 @@ export async function api<T>(
       body.error?.code,
     );
   return body as T;
+}
+
+/** Guest-scoped resources (such as unpublished author interviews) require authenticated reads. */
+export async function guestApi<T>(
+  path: string,
+  init: RequestInit = {},
+): Promise<T> {
+  const headers = new Headers(init.headers);
+  headers.set("Authorization", `Bearer ${await guestToken()}`);
+  return api<T>(path, { ...init, headers });
 }
 
 export async function streamRun(

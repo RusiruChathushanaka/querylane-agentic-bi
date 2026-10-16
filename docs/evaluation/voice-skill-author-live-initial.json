@@ -1,0 +1,85 @@
+{
+  "scope": "Isolated real Gemini Live over local synthetic sources; no shared cloud data changed.",
+  "turns": [
+    {
+      "event_types": [
+        "audio",
+        "ready",
+        "transcript",
+        "turn_complete"
+      ],
+      "assistant": "Hello. I'm your conversational skill author. I see we haven't started yet. What analytical task should this playbook help with?",
+      "draft_ready": false
+    },
+    {
+      "event_types": [
+        "audio",
+        "brief",
+        "interrupted",
+        "transcript",
+        "turn_complete",
+        "user_message"
+      ],
+      "assistant": "\"Monthly sales coaching\" sounds like a good name. When should the user typically run this playbook?",
+      "draft_ready": false
+    },
+    {
+      "event_types": [
+        "audio",
+        "brief",
+        "interrupted",
+        "transcript",
+        "turn_complete",
+        "user_message"
+      ],
+      "assistant": "Got it. You've specified BigQuery orders, the definitions for gross revenue, and the workflow. When should the user use this skill?",
+      "draft_ready": false
+    },
+    {
+      "event_types": [
+        "audio",
+        "brief",
+        "draft",
+        "interrupted",
+        "transcript",
+        "turn_complete",
+        "user_message"
+      ],
+      "assistant": "I have prepared a draft for the \"Monthly sales coaching\" skill. It will analyze gross revenue from BigQuery orders, calculate month-over-month growth, and provide a line chart. Please review the draft and click \"Publish skill\" when you're ready.",
+      "draft_ready": true
+    },
+    {
+      "event_types": [
+        "audio",
+        "ready",
+        "transcript",
+        "turn_complete"
+      ],
+      "assistant": "Hello! I see we have a saved draft for \"Monthly sales coaching\" based on your requirements. It analyzes BigQuery orders to show monthly gross revenue and Month-over-Month growth. Is there anything else you'd like to add or correct before we finalize it?",
+      "draft_ready": true
+    },
+    {
+      "event_types": [
+        "audio",
+        "brief",
+        "draft",
+        "interrupted",
+        "transcript",
+        "turn_complete",
+        "user_message"
+      ],
+      "assistant": "I have updated the skill to \"Net monthly sales coaching.\" It now focuses on Net Revenue calculated from BigQuery orders and returns and generates a new draft. Please review the draft and click \"Publish skill\" when you're ready.",
+      "draft_ready": true
+    }
+  ],
+  "voice_interview_and_publication_completed": true,
+  "numeric_check_passed": false,
+  "actual": [
+    {
+      "revenue": null
+    }
+  ],
+  "query": "WITH order_refunds AS (SELECT order_id, SUM(refund_amount) AS total_refund FROM `project-e8b1593d-009a-4822-abf`.agentic_bi_demo.returns GROUP BY order_id) SELECT ROUND(SUM(o.revenue - COALESCE(r.total_refund, 0)), 2) AS revenue FROM `project-e8b1593d-009a-4822-abf`.agentic_bi_demo.orders AS o LEFT JOIN order_refunds AS r ON o.order_id = r.order_id WHERE o.status = 'Completed'",
+  "issue": "Analysis used invented status literal 'Completed'; the demo stores lowercase 'completed'. The author must preserve exact user-provided enum values, and the smoke supplies that literal explicitly.",
+  "microphone_hardware_tested": false
+}

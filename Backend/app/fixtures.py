@@ -122,7 +122,7 @@ SOURCE_TABLES = {
 }
 
 DESCRIPTIONS = {
-    "orders": "Completed retail orders, Jan–Sep 2026. revenue is gross order revenue in USD, before refunds. month is YYYY-MM. customer_id is a candidate relationship to PostgreSQL customer_profiles.",
+    "orders": "Completed retail orders, Jan–Sep 2026. All seeded rows have status='completed' (lowercase, case-sensitive); do not invent other status literals. revenue is gross order revenue in USD, before refunds. month is YYYY-MM. customer_id is a candidate relationship to PostgreSQL customer_profiles.",
     "order_items": "Order lines; line_revenue is USD. Join orders on order_id and products on product_id. One line per order in this synthetic seed.",
     "products": "Product catalogue, category, and current unit price in USD. product_id is unique.",
     "returns": "Returned orders and refund_amount in USD. Net revenue = gross order revenue minus refunds, with correct order-level joins.",

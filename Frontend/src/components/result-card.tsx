@@ -607,6 +607,14 @@ export default function ResultCard({ artifact }: { artifact: Artifact }) {
               {artifact.retrieval && (
                 <p>Schema retrieval: {artifact.retrieval}</p>
               )}
+              {artifact.ai && (
+                <p>
+                  AI model:{" "}
+                  {artifact.ai.backend === "gemini"
+                    ? artifact.ai.text_model
+                    : "Local sample mode (no model calls)"}
+                </p>
+              )}
             </div>
           </div>
         </details>

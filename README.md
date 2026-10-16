@@ -44,14 +44,17 @@ This preview uses an operator access token only in memory. Restart it when that 
 
 ## Included behavior
 
+- [Expanded retail history](docs/retail-timeseries.md): 573,348 orders across 2023–2026, 1.3 million line items, dated refunds, stores, promotions, and a daily calendar. Reproducible Parquet generation, validation, insert-only cloud upload, and date-range extension scripts preserve the original demo tables.
+
 - Shared conversations, follow-ups, immutable result references, forks, and share links.
+- Conversational [voice skill author](docs/voice-skill-author-plan.md): interview, requirements checklist, recoverable draft, review, and explicit publication. Implemented locally; release verification is in [validation](docs/validation.md#conversational-voice-skill-author--2026-10-16).
 - Public [skills library](docs/skills.md): versioned Markdown playbooks, import/export, automatic discovery, chat attachments, and recoverable deletion. Open the [deployed skills library](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/skills).
 - ADK planning and interpretation with Gemini; schema embeddings and Firestore vector retrieval.
 - Guarded BigQuery/PostgreSQL connectors, independent query evidence, bounded result pages.
 - Automatically inferred, type-checked cross-source relationships; duplicate-key and incomplete-input rejection.
 - Bar, line, area, pie, scatter, table, and KPI views with accessible table alternatives.
 - Gemini Live voice bridge, PCM microphone streaming, transcripts, interruption, mute, and resumption.
-- Browser-local [settings](docs/settings.md): light/dark/system themes, accent colors, density, chart defaults, chat shortcuts, and voice preferences.
+- Browser-local [settings](docs/settings.md): Gemini Flash/Flash-Lite analysis model selection, light/dark/system themes, accent colors, density, chart defaults, chat shortcuts, and voice preferences.
 - [Motion and feedback](docs/motion-and-feedback.md) using Framer Motion, beUI, and Sonner, with shared reduced-motion support and reader-aware result scrolling.
 - Anonymous guest tokens, shared usage counters, fenced conversation leases, and event replay.
 - CLI-only seed/reset commands and isolated cloud build/deployment scripts.
@@ -77,7 +80,7 @@ npx tsc --noEmit
 npm run build
 ```
 
-See [local setup](docs/setup.md), [deployment guide](docs/deployment-guide.md), [architecture](docs/architecture.md), [demo script](docs/demo.md), [validation notes](docs/validation.md), and [domain glossary](CONTEXT.md).
+See [local setup](docs/setup.md), [deployment guide](docs/deployment-guide.md), [architecture](docs/architecture.md), [database schema guide](docs/database-schema.md), [demo script](docs/demo.md), [validation notes](docs/validation.md), and [domain glossary](CONTEXT.md).
 
 ## Cloud status
 

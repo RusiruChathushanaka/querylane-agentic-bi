@@ -1,0 +1,16 @@
+{
+  "dataset": "agentic_bi_demo",
+  "location": "asia-southeast1",
+  "existing_timeseries_tables": [],
+  "legacy_bigquery": {
+    "orders": 720,
+    "revenue": "118951"
+  },
+  "legacy_postgres": {
+    "customer_profiles": 80,
+    "regional_targets": 36,
+    "campaigns": 4,
+    "region_aliases": 4
+  },
+  "timeseries_schema_exists": false
+}

@@ -12,7 +12,9 @@ Before deployment, cloud provisioning, IAM/secret changes, rollback, or cloud tr
 
 ## Current documentation
 
-For skills-library changes, read [docs/skills.md](docs/skills.md). Preserve revision/snapshot evidence, public visibility, the three-skill budget, and the existing controlled query pipeline. Example skill seeding is an explicit operator action, not part of routine deployment or history reset.
+For retail source/schema or generated-data changes, read [docs/retail-timeseries.md](docs/retail-timeseries.md) and [the column dictionary](docs/retail-timeseries-schema.md). Preserve the original demo namespaces. Generation/validation are offline; cloud upload is a separate operator action from deployment. Use the insert-only, fenced uploader and `extend` workflow instead of the legacy destructive seed command. Preserve the active data profile explicitly on releases and retain row/byte/scan/fusion controls. The guide is not authorization for new data writes or IAM changes.
+
+For skills-library changes, read [docs/skills.md](docs/skills.md). Preserve revision/snapshot evidence, public visibility, the three-skill budget, and the existing controlled query pipeline. Example skill seeding is an explicit operator action, not part of routine deployment or history reset. For conversational authoring, also read [docs/voice-skill-author-plan.md](docs/voice-skill-author-plan.md): keep publication outside model tools, author leases separate from analytics, and unpublished recovery bound to the initiating guest.
 
 Use the `ctx7` CLI to fetch current documentation for library, framework, SDK, API, CLI, and cloud-service questions, including setup, configuration, migrations, and library-specific debugging. Prefer this to web search.
 

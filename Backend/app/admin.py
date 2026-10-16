@@ -4,6 +4,7 @@ import argparse
 import asyncio
 import json
 import subprocess
+import time
 from datetime import date
 from decimal import Decimal
 
@@ -183,7 +184,9 @@ async def index_schema():
     store = FirestoreStore(PROJECT, "agentic-bi-demo", credentials=credentials)
     # The seed defines the same schema in both modes; indexing does not need a
     # privileged PostgreSQL connection or access to any other dataset.
-    connectors = Connectors(Settings())
+    connectors = Connectors(
+        Settings(data_backend="fixture", data_profile=settings.data_profile), catalog_only=True
+    )
     ai = AI(settings, FirestoreSessionService(store), connectors, store, credentials=credentials)
     try:
         print(
@@ -203,7 +206,15 @@ async def index_schema():
 async def reset():
     client = firestore.Client(project=PROJECT, database="agentic-bi-demo", credentials=operator_credentials())
     # Recursive delete is limited to collections owned by this demo database.
-    for name in ["conversations", "runs", "artifacts", "adk_sessions", "voice_resumptions", "quotas"]:
+    for name in [
+        "conversations",
+        "runs",
+        "artifacts",
+        "adk_sessions",
+        "voice_resumptions",
+        "quotas",
+        "skill_author_sessions",
+    ]:
         client.recursive_delete(client.collection(name))
     client.close()
     print("Demo history and quotas reset; schemas and source data preserved.")
@@ -223,19 +234,54 @@ async def seed_skills():
         await store.close()
 
 
+async def cleanup_skill_authors():
+    """Remove only expired, inactive author interviews and their scoped ADK sessions."""
+    from app.adk_sessions import FirestoreSessionService
+    from app.skill_author import COLLECTION
+
+    client = firestore.Client(project=PROJECT, database="agentic-bi-demo", credentials=operator_credentials())
+    removed = 0
+    try:
+        for document in client.collection(COLLECTION).stream():
+            value = document.to_dict()
+            if (
+                value.get("expires_at", float("inf")) > time.time()
+                or value.get("lease_until", 0) > time.time()
+            ):
+                continue
+            for generation in range(1, value.get("generation", 0) + 1):
+                key = FirestoreSessionService.key(
+                    "skill_author", value["guest_id"], f"{document.id}_g{generation}"
+                )
+                client.recursive_delete(client.collection("adk_sessions").document(key))
+            client.recursive_delete(document.reference)
+            removed += 1
+    finally:
+        client.close()
+    print(f"Removed {removed} expired author interviews; published skills/revisions preserved.")
+
+
 async def check_models():
+    from app.model_selection import TEXT_MODELS
+
     credentials = operator_credentials()
     settings = Settings()
     client = Client(
         vertexai=True, project=PROJECT, location=settings.text_model_location, credentials=credentials
     )
     try:
-        response = await client.aio.models.generate_content(
-            model=settings.text_model,
-            contents="Reply with OK only.",
-            config=types.GenerateContentConfig(max_output_tokens=1024),
-        )
-        print(json.dumps({"text_model": settings.text_model, "has_text_response": bool(response.text)}))
+        for model_id in dict.fromkeys([settings.text_model, *(model["id"] for model in TEXT_MODELS)]):
+            response = await client.aio.models.generate_content(
+                model=model_id,
+                contents="Reply with OK only.",
+                config=types.GenerateContentConfig(
+                    max_output_tokens=1024,
+                    thinking_config=types.ThinkingConfig(thinking_level=types.ThinkingLevel.LOW),
+                ),
+            )
+            if not response.text:
+                raise RuntimeError(f"Model {model_id} returned no text response.")
+            print(json.dumps({"text_model": model_id, "has_text_response": True}))
     finally:
         await client.aio.aclose()
     embedding = Client(
@@ -268,7 +314,17 @@ async def check_models():
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("command", choices=["seed", "seed-skills", "index-schema", "check-models", "reset-history"])
+    parser.add_argument(
+        "command",
+        choices=[
+            "seed",
+            "seed-skills",
+            "index-schema",
+            "check-models",
+            "cleanup-skill-authors",
+            "reset-history",
+        ],
+    )
     parser.add_argument("--confirm-demo-reset", action="store_true")
     args = parser.parse_args()
     if args.command == "reset-history" and not args.confirm_demo_reset:
@@ -278,6 +334,7 @@ def main():
         "seed-skills": seed_skills,
         "index-schema": index_schema,
         "check-models": check_models,
+        "cleanup-skill-authors": cleanup_skill_authors,
         "reset-history": reset,
     }
     asyncio.run(operations[args.command]())

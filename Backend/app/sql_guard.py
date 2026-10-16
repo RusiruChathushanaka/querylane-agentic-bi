@@ -89,7 +89,9 @@ FORBIDDEN_NODES = {
 }
 
 
-def validate_sql(sql: str, source: str, project: str, dataset: str) -> str:
+def validate_sql(
+    sql: str, source: str, project: str, dataset: str, *, tables=None, postgres_schema="retail"
+) -> str:
     dialect = "bigquery" if source == "bigquery" else "postgres"
     if len(sql) > 12_000:
         raise AppError("Query is too large.", code="unsafe_sql")
@@ -117,7 +119,7 @@ def validate_sql(sql: str, source: str, project: str, dataset: str) -> str:
             name = node.name
             if name in ctes and not node.db and not node.catalog:
                 continue
-            if name not in SOURCE_TABLES[source]:
+            if name not in (tables or SOURCE_TABLES)[source]:
                 raise AppError("Query references a table outside the demo sources.", code="unsafe_sql")
             if source == "bigquery":
                 if node.db and node.db != dataset or node.catalog and node.catalog != project:
@@ -125,9 +127,9 @@ def validate_sql(sql: str, source: str, project: str, dataset: str) -> str:
                 node.set("db", exp.to_identifier(dataset))
                 node.set("catalog", exp.to_identifier(project, quoted=True))
             else:
-                if node.catalog or node.db not in ("", "retail"):
+                if node.catalog or node.db not in ("", postgres_schema):
                     raise AppError("Query references a schema outside the demo.", code="unsafe_sql")
-                node.set("db", exp.to_identifier("retail"))
+                node.set("db", exp.to_identifier(postgres_schema))
             physical_tables += 1
     if not physical_tables:
         raise AppError("An analysis query must read a demo table.", code="unsafe_sql")

@@ -12,6 +12,8 @@ class Settings(BaseSettings):
     environment: Literal["local", "production", "test"] = "local"
     storage_backend: Literal["memory", "firestore"] = "memory"
     data_backend: Literal["fixture", "cloud"] = "fixture"
+    data_profile: Literal["legacy", "timeseries"] = "legacy"
+    retail_bundle_path: str = ""
     ai_backend: Literal["fixture", "gemini"] = "fixture"
     google_cloud_project: str = "project-e8b1593d-009a-4822-abf"
     firestore_database: str = "agentic-bi-demo"
@@ -47,10 +49,24 @@ class Settings(BaseSettings):
     skill_catalog_limit: int = 100
     skill_guest_hourly_limit: int = 20
     skill_workspace_daily_limit: int = 100
+    author_guest_hourly_limit: int = 3
+    author_workspace_daily_limit: int = 12
+    author_voice_guest_hourly_limit: int = 6
+    author_voice_workspace_daily_limit: int = 30
+    author_voice_max_seconds: int = 600
+    author_lifetime_seconds: int = 21600
+    author_turn_limit: int = 24
+    author_tool_limit: int = 48
+    author_update_limit: int = 24
+    author_transcript_bytes: int = 65536
 
     @property
     def origins(self) -> list[str]:
         return [origin.strip().rstrip("/") for origin in self.allowed_origins.split(",") if origin.strip()]
+
+    @property
+    def postgres_schema(self) -> str:
+        return "retail_timeseries" if self.data_profile == "timeseries" else "retail"
 
     def validate_runtime(self) -> None:
         if self.environment == "production":

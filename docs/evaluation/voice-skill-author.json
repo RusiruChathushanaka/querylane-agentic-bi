@@ -1,0 +1,138 @@
+{
+  "date": "2026-10-16",
+  "scope": "Implementation tests; no Cloud Run deployment or live shared library changes. Real-model smoke uses isolated synthetic memory data.",
+  "backend": {
+    "pytest_passed": 138,
+    "ruff": "passed"
+  },
+  "frontend": {
+    "tests_passed": 8,
+    "lint": "passed",
+    "typescript": "passed",
+    "production_build": "passed"
+  },
+  "checks": {
+    "guest_ownership_and_authenticated_recovery": true,
+    "idempotent_creation_and_quota": true,
+    "missing_requirements_block_draft": true,
+    "corrections_invalidate_old_draft": true,
+    "revision_conflicts_keep_draft": true,
+    "atomic_reviewed_publication_and_retry": true,
+    "publication_honors_skill_capacity_and_quotas": true,
+    "one_socket_and_stale_tool_adk_fences": true,
+    "expiry_transcript_utf8_and_turn_update_tool_budgets": true,
+    "raw_audio_not_persisted": true,
+    "origin_token_and_fixture_mode_errors": true,
+    "real_gemini_live_interview_reconnect_and_correction": true,
+    "real_gemini_live_publication_then_skill_guided_net_revenue": true,
+    "keyboard_focusable_preview": true
+  },
+  "initial_findings": [
+    {
+      "issue": "Final ADK transcripts were appended to partial fragments, duplicating speech text; interrupted/tool-only completions advanced the interview prematurely.",
+      "resolution": "Full transcripts replace partial buffers; only actual, non-interrupted assistant replies complete the turn. Deterministic red/green regression and real-model recheck pass."
+    },
+    {
+      "issue": "An initial downstream analysis used status Completed instead of the stored lowercase completed.",
+      "resolution": "Preserve exact provided code/category literals; real-model smoke supplies the actual enum. The initial observation is retained in voice-skill-author-live-initial.json. Generated skills require review."
+    },
+    {
+      "issue": "Scrollable draft preview lacked keyboard access.",
+      "resolution": "Focusable preview and visible focus ring added; final browser audit recorded separately."
+    }
+  ],
+  "real_live_report": "voice-skill-author-live.json",
+  "independent_net_revenue": "110695.00",
+  "microphone_hardware_tested": false,
+  "cloud_firestore_author_persistence_tested": false,
+  "limitations": [
+    "Real Live checks inject text and receive audio; microphone hardware and manual screen-reader checks remain manual.",
+    "Author persistence/fencing was tested through the document adapter and mocked SDK/live boundaries locally; new author collections have not been verified across deployed Cloud Run revisions.",
+    "The default fixture backend does not provide live authoring. A Gemini-enabled preview/deployment is required."
+  ],
+  "browser": {
+    "scope": "Real Gemini browser workflow in dev and standalone production previews; only runtime config was overridden for one dev-browser phase and removed before writes. No mocked model/voice events used for the real browser flows.",
+    "checks": {
+      "entry_point": true,
+      "typing_without_microphone": true,
+      "requirements_checklist": true,
+      "spoken_response_and_transcript": true,
+      "draft_preview_and_pause": true,
+      "explicit_publication_acknowledgment": true,
+      "published_skill_visible_in_library": true,
+      "blank_field_validation_and_aria_invalid": true,
+      "draft_preserved_after_validation_error": true,
+      "unsaved_review_confirmation_and_keep_working": true,
+      "review_changes_reset_publication_acknowledgment": true,
+      "mobile_no_horizontal_overflow": true,
+      "keyboard_focusable_preview": true,
+      "reduced_motion": true,
+      "react_component_inspection": true,
+      "browser_unhandled_errors": [],
+      "saved_review_edits_survive_close_and_reopen": true,
+      "production_standalone_preview": true
+    },
+    "accessibility": {
+      "welcome": {
+        "axe_version": "4.12.1",
+        "counts": {
+          "inapplicable": 51,
+          "incomplete": 1,
+          "passes": 38,
+          "violations": 0
+        }
+      },
+      "review-final": {
+        "axe_version": "4.12.1",
+        "counts": {
+          "inapplicable": 53,
+          "incomplete": 2,
+          "passes": 36,
+          "violations": 0
+        }
+      },
+      "mobile-light": {
+        "axe_version": "4.12.1",
+        "counts": {
+          "inapplicable": 53,
+          "incomplete": 2,
+          "passes": 36,
+          "violations": 0
+        }
+      },
+      "mobile-dark": {
+        "axe_version": "4.12.1",
+        "counts": {
+          "inapplicable": 53,
+          "incomplete": 2,
+          "passes": 36,
+          "violations": 0
+        }
+      }
+    },
+    "notes": [
+      "Radix modal focus-guard checks retain incomplete audit rules; manual screen-reader coverage is separate.",
+      "An initial review scan flagged the non-focusable scrollable preview; the final scans above follow its correction.",
+      "The browser automation fill-empty/select-all shortcuts did not generate the expected React input change. Discrete Backspace events verified blank-name rejection; real keystrokes verified review edits."
+    ],
+    "next_runtime": {
+      "compilation_issues": [],
+      "config_errors": [],
+      "session_errors": []
+    }
+  },
+  "preview": {
+    "frontend": "http://127.0.0.1:3002/skills",
+    "backend": "http://127.0.0.1:8002",
+    "data": "synthetic",
+    "storage": "memory",
+    "credential_lifetime": "temporary operator token; restart backend after expiry",
+    "http_checks": {
+      "/skills": true,
+      "/api/config": true,
+      "/api/health": true,
+      "/health/ready": true
+    }
+  },
+  "passed": true
+}

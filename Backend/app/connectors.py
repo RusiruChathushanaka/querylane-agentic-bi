@@ -3,6 +3,7 @@ import datetime as dt
 import json
 import time
 from decimal import Decimal
+from pathlib import Path
 from typing import Any
 
 import pyarrow as pa
@@ -29,7 +30,7 @@ def json_rows(rows: list[dict]) -> list[dict]:
 
 
 class Connectors:
-    def __init__(self, settings: Settings, credentials=None):
+    def __init__(self, settings: Settings, credentials=None, *, catalog_only=False):
         self.settings = settings
         self.credentials = credentials
         self.jobs: dict[str, list[Any]] = {}
@@ -37,7 +38,26 @@ class Connectors:
         self.pg_pool = None
         self.sql_connector = None
         self.bq = None
-        self.fixtures = retail_data()
+        self.source_tables = SOURCE_TABLES
+        self.descriptions = DESCRIPTIONS
+        self.bundle = None
+        self.coverage = None
+        self.fixtures = retail_data() if settings.data_profile == "legacy" else {}
+        if settings.data_profile == "timeseries":
+            from app.retail_schema import SOURCE_TABLES as TS_TABLES
+            from app.retail_schema import TABLES
+
+            self.source_tables = TS_TABLES
+            self.descriptions = {t.name: t.description for t in TABLES}
+            if settings.data_backend == "fixture" and not catalog_only:
+                from app.retail_generator import read_manifest
+
+                if not settings.retail_bundle_path:
+                    raise ValueError(
+                        "DATA_PROFILE=timeseries with local fixtures requires RETAIL_BUNDLE_PATH."
+                    )
+                self.bundle = read_manifest(Path(settings.retail_bundle_path), verify_hashes=False)
+                self.coverage = (self.bundle["parameters"]["start"], self.bundle["parameters"]["end"])
 
     async def start(self):
         if self.settings.data_backend == "cloud":
@@ -78,12 +98,67 @@ class Connectors:
         if self.bq:
             self.bq.close()
 
+    @property
+    def data_context(self):
+        if self.settings.data_profile == "legacy":
+            return "Synthetic January–September 2026 retail data; amounts USD; PostgreSQL schema retail."
+        bounds = ""
+        if self.coverage:
+            bounds = f" Business dates {self.coverage[0]} through {self.coverage[1]}; the latter is the current published as-of cutoff."
+        return (
+            "Synthetic multi-year daily retail history; amounts USD. PostgreSQL schema retail_timeseries. "
+            "Use only the supplied sales_* tables and calendar, and the supplied PostgreSQL dimensions. "
+            "Determine dates from source data; do not assume a single year. Revenue is after discounts, before refunds/tax/shipping. "
+            "Use the calendar date spine for zero-filled daily series, LAG over dense months for MoM/YoY, and bounded rolling windows. "
+            "Distinguish order-date and refund-date analysis. Partial months and the latest cohorts/returns are incomplete observation windows. "
+            "Customer segment/tier are fixed synthetic labels, not historical snapshots. Forecasts require explicit methods/assumptions; do not claim an ML model was trained."
+            + bounds
+        )
+
+    async def ensure_data_ready(self):
+        if self.settings.data_profile != "timeseries" or self.settings.data_backend != "cloud":
+            return
+        from google.cloud import bigquery
+
+        try:
+
+            def read():
+                return list(
+                    self.bq.query(
+                        f"SELECT status,anchor_start,end_date FROM `{self.settings.google_cloud_project}.{self.settings.bigquery_dataset}.retail_timeseries_state` WHERE id='current'",
+                        job_config=bigquery.QueryJobConfig(
+                            maximum_bytes_billed=self.settings.bigquery_max_bytes
+                        ),
+                    ).result(timeout=15)
+                )
+
+            rows = await asyncio.to_thread(read)
+            if len(rows) != 1 or rows[0]["status"] != "ready":
+                raise AppError(
+                    "Time-series data is being imported or needs operator recovery. Try after the upload completes.",
+                    503,
+                    "data_import_busy",
+                )
+            metadata = dict(rows[0])
+            if metadata.get("anchor_start") and metadata.get("end_date"):
+                self.coverage = (str(metadata["anchor_start"]), str(metadata["end_date"]))
+        except AppError:
+            raise
+        except Exception as exc:
+            raise AppError(
+                "Time-series sources have not been verified ready. Ask the operator to finish the data upload.",
+                503,
+                "data_not_ready",
+            ) from exc
+
     async def test(self, source: str) -> dict:
         if self.settings.data_backend == "fixture":
             return {"connected": True, "mode": "local-fixtures"}
         try:
             if source == "bigquery":
                 await asyncio.to_thread(self.bq.get_dataset, self.settings.bigquery_dataset)
+                if self.settings.data_profile == "timeseries":
+                    await self.ensure_data_ready()
             else:
                 async with self.pg_pool.acquire(timeout=5) as connection:
                     await connection.fetchval("SELECT 1", timeout=5)
@@ -97,10 +172,19 @@ class Connectors:
 
     async def schema(self, source: str) -> list[dict]:
         tables = []
-        for name in SOURCE_TABLES[source]:
+        for name in self.source_tables[source]:
             if self.settings.data_backend == "fixture":
-                arrow = pa.Table.from_pylist(self.fixtures[name])
-                columns = [{"name": field.name, "type": str(field.type)} for field in arrow.schema]
+                if self.bundle:
+                    import pyarrow.parquet as pq
+
+                    schema = pq.read_schema(Path(self.settings.retail_bundle_path) / f"{name}.parquet")
+                elif self.settings.data_profile == "timeseries":
+                    from app.retail_schema import BY_NAME
+
+                    schema = BY_NAME[name].arrow_schema()
+                else:
+                    schema = pa.Table.from_pylist(self.fixtures[name]).schema
+                columns = [{"name": field.name, "type": str(field.type)} for field in schema]
             elif source == "bigquery":
                 table = await asyncio.to_thread(
                     self.bq.get_table,
@@ -111,21 +195,32 @@ class Connectors:
                 async with self.pg_pool.acquire(timeout=5) as connection:
                     fields = await connection.fetch(
                         "SELECT column_name, data_type FROM information_schema.columns WHERE table_schema=$1 AND table_name=$2 ORDER BY ordinal_position",
-                        "retail",
+                        self.settings.postgres_schema,
                         name,
                         timeout=5,
                     )
                 columns = [{"name": field["column_name"], "type": field["data_type"]} for field in fields]
             tables.append(
-                {"source": source, "table": name, "description": DESCRIPTIONS[name], "columns": columns}
+                {
+                    "source": source,
+                    "table": name,
+                    "description": self.descriptions[name],
+                    "columns": [c for c in columns if c["name"] != "record_hash"],
+                }
             )
         return tables
 
     async def query(self, source: str, sql: str, run_id: str, leg: int = 0) -> QueryResult:
+        await self.ensure_data_ready()
         if run_id in self.cancelled:
             raise asyncio.CancelledError()
         normalized = validate_sql(
-            sql, source, self.settings.google_cloud_project, self.settings.bigquery_dataset
+            sql,
+            source,
+            self.settings.google_cloud_project,
+            self.settings.bigquery_dataset,
+            tables=self.source_tables,
+            postgres_schema=self.settings.postgres_schema,
         )
         started = time.monotonic()
         job_id, billed = None, None
@@ -178,8 +273,18 @@ class Connectors:
             table.set("db", None)
             table.set("catalog", None)
         with duckdb.connect(":memory:", config={"enable_external_access": False, "threads": 1}) as connection:
-            for name in SOURCE_TABLES[source]:
-                connection.register(name, pa.Table.from_pylist(self.fixtures[name]))
+            for name in self.source_tables[source]:
+                if self.bundle:
+                    import pyarrow.dataset as ds
+
+                    connection.register(
+                        name,
+                        ds.dataset(
+                            Path(self.settings.retail_bundle_path) / f"{name}.parquet", format="parquet"
+                        ),
+                    )
+                else:
+                    connection.register(name, pa.Table.from_pylist(self.fixtures[name]))
             result = connection.execute(
                 f"SELECT * FROM ({tree.sql(dialect='duckdb')}) AS bounded_result LIMIT {self.settings.source_row_limit + 1}"
             )

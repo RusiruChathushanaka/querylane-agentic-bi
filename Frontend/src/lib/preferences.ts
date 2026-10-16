@@ -1,8 +1,14 @@
 export const PREFERENCES_KEY = "querylane-preferences-v1";
 export const THEME_KEY = "querylane-theme";
 export const ACCENTS = ["cobalt", "teal", "violet", "rose"] as const;
+export const TEXT_MODEL_CHOICES = [
+  "default",
+  "gemini-3.8-flash",
+  "gemini-3.5-flash-lite",
+] as const;
 
 export interface Preferences {
+  textModel: (typeof TEXT_MODEL_CHOICES)[number];
   accent: (typeof ACCENTS)[number];
   density: "comfortable" | "compact";
   reduceMotion: boolean;
@@ -17,6 +23,7 @@ export interface Preferences {
 }
 
 export const DEFAULT_PREFERENCES: Readonly<Preferences> = Object.freeze({
+  textModel: "default",
   accent: "cobalt",
   density: "comfortable",
   reduceMotion: false,
@@ -31,6 +38,7 @@ export const DEFAULT_PREFERENCES: Readonly<Preferences> = Object.freeze({
 });
 
 const choices = {
+  textModel: TEXT_MODEL_CHOICES,
   accent: ACCENTS,
   density: ["comfortable", "compact"],
   defaultSource: ["all", "bigquery", "postgres"],

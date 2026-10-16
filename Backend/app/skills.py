@@ -127,7 +127,17 @@ class Skills:
             reverse=True,
         )
 
-    async def mutate(self, guest_id, *, content=None, skill_id=None, patch=None, action="create", seed=False):
+    async def mutate(
+        self,
+        guest_id,
+        *,
+        content=None,
+        skill_id=None,
+        patch=None,
+        action="create",
+        seed=False,
+        author_publication: tuple[str, int] | None = None,
+    ):
         skill_id = skill_id or uuid.uuid4().hex
         key, capacity_key = ("skills", skill_id), ("system", "skills_capacity")
         stamp = datetime.now(UTC)
@@ -140,9 +150,28 @@ class Skills:
             ]
         )
         keys = [key, capacity_key] + [("quotas", q) for q, _ in quotas]
+        author_key = ("skill_author_sessions", author_publication[0]) if author_publication else None
+        if author_key:
+            keys.append(author_key)
 
         def update(docs):
             previous = docs[key]
+            author = docs.get(author_key) if author_key else None
+            if author_key:
+                if not author or author["guest_id"] != guest_id:
+                    raise AppError("Author session not found.", 404, "author_not_found")
+                # A lost HTTP response must not create another skill or consume
+                # another quota. Later public edits/deletion are preserved.
+                if author.get("published_skill_id") == skill_id and previous:
+                    return {}, public_skill(previous)
+                if author["expires_at"] <= time.time():
+                    raise AppError("This author session expired.", 410, "author_expired")
+                if author.get("active_run") and author["lease_until"] > time.time():
+                    raise AppError("Pause the voice assistant before publishing.", 409, "author_busy")
+                if author["revision"] != author_publication[1]:
+                    raise AppError("The draft changed. Reload it before publishing.", 409, "author_conflict")
+                if not author.get("draft") or author["draft"] != content.model_dump():
+                    raise AppError("Prepare and review a draft first.", 409, "author_draft_required")
             if seed and previous:
                 return {}, public_skill(previous)
             if action != "create":
@@ -205,6 +234,13 @@ class Skills:
                     (f"skills/{skill_id}/revisions", str(value["revision"])): value,
                 }
             )
+            if author_key:
+                updates[author_key] = author | {
+                    "published_skill_id": skill_id,
+                    "status": "published",
+                    "revision": author["revision"] + 1,
+                    "updated_at": now_iso(),
+                }
             return updates, public_skill(value)
 
         return await self.store.atomic(keys, update)

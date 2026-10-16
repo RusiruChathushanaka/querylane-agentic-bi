@@ -58,6 +58,34 @@ After an authorized deployment, check create/edit/delete/restore, CORS preflight
 
 Rollback uses the previous frontend/backend revisions through the routine runbook. Keep the additive skills collections and revision documents; older application versions ignore these fields. `reset-history` explicitly preserves skills and their capacity counter. Update deployment records only after actually deploying and verifying serving revisions.
 
+### Voice skill author release
+
+See [the voice-author plan](voice-skill-author-plan.md) and [skills usage](skills.md#conversational-voice-author). This implementation is not deployed by editing these documents. When release is requested, deploy backend before frontend with the normal helpers. It reuses the existing live model/location, dedicated backend identity, and named database; no new secret, IAM grant, or Firebase/browser access is needed. Its additive collection is `skill_author_sessions`; ADK sessions remain under `adk_sessions` with an explicit author lease scope.
+
+The optional `AUTHOR_*` variables and defaults are in `Backend/.env.example`. Author connection timeout defaults to 600 seconds, within the backend Cloud Run timeout. Guest session expiry is six hours. `max_llm_calls` is not a Live budget: retain the application's turn/tool/update/transcript limits and connection quotas. CORS and WebSocket origin checks must both accept the actual frontend origin.
+
+Before release run backend tests, frontend lint/tests/types/build, the browser loop, and the opt-in `python -m scripts.smoke_skill_author` against an isolated Gemini/memory preview. It intentionally refuses production persistence. After deployment verify owner-checked recovery, real microphone/audio, pause/reconnect, explicit draft publication, idempotent retries, skill provenance, and persistence across a new revision. Existing cloud reports do not verify these new endpoints.
+
+Expired author records are not automatically deleted. For authorized maintenance, `cd Backend` then `uv run python -m app.admin cleanup-skill-authors` removes only expired/inactive author records and their scoped ADK sessions. Published skill revisions are retained. History reset now also removes draft author interviews; published skills remain preserved. Rollback keeps additive author documents and uses the recorded prior revisions.
+
+### Analysis model selection release
+
+See [workspace settings](settings.md#analysis-model-selection). Deploy backend before frontend so `GET /api/v1/models`, optional turn `model`, and analyst voice handshake `model` are supported before the selector is exposed. Pinned choices are Gemini 3.8 Flash and Gemini 3.5 Flash-Lite; both use `TEXT_MODEL_LOCATION` (currently `global`). `TEXT_MODEL` remains the operator's default. This change needs no new IAM binding, secret, database, or index. Additive run/artifact model fields require no migration; older revisions ignore them.
+
+Before an authorized release, run `cd Backend && uv run python -m app.admin check-models` to verify the default and every selectable text model, then the existing embedding/live compatibility checks. This operator command makes billable model calls but does not deploy or seed data. Also verify access using the dedicated runtime identity after deployment: operator access alone does not prove its permissions. Do not fix an unavailable model by silently substituting one or expanding IAM without authorization.
+
+Verify both choices in Settings, reload persistence, a new question/follow-up with model evidence, voice data analysis, and unchanged active-run/replay behavior. Local fixture mode must disclose that it does not call models. Rollback uses the normal routine-release steps; retain historical model evidence and do not reset shared history.
+
+### Expanded time-series sources
+
+Follow [the retail data workflow](retail-timeseries.md) and [column dictionary](retail-timeseries-schema.md). Generation, validation, and data upload are separate from an application release. The new data uses additional `sales_*`/`calendar` tables in `agentic_bi_demo` and the separate PostgreSQL schema `retail_timeseries`. It preserves the original tables, shares the existing dataset ACL, and grants only SELECT/USAGE on the new SQL schema to the existing reader. No project IAM or secret changes are needed.
+
+Use `python -m scripts.retail_data upload --bundle PATH` to review a local-only plan; `--apply` performs the explicitly authorized data load. Never use the legacy destructive `app.admin seed` command to extend this history. Keep the same generation settings/start date and use `extend` to move the as-of end forward, including delayed refunds. An import failure marks the new source profile unavailable until a repeat of the same bundle completes. Quiesce this profile's traffic before importing; there is no cross-service distributed snapshot for queries already running.
+
+After upload and verification, an authorized backend release opts in with `python3 infra/deploy.py --service backend --frontend-url "$BI_FRONTEND_URL" --data-profile timeseries`. That flag sets `DATA_PROFILE=timeseries` and `SOURCE_ROW_LIMIT=30000` for the 25,000-customer dimension. It derives SQL schema `retail_timeseries`; SQL allowlists, byte/scan budgets, 50,000-row fusion output bound, and incomplete-input rejection remain active. The helper defaults to `legacy`, so retain the explicit profile flag on later releases. Deploy the frontend label change as part of the normal release.
+
+`DATA_PROFILE=timeseries uv run python -m app.admin index-schema` from `Backend/` optionally refreshes profile-tagged schema embeddings in the existing named Firestore database. It is a separate billable operator action; existing legacy chunks are retained and full-schema retrieval remains available. Verify live queries, readiness/import failure behavior, date coverage, month/year boundaries, YoY/rolling calculations, reader permissions, and source counts. Existing fixed nine-month evaluation fixtures remain valid for the legacy profile; use the new independent reconciliation report for time-series acceptance. Rollback selects `legacy` and leaves the additional data intact.
+
 ## Prerequisites
 
 Install Google Cloud CLI including `gcloud` and `bq`, Node/npm, Python 3.12, and `uv`. The current frontend uses Node 26. Local Docker is optional: Cloud Build builds the Dockerfiles remotely. Use the committed dependency lockfiles.
@@ -307,6 +335,9 @@ Keep Next.js `output: "standalone"` and the runtime image's standalone/static/pu
 | Variable | Current production value/source |
 | --- | --- |
 | `ENVIRONMENT` | `production` |
+| `DATA_PROFILE` | Original demo by default; `--data-profile timeseries` selects the additional sources |
+| `SOURCE_ROW_LIMIT` | 10,000 for legacy; helper explicitly sets 30,000 for the time-series customer dimension |
+| `RETAIL_BUNDLE_PATH` | Local Parquet previews only; unused for cloud source access |
 | `STORAGE_BACKEND`, `DATA_BACKEND`, `AI_BACKEND` | `firestore`, `cloud`, `gemini` |
 | `GOOGLE_CLOUD_PROJECT`, `FIRESTORE_DATABASE` | Selected project / `agentic-bi-demo` |
 | `BIGQUERY_DATASET`, `BIGQUERY_LOCATION` | `agentic_bi_demo` / `asia-southeast1` |

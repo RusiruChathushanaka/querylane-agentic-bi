@@ -1,0 +1,54 @@
+{
+  "preview": "http://127.0.0.1:3004",
+  "mode": "real Gemini, local generated Parquet, ephemeral history",
+  "passed": true,
+  "expected": {
+    "Returning": "235695173.29",
+    "New": "118729938.91"
+  },
+  "observed": {
+    "New": "118729938.91",
+    "Returning": "235695173.29"
+  },
+  "complete": true,
+  "data_profile": "timeseries",
+  "ai": {
+    "backend": "gemini",
+    "text_model": "gemini-3.8-flash",
+    "selected_text_model": "gemini-3.8-flash"
+  },
+  "join_diagnostics": {
+    "cardinality": "one-to-one",
+    "left_rows": 24992,
+    "right_rows": 25000,
+    "joined_rows": 24992,
+    "unmatched_left": 0,
+    "unmatched_right": 8,
+    "left_key_coverage": 1.0,
+    "relationship": "One customer in BigQuery sales orders maps to one customer profile record in PostgreSQL.",
+    "confidence": "declared",
+    "keys": [
+      {
+        "left": "customer_id",
+        "right": "customer_id"
+      }
+    ],
+    "null_semantics": "Null keys do not match",
+    "normalization": "Only explicit source-query transformations",
+    "snapshot": "Sources were queried independently; no shared transactional snapshot."
+  },
+  "accessibility": {
+    "desktop": {
+      "inapplicable": 45,
+      "incomplete": 1,
+      "passes": 44,
+      "violations": 0
+    },
+    "mobile": {
+      "inapplicable": 45,
+      "incomplete": 1,
+      "passes": 44,
+      "violations": 0
+    }
+  }
+}

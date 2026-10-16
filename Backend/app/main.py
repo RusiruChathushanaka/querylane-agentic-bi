@@ -1,4 +1,5 @@
 import asyncio
+import contextlib
 import hashlib
 import json
 import logging
@@ -13,6 +14,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, StreamingResponse
 from itsdangerous import BadSignature, SignatureExpired, URLSafeTimedSerializer
+from starlette.websockets import WebSocketDisconnect
 
 from app.adk_sessions import FirestoreSessionService
 from app.ai import AI
@@ -21,8 +23,11 @@ from app.config import Settings, get_settings
 from app.connectors import Connectors
 from app.errors import AppError
 from app.fixtures import SOURCE_TABLES
+from app.model_selection import TEXT_MODELS, resolve_text_model
 from app.models import ConversationCreate, TurnCreate
 from app.repository import Repository
+from app.skill_author import author_router
+from app.skill_author_voice import skill_author_voice
 from app.skills import skill_router
 from app.storage import FirestoreStore, MemoryStore
 from app.voice import voice_session
@@ -135,6 +140,7 @@ def create_app(settings: Settings | None = None, store_override=None, credential
             raise AppError("Start a guest session to continue.", 401, "guest_required")
         return verify(authorization[7:])
 
+    app.include_router(author_router(guest))
     app.include_router(skill_router(guest))
 
     @app.get("/health/live")
@@ -183,12 +189,14 @@ def create_app(settings: Settings | None = None, store_override=None, credential
             "mode": ("local-fixtures" if settings.ai_backend == "fixture" else "gemini-fixtures")
             if settings.data_backend == "fixture"
             else "cloud",
+            "data_profile": settings.data_profile,
+            "period": "DAILY · MULTI-YEAR" if settings.data_profile == "timeseries" else "JAN–SEP 2026",
             "connections": [
                 {
                     "id": source,
                     "name": "Retail warehouse" if source == "bigquery" else "Business operations",
                     "engine": "BigQuery" if source == "bigquery" else "PostgreSQL",
-                    "tables": len(SOURCE_TABLES[source]),
+                    "tables": len(services.connectors.source_tables[source]),
                     **await services.connectors.test(source),
                 }
                 for source in SOURCE_TABLES
@@ -232,10 +240,19 @@ def create_app(settings: Settings | None = None, store_override=None, credential
         )
         return await request.app.state.services.repo.fork(conversation_id)
 
+    @app.get("/api/v1/models")
+    async def models():
+        return {
+            "models": TEXT_MODELS,
+            "default_model": settings.text_model,
+            "mode": settings.ai_backend,
+            "live_model": settings.live_model,
+        }
+
     @app.post("/api/v1/conversations/{conversation_id}/turns", status_code=202)
     async def turn(conversation_id: str, body: TurnCreate, request: Request, guest_id=Depends(guest)):
         run = await request.app.state.services.analysis.start(
-            conversation_id, guest_id, body.question, body.idempotency_key
+            conversation_id, guest_id, body.question, body.idempotency_key, model=body.model
         )
         return {
             "run_id": run["id"],
@@ -315,6 +332,30 @@ def create_app(settings: Settings | None = None, store_override=None, credential
             raise AppError("Result page not found.", 404, "not_found")
         return page
 
+    @app.websocket("/api/v1/skills/author-sessions/{session_id}/voice")
+    async def author_voice(websocket: WebSocket, session_id: str):
+        if websocket.headers.get("origin", "").rstrip("/") not in settings.origins:
+            await websocket.close(code=1008)
+            return
+        await websocket.accept()
+        try:
+            first = await asyncio.wait_for(websocket.receive_json(), timeout=5)
+            if not isinstance(first, dict) or first.get("type") != "authenticate":
+                raise AppError("Authenticate the voice connection first.", 401, "guest_required")
+            guest_id = verify(str(first.get("token", "")))
+            await skill_author_voice(websocket, websocket.app.state.services, guest_id, session_id)
+        except AppError as exc:
+            with contextlib.suppress(WebSocketDisconnect, RuntimeError):
+                await websocket.send_json({"type": "error", "message": exc.message, "code": exc.code})
+        except (TimeoutError, ValueError, KeyError):
+            with contextlib.suppress(WebSocketDisconnect, RuntimeError):
+                await websocket.send_json({"type": "error", "message": "Invalid or expired voice handshake."})
+        except WebSocketDisconnect:
+            pass
+        finally:
+            with contextlib.suppress(WebSocketDisconnect, RuntimeError):
+                await websocket.close()
+
     @app.websocket("/api/v1/conversations/{conversation_id}/voice")
     async def voice(websocket: WebSocket, conversation_id: str):
         if websocket.headers.get("origin", "").rstrip("/") not in settings.origins:
@@ -327,7 +368,13 @@ def create_app(settings: Settings | None = None, store_override=None, credential
                 raise AppError("Authenticate the voice connection first.", 401, "guest_required")
             guest_id = verify(str(first.get("token", "")))
             await websocket.app.state.services.repo.conversation(conversation_id)
-            await voice_session(websocket, websocket.app.state.services, guest_id, conversation_id)
+            requested_model = first.get("model")
+            if requested_model is not None and not isinstance(requested_model, str):
+                raise AppError("Choose a supported analysis model in Settings.", 400, "unsupported_model")
+            resolve_text_model(settings, requested_model)
+            await voice_session(
+                websocket, websocket.app.state.services, guest_id, conversation_id, model=requested_model
+            )
         except AppError as exc:
             await websocket.send_json({"type": "error", "message": exc.message, "code": exc.code})
         except (TimeoutError, ValueError, KeyError):
@@ -335,7 +382,7 @@ def create_app(settings: Settings | None = None, store_override=None, credential
         finally:
             try:
                 await websocket.close()
-            except RuntimeError:
+            except (RuntimeError, WebSocketDisconnect):
                 pass
 
     return app

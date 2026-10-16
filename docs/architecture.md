@@ -24,6 +24,10 @@ The frontend contains no database credentials or Google model keys. `/api/config
 
 ## Analysis lifecycle
 
+The operator selects a `legacy` or `timeseries` data profile. The latter uses versioned `sales_*` facts, a daily calendar, and `retail_timeseries` dimensions while preserving the original demo tables. A deterministic streaming Parquet generator and operator-only fenced uploader perform independent reconciliation and insert-only publication. Query execution checks the import-ready state and uses profile-specific table/schema allowlists. The time-series release allows 30,000 source rows for its 25,000-customer dimension while keeping byte, scan, fusion, preview, and read-only controls. See [the data workflow](retail-timeseries.md).
+
+The browser chooses a pinned analysis model from `GET /api/v1/models`. The backend allowlist permits Gemini 3.8 Flash and Gemini 3.5 Flash-Lite, with an optional workspace-default choice. Turn creation snapshots the resolved identifier transactionally with the run; idempotency checks include the requested choice. Task-local model context carries that snapshot through skill selection, planning, repairs, and interpretation without changing shared settings. Analyst voice sessions capture the same preference at authentication for their data tools; live speech/skill authoring and embeddings retain their separately configured models. Artifacts record Gemini model evidence or explicitly identify fixture execution.
+
 1. Atomically charge guest/workspace quotas, reserve an idempotent run ID, and acquire the conversation's fenced lease.
 2. Retrieve versioned schema context; use Gemini embeddings/vector search when available, retaining complete context for the small seeded schema.
    Before schema planning, resolve shared manual skill attachments, select relevant additional skills from metadata in one bounded call, and persist exact revisions. At most three skills apply. Planner repairs and interpretation reuse these snapshots in analysis-scoped ADK sessions. Public playbooks cannot change application safeguards.
@@ -57,3 +61,13 @@ An AudioWorklet produces 16 kHz signed PCM samples; the browser queues 24 kHz PC
 - Independent source queries do not share a transaction snapshot.
 - DuckDB processes are bounded and terminated on deadline; no untrusted SQL is admitted to that engine. Its memory setting does not independently cap every Arrow/Python allocation.
 - Source queries must produce complete bounded fusion inputs. Oversized results require narrower filters or source-side aggregation.
+
+## Conversational skill author
+
+The [voice author](voice-skill-author-plan.md) has its own guest-scoped session and no analysis/query tool. It uses the same browser PCM transport and pinned Gemini Live model with two tools: record typed requirements and prepare a deterministic Markdown draft. The visitor reviews/edits and publishes through an HTTP action. Publication atomically checks the author revision/lease, normal skill quotas/capacity, and first immutable skill revision. Retries return the same skill rather than inserting another.
+
+`skill_author_sessions` stores a bounded brief, transcript, draft, expiry, and fenced connection generation. The ADK adapter accepts an explicit lease collection while retaining `conversations` as its default. Reconnect starts a fresh ADK generation with saved context; the SDK can resume model transport inside that generation. A stale process cannot write into another generation. Raw audio is neither stored in author documents nor persisted through ADK (`save_live_blob=False`).
+
+Partial transcript events append; final full transcripts replace the partial buffer. Interrupted and tool-only completion events do not finish an audible reply. The browser releases audio devices while waiting for the server's final saved-state acknowledgement. A second close event cannot reload over a visitor's unsaved review edits. These behaviors have deterministic regressions and a real-model smoke.
+
+Author sessions logically expire after six hours. An operator cleanup command removes only expired/inactive sessions and their ADK generations; publication evidence lives in the normal immutable skill revisions and is preserved. No new cloud resources, IAM grants, or browser Firestore access are required.

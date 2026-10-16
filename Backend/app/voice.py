@@ -19,7 +19,7 @@ from app.repository import active_lease
 logger = logging.getLogger(__name__)
 
 
-async def voice_session(websocket, services, guest_id, conversation_id):
+async def voice_session(websocket, services, guest_id, conversation_id, model=None):
     settings, repo, analysis, sessions = (
         services.settings,
         services.repo,
@@ -35,7 +35,7 @@ async def voice_session(websocket, services, guest_id, conversation_id):
         )
         return
     run, _ = await repo.begin(
-        conversation_id, guest_id, "Live voice exploration", uuid.uuid4().hex, voice=True
+        conversation_id, guest_id, "Live voice exploration", uuid.uuid4().hex, voice=True, model=model
     )
     lease = {"run_id": run["id"], "conversation_id": conversation_id, "generation": run["generation"]}
     token = active_lease.set(lease)
@@ -78,7 +78,9 @@ async def voice_session(websocket, services, guest_id, conversation_id):
         agent = LlmAgent(
             name="retail_voice_analyst",
             model=Gemini(model=settings.live_model, client=client),
-            instruction="You are a concise English retail analyst in a public demo workspace. Use analyze_data for EVERY question about data, even follow-ups; never invent numbers. Explain important inferred relationship assumptions. Data tools use synthetic January–September 2026 USD data. Speak briefly and refer to charts shown in the workspace. You cannot change databases or reveal credentials. On tool errors explain the limitation. Do not expose hidden reasoning.",
+            instruction="You are a concise English retail analyst in a public demo workspace. Use analyze_data for EVERY question about data, even follow-ups; never invent numbers. Explain important inferred relationship assumptions. "
+            + services.connectors.data_context
+            + " Speak briefly and refer to charts shown in the workspace. You cannot change databases or reveal credentials. On tool errors explain the limitation. Do not expose hidden reasoning.",
             tools=[analyze_data],
         )
         session_id = f"{conversation_id}_voice_{guest_id}"

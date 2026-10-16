@@ -14,6 +14,9 @@ def main():
     parser.add_argument("--service", choices=["frontend", "backend"], required=True)
     parser.add_argument("--backend-url")
     parser.add_argument("--frontend-url")
+    parser.add_argument(
+        "--data-profile", choices=["legacy", "timeseries"], default="legacy"
+    )
     args = parser.parse_args()
     service = f"agentic-bi-{args.service}"
     folder = "Frontend" if args.service == "frontend" else "Backend"
@@ -68,6 +71,10 @@ def main():
             "ENVIRONMENT": "production",
             "STORAGE_BACKEND": "firestore",
             "DATA_BACKEND": "cloud",
+            "DATA_PROFILE": args.data_profile,
+            "SOURCE_ROW_LIMIT": "30000"
+            if args.data_profile == "timeseries"
+            else "10000",
             "AI_BACKEND": "gemini",
             "GOOGLE_CLOUD_PROJECT": PROJECT,
             "FIRESTORE_DATABASE": "agentic-bi-demo",
@@ -111,7 +118,14 @@ def main():
         ]
     print(gcloud(*deploy).stdout)
     url = gcloud(
-        "run", "services", "describe", service, "--region", REGION, "--format", "value(status.url)"
+        "run",
+        "services",
+        "describe",
+        service,
+        "--region",
+        REGION,
+        "--format",
+        "value(status.url)",
     ).stdout.strip()
     print(json.dumps({"service": service, "url": url, "image": image}))
 

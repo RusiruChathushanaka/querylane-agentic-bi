@@ -1,0 +1,135 @@
+{
+  "backend": "http://127.0.0.1:8002",
+  "scope": "Real Gemini Live, synthetic local sources, memory storage; no deployed/shared data changed.",
+  "checks": {
+    "spoken_greeting_and_question": true,
+    "multi_turn_requirements_and_draft": true,
+    "no_automatic_publication": true,
+    "pause_releases_lease": true,
+    "recovery_retains_brief_draft_transcript": true,
+    "reconnected_correction_regenerates_draft": true,
+    "review_and_publish_once": true,
+    "published_skill_guides_analytics_with_correct_provenance": true,
+    "independent_net_revenue": true
+  },
+  "turns": [
+    {
+      "event_types": [
+        "audio",
+        "ready",
+        "transcript",
+        "turn_complete"
+      ],
+      "assistant": "Hello, I'm Querylane's skill author. We haven't started yet, so what analytical task can I help you create a playbook for?",
+      "draft_ready": false
+    },
+    {
+      "event_types": [
+        "audio",
+        "brief",
+        "interrupted",
+        "transcript",
+        "turn_complete",
+        "user_message"
+      ],
+      "assistant": "\"Monthly sales coaching\" sounds like a great name. To track these trends, which data sources should the playbook use?",
+      "draft_ready": false
+    },
+    {
+      "event_types": [
+        "audio",
+        "brief",
+        "interrupted",
+        "transcript",
+        "turn_complete",
+        "user_message"
+      ],
+      "assistant": "Got it. We'll use BigQuery orders, focusing on completed orders and gross revenue grouped by month. When should this playbook be used? For example, for monthly reviews or performance checks?",
+      "draft_ready": false
+    },
+    {
+      "event_types": [
+        "audio",
+        "brief",
+        "draft",
+        "interrupted",
+        "transcript",
+        "turn_complete",
+        "user_message"
+      ],
+      "assistant": "I have prepared the draft for \"Monthly sales coaching.\" It will analyze monthly gross revenue from completed BigQuery orders, calculate Month-over-Month growth, and visualize the trends. Please review the generated draft and click \"Publish when you are satisfied.",
+      "draft_ready": true
+    },
+    {
+      "event_types": [
+        "audio",
+        "ready",
+        "transcript",
+        "turn_complete"
+      ],
+      "assistant": "Hello. I've saved the details for the \"Monthly sales coaching\" draft, which covers gross revenue month-over-month analysis using BigQuery.The only detail I haven't confirmed is whether you want to include example questions to help users get started, besides the \"Show monthly revenue as a line chart\" one you mentioned.",
+      "draft_ready": true
+    },
+    {
+      "event_types": [
+        "audio",
+        "brief",
+        "draft",
+        "interrupted",
+        "transcript",
+        "turn_complete",
+        "user_message"
+      ],
+      "assistant": "I've updated the skill to \"Net monthly sales coaching,\" focusing on net revenue (sales minus refunds) using BigQuery data. The workflow is adjusted to calculate this new metric and track MoM growth. The updated draft is ready for your review.",
+      "draft_ready": true
+    }
+  ],
+  "draft_before_correction": {
+    "name": "Monthly sales coaching",
+    "description": "Analyzes monthly gross retail sales trends and calculates month-over-month growth using BigQuery orders data.",
+    "when_to_use": "For monthly business reviews and performance checks requiring month-over-month comparisons of sales.",
+    "source": "bigquery",
+    "tags": [
+      "monthly trends",
+      "gross revenue",
+      "bigquery",
+      "mom growth"
+    ],
+    "instructions": "## Purpose\nAnalyze monthly gross retail sales trends.\n\n## Workflow\nDefine the reporting window, calculate monthly gross revenue, compute zero-safe Month-over-Month (MoM) growth, visualize with a line chart, and summarize key observations.\n\n## Business definitions\nMetric: Gross Revenue (orders.revenue in USD). Grain: Order-level. Filters: orders.status = 'completed'. Time: Calendar month (chronological sort).\n\n## Examples\nShow monthly revenue as a line chart."
+  },
+  "draft_after_correction": {
+    "name": "Net monthly sales coaching",
+    "description": "Analyzes monthly net retail sales trends (gross sales minus refunds) and calculates month-over-month growth using BigQuery orders and returns data.",
+    "when_to_use": "For monthly business reviews and performance checks requiring month-over-month comparisons of net sales.",
+    "source": "bigquery",
+    "tags": [
+      "monthly trends",
+      "net revenue",
+      "bigquery",
+      "mom growth",
+      "returns"
+    ],
+    "instructions": "## Purpose\nAnalyze monthly net retail sales trends.\n\n## Workflow\nDefine the reporting window, calculate monthly net revenue (gross sales minus refunds), compute zero-safe Month-over-Month (MoM) growth, visualize with a line chart, and summarize key observations.\n\n## Business definitions\nMetric: Net Revenue (orders.revenue minus returns.refund_amount in USD, linked at Order Grain). Grain: Order-level. Filters: orders.status = 'completed'. Time: Calendar month (chronological sort).\n\n## Examples\nShow monthly revenue as a line chart."
+  },
+  "analytics": {
+    "rows": [
+      {
+        "revenue": "110695.00"
+      }
+    ],
+    "expected_net_revenue": "110695.00",
+    "skills_used": [
+      {
+        "id": "author_6a8a0270dc6d04ab6f642470893b5ee9",
+        "name": "Net monthly sales coaching (reviewed)",
+        "description": "Analyzes monthly net retail sales trends (gross sales minus refunds) and calculates month-over-month growth using BigQuery orders and returns data.",
+        "revision": 1,
+        "mode": "manual"
+      }
+    ]
+  },
+  "input": "Text messages through real Gemini Live; audio output received; microphone hardware not tested.",
+  "raw_audio_recorded": false,
+  "verified_at": "2026-10-15T20:20:47.457019+00:00",
+  "passed": true
+}

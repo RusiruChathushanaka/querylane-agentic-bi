@@ -10,6 +10,7 @@ from pydantic import ValidationError
 from app.connectors import json_rows
 from app.errors import AppError, StaleLease
 from app.fusion import fuse
+from app.model_selection import active_text_model, model_evidence
 from app.models import Answer, ResultArtifact, VisualizationSpec
 from app.repository import active_lease, now_iso
 from app.skills import Skills, skill_reference
@@ -24,8 +25,8 @@ class AnalysisService:
         self.fusion_slots = asyncio.Semaphore(1)
         self.skills = Skills(repository, settings)
 
-    async def start(self, conversation_id, guest_id, question, key):
-        run, created = await self.repo.begin(conversation_id, guest_id, question, key)
+    async def start(self, conversation_id, guest_id, question, key, model=None):
+        run, created = await self.repo.begin(conversation_id, guest_id, question, key, model=model)
         if created:
             self.tasks[run["id"]] = asyncio.create_task(self.work(run), name=f"analysis-{run['id']}")
         return run
@@ -101,6 +102,17 @@ class AnalysisService:
             self.tasks.pop(run["id"], None)
 
     async def execute(self, question: str, conversation_id: str):
+        lease = active_lease.get()
+        run = await self.repo.store.get("runs", lease["run_id"])
+        selected = (run or {}).get("text_model", self.settings.text_model)
+        token = active_text_model.set(selected)
+        try:
+            return await self._execute(question, conversation_id)
+        finally:
+            active_text_model.reset(token)
+
+    async def _execute(self, question: str, conversation_id: str):
+        await self.connectors.ensure_data_ready()
         lease = active_lease.get()
         conversation = await self.repo.conversation(conversation_id)
         history = await self.repo.messages(conversation_id)
@@ -263,6 +275,8 @@ class AnalysisService:
                 f"artifacts/{artifact_id}/pages", str(page_index), {"index": page_index, "rows": page}
             )
         value = artifact.model_dump(mode="json") | {
+            "data_profile": self.settings.data_profile,
+            "ai": model_evidence(self.settings),
             "page_count": page_index + 1 if encoded_rows else 0,
             "retrieval": retrieval,
             "skills_used": skills_used,

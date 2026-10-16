@@ -1,6 +1,6 @@
 import { backendUrl, guestToken } from "./api";
 
-type VoiceEvent = { type: string; [key: string]: unknown };
+export type VoiceEvent = { type: string; [key: string]: unknown };
 
 export class LiveVoice {
   private socket?: WebSocket;
@@ -13,52 +13,91 @@ export class LiveVoice {
   private closed = false;
   private ready = false;
   private muted = false;
+  private closeTimer?: ReturnType<typeof setTimeout>;
+  private connectionTimer?: ReturnType<typeof setTimeout>;
 
   constructor(
     private onEvent: (event: VoiceEvent) => void,
     private onLevel: (level: number) => void,
-    private options: { spokenResponses?: boolean; startMuted?: boolean } = {},
+    private options: {
+      spokenResponses?: boolean;
+      startMuted?: boolean;
+      endpoint?: string;
+      textOnly?: boolean;
+      analysisModel?: string;
+    } = {},
   ) {
     this.muted = options.startMuted ?? false;
   }
 
   async start(conversationId: string) {
-    if (!navigator.mediaDevices?.getUserMedia || !window.AudioWorkletNode)
+    try {
+      await this.connect(conversationId);
+    } catch (error) {
+      this.stop();
+      throw error;
+    }
+  }
+
+  private async connect(conversationId: string) {
+    if (
+      !this.options.textOnly &&
+      (!navigator.mediaDevices?.getUserMedia || !window.AudioWorkletNode)
+    )
       throw new Error(
         "This browser cannot stream microphone audio. Use an up-to-date browser over HTTPS.",
       );
-    this.playback = new AudioContext({ sampleRate: 24000 });
-    await this.playback.resume();
-    this.microphone = await navigator.mediaDevices.getUserMedia({
-      audio: {
-        channelCount: 1,
-        echoCancellation: true,
-        noiseSuppression: true,
-        autoGainControl: true,
-      },
-    });
+    if (typeof AudioContext !== "undefined") {
+      this.playback = new AudioContext({ sampleRate: 24000 });
+      await this.playback.resume();
+    }
+    if (!this.options.textOnly)
+      this.microphone = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          channelCount: 1,
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true,
+        },
+      });
     if (this.closed) {
-      this.microphone.getTracks().forEach((track) => track.stop());
+      this.microphone?.getTracks().forEach((track) => track.stop());
       return;
     }
-    this.microphone.getAudioTracks().forEach((track) => {
+    this.microphone?.getAudioTracks().forEach((track) => {
       track.enabled = !this.muted;
     });
     const base = await backendUrl();
     const token = await guestToken();
     if (this.closed) return;
-    const url = new URL(`${base}/api/v1/conversations/${conversationId}/voice`);
+    const url = new URL(
+      `${base}${this.options.endpoint ?? `/api/v1/conversations/${conversationId}/voice`}`,
+    );
     url.protocol = url.protocol === "https:" ? "wss:" : "ws:";
     const socket = new WebSocket(url);
     this.socket = socket;
+    this.connectionTimer = setTimeout(() => {
+      this.onEvent({
+        type: "error",
+        message: "Voice connection timed out. Reconnect to continue.",
+      });
+      this.stop();
+    }, 15000);
     socket.onopen = () =>
-      socket.send(JSON.stringify({ type: "authenticate", token }));
+      socket.send(
+        JSON.stringify({
+          type: "authenticate",
+          token,
+          model: this.options.analysisModel,
+        }),
+      );
     socket.onmessage = async (message) => {
       const event = JSON.parse(message.data) as VoiceEvent;
       if (event.type === "ready" && !this.ready) {
+        clearTimeout(this.connectionTimer);
         this.ready = true;
         try {
-          await this.startCapture();
+          if (!this.options.textOnly) await this.startCapture();
         } catch (error) {
           this.onEvent({
             type: "error",
@@ -66,6 +105,7 @@ export class LiveVoice {
               error instanceof Error ? error.message : "Microphone failed.",
           });
           this.stop();
+          return;
         }
       } else if (event.type === "audio") {
         this.play(String(event.data));
@@ -74,13 +114,16 @@ export class LiveVoice {
       }
       this.onEvent(event);
     };
-    socket.onerror = () =>
+    socket.onerror = () => {
       this.onEvent({
         type: "error",
         message:
           "Voice connection failed. Check the backend connection and try again.",
       });
+      this.stop();
+    };
     socket.onclose = () => {
+      clearTimeout(this.closeTimer);
       const intentional = this.closed;
       this.stop();
       this.onEvent({
@@ -164,12 +207,30 @@ export class LiveVoice {
     this.nextStart = 0;
   }
 
-  stop() {
+  sendText(text: string) {
+    if (
+      this.closed ||
+      !this.ready ||
+      this.socket?.readyState !== WebSocket.OPEN ||
+      !text.trim()
+    )
+      return false;
+    this.clearPlayback();
+    this.socket.send(JSON.stringify({ type: "text", text }));
+    return true;
+  }
+
+  stop(graceful = false) {
     if (this.closed) return;
     this.closed = true;
+    clearTimeout(this.connectionTimer);
     if (this.socket?.readyState === WebSocket.OPEN)
       this.socket.send(JSON.stringify({ type: "stop" }));
-    this.socket?.close();
+    if (graceful && this.socket?.readyState === WebSocket.OPEN) {
+      // Release microphone/speakers immediately while the server flushes its
+      // last transcript and returns the final fenced draft state.
+      this.closeTimer = setTimeout(() => this.socket?.close(), 5000);
+    } else this.socket?.close();
     this.microphone?.getTracks().forEach((track) => track.stop());
     this.worklet?.disconnect();
     this.clearPlayback();

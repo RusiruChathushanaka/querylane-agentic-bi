@@ -15,6 +15,7 @@ class ConversationCreate(StrictModel):
 class TurnCreate(StrictModel):
     question: str = Field(min_length=1, max_length=4000)
     idempotency_key: str = Field(min_length=8, max_length=100, pattern=r"^[a-zA-Z0-9_-]+$")
+    model: str | None = Field(default=None, min_length=1, max_length=100)
 
     @field_validator("question")
     @classmethod

@@ -1,0 +1,365 @@
+{
+  "version": "retail-timeseries-v1",
+  "passed": true,
+  "checks": [
+    {
+      "check": "sales_products: keys / required fields",
+      "passed": true
+    },
+    {
+      "check": "calendar: keys / required fields",
+      "passed": true
+    },
+    {
+      "check": "sales_orders: keys / required fields",
+      "passed": true
+    },
+    {
+      "check": "sales_order_items: keys / required fields",
+      "passed": true
+    },
+    {
+      "check": "sales_returns: keys / required fields",
+      "passed": true
+    },
+    {
+      "check": "stores: keys / required fields",
+      "passed": true
+    },
+    {
+      "check": "customer_profiles: keys / required fields",
+      "passed": true
+    },
+    {
+      "check": "regional_targets: keys / required fields",
+      "passed": true
+    },
+    {
+      "check": "store_targets: keys / required fields",
+      "passed": true
+    },
+    {
+      "check": "campaigns: keys / required fields",
+      "passed": true
+    },
+    {
+      "check": "promotions: keys / required fields",
+      "passed": true
+    },
+    {
+      "check": "Every order line has an order and a product",
+      "invalid_rows": 0,
+      "passed": true
+    },
+    {
+      "check": "Order customers/stores/campaigns exist and customers signed up before purchase",
+      "invalid_rows": 0,
+      "passed": true
+    },
+    {
+      "check": "Order monetary totals equal sum of lines",
+      "invalid_rows": 0,
+      "passed": true
+    },
+    {
+      "check": "Line arithmetic, quantities, and historical costs",
+      "invalid_rows": 0,
+      "passed": true
+    },
+    {
+      "check": "Returns reference valid lines, dates, quantities and bounded refunds",
+      "invalid_rows": 0,
+      "passed": true
+    },
+    {
+      "check": "Total returned quantity and refund do not exceed a line",
+      "invalid_rows": 0,
+      "passed": true
+    },
+    {
+      "check": "Promotion IDs match actual dates and regions",
+      "invalid_rows": 0,
+      "passed": true
+    },
+    {
+      "check": "Store targets reconcile regional targets",
+      "invalid_rows": 0,
+      "passed": true
+    },
+    {
+      "check": "Orders have completed status, USD currency and matching month",
+      "invalid_rows": 0,
+      "passed": true
+    },
+    {
+      "check": "Calendar covers every business date exactly once",
+      "invalid_rows": 0,
+      "passed": true
+    },
+    {
+      "check": "Dense date spine and requested date bounds",
+      "passed": true
+    },
+    {
+      "check": "Refunds do not look ahead beyond the as-of end",
+      "invalid_rows": 0,
+      "passed": true
+    },
+    {
+      "check": "Independent SQL totals reconcile generator ledger",
+      "passed": true
+    },
+    {
+      "check": "Independent monthly aggregates reconcile ledger",
+      "passed": true
+    },
+    {
+      "check": "Zero-filled seven-day rolling series",
+      "passed": true
+    }
+  ],
+  "tables": {
+    "sales_products": 200,
+    "calendar": 1369,
+    "sales_orders": 573348,
+    "sales_order_items": 1317941,
+    "sales_returns": 97122,
+    "stores": 24,
+    "customer_profiles": 25000,
+    "regional_targets": 180,
+    "store_targets": 1080,
+    "campaigns": 180,
+    "promotions": 180
+  },
+  "revenue": "354425112.20",
+  "refunds": "19558027.70",
+  "net_revenue_refund_date": "334867084.50",
+  "monthly_revenue": [
+    {
+      "month": "2023-01",
+      "orders": 8558,
+      "revenue": "5128601.16"
+    },
+    {
+      "month": "2023-02",
+      "orders": 7482,
+      "revenue": "4451906.37"
+    },
+    {
+      "month": "2023-03",
+      "orders": 10073,
+      "revenue": "6042031.93"
+    },
+    {
+      "month": "2023-04",
+      "orders": 10396,
+      "revenue": "6176858.36"
+    },
+    {
+      "month": "2023-05",
+      "orders": 10513,
+      "revenue": "6276432.27"
+    },
+    {
+      "month": "2023-06",
+      "orders": 9948,
+      "revenue": "5878420.80"
+    },
+    {
+      "month": "2023-07",
+      "orders": 10973,
+      "revenue": "6570848.39"
+    },
+    {
+      "month": "2023-08",
+      "orders": 11438,
+      "revenue": "6790032.30"
+    },
+    {
+      "month": "2023-09",
+      "orders": 11626,
+      "revenue": "6929738.68"
+    },
+    {
+      "month": "2023-10",
+      "orders": 12195,
+      "revenue": "7238531.96"
+    },
+    {
+      "month": "2023-11",
+      "orders": 18039,
+      "revenue": "10717254.52"
+    },
+    {
+      "month": "2023-12",
+      "orders": 17307,
+      "revenue": "10311476.16"
+    },
+    {
+      "month": "2024-01",
+      "orders": 8979,
+      "revenue": "5464659.78"
+    },
+    {
+      "month": "2024-02",
+      "orders": 8581,
+      "revenue": "5242439.63"
+    },
+    {
+      "month": "2024-03",
+      "orders": 11104,
+      "revenue": "6779918.37"
+    },
+    {
+      "month": "2024-04",
+      "orders": 11353,
+      "revenue": "6936270.50"
+    },
+    {
+      "month": "2024-05",
+      "orders": 11710,
+      "revenue": "7172012.52"
+    },
+    {
+      "month": "2024-06",
+      "orders": 11129,
+      "revenue": "6810657.31"
+    },
+    {
+      "month": "2024-07",
+      "orders": 11716,
+      "revenue": "7170495.14"
+    },
+    {
+      "month": "2024-08",
+      "orders": 12853,
+      "revenue": "7866722.95"
+    },
+    {
+      "month": "2024-09",
+      "orders": 12992,
+      "revenue": "7925364.97"
+    },
+    {
+      "month": "2024-10",
+      "orders": 13677,
+      "revenue": "8363652.61"
+    },
+    {
+      "month": "2024-11",
+      "orders": 19528,
+      "revenue": "11982051.82"
+    },
+    {
+      "month": "2024-12",
+      "orders": 19072,
+      "revenue": "11687610.02"
+    },
+    {
+      "month": "2025-01",
+      "orders": 10052,
+      "revenue": "6287838.30"
+    },
+    {
+      "month": "2025-02",
+      "orders": 9242,
+      "revenue": "5760456.97"
+    },
+    {
+      "month": "2025-03",
+      "orders": 12042,
+      "revenue": "7554751.28"
+    },
+    {
+      "month": "2025-04",
+      "orders": 11939,
+      "revenue": "7443298.39"
+    },
+    {
+      "month": "2025-05",
+      "orders": 12750,
+      "revenue": "7966415.74"
+    },
+    {
+      "month": "2025-06",
+      "orders": 11446,
+      "revenue": "7262901.77"
+    },
+    {
+      "month": "2025-07",
+      "orders": 13022,
+      "revenue": "8193920.48"
+    },
+    {
+      "month": "2025-08",
+      "orders": 13738,
+      "revenue": "8571082.05"
+    },
+    {
+      "month": "2025-09",
+      "orders": 14153,
+      "revenue": "8905732.37"
+    },
+    {
+      "month": "2025-10",
+      "orders": 14359,
+      "revenue": "9036738.06"
+    },
+    {
+      "month": "2025-11",
+      "orders": 22180,
+      "revenue": "13916706.76"
+    },
+    {
+      "month": "2025-12",
+      "orders": 20065,
+      "revenue": "12550880.75"
+    },
+    {
+      "month": "2026-01",
+      "orders": 10722,
+      "revenue": "6829832.61"
+    },
+    {
+      "month": "2026-02",
+      "orders": 9919,
+      "revenue": "6360155.65"
+    },
+    {
+      "month": "2026-03",
+      "orders": 13449,
+      "revenue": "8675206.75"
+    },
+    {
+      "month": "2026-04",
+      "orders": 13268,
+      "revenue": "8483338.93"
+    },
+    {
+      "month": "2026-05",
+      "orders": 13748,
+      "revenue": "8852343.78"
+    },
+    {
+      "month": "2026-06",
+      "orders": 12631,
+      "revenue": "8101287.96"
+    },
+    {
+      "month": "2026-07",
+      "orders": 13652,
+      "revenue": "8733930.08"
+    },
+    {
+      "month": "2026-08",
+      "orders": 14918,
+      "revenue": "9576580.10"
+    },
+    {
+      "month": "2026-09",
+      "orders": 14811,
+      "revenue": "9447724.90"
+    }
+  ],
+  "daily_points": 1369
+}

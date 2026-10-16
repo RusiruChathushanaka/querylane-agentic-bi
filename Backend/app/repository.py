@@ -91,8 +91,17 @@ class Repository:
         return fork
 
     async def begin(
-        self, conversation_id: str, guest_id: str, question: str, idempotency_key: str, voice: bool = False
+        self,
+        conversation_id: str,
+        guest_id: str,
+        question: str,
+        idempotency_key: str,
+        voice: bool = False,
+        model: str | None = None,
     ):
+        from app.model_selection import resolve_text_model
+
+        text_model = resolve_text_model(self.settings, model)
         run_id = hashlib.sha256(f"{conversation_id}:{guest_id}:{idempotency_key}".encode()).hexdigest()[:32]
         fingerprint = hashlib.sha256(question.encode()).hexdigest()
         conversation_key, run_key = ("conversations", conversation_id), ("runs", run_id)
@@ -109,7 +118,7 @@ class Repository:
         def mutate(docs):
             existing = docs[run_key]
             if existing:
-                if existing["fingerprint"] != fingerprint:
+                if existing["fingerprint"] != fingerprint or existing.get("requested_model") != model:
                     raise AppError(
                         "Idempotency key already belongs to another question.", 409, "idempotency_conflict"
                     )
@@ -136,6 +145,9 @@ class Repository:
                 "guest_id": guest_id,
                 "fingerprint": fingerprint,
                 "question": question,
+                "requested_model": model,
+                "data_profile": self.settings.data_profile,
+                "text_model": text_model,
                 "generation": generation,
                 "status": "running",
                 "sequence": 0,

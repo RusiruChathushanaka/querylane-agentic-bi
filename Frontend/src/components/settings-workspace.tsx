@@ -77,8 +77,10 @@ import {
 import { AnimatedNumber } from "@/components/motion/animated-number";
 import { useAppMotion } from "@/hooks/use-app-motion";
 import { SPRING_LAYOUT } from "@/lib/ease";
+import { ModelSettings } from "@/components/model-settings";
 
 const preferenceLabels: Record<keyof Preferences, string> = {
+  textModel: "AI model",
   accent: "Accent color",
   density: "Workspace density",
   reduceMotion: "Motion preference",
@@ -280,7 +282,9 @@ export function SettingsWorkspace() {
           </Link>
         </Button>
         <div className="sidebar-label">YOUR PREFERENCES</div>
-        <Button asChild variant="ghost"><Link href="/skills">Skills library</Link></Button>
+        <Button asChild variant="ghost">
+          <Link href="/skills">Skills library</Link>
+        </Button>
         <LayoutGroup id="settings-navigation">
           <nav aria-label="Settings sections" className="settings-nav">
             {sections.map(({ id, label, icon: Icon, number }) => (
@@ -539,10 +543,10 @@ export function SettingsWorkspace() {
             </div>
             <Card>
               <CardHeader>
-                <CardTitle>Start with the right view</CardTitle>
+                <CardTitle>Choose how you analyze</CardTitle>
                 <CardDescription>
-                  Presentation preferences keep the underlying results and
-                  evidence intact.
+                  Choose an AI model and a useful starting view for your
+                  results.
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -551,6 +555,11 @@ export function SettingsWorkspace() {
                     Analysis preferences
                   </FieldLegend>
                   <FieldGroup className="settings-fields">
+                    <ModelSettings
+                      value={p.textModel}
+                      disabled={!hydrated}
+                      onChange={(value) => updatePreference("textModel", value)}
+                    />
                     <ChoiceSetting
                       id="defaultSource"
                       label="Default data source"

@@ -1,0 +1,108 @@
+{
+  "project": "project-e8b1593d-009a-4822-abf",
+  "bigquery_dataset": "agentic_bi_demo",
+  "cloud_sql_instance": "agentic-bi-demo-pg",
+  "postgres_database": "agentic_bi",
+  "postgres_schema": "retail_timeseries",
+  "version": "retail-timeseries-v1",
+  "configuration_id": "fa172291135dfb0b00e9a020cf07ccd1b0e49b5e70e7f627682e9e3b01be3912",
+  "date_range": [
+    "2023-01-01",
+    "2026-09-30"
+  ],
+  "mode": "insert-only; existing IDs with different content are rejected",
+  "tables": [
+    {
+      "source": "bigquery",
+      "table": "sales_products",
+      "rows": 200,
+      "partition": null,
+      "cluster": [
+        "category"
+      ]
+    },
+    {
+      "source": "bigquery",
+      "table": "calendar",
+      "rows": 1369,
+      "partition": "calendar_date",
+      "cluster": []
+    },
+    {
+      "source": "bigquery",
+      "table": "sales_orders",
+      "rows": 573348,
+      "partition": "order_date",
+      "cluster": [
+        "region",
+        "store_id",
+        "customer_id"
+      ]
+    },
+    {
+      "source": "bigquery",
+      "table": "sales_order_items",
+      "rows": 1317941,
+      "partition": "order_date",
+      "cluster": [
+        "product_id",
+        "order_id"
+      ]
+    },
+    {
+      "source": "bigquery",
+      "table": "sales_returns",
+      "rows": 97122,
+      "partition": "return_date",
+      "cluster": [
+        "order_id",
+        "product_id"
+      ]
+    },
+    {
+      "source": "postgres",
+      "table": "stores",
+      "rows": 24,
+      "partition": null,
+      "cluster": []
+    },
+    {
+      "source": "postgres",
+      "table": "customer_profiles",
+      "rows": 25000,
+      "partition": null,
+      "cluster": []
+    },
+    {
+      "source": "postgres",
+      "table": "regional_targets",
+      "rows": 180,
+      "partition": null,
+      "cluster": []
+    },
+    {
+      "source": "postgres",
+      "table": "store_targets",
+      "rows": 1080,
+      "partition": null,
+      "cluster": []
+    },
+    {
+      "source": "postgres",
+      "table": "campaigns",
+      "rows": 180,
+      "partition": null,
+      "cluster": []
+    },
+    {
+      "source": "postgres",
+      "table": "promotions",
+      "rows": 180,
+      "partition": null,
+      "cluster": []
+    }
+  ],
+  "reader": "existing bi_reader receives SELECT/USAGE on retail_timeseries only; existing BigQuery dataset reader ACL is reused",
+  "dry_run": true,
+  "requested_target": "cloud"
+}
