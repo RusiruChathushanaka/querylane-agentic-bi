@@ -87,6 +87,8 @@ const preferenceLabels: Record<keyof Preferences, string> = {
   defaultSource: "Default data source",
   visualization: "Preferred visualization",
   decimals: "Number formatting",
+  chartHighlights: "Automatic chart highlights",
+  chartComparisons: "Chart comparisons",
   followups: "Follow-up suggestions",
   autoScroll: "Scrolling preference",
   enterToSend: "Composer shortcut",
@@ -583,6 +585,8 @@ export function SettingsWorkspace() {
                         ["line", "Line chart"],
                       ]}
                     />
+                    <SwitchSetting id="chartHighlights" label="Automatic chart highlights" description="Emphasize peaks and leading values with factual insight chips." value={p.chartHighlights} onChange={(value) => updatePreference("chartHighlights", value)} />
+                    <SwitchSetting id="chartComparisons" label="Show chart comparisons" description="Display available target and comparison series by default." value={p.chartComparisons} onChange={(value) => updatePreference("chartComparisons", value)} />
                     <ChoiceSetting
                       id="decimals"
                       label="Decimal places"

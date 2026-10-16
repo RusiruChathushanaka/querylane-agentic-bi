@@ -15,6 +15,8 @@ export interface Preferences {
   defaultSource: "all" | "bigquery" | "postgres";
   visualization: "auto" | "table" | "bar" | "line";
   decimals: "0" | "1" | "2";
+  chartHighlights: boolean;
+  chartComparisons: boolean;
   followups: boolean;
   autoScroll: boolean;
   enterToSend: boolean;
@@ -30,6 +32,8 @@ export const DEFAULT_PREFERENCES: Readonly<Preferences> = Object.freeze({
   defaultSource: "all",
   visualization: "auto",
   decimals: "2",
+  chartHighlights: true,
+  chartComparisons: true,
   followups: true,
   autoScroll: true,
   enterToSend: true,

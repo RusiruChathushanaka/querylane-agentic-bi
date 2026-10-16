@@ -477,6 +477,20 @@ export default function Workspace() {
     return created;
   }
 
+  function draftChartQuestion(text: string) {
+    if (question.trim()) {
+      toast.info("Your existing draft is still in the composer", {
+        description: "Copy this chart question or clear your draft before trying again.",
+        action: { label: "Copy chart question", onClick: () => { void navigator.clipboard.writeText(text).then(() => toast.success("Chart question copied")).catch(() => toast.error("Clipboard is unavailable.")); } },
+        duration: 8000,
+      });
+      return;
+    }
+    setQuestion(text.slice(0, 4000));
+    window.requestAnimationFrame(() => document.getElementById("question")?.focus());
+    toast.info("Follow-up drafted", { description: "Review the question, then send when ready." });
+  }
+
   async function ask(text = question) {
     if (
       !text.trim() ||
@@ -1181,6 +1195,7 @@ export default function Workspace() {
                           artifacts[message.artifact_id] && (
                             <ResultCard
                               artifact={artifacts[message.artifact_id]}
+                              onExplore={draftChartQuestion}
                             />
                           )}
                         {preferences.followups &&
@@ -1207,7 +1222,7 @@ export default function Workspace() {
                     artifacts[draftArtifact] &&
                     !messages.some(
                       (message) => message.artifact_id === draftArtifact,
-                    ) && <ResultCard artifact={artifacts[draftArtifact]} />}
+                    ) && <ResultCard artifact={artifacts[draftArtifact]} onExplore={draftChartQuestion} />}
                   <AnimatePresence initial={false}>
                     {runId && (
                       <Reveal key="progress">

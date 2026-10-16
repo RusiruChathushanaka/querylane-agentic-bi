@@ -70,8 +70,51 @@ async def main():
             )
             checks["postgres_reader_restricted"] = not any(attrs.values())
             checks["postgres_reader_select_only"] = await connection.fetchval(
-                "SELECT has_table_privilege(current_user,'retail.customer_profiles','SELECT') AND NOT has_table_privilege(current_user,'retail.customer_profiles','INSERT,UPDATE,DELETE,TRUNCATE')"
+                "SELECT has_table_privilege(current_user,$1,'SELECT') AND NOT has_table_privilege(current_user,$1,'INSERT,UPDATE,DELETE,TRUNCATE')",
+                f"{settings.postgres_schema}.customer_profiles",
             )
+        await connectors.ensure_data_ready()
+        if settings.data_profile == "timeseries":
+            from google.genai import Client
+
+            from app.model_selection import TEXT_MODELS
+
+            schemas = {source: await connectors.schema(source) for source in ("bigquery", "postgres")}
+            checks["timeseries_schema"] = (
+                len(schemas["bigquery"]) == 5
+                and len(schemas["postgres"]) == 6
+                and all(table["columns"] for tables in schemas.values() for table in tables)
+            )
+            result = await connectors.query(
+                "bigquery",
+                "SELECT COUNT(*) orders, SUM(revenue) revenue, MIN(order_date) start_date, MAX(order_date) end_date FROM sales_orders",
+                "release-runtime-" + uuid.uuid4().hex,
+            )
+            row = result.rows[0]
+            checks["timeseries_orders"] = (
+                int(row["orders"]) >= 573348
+                and str(row["start_date"]) == "2023-01-01"
+                and str(row["end_date"]) >= "2026-09-30"
+            )
+            async with connectors.pg_pool.acquire(timeout=15) as connection:
+                checks["timeseries_customers"] = (
+                    await connection.fetchval("SELECT COUNT(*) FROM retail_timeseries.customer_profiles")
+                    == 25000
+                )
+            model_client = Client(vertexai=True, project=project, location=settings.text_model_location)
+            try:
+                for model in TEXT_MODELS:
+                    response = await model_client.aio.models.generate_content(
+                        model=model["id"],
+                        contents="Reply OK only.",
+                        config=types.GenerateContentConfig(
+                            max_output_tokens=1024,
+                            thinking_config=types.ThinkingConfig(thinking_level=types.ThinkingLevel.LOW),
+                        ),
+                    )
+                    checks["runtime_model_" + model["id"]] = bool(response.text)
+            finally:
+                await model_client.aio.aclose()
         conversation = await repos[0].create_conversation("Cloud persistence verification", "all")
         outcomes = await asyncio.gather(
             repos[0].begin(conversation["id"], "runtime-check-a", "Concurrency probe", uuid.uuid4().hex),
@@ -131,6 +174,8 @@ async def main():
             await store.close()
     result = {
         "checks": checks,
+        "data_profile": settings.data_profile,
+        "postgres_schema": settings.postgres_schema,
         "passed": all(checks.values()),
         "existing_business_data_requested": False,
         "concurrency_outcomes": concurrency_outcomes,

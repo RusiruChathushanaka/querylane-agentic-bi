@@ -71,3 +71,7 @@ The [voice author](voice-skill-author-plan.md) has its own guest-scoped session 
 Partial transcript events append; final full transcripts replace the partial buffer. Interrupted and tool-only completion events do not finish an audible reply. The browser releases audio devices while waiting for the server's final saved-state acknowledgement. A second close event cannot reload over a visitor's unsaved review edits. These behaviors have deterministic regressions and a real-model smoke.
 
 Author sessions logically expire after six hours. An operator cleanup command removes only expired/inactive sessions and their ADK generations; publication evidence lives in the normal immutable skill revisions and is preserved. No new cloud resources, IAM grants, or browser Firestore access are required.
+
+## Saved-result chart presentation
+
+The [chart presentation service](charts.md) reads immutable artifact pages without executing source SQL or invoking models. It validates optional measure metadata, computes deterministic comparisons on the full selected saved result, and bounds plotted output to 2,000 observations. The chart-data and CSV endpoints retain existing query/fusion resource limits and public visibility. Presentation preferences and exploration controls remain local; historical artifact documents remain unchanged. PNG export runs in the browser with native SVG/canvas APIs.

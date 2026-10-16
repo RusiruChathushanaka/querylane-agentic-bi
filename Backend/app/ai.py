@@ -32,6 +32,10 @@ Non-aggregate projections become grouping keys when any projection is aggregated
 Fusion cannot run arbitrary expressions. Source queries can produce normalized keys, but describe transformations in assumptions.
 No many-to-many fusion. If missing business definitions make a reliable answer impossible, return clarification and no queries.
 For unsupported requests or write requests return a helpful clarification without queries. For follow-ups preserve the prior filters unless explicitly changed.
+Visualization metadata: set version=2. Include dimension_kind (temporal/category/numeric), and granularity only for a known calendar grain.
+Declare each y field in measures with its label, unit (number/count/currency/percent), currency=USD for USD amounts, percent_scale=fraction or whole for rates, and additive=true ONLY for non-overlapping sums/counts at the output grain. Averages, rates, balances and overlapping windows are not additive.
+Explicit target/comparison measures may set role=target/comparison and compares_to to the actual measure field with the SAME unit and percentage scale. Set direction only if the business definition establishes it. Mark known incomplete calendar buckets in partial_periods; don't invent comparisons.
+Return one output row per x value for a chart. For multiple categorical dimensions, include all dimensions in a single descriptive SQL output label, or recommend table. Do not connect different cohorts at the same date as one time series.
 Chart fields must reference actual final output aliases. Use table when uncertain; use kpi for one row, line for time, bar for categories.
 """
 
@@ -519,7 +523,39 @@ def fixture_plan(question: str, history: list[dict], source: str) -> AnalysisPla
         fusion=fusion,
         assumptions=assumptions,
         visualization=VisualizationSpec(
-            type=chart, title=title, x=x, y=ys, format="currency" if "customers" not in ys else "number"
+            type=chart,
+            title=title,
+            x=x,
+            y=ys,
+            version=2,
+            dimension_kind="temporal" if chart in {"line", "area"} else "category",
+            granularity=("day" if x == "order_date" else "month") if chart in {"line", "area"} else None,
+            measures=[
+                {
+                    "field": field,
+                    "unit": "percent"
+                    if field.endswith("_percent")
+                    else "count"
+                    if field in {"customers", "orders"}
+                    else "currency",
+                    "currency": None
+                    if field.endswith("_percent") or field in {"customers", "orders"}
+                    else "USD",
+                    "percent_scale": "whole" if field.endswith("_percent") else None,
+                    "additive": field
+                    in {"revenue", "target", "target_revenue", "refund_amount", "customers", "orders"},
+                    "role": "target"
+                    if field in {"target", "target_revenue"}
+                    else "comparison"
+                    if field == "previous_revenue"
+                    else "measure",
+                    "compares_to": "revenue"
+                    if field in {"target", "target_revenue", "previous_revenue"} and "revenue" in ys
+                    else None,
+                }
+                for field in ys
+            ],
+            format="currency" if "customers" not in ys else "number",
         ),
     )
 

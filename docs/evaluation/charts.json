@@ -1,0 +1,373 @@
+{
+  "verified_at": "2026-10-16T18:51:19.344630+05:30",
+  "environment": {
+    "frontend": "http://127.0.0.1:3004",
+    "backend": "http://127.0.0.1:8004",
+    "data_profile": "timeseries",
+    "data_backend": "local generated Parquet",
+    "ai_backend": "fixture",
+    "storage": "memory"
+  },
+  "checks": {
+    "backend_tests": 191,
+    "frontend_tests": 21,
+    "ruff": "passed",
+    "eslint": "passed",
+    "typescript": "passed",
+    "production_build": "passed",
+    "next_compilation_issues": [],
+    "next_runtime_errors": []
+  },
+  "saved_result_scenarios": {
+    "monthly": {
+      "conversation": "9e909966a9d943dea02ca507dc17d5bc",
+      "artifact": "8f0e1cf1f05e4bd5b90085ca273a0262",
+      "coverage": {
+        "result_rows": 45,
+        "selected_rows": 45,
+        "plotted_rows": 45,
+        "sampled": false,
+        "omitted_categories": 0,
+        "complete": true,
+        "unique_dimension": true
+      },
+      "stats": {
+        "min": 4451906.37,
+        "max": 13916706.76,
+        "sum": 354425112.2
+      },
+      "units": [
+        [
+          "revenue",
+          "currency",
+          "measure"
+        ]
+      ]
+    },
+    "daily": {
+      "conversation": "da6b3c8953824be290b405c459ee0038",
+      "artifact": "141f1a31e25d48869bfbf989688c0189",
+      "coverage": {
+        "result_rows": 1369,
+        "selected_rows": 1369,
+        "plotted_rows": 1369,
+        "sampled": false,
+        "omitted_categories": 0,
+        "complete": true,
+        "unique_dimension": true
+      },
+      "stats": {
+        "min": 0.0,
+        "max": 999924.68,
+        "sum": 354425112.2
+      },
+      "units": [
+        [
+          "revenue",
+          "currency",
+          "measure"
+        ]
+      ]
+    },
+    "targets": {
+      "conversation": "9a7ad56120f74baa8c56fb77bbe55edb",
+      "artifact": "450db13ce1834350985ac96055e688ab",
+      "coverage": {
+        "result_rows": 180,
+        "selected_rows": 180,
+        "plotted_rows": 10,
+        "sampled": false,
+        "omitted_categories": 170,
+        "complete": true,
+        "unique_dimension": true
+      },
+      "stats": {
+        "min": 1081575.77,
+        "max": 3549629.59,
+        "sum": 354425112.2
+      },
+      "units": [
+        [
+          "revenue",
+          "currency",
+          "measure"
+        ],
+        [
+          "target_revenue",
+          "currency",
+          "target"
+        ]
+      ]
+    },
+    "yoy": {
+      "conversation": "e20c5c8123c74d06958079b530b63864",
+      "artifact": "6a19e4bfc35e4d90876c78d33d955344",
+      "coverage": {
+        "result_rows": 45,
+        "selected_rows": 45,
+        "plotted_rows": 45,
+        "sampled": false,
+        "omitted_categories": 0,
+        "complete": true,
+        "unique_dimension": true
+      },
+      "stats": {
+        "min": 4451906.37,
+        "max": 13916706.76,
+        "sum": 354425112.2
+      },
+      "units": [
+        [
+          "revenue",
+          "currency",
+          "measure"
+        ],
+        [
+          "previous_revenue",
+          "currency",
+          "comparison"
+        ],
+        [
+          "yoy_percent",
+          "percent",
+          "measure"
+        ]
+      ]
+    },
+    "category": {
+      "conversation": "53883152a53e49e497197653e1d681be",
+      "artifact": "f8636760b6f547e8ba96113fe79da995",
+      "coverage": {
+        "result_rows": 8,
+        "selected_rows": 8,
+        "plotted_rows": 8,
+        "sampled": false,
+        "omitted_categories": 0,
+        "complete": true,
+        "unique_dimension": true
+      },
+      "stats": {
+        "min": 40322293.21,
+        "max": 57440129.82,
+        "sum": 354425112.2
+      },
+      "units": [
+        [
+          "revenue",
+          "currency",
+          "measure"
+        ]
+      ]
+    },
+    "kpi": {
+      "conversation": "333a644cf79a4199b30d9670e205e3ab",
+      "artifact": "5eb3513aeea34faeb282411002f2fc00",
+      "coverage": {
+        "result_rows": 1,
+        "selected_rows": 1,
+        "plotted_rows": 1,
+        "sampled": false,
+        "omitted_categories": 0,
+        "complete": true,
+        "unique_dimension": false
+      },
+      "stats": {
+        "min": 354425112.2,
+        "max": 354425112.2,
+        "sum": 354425112.2
+      },
+      "units": [
+        [
+          "revenue",
+          "currency",
+          "measure"
+        ],
+        [
+          "orders",
+          "count",
+          "measure"
+        ]
+      ]
+    },
+    "segment": {
+      "conversation": "f29ea9febae34ddbb1ee98295e1489b5",
+      "artifact": "8aa741dfecb645b59f9186228768b6f7",
+      "coverage": {
+        "result_rows": 2,
+        "selected_rows": 2,
+        "plotted_rows": 2,
+        "sampled": false,
+        "omitted_categories": 0,
+        "complete": true,
+        "unique_dimension": true
+      },
+      "stats": {
+        "min": 118729938.91,
+        "max": 235695173.29,
+        "sum": 354425112.2
+      },
+      "units": [
+        [
+          "revenue",
+          "currency",
+          "measure"
+        ]
+      ]
+    }
+  },
+  "browser_verified": [
+    "45-month chart",
+    "1369-day chart including zero-sales 2024-02-29",
+    "keyboard brush changes range and summaries",
+    "pinned observation details",
+    "follow-up drafts without submission",
+    "existing composer draft preserved",
+    "currency and percent rendered separately",
+    "comparison legend toggle",
+    "region/month labels with target overlay",
+    "valid two-category donut and share",
+    "scatter numeric axes and 33 complete paired observations",
+    "expanded dialog",
+    "browser-local chart preference persistence",
+    "reduced-motion media preference",
+    "390px mobile without page overflow",
+    "native PNG with legend/units/scope",
+    "CSV reconciles to full result"
+  ],
+  "csv": {
+    "rows": 45,
+    "revenue": "354425112.20"
+  },
+  "png": {
+    "sha256": "8473cdf9f4a9d84c8594f057ece6520a35f68ac3d50eaa1e288d1048336d05f0",
+    "visually_inspected": true,
+    "legend_units_scope_present": true
+  },
+  "accessibility": {
+    "desktop": {
+      "counts": {
+        "inapplicable": 43,
+        "incomplete": 1,
+        "passes": 46,
+        "violations": 0
+      },
+      "violations": [],
+      "manual_review_rules": [
+        "color-contrast"
+      ]
+    },
+    "mobile": {
+      "counts": {
+        "inapplicable": 43,
+        "incomplete": 1,
+        "passes": 46,
+        "violations": 0
+      },
+      "violations": [],
+      "manual_review_rules": [
+        "color-contrast"
+      ]
+    },
+    "scatter": {
+      "counts": {
+        "inapplicable": 44,
+        "incomplete": 1,
+        "passes": 45,
+        "violations": 0
+      },
+      "violations": [],
+      "manual_review_rules": [
+        "color-contrast"
+      ]
+    }
+  },
+  "contrast": {
+    "tokens": [
+      "chart-1",
+      "chart-context",
+      "chart-comparison"
+    ],
+    "theme_accent_cases": [
+      {
+        "theme": "light",
+        "accent": "cobalt",
+        "ratios": [
+          5.34,
+          5.51,
+          5.51
+        ]
+      },
+      {
+        "theme": "light",
+        "accent": "teal",
+        "ratios": [
+          5.54,
+          5.51,
+          5.51
+        ]
+      },
+      {
+        "theme": "light",
+        "accent": "violet",
+        "ratios": [
+          5.77,
+          5.51,
+          5.51
+        ]
+      },
+      {
+        "theme": "light",
+        "accent": "rose",
+        "ratios": [
+          5.44,
+          5.51,
+          5.51
+        ]
+      },
+      {
+        "theme": "dark",
+        "accent": "cobalt",
+        "ratios": [
+          7.83,
+          7.6,
+          7.6
+        ]
+      },
+      {
+        "theme": "dark",
+        "accent": "teal",
+        "ratios": [
+          9.73,
+          7.6,
+          7.6
+        ]
+      },
+      {
+        "theme": "dark",
+        "accent": "violet",
+        "ratios": [
+          8.31,
+          7.6,
+          7.6
+        ]
+      },
+      {
+        "theme": "dark",
+        "accent": "rose",
+        "ratios": [
+          8.75,
+          7.6,
+          7.6
+        ]
+      }
+    ]
+  },
+  "manual_limits": [
+    "Chrome browser verification only; Safari/Firefox and assistive-technology user testing remain unperformed.",
+    "axe SVG contrast uncertainty requires manual review; primary/context/comparator contrast was measured separately.",
+    "No new live-model evaluation was performed; deterministic presentation uses existing saved result contracts."
+  ],
+  "cloud_changes": false,
+  "deployment": false,
+  "github_push": false
+}

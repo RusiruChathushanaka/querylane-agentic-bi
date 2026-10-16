@@ -54,6 +54,7 @@ This preview uses an operator access token only in memory. Restart it when that 
 - Automatically inferred, type-checked cross-source relationships; duplicate-key and incomplete-input rejection.
 - Bar, line, area, pie, scatter, table, and KPI views with accessible table alternatives.
 - Gemini Live voice bridge, PCM microphone streaming, transcripts, interruption, mute, and resumption.
+- [Interactive charts](docs/charts.md): full saved-result coverage, factual highlights, per-measure tooltips, range and series controls, chart-to-chat drafts, and PNG/CSV exports.
 - Browser-local [settings](docs/settings.md): Gemini Flash/Flash-Lite analysis model selection, light/dark/system themes, accent colors, density, chart defaults, chat shortcuts, and voice preferences.
 - [Motion and feedback](docs/motion-and-feedback.md) using Framer Motion, beUI, and Sonner, with shared reduced-motion support and reader-aware result scrolling.
 - Anonymous guest tokens, shared usage counters, fenced conversation leases, and event replay.

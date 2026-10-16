@@ -86,6 +86,14 @@ After upload and verification, an authorized backend release opts in with `pytho
 
 `DATA_PROFILE=timeseries uv run python -m app.admin index-schema` from `Backend/` optionally refreshes profile-tagged schema embeddings in the existing named Firestore database. It is a separate billable operator action; existing legacy chunks are retained and full-schema retrieval remains available. Verify live queries, readiness/import failure behavior, date coverage, month/year boundaries, YoY/rolling calculations, reader permissions, and source counts. Existing fixed nine-month evaluation fixtures remain valid for the legacy profile; use the new independent reconciliation report for time-series acceptance. Rollback selects `legacy` and leaves the additional data intact.
 
+### Interactive chart release
+
+See [chart presentation](charts.md). Deploy the backend before the frontend; chart-data and CSV endpoints read immutable artifact pages and need no new IAM grant, secret, index, or artifact migration. Historical results retain their original evidence. Keep generated `data/` excluded from Cloud Build source archives and Git; cloud data lives in the analytical services already.
+
+For the time-series release use `--data-profile timeseries` explicitly. The old 31-question evaluator and legacy smoke numerical fixtures describe the small seed and must not be run as acceptance references for the larger profile. Run the profile-aware runtime verifier and `cd Backend && uv run python -m scripts.smoke_timeseries --backend "$BI_BACKEND_URL" --frontend "$BI_FRONTEND_URL"` instead. It checks the new independent bundle ledger, runtime URLs, hosted model/query provenance, chart coverage, CSV exports, follow-ups, replay, forks and WebSocket validation. Its reference bundle is local and Git-ignored; pass `--bundle` when it is stored elsewhere. Model/query calls and public verification conversations are expected; do not reset quotas/history.
+
+Confirm the source readiness fence, five BigQuery/six PostgreSQL tables, 573,348 orders and 25,000 profiles under the actual runtime identity. Verify the new chart controls/downloads in the deployed browser. Record serving revisions, image digests, profile, source limits, previous revisions and verification reports. Keep the previous images/revisions for rollback; rolling back to legacy does not remove the additional tables.
+
 ## Prerequisites
 
 Install Google Cloud CLI including `gcloud` and `bq`, Node/npm, Python 3.12, and `uv`. The current frontend uses Node 26. Local Docker is optional: Cloud Build builds the Dockerfiles remotely. Use the committed dependency lockfiles.

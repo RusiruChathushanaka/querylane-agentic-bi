@@ -55,3 +55,6 @@ _Avoid_: Edit, duplicate result
 
 **Gross Revenue**: Completed-order revenue before refunds, denominated in USD for the synthetic retail demo.
 _Avoid_: Net revenue, profit
+
+- **Chart Presentation**: A bounded view of an immutable Result Artifact. Range selection, Top N, and sampling change display only; summaries use the full selected saved rows, and CSV exports all saved rows.
+- **Measure Metadata**: Validated units, rate scale, additivity, and comparator relationships used for formatting and factual chart insights; it cannot authorize queries or tools.

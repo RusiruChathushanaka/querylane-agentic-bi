@@ -47,3 +47,7 @@ Preference changes use a single Sonner confirmation that updates as you make cha
 `Frontend/src/lib/preferences.ts` defines the versioned contract, defaults, validation, and pre-paint appearance bootstrap. `Frontend/src/hooks/use-preferences.ts` manages hydration-safe snapshots and same-tab/cross-tab updates. Appearance and presentation stay browser-local; the selected analysis model is submitted to the backend and captured with each new run. `Backend/app/model_selection.py` owns the pinned catalog and task-scoped model context, avoiding mutation of shared settings across requests. Older browser preferences default to the workspace model; older runs/artifacts remain readable without model evidence.
 
 Run `npm run lint`, `npx tsc --noEmit`, `npm test`, and `npm run build` in `Frontend/`. Voice preference regression tests use mocked browser audio and transport, with no model calls. For releasing these changes, follow the [deployment guide](deployment-guide.md).
+
+## Chart exploration defaults
+
+Automatic chart highlights and chart comparisons default to enabled. These browser-local flags control factual insight chips, peak markers, and the initial visibility of target/comparison series. Existing browser preferences gain these defaults without resetting other settings. Per-result range, order, Top N, primary measure, and series choices do not modify shared artifacts. See [chart behavior and export scope](charts.md).

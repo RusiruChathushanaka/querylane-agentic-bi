@@ -7,6 +7,7 @@ import uuid
 from google.genai.errors import APIError
 from pydantic import ValidationError
 
+from app.chart_presentation import normalized_spec
 from app.connectors import json_rows
 from app.errors import AppError, StaleLease
 from app.fusion import fuse
@@ -239,6 +240,7 @@ class AnalysisService:
         visualization = plan.visualization
         if visualization.x and visualization.x not in names or any(y not in names for y in visualization.y):
             visualization = VisualizationSpec(type="table", title=plan.title)
+        visualization = normalized_spec(visualization, columns, json_rows(rows))
         artifact_id = uuid.uuid4().hex
         artifact = ResultArtifact(
             id=artifact_id,
@@ -276,6 +278,7 @@ class AnalysisService:
             )
         value = artifact.model_dump(mode="json") | {
             "data_profile": self.settings.data_profile,
+            "data_coverage": self.connectors.coverage,
             "ai": model_evidence(self.settings),
             "page_count": page_index + 1 if encoded_rows else 0,
             "retrieval": retrieval,

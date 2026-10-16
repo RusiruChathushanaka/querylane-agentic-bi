@@ -12,3 +12,6 @@
 **/*.log
 .DS_Store
 artifacts
+
+# Synthetic source data is uploaded separately, never packaged with the application.
+data

@@ -60,12 +60,29 @@ class FusionPlan(StrictModel):
     expected_cardinality: Literal["one-to-one", "one-to-many", "many-to-one"] = "one-to-one"
 
 
+class ChartMeasure(StrictModel):
+    field: str = Field(min_length=1, max_length=128)
+    label: str | None = Field(default=None, max_length=120)
+    unit: Literal["number", "count", "currency", "percent"] = "number"
+    currency: str | None = Field(default=None, pattern=r"^[A-Z]{3}$")
+    percent_scale: Literal["fraction", "whole"] | None = None
+    additive: bool = False
+    role: Literal["primary", "measure", "target", "comparison"] = "measure"
+    compares_to: str | None = Field(default=None, max_length=128)
+    direction: Literal["higher", "lower", "neutral"] = "neutral"
+
+
 class VisualizationSpec(StrictModel):
     type: Literal["bar", "line", "area", "pie", "scatter", "table", "kpi"] = "table"
     title: str = Field(max_length=160)
     x: str | None = None
     y: list[str] = Field(default_factory=list, max_length=4)
     format: Literal["number", "currency", "percent"] = "number"
+    version: Literal[2] | None = None
+    dimension_kind: Literal["temporal", "category", "numeric"] | None = None
+    granularity: Literal["day", "week", "month", "quarter", "year"] | None = None
+    partial_periods: list[str] = Field(default_factory=list, max_length=100)
+    measures: list[ChartMeasure] = Field(default_factory=list, max_length=4)
 
 
 class AnalysisPlan(StrictModel):

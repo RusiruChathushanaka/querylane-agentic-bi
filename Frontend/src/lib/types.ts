@@ -30,12 +30,81 @@ export type Connection = {
   mode: string;
   error?: string;
 };
+export type ChartMeasure = {
+  field: string;
+  label: string | null;
+  unit: "number" | "count" | "currency" | "percent";
+  currency: string | null;
+  percent_scale: "fraction" | "whole" | null;
+  additive: boolean;
+  role: "primary" | "measure" | "target" | "comparison";
+  compares_to: string | null;
+  direction: "higher" | "lower" | "neutral";
+};
+export type ChartChange = {
+  delta?: number;
+  percent?: number | null;
+  percentage_points?: number | null;
+  previous_label?: string;
+  share?: number;
+  variance?: ChartChange;
+  actual_field?: string;
+};
+export type ChartRow = Record<string, unknown> & {
+  _key?: number;
+  _gap?: boolean;
+  _detail?: Record<string, ChartChange>;
+};
+export type ChartData = {
+  version: 2;
+  visualization: Visualization & { measures: ChartMeasure[] };
+  primary: string | null;
+  rows: ChartRow[];
+  insights: {
+    kind: "peak" | "leader" | "change" | "share" | "target";
+    field: string;
+    label: string;
+    value: number;
+    previous_label?: string;
+    target_field?: string;
+    target?: number;
+    delta?: number;
+    percent?: number | null;
+    percentage_points?: number | null;
+  }[];
+  annotations: {
+    kind: string;
+    x: unknown;
+    field: string;
+    value: number | null;
+  }[];
+  stats: { min?: number; max?: number; sum?: number | null };
+  scope: { start: string | null; end: string | null };
+  coverage: {
+    result_rows: number;
+    selected_rows: number;
+    plotted_rows: number;
+    sampled: boolean;
+    omitted_categories: number;
+    complete: boolean;
+    unique_dimension: boolean;
+  };
+  composition: boolean;
+  dimension_label: string;
+  identity: string | null;
+  warning: string | null;
+};
 export type Visualization = {
   type: string;
   title: string;
   x: string | null;
   y: string[];
   format: "number" | "currency" | "percent";
+  version?: 2 | null;
+  dimension_kind?: "temporal" | "category" | "numeric" | null;
+  granularity?: "day" | "week" | "month" | "quarter" | "year" | null;
+  partial_periods?: string[];
+  measures?: ChartMeasure[];
 };
 export type Artifact = {
   ai?: {

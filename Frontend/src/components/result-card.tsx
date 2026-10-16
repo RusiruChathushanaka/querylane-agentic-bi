@@ -2,23 +2,6 @@
 
 import { useEffect, useState } from "react";
 import {
-  Area,
-  AreaChart,
-  Bar,
-  BarChart,
-  CartesianGrid,
-  Cell,
-  Legend,
-  Line,
-  LineChart,
-  Pie,
-  PieChart,
-  Scatter,
-  ScatterChart,
-  XAxis,
-  YAxis,
-} from "recharts";
-import {
   Braces,
   CheckCheck,
   ChevronLeft,
@@ -39,12 +22,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-  type ChartConfig,
-} from "@/components/ui/chart";
 import {
   Table,
   TableBody,
@@ -71,14 +48,10 @@ import { usePreferences } from "@/hooks/use-preferences";
 import { AnimatedNumber } from "@/components/motion/animated-number";
 import { motion } from "motion/react";
 import { useAppMotion } from "@/hooks/use-app-motion";
+import { SavedCsvDownload } from "@/components/charts/saved-csv-download";
+import InsightfulChart from "@/components/charts/insightful-chart";
+import { formatMeasure } from "@/lib/chart-format";
 
-const colors = [
-  "var(--chart-1)",
-  "var(--chart-2)",
-  "var(--chart-3)",
-  "var(--chart-4)",
-  "var(--chart-5)",
-];
 const MotionCardContent = motion.create(CardContent);
 const numericType = /int|float|double|decimal|numeric|number|real/i;
 const human = (value: string) => value.replaceAll("_", " ");
@@ -96,7 +69,13 @@ function display(value: unknown, format = "number", decimals = 2) {
   );
 }
 
-export default function ResultCard({ artifact }: { artifact: Artifact }) {
+export default function ResultCard({
+  artifact,
+  onExplore,
+}: {
+  artifact: Artifact;
+  onExplore?: (question: string) => void;
+}) {
   const { preferences } = usePreferences();
   const { reduced } = useAppMotion();
   const decimals = Number(preferences.decimals);
@@ -118,6 +97,11 @@ export default function ResultCard({ artifact }: { artifact: Artifact }) {
   const chartable = Boolean(x && ys.length && artifact.rows.length);
   const pieable =
     chartable &&
+    artifact.complete &&
+    artifact.row_count <= 6 &&
+    artifact.visualization.measures?.some(
+      (m) => m.field === ys[0] && m.additive,
+    ) &&
     ys.length === 1 &&
     artifact.rows.every(
       (row) => row[ys[0]] !== null && Number(row[ys[0]]) >= 0,
@@ -139,27 +123,6 @@ export default function ResultCard({ artifact }: { artifact: Artifact }) {
     : options.includes(artifact.visualization.type)
       ? artifact.visualization.type
       : "table";
-  const data = artifact.rows
-    .slice(0, 60)
-    .map((row) =>
-      Object.fromEntries(
-        Object.entries(row).map(([key, value]) => [
-          key,
-          numeric.includes(key) && value !== null ? Number(value) : value,
-        ]),
-      ),
-    );
-  const config = Object.fromEntries(
-    ys.map((column, index) => [
-      column,
-      { label: human(column), color: colors[index % colors.length] },
-    ]),
-  ) satisfies ChartConfig;
-  const ticks = (value: number) =>
-    new Intl.NumberFormat("en", {
-      notation: "compact",
-      maximumFractionDigits: 1,
-    }).format(value);
 
   useEffect(() => {
     if (selected !== "table" || !artifact.page_count) return;
@@ -185,6 +148,21 @@ export default function ResultCard({ artifact }: { artifact: Artifact }) {
     };
   }, [selected, artifact.id, artifact.page_count, page]);
 
+  function valueDisplay(value: unknown, column: string) {
+    const measure = artifact.visualization.measures?.find(
+      (m) => m.field === column,
+    );
+    return measure
+      ? formatMeasure(value, measure, decimals)
+      : display(
+          value,
+          artifact.visualization.y.length === 1 && ys.includes(column)
+            ? artifact.visualization.format
+            : "number",
+          decimals,
+        );
+  }
+
   function changeView(value: string) {
     setView(value);
     toast.success("Visualization updated", {
@@ -195,34 +173,6 @@ export default function ResultCard({ artifact }: { artifact: Artifact }) {
     if (value === "table" && artifact.page_count) setLoading(true);
   }
 
-  const axes = (
-    <>
-      <CartesianGrid vertical={false} strokeDasharray="3 5" />
-      <XAxis
-        dataKey={x}
-        tickLine={false}
-        axisLine={false}
-        tickMargin={12}
-        minTickGap={18}
-      />
-      <YAxis
-        tickLine={false}
-        axisLine={false}
-        tickFormatter={ticks}
-        width={56}
-      />
-      <ChartTooltip
-        content={
-          <ChartTooltipContent
-            valueFormatter={(value) =>
-              display(value, artifact.visualization.format, decimals)
-            }
-          />
-        }
-      />
-      <Legend />
-    </>
-  );
   return (
     <Card className="result-card">
       <CardHeader>
@@ -231,6 +181,7 @@ export default function ResultCard({ artifact }: { artifact: Artifact }) {
             <CardDescription>QUERY RESULT</CardDescription>
             <CardTitle>{artifact.title}</CardTitle>
           </div>
+          {selected === "table" && <SavedCsvDownload artifact={artifact} />}
           <Select value={selected} onValueChange={changeView}>
             <SelectTrigger aria-label={`Visualization for ${artifact.title}`}>
               <SelectValue />
@@ -299,15 +250,7 @@ export default function ResultCard({ artifact }: { artifact: Artifact }) {
                   Number.isFinite(Number(artifact.rows[0][column])) ? (
                     <AnimatedNumber
                       value={Number(artifact.rows[0][column])}
-                      format={(value) =>
-                        display(
-                          value,
-                          ys.includes(column)
-                            ? artifact.visualization.format
-                            : "number",
-                          decimals,
-                        )
-                      }
+                      format={(value) => valueDisplay(value, column)}
                     />
                   ) : (
                     "—"
@@ -346,13 +289,7 @@ export default function ResultCard({ artifact }: { artifact: Artifact }) {
                       {artifact.columns.map((column) => (
                         <TableCell key={column.name}>
                           {numeric.includes(column.name)
-                            ? display(
-                                row[column.name],
-                                ys.includes(column.name)
-                                  ? artifact.visualization.format
-                                  : "number",
-                                decimals,
-                              )
+                            ? valueDisplay(row[column.name], column.name)
                             : String(row[column.name] ?? "—")}
                         </TableCell>
                       ))}
@@ -391,128 +328,12 @@ export default function ResultCard({ artifact }: { artifact: Artifact }) {
             </div>
           </>
         )}
-        {selected !== "table" && selected !== "kpi" && (
-          <figure>
-            <ChartContainer config={config} className="analytics-chart">
-              {selected === "bar" ? (
-                <BarChart
-                  accessibilityLayer
-                  data={data}
-                  margin={{ top: 12, right: 8, bottom: 4, left: 0 }}
-                >
-                  {axes}
-                  {ys.map((column, index) => (
-                    <Bar
-                      key={column}
-                      dataKey={column}
-                      name={human(column)}
-                      fill={colors[index]}
-                      radius={[5, 5, 0, 0]}
-                      maxBarSize={60}
-                      isAnimationActive={false}
-                    />
-                  ))}
-                </BarChart>
-              ) : selected === "line" ? (
-                <LineChart accessibilityLayer data={data}>
-                  {axes}
-                  {ys.map((column, index) => (
-                    <Line
-                      key={column}
-                      dataKey={column}
-                      name={human(column)}
-                      stroke={colors[index]}
-                      strokeWidth={2.5}
-                      dot={data.length < 20}
-                      isAnimationActive={false}
-                    />
-                  ))}
-                </LineChart>
-              ) : selected === "area" ? (
-                <AreaChart accessibilityLayer data={data}>
-                  {axes}
-                  {ys.map((column, index) => (
-                    <Area
-                      key={column}
-                      dataKey={column}
-                      name={human(column)}
-                      stroke={colors[index]}
-                      fill={colors[index]}
-                      fillOpacity={0.12}
-                      strokeWidth={2.5}
-                      isAnimationActive={false}
-                    />
-                  ))}
-                </AreaChart>
-              ) : selected === "pie" ? (
-                <PieChart accessibilityLayer>
-                  <Pie
-                    data={data.filter((row) => Number(row[ys[0]]) >= 0)}
-                    dataKey={ys[0]}
-                    nameKey={x}
-                    innerRadius="55%"
-                    outerRadius="85%"
-                    isAnimationActive={false}
-                  >
-                    {data.map((_, index) => (
-                      <Cell key={index} fill={colors[index % colors.length]} />
-                    ))}
-                  </Pie>
-                  <ChartTooltip
-                    content={
-                      <ChartTooltipContent
-                        valueFormatter={(value) =>
-                          display(
-                            value,
-                            artifact.visualization.format,
-                            decimals,
-                          )
-                        }
-                      />
-                    }
-                  />
-                  <Legend />
-                </PieChart>
-              ) : (
-                <ScatterChart accessibilityLayer>
-                  <CartesianGrid strokeDasharray="3 5" />
-                  <XAxis
-                    type="number"
-                    dataKey={numeric[0]}
-                    name={human(numeric[0])}
-                    tickFormatter={ticks}
-                  />
-                  <YAxis
-                    type="number"
-                    dataKey={numeric[1]}
-                    name={human(numeric[1])}
-                    tickFormatter={ticks}
-                  />
-                  <ChartTooltip
-                    content={
-                      <ChartTooltipContent
-                        valueFormatter={(value) =>
-                          display(value, "number", decimals)
-                        }
-                      />
-                    }
-                  />
-                  <Scatter
-                    data={data}
-                    fill={colors[0]}
-                    isAnimationActive={false}
-                  />
-                </ScatterChart>
-              )}
-            </ChartContainer>
-            <figcaption className="chart-caption">
-              {artifact.visualization.title}.{" "}
-              {artifact.row_count > 60
-                ? `Showing the first 60 of ${artifact.row_count.toLocaleString()} result rows. `
-                : ""}
-              Switch to table for the underlying data.
-            </figcaption>
-          </figure>
+        {selected !== "table" && (
+          <InsightfulChart
+            artifact={artifact}
+            view={selected}
+            onExplore={onExplore}
+          />
         )}
         {!artifact.row_count && (
           <p className="empty-result">

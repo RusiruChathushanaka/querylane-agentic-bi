@@ -111,7 +111,10 @@ def timeseries_plan(question, history, source):
     ):
         lag = 12 if any(w in q for w in ("year over year", "year-over-year", "yoy")) else 1
         label = "yoy" if lag == 12 else "mom"
-        title, ys = f"Monthly revenue and {label.upper()} growth", ["revenue"]
+        title, ys = (
+            f"Monthly revenue and {label.upper()} growth",
+            ["revenue", "previous_revenue", f"{label}_percent"],
+        )
         queries = [
             query(f"""WITH months AS (SELECT DISTINCT month FROM calendar), actual AS (
             SELECT month,SUM(revenue) revenue FROM sales_orders GROUP BY month), dense AS (
@@ -146,7 +149,7 @@ def timeseries_plan(question, history, source):
             )
         ]
     elif "total" in q or "kpi" in q:
-        title, chart, x = "Total merchandise revenue", "kpi", None
+        title, chart, x, ys = "Total merchandise revenue", "kpi", None, ["revenue", "orders"]
         queries = [query(f"SELECT SUM(revenue) revenue,COUNT(*) orders FROM sales_orders{where}")]
     elif "daily" in q or "day" in q:
         title, x = "Daily merchandise revenue", "order_date"
@@ -181,6 +184,38 @@ def timeseries_plan(question, history, source):
         fusion=fusion,
         assumptions=assumptions,
         visualization=VisualizationSpec(
-            type=chart, title=title, x=x, y=ys, format="number" if "customers" in ys else "currency"
+            type=chart,
+            title=title,
+            x=x,
+            y=ys,
+            version=2,
+            dimension_kind="temporal" if chart in {"line", "area"} else "category",
+            granularity=("day" if x == "order_date" else "month") if chart in {"line", "area"} else None,
+            measures=[
+                {
+                    "field": field,
+                    "unit": "percent"
+                    if field.endswith("_percent")
+                    else "count"
+                    if field in {"customers", "orders"}
+                    else "currency",
+                    "currency": None
+                    if field.endswith("_percent") or field in {"customers", "orders"}
+                    else "USD",
+                    "percent_scale": "whole" if field.endswith("_percent") else None,
+                    "additive": field
+                    in {"revenue", "target", "target_revenue", "refund_amount", "customers", "orders"},
+                    "role": "target"
+                    if field in {"target", "target_revenue"}
+                    else "comparison"
+                    if field == "previous_revenue"
+                    else "measure",
+                    "compares_to": "revenue"
+                    if field in {"target", "target_revenue", "previous_revenue"} and "revenue" in ys
+                    else None,
+                }
+                for field in ys
+            ],
+            format="number" if "customers" in ys else "currency",
         ),
     )

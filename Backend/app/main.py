@@ -6,8 +6,9 @@ import logging
 import secrets
 import time
 from contextlib import asynccontextmanager
-from datetime import UTC, datetime
+from datetime import UTC, date, datetime
 from types import SimpleNamespace
+from typing import Literal
 
 from fastapi import Depends, FastAPI, Header, Query, Request, WebSocket
 from fastapi.exceptions import RequestValidationError
@@ -19,6 +20,7 @@ from starlette.websockets import WebSocketDisconnect
 from app.adk_sessions import FirestoreSessionService
 from app.ai import AI
 from app.analysis import AnalysisService
+from app.chart_presentation import csv_line, present, saved_rows
 from app.config import Settings, get_settings
 from app.connectors import Connectors
 from app.errors import AppError
@@ -322,6 +324,66 @@ def create_app(settings: Settings | None = None, store_override=None, credential
             if len(rows) >= settings.preview_rows:
                 break
         return artifact | {"rows": rows[: settings.preview_rows]}
+
+    chart_slots = asyncio.Semaphore(2)
+
+    @app.get("/api/v1/artifacts/{artifact_id}/chart-data")
+    async def chart_data(
+        artifact_id: str,
+        request: Request,
+        start: date | None = None,
+        end: date | None = None,
+        primary: str | None = Query(default=None, max_length=128),
+        order: Literal["value_desc", "value_asc", "label", "original"] = "value_desc",
+        top: int = Query(default=10, ge=5, le=20),
+        view: Literal["line", "area", "bar", "pie", "scatter", "kpi"] | None = None,
+    ):
+        store = request.app.state.services.store
+        artifact = await store.get("artifacts", artifact_id)
+        if not artifact:
+            raise AppError("Result not found.", 404, "not_found")
+        if top not in {5, 10, 20}:
+            raise AppError("Choose Top 5, 10, or 20.", 422)
+        async with chart_slots:
+            rows = [row async for row in saved_rows(store, artifact)]
+            return await asyncio.to_thread(
+                present,
+                artifact,
+                rows,
+                start=start,
+                end=end,
+                primary=primary,
+                order=order,
+                top=top,
+                view=view,
+            )
+
+    @app.get("/api/v1/artifacts/{artifact_id}/export.csv")
+    async def export_csv(artifact_id: str, request: Request):
+        store = request.app.state.services.store
+        artifact = await store.get("artifacts", artifact_id)
+        if not artifact:
+            raise AppError("Result not found.", 404, "not_found")
+        # Validate all pages before sending headers; never return a successful truncated download.
+        async with chart_slots:
+            rows = [row async for row in saved_rows(store, artifact)]
+        columns = [c["name"] for c in artifact["columns"]]
+
+        async def chunks():
+            yield "\ufeff" + csv_line(columns)
+            for row in rows:
+                yield csv_line([row.get(column) for column in columns])
+
+        suffix = "partial" if not artifact["complete"] else "complete"
+        safe_id = hashlib.sha256(artifact_id.encode()).hexdigest()[:12]
+        return StreamingResponse(
+            chunks(),
+            media_type="text/csv",
+            headers={
+                "Content-Disposition": f'attachment; filename="querylane-{safe_id}-{suffix}.csv"',
+                "Cache-Control": "no-store",
+            },
+        )
 
     @app.get("/api/v1/artifacts/{artifact_id}/pages/{index}")
     async def artifact_page(artifact_id: str, index: int, request: Request):
