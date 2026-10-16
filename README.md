@@ -44,7 +44,7 @@ This preview uses an operator access token only in memory. Restart it when that 
 
 ## Included behavior
 
-- Public [dashboard library](docs/dashboards.md): create shared dashboards, pin saved chart/KPI/table views, arrange cards, and recover removed items. Pinning/viewing runs no new analysis. Implemented locally; cloud release follows the deployment guide.
+- Public [dashboard library](docs/dashboards.md): create shared dashboards, pin saved chart/KPI/table views, arrange cards, and recover removed items. Pinning/viewing runs no new analysis. Available on the deployed application's `/dashboards` page.
 
 - [Expanded retail history](docs/retail-timeseries.md): 573,348 orders across 2023–2026, 1.3 million line items, dated refunds, stores, promotions, and a daily calendar. Reproducible Parquet generation, validation, insert-only cloud upload, and date-range extension scripts preserve the original demo tables.
 
@@ -92,5 +92,7 @@ Both services are deployed in `asia-southeast1` in project `project-e8b1593d-009
 The deployed application uses the **larger generated dataset**: 573,348 orders and 25,000 customers from January 2023 through September 2026. Its 45-month and 1,369-day charts reconcile to **$354,425,112.20** in merchandise revenue. Keep `--data-profile timeseries` on future backend releases; generated files are excluded from Git and Cloud Build uploads.
 
 [Hosted chart acceptance](docs/evaluation/charts-deployed.json) passes **40/40 checks**, including both analysis models, numerical references, cross-source results, follow-ups, forks, exports, replay, CORS, and Gemini Live audio/transcripts. The [runtime check](docs/evaluation/cloud-runtime.json) passes **21/21 checks** under the backend service account, including resource boundaries and Firestore concurrency. See [release validation](docs/validation.md#interactive-chart-cloud-release--2026-10-16) and [serving revisions](docs/deployment.json). Earlier 31-case reports describe the original small dataset. Cloud SQL and Cloud Run are billable resources; instance/query/public usage limits are configured, while billing alerts require the billing administrator.
+
+The [dashboard cloud release](docs/validation.md#dashboard-library-cloud-release--2026-10-16) preserves that larger dataset and all existing runtime configuration. Hosted verification passes 10 dashboard API checks, 21 runtime checks, 40 fresh time-series/voice checks, 14 configuration/evidence checks and 18 browser checks. See the [deployment guide](docs/deployment-guide.md) before future releases or maintenance; pinning/opening dashboards does not refresh source data.
 
 The existing Firestore databases and `enterprise_*` BigQuery datasets are outside this application's scope.

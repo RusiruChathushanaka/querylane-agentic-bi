@@ -1,0 +1,25 @@
+{
+  "source_commit": "8873e8dd478ed4c76a9728cdb3099e8c476323e8",
+  "backend": {
+    "tests_passed": 215,
+    "tests_skipped": 1,
+    "ruff": "passed"
+  },
+  "dashboard_emulator": {
+    "passed": 35,
+    "skipped": 1
+  },
+  "frontend": {
+    "tests_passed": 25,
+    "lint": "passed",
+    "types": "passed",
+    "build": "passed"
+  },
+  "dataset_profile": "timeseries",
+  "source_row_limit": 30000,
+  "source_files_in_build": 250,
+  "source_bytes_approx": "2.3 MiB",
+  "cloud_data_write": false,
+  "history_reset": false,
+  "verified_at": "2026-10-16T22:27:22.392771+05:30"
+}

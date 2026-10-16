@@ -1,0 +1,98 @@
+{
+  "verified_at": "2026-10-16T22:25:04.941033+05:30",
+  "checks": {
+    "backend_ready": true,
+    "frontend_backend_health": true,
+    "timeseries_and_both_sources": true,
+    "cors_put": true,
+    "cors_patch": true,
+    "cors_delete": true,
+    "guest_required_for_mutations": true,
+    "invalid_identifier_rejected": true,
+    "historical_artifact_digest_unchanged": true,
+    "saved_view_retained_after_undo": true,
+    "verification_dashboard_soft_deleted": true,
+    "pinned_artifact_available_after_soft_delete": true,
+    "new_artifacts_record_original_question_and_analysis_ids": true,
+    "exact_live_dataset_count_and_dates": true
+  },
+  "historical_artifact": {
+    "artifact_id": "e2baad89590f4d059f6eb77fc976b2d0",
+    "conversation_id": "489c2c1b142a45cda76d99ad3447489e",
+    "artifact_sha256": "f45e1f3dab7de29ba7e72355e18351e23c5f980fcdc9c6a524b6a80180d960a3",
+    "artifact_rows": 45,
+    "connections": {
+      "mode": "cloud",
+      "data_profile": "timeseries",
+      "period": "DAILY \u00b7 MULTI-YEAR",
+      "connections": [
+        {
+          "id": "bigquery",
+          "name": "Retail warehouse",
+          "engine": "BigQuery",
+          "tables": 5,
+          "connected": true,
+          "mode": "cloud"
+        },
+        {
+          "id": "postgres",
+          "name": "Business operations",
+          "engine": "PostgreSQL",
+          "tables": 6,
+          "connected": true,
+          "mode": "cloud"
+        }
+      ]
+    },
+    "skills_count": 5
+  },
+  "ui_dashboard": "8e01e60afacc4b86a00c3c7031176c32",
+  "saved_view": {
+    "highlights": true,
+    "start": "2024-01-01",
+    "top": 10,
+    "scatter_y": null,
+    "scatter_x": null,
+    "order": "value_desc",
+    "primary": "revenue",
+    "version": 1,
+    "visible_measures": [
+      "revenue"
+    ],
+    "decimals": 2,
+    "end": "2024-12-31",
+    "view": "line"
+  },
+  "connections": {
+    "mode": "cloud",
+    "data_profile": "timeseries",
+    "period": "DAILY \u00b7 MULTI-YEAR",
+    "connections": [
+      {
+        "id": "bigquery",
+        "name": "Retail warehouse",
+        "engine": "BigQuery",
+        "tables": 5,
+        "connected": true,
+        "mode": "cloud"
+      },
+      {
+        "id": "postgres",
+        "name": "Business operations",
+        "engine": "PostgreSQL",
+        "tables": 6,
+        "connected": true,
+        "mode": "cloud"
+      }
+    ]
+  },
+  "cleanup": "Only the clearly labeled browser verification dashboard was soft-deleted; its recovery references remain. No history reset or source data write.",
+  "passed": true,
+  "live_bigquery_aggregate": {
+    "end_date": "2026-09-30",
+    "merchandise_revenue": "354425112.2",
+    "months": "45",
+    "orders": "573348",
+    "start_date": "2023-01-01"
+  }
+}

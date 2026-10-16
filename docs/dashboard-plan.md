@@ -1,6 +1,6 @@
 # Querylane shared dashboards — implementation plan
 
-Status: implementation present; local verification is recorded in docs/validation.md and docs/evaluation/dashboards*.json. Cloud Run deployment and GitHub publication remain separate requested actions.
+Status: implemented and deployed to Cloud Run on 2026-10-16. Local and hosted verification is recorded in docs/validation.md and docs/evaluation/dashboards*.json; serving revisions and source commits are in docs/deployment.json. Further releases and data maintenance require their own authorized action.
 
 ## 1. Product decisions
 

@@ -184,6 +184,8 @@ The helper uploads the repository with `.gcloudignore`, builds the chosen direct
 
 Always pass the **actual deployed frontend origin** for routine backend releases. Passing `http://localhost:3000` would replace the production CORS/voice allowlist.
 
+A service previously pinned to an explicit revision can keep routing to that revision after a successful deployment. Inspect `status.latestCreatedRevisionName`, its image, readiness and `status.traffic`; a successful build alone does not expose new routes. If traffic remains on the prior revision, use `gcloud run services update-traffic SERVICE --project "$BI_PROJECT_ID" --region "$BI_REGION" --to-revisions VERIFIED_CANDIDATE_REVISION=100` for the exact candidate from this release, then recheck readiness and application behavior. Preserve the previous revision for rollback.
+
 ### 3. Verify and record the release
 
 Run [Acceptance checks](#acceptance-checks). Update [deployment.json](deployment.json) from the real service descriptions: date, URLs, serving revisions, images, identities, and readiness. Update the affected evaluation reports and [validation.md](validation.md). Do not mark a deployment ready based only on a successful build or container startup.

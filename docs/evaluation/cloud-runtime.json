@@ -38,7 +38,7 @@
       "message": "Someone is already exploring this chat. Wait or fork it to continue."
     }
   ],
-  "backend_revision": "agentic-bi-backend-00011-tzb",
-  "source_commit": "d04246681620b0b4929f292468a7091e77e4fc29",
-  "verified_at": "2026-10-16T19:30:11.422154+05:30"
+  "backend_revision": "agentic-bi-backend-00012-pfm",
+  "source_commit": "8873e8dd478ed4c76a9728cdb3099e8c476323e8",
+  "verified_at": "2026-10-16T22:11:32.015130+05:30"
 }

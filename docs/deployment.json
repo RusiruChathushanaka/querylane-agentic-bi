@@ -5,20 +5,20 @@
   "services": {
     "agentic-bi-backend": {
       "url": "https://agentic-bi-backend-wekihucn7q-as.a.run.app",
-      "ready_revision": "agentic-bi-backend-00011-tzb",
+      "ready_revision": "agentic-bi-backend-00012-pfm",
       "service_account": "agentic-bi-backend@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
-      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend:1792158943",
-      "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:78cf3364679a879daed035f195ce3fc780e9d14287705a744d21e5af5bdda453",
-      "source_commit": "d04246681620b0b4929f292468a7091e77e4fc29",
-      "build_id": "3cbb135e-9f96-493c-a136-73428130f3a3",
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend:1792168485",
+      "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:6a46d95cfb5a88a6c275eedf370cc77b2ed6af19fc929fba93c0431f180e8d4c",
+      "source_commit": "8873e8dd478ed4c76a9728cdb3099e8c476323e8",
+      "build_id": "05980568-8add-43ae-8763-988bea5ad5ba",
       "ready": true,
       "traffic": [
         {
           "percent": 100,
-          "revisionName": "agentic-bi-backend-00011-tzb"
+          "revisionName": "agentic-bi-backend-00012-pfm"
         }
       ],
-      "previous_revision": "agentic-bi-backend-00008-854",
+      "previous_revision": "agentic-bi-backend-00011-tzb",
       "runtime_environment": [
         {
           "name": "ENVIRONMENT",
@@ -103,70 +103,65 @@
           }
         }
       ],
-      "container_concurrency": 8,
-      "timeout_seconds": 3600,
       "resources": {
         "limits": {
           "cpu": "1",
           "memory": "2Gi"
         }
       },
-      "intermediate_release_revisions": [
-        "agentic-bi-backend-00009-g7q",
-        "agentic-bi-backend-00010-8pl"
-      ]
+      "container_concurrency": 8,
+      "timeout_seconds": 3600
     },
     "agentic-bi-frontend": {
       "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app",
-      "ready_revision": "agentic-bi-frontend-00005-d6f",
+      "ready_revision": "agentic-bi-frontend-00006-2p5",
       "service_account": "agentic-bi-frontend@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
-      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend:1792157532",
-      "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:42f8cc5dcf0540428e1e327c057a5eb7f3580d436ab8c83447a1c2a258ec5f63",
-      "source_commit": "1b842471067ee787542fd854e9e47948f41b5ba6",
-      "build_id": "0093b544-583b-46dd-a082-501d5bba2602",
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend:1792168821",
+      "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:31db11ff2ed72d65ea270e66af980a1bb68d6aec8efcb4be5c26f710c6db1d70",
+      "source_commit": "8873e8dd478ed4c76a9728cdb3099e8c476323e8",
+      "build_id": "0028822a-725c-4793-8951-ff84d64facdb",
       "ready": true,
       "traffic": [
         {
           "percent": 100,
-          "revisionName": "agentic-bi-frontend-00005-d6f"
+          "revisionName": "agentic-bi-frontend-00006-2p5"
         }
       ],
-      "previous_revision": "agentic-bi-frontend-00004-7gh",
+      "previous_revision": "agentic-bi-frontend-00005-d6f",
       "runtime_environment": [
         {
           "name": "BACKEND_URL",
           "value": "https://agentic-bi-backend-wekihucn7q-as.a.run.app"
         }
       ],
-      "container_concurrency": 40,
-      "timeout_seconds": 300,
       "resources": {
         "limits": {
           "cpu": "1000m",
           "memory": "512Mi"
         }
-      }
+      },
+      "container_concurrency": 40,
+      "timeout_seconds": 300
     }
   },
   "firestore": "agentic-bi-demo",
   "bigquery_dataset": "agentic_bi_demo",
   "cloud_sql_instance": "agentic-bi-demo-pg",
   "vector_dimensions": 768,
-  "verified_at": "2026-10-16T19:31:52.931255+05:30",
-  "release": "Interactive charts and larger generated retail dataset",
+  "verified_at": "2026-10-16T22:27:22.392771+05:30",
+  "release": "Shared saved-result dashboard library",
   "runtime_configuration_preserved": true,
   "analytical_seed_or_history_reset": false,
   "verification": [
-    "evaluation/charts.json",
-    "evaluation/charts-deployed.json",
-    "evaluation/charts-deployed-browser.json",
-    "evaluation/cloud-runtime.json",
-    "evaluation/charts-deployed-initial.json"
+    "evaluation/dashboards-release-preflight.json",
+    "evaluation/dashboards-deployed-api.json",
+    "evaluation/dashboards-runtime.json",
+    "evaluation/dashboards-deployed-timeseries.json",
+    "evaluation/dashboards-deployed-configuration.json",
+    "evaluation/dashboards-deployed-browser.json",
+    "evaluation/dashboards-reset.json"
   ],
-  "configuration_changes": {
-    "DATA_PROFILE": "timeseries",
-    "SOURCE_ROW_LIMIT": 30000
-  },
+  "configuration_changes": {},
   "data_profile": "timeseries",
   "postgres_schema": "retail_timeseries",
   "data_coverage": {
@@ -180,5 +175,13 @@
     "months": 45,
     "merchandise_revenue": "354425112.20"
   },
-  "rollback_record": "evaluation/deployment-before-charts.json"
+  "rollback_record": "evaluation/deployment-before-dashboards.json",
+  "github": {
+    "repository": "https://github.com/RusiruChathushanaka/querylane-agentic-bi",
+    "branch": "main",
+    "application_commit": "8873e8dd478ed4c76a9728cdb3099e8c476323e8"
+  },
+  "traffic_note": "Both services retained earlier explicit traffic pins after image deployment. Exact verified candidate revisions were explicitly routed to 100%; prior revisions remain available for rollback.",
+  "temporary_runtime_job_removed": true,
+  "new_revision_error_entries": 0
 }

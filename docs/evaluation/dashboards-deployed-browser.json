@@ -1,0 +1,72 @@
+{
+  "verified_at": "2026-10-16T22:27:22.392771+05:30",
+  "frontend": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app",
+  "backend_revision": "agentic-bi-backend-00012-pfm",
+  "frontend_revision": "agentic-bi-frontend-00006-2p5",
+  "checks": {
+    "workspace_dashboard_navigation": true,
+    "pin_saved_chart_control": true,
+    "inline_create_and_pin": true,
+    "full_45_month_saved_result": true,
+    "save_2024_scope_and_reload_12_months": true,
+    "second_anonymous_visitor_same_view": true,
+    "unpin_removes_only_card": true,
+    "recently_removed_restore_preserves_view": true,
+    "sonner_undo_restores_view": true,
+    "png_browser_download_visually_inspected": true,
+    "csv_browser_download_45_rows_and_reconciliation": true,
+    "mobile_390_no_horizontal_overflow": true,
+    "desktop_accessibility_zero_violations": true,
+    "mobile_accessibility_zero_violations": true,
+    "library_accessibility_zero_violations": true,
+    "recently_deleted_recovery_entries_visible": true,
+    "reduced_motion_media_exercised": true,
+    "sql_and_immutable_skill_evidence_available": true
+  },
+  "accessibility": {
+    "desktop": {
+      "counts": {
+        "inapplicable": 48,
+        "incomplete": 1,
+        "passes": 41,
+        "violations": 0
+      },
+      "incomplete_rules": [
+        "color-contrast"
+      ]
+    },
+    "mobile": {
+      "counts": {
+        "inapplicable": 48,
+        "incomplete": 1,
+        "passes": 41,
+        "violations": 0
+      },
+      "incomplete_rules": [
+        "color-contrast"
+      ]
+    },
+    "library": {
+      "counts": {
+        "inapplicable": 51,
+        "incomplete": 0,
+        "passes": 38,
+        "violations": 0
+      },
+      "incomplete_rules": []
+    }
+  },
+  "downloads": {
+    "csv_rows": 45,
+    "revenue_usd": "354425112.20",
+    "png_scope": "January\u2013December 2024; 12 plotted; title, units, legend and coverage included; visually inspected"
+  },
+  "ui_dashboard_id": "8e01e60afacc4b86a00c3c7031176c32",
+  "cleanup": "Browser verification dashboard soft-deleted; recovery references retained. No source data write or history reset.",
+  "limitations": [
+    "SVG contrast remains an automated manual-review item",
+    "Full screen-reader and Safari/Firefox checks unperformed",
+    "Microphone hardware not tested; separate live transport check sent text and received audio/transcripts"
+  ],
+  "passed": true
+}
