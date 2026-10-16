@@ -1,0 +1,18 @@
+{
+  "date": "2026-10-16",
+  "backend_revision": "agentic-bi-backend-00009-g7q",
+  "frontend_revision": "agentic-bi-frontend-00005-d6f",
+  "passed": false,
+  "resolution": "Bound visualization version to integer 2. Use JSON response mode for the complex planning contract with strict local Pydantic validation; retain native structured output for smaller contracts. Add conversion/configuration/invalid-output regressions. Real local Gemini monthly spike passes with 45 complete rows before corrected backend rebuild.",
+  "failures": [
+    "Vertex SDK schema conversion rejected numeric Literal[2]: Literal values must be strings.",
+    "After numeric-Literal conversion was corrected, Vertex rejected the nested AnalysisPlan response schema as INVALID_ARGUMENT; the same VisualizationSpec was accepted independently."
+  ],
+  "containment": "Restored backend agentic-bi-backend-00008-854 and frontend agentic-bi-frontend-00004-7gh to 100% traffic while correcting and checking the planner.",
+  "followup_check": {
+    "revision": "agentic-bi-backend-00010-8pl",
+    "monthly": "45 rows and CSV pass at $354,425,112.20",
+    "failure": "SQLGlot represents logical AND/OR connectors as Func subclasses; ordinary date filters were incorrectly rejected.",
+    "resolution": "Treat only parsed And/Or AST nodes as operators; continue walking and validating every child function. Four positive/nested-unsafe regressions pass; all 198 backend tests pass before the final rebuild."
+  }
+}

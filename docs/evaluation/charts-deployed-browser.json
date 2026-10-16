@@ -1,0 +1,59 @@
+{
+  "date": "2026-10-16",
+  "frontend_revision": "agentic-bi-frontend-00005-d6f",
+  "backend_revision_for_monthly_ui_checks": "agentic-bi-backend-00010-8pl",
+  "conversation_id": "34cf2d7cb8b842c7bd4f69e2bf842ab3",
+  "checks": {
+    "full_45_months": true,
+    "scope_2023_01_to_2026_09": true,
+    "currency_units_and_peak_latest_annotations": true,
+    "pinned_observation": true,
+    "explore_preserves_existing_draft_and_offers_copy": true,
+    "expanded_dialog": true,
+    "png_download_and_visual_inspection": true,
+    "csv_45_rows": true,
+    "csv_revenue_354425112_20": true,
+    "mobile_390_no_overflow": true,
+    "os_reduced_motion": true,
+    "chart_preference_persists_reload": true,
+    "test_preference_restored": true,
+    "both_analysis_models_in_settings": true,
+    "saved_chart_survives_backend_revision": true,
+    "daily_1369_observations_final_revision": true,
+    "daily_zero_sales_february_29_2024_exact_value": true
+  },
+  "downloads": {
+    "png": "Visually inspected actual deployed export: title, USD legend, dates, peak/latest markers and 45 plotted scope",
+    "csv_rows": 45,
+    "csv_revenue": "354425112.20"
+  },
+  "axe": {
+    "desktop": {
+      "counts": {
+        "inapplicable": 41,
+        "incomplete": 1,
+        "passes": 48,
+        "violations": 0
+      },
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    "mobile": {
+      "counts": {
+        "inapplicable": 41,
+        "incomplete": 0,
+        "passes": 48,
+        "violations": 0
+      },
+      "incomplete": []
+    }
+  },
+  "limitations": [
+    "Live transport tests inject text; microphone hardware is not exercised.",
+    "Screen-reader and Safari/Firefox verification not performed."
+  ],
+  "passed": true,
+  "final_backend_revision": "agentic-bi-backend-00011-tzb",
+  "daily_conversation_id": "b13399e915de46d78f950d08345f0893"
+}

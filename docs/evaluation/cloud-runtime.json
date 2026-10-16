@@ -11,12 +11,19 @@
     "admin_secret_metadata_denied": true,
     "postgres_reader_restricted": true,
     "postgres_reader_select_only": true,
+    "timeseries_schema": true,
+    "timeseries_orders": true,
+    "timeseries_customers": true,
+    "runtime_model_gemini-3.8-flash": true,
+    "runtime_model_gemini-3.5-flash-lite": true,
     "transactional_single_winner": true,
     "running_status_snapshot": true,
     "adk_cross_client_persistence": true,
     "stale_adk_revision_denied": true,
     "completed_run_survives_new_client": true
   },
+  "data_profile": "timeseries",
+  "postgres_schema": "retail_timeseries",
   "passed": true,
   "existing_business_data_requested": false,
   "concurrency_outcomes": [
@@ -31,6 +38,7 @@
       "message": "Someone is already exploring this chat. Wait or fork it to continue."
     }
   ],
-  "backend_revision": "agentic-bi-backend-00007-z4d",
-  "source_commit": "54112064258ad3a9ca9523950db2482ce9c586f0"
+  "backend_revision": "agentic-bi-backend-00011-tzb",
+  "source_commit": "d04246681620b0b4929f292468a7091e77e4fc29",
+  "verified_at": "2026-10-16T19:30:11.422154+05:30"
 }

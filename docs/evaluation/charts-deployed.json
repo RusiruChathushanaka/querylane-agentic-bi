@@ -1,0 +1,112 @@
+{
+  "verified_at": "2026-10-16T19:28:37.682349+05:30",
+  "backend": "https://agentic-bi-backend-wekihucn7q-as.a.run.app",
+  "frontend": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app",
+  "reference": "Independent deterministic bundle ledger and local Parquet SQL",
+  "checks": {
+    "live": true,
+    "ready": true,
+    "cloud_sources": true,
+    "timeseries_profile": true,
+    "frontend_health": true,
+    "runtime_url": true,
+    "cors": true,
+    "complete_Release: monthly sales": true,
+    "gemini_Release: monthly sales": true,
+    "evidence_Release: monthly sales": true,
+    "idempotent_Release: monthly sales": true,
+    "replay_Release: monthly sales": true,
+    "monthly_numbers": true,
+    "monthly_chart": true,
+    "measure_units": true,
+    "csv_full_result": true,
+    "complete_Release: 2024 follow-up": true,
+    "gemini_Release: 2024 follow-up": true,
+    "evidence_Release: 2024 follow-up": true,
+    "idempotent_Release: 2024 follow-up": true,
+    "replay_Release: 2024 follow-up": true,
+    "followup_numbers": true,
+    "fork_evidence": true,
+    "complete_Release: daily history": true,
+    "gemini_Release: daily history": true,
+    "evidence_Release: daily history": true,
+    "idempotent_Release: daily history": true,
+    "replay_Release: daily history": true,
+    "daily_full_chart": true,
+    "daily_zero_sales": true,
+    "complete_Release: cross-source segments": true,
+    "gemini_Release: cross-source segments": true,
+    "evidence_Release: cross-source segments": true,
+    "idempotent_Release: cross-source segments": true,
+    "replay_Release: cross-source segments": true,
+    "cross_source_numbers": true,
+    "cross_source_evidence": true,
+    "voice_origin_denied": true,
+    "voice_token_denied": true,
+    "live_analysis_audio_transcript": true
+  },
+  "analyses": [
+    {
+      "title": "Release: monthly sales",
+      "conversation_id": "489c2c1b142a45cda76d99ad3447489e",
+      "artifact_id": "e2baad89590f4d059f6eb77fc976b2d0",
+      "run_id": "38b1314ac56db131755828054815581c",
+      "model": "gemini-3.8-flash",
+      "rows": 45,
+      "sql": [
+        "SELECT month, SUM(revenue) AS revenue FROM `project-e8b1593d-009a-4822-abf`.agentic_bi_demo.sales_orders WHERE status = 'completed' GROUP BY month ORDER BY month"
+      ]
+    },
+    {
+      "title": "Release: 2024 follow-up",
+      "conversation_id": "489c2c1b142a45cda76d99ad3447489e",
+      "artifact_id": "d5f874f3a4de4c129962ab2f85c5075d",
+      "run_id": "e99f4b9044c54bdb1b0095f10eefe0af",
+      "model": "gemini-3.8-flash",
+      "rows": 12,
+      "sql": [
+        "SELECT month, SUM(revenue) AS revenue FROM `project-e8b1593d-009a-4822-abf`.agentic_bi_demo.sales_orders WHERE status = 'completed' AND month LIKE '2024-%' GROUP BY month ORDER BY month"
+      ]
+    },
+    {
+      "title": "Release: daily history",
+      "conversation_id": "b13399e915de46d78f950d08345f0893",
+      "artifact_id": "e65ad8fb3d2648638454f41231d7a653",
+      "run_id": "cee6a354806f2dcc9d6b2609ffa8705a",
+      "model": "gemini-3.5-flash-lite",
+      "rows": 1369,
+      "sql": [
+        "SELECT c.calendar_date AS order_date, COALESCE(SUM(o.revenue), 0) AS revenue FROM `project-e8b1593d-009a-4822-abf`.agentic_bi_demo.calendar AS c LEFT JOIN `project-e8b1593d-009a-4822-abf`.agentic_bi_demo.sales_orders AS o ON c.calendar_date = o.order_date AND o.status = 'completed' GROUP BY order_date ORDER BY c.calendar_date"
+      ]
+    },
+    {
+      "title": "Release: cross-source segments",
+      "conversation_id": "92b4d70a61414b8e9e77a2bcd5c97d45",
+      "artifact_id": "0d5a6fc618de4242a84e59f583bd1b79",
+      "run_id": "06a7657d80187557f28455ed55fcd315",
+      "model": "gemini-3.8-flash",
+      "rows": 2,
+      "sql": [
+        "SELECT customer_id, SUM(revenue) AS revenue FROM `project-e8b1593d-009a-4822-abf`.agentic_bi_demo.sales_orders WHERE status = 'completed' GROUP BY customer_id",
+        "SELECT customer_id, segment FROM retail_timeseries.customer_profiles"
+      ]
+    }
+  ],
+  "voice": {
+    "events": [
+      "artifact",
+      "audio",
+      "ready",
+      "transcript",
+      "turn_complete"
+    ],
+    "errors": [],
+    "raw_audio_recorded": false,
+    "input": "text through live transport; microphone hardware not tested"
+  },
+  "reference_total": "354425112.20",
+  "passed": true,
+  "backend_revision": "agentic-bi-backend-00011-tzb",
+  "frontend_revision": "agentic-bi-frontend-00005-d6f",
+  "source_commit": "d04246681620b0b4929f292468a7091e77e4fc29"
+}

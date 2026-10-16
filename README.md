@@ -2,7 +2,7 @@
 
 Public retail analytics using Next.js + shadcn/ui, FastAPI, Google ADK, Gemini, Firestore, BigQuery, and PostgreSQL. No registration or sign-in. All conversations are public.
 
-Open the [deployed application](https://agentic-bi-frontend-wekihucn7q-as.a.run.app) or the [validated cross-source example](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/?chat=d0f257e2cd6e4453921990b03a087536).
+Open the [deployed application](https://agentic-bi-frontend-wekihucn7q-as.a.run.app), [full daily chart](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/?chat=b13399e915de46d78f950d08345f0893), or [validated cross-source example](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/?chat=92b4d70a61414b8e9e77a2bcd5c97d45).
 
 Personalize the workspace in [Settings](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/settings). Appearance, chart, conversation, and voice preferences are saved per browser.
 
@@ -47,7 +47,7 @@ This preview uses an operator access token only in memory. Restart it when that 
 - [Expanded retail history](docs/retail-timeseries.md): 573,348 orders across 2023–2026, 1.3 million line items, dated refunds, stores, promotions, and a daily calendar. Reproducible Parquet generation, validation, insert-only cloud upload, and date-range extension scripts preserve the original demo tables.
 
 - Shared conversations, follow-ups, immutable result references, forks, and share links.
-- Conversational [voice skill author](docs/voice-skill-author-plan.md): interview, requirements checklist, recoverable draft, review, and explicit publication. Implemented locally; release verification is in [validation](docs/validation.md#conversational-voice-skill-author--2026-10-16).
+- Conversational [voice skill author](docs/voice-skill-author-plan.md): interview, requirements checklist, recoverable draft, review, and explicit publication. See [implementation validation](docs/validation.md#conversational-voice-skill-author--2026-10-16) and the current deployment record for verification scope.
 - Public [skills library](docs/skills.md): versioned Markdown playbooks, import/export, automatic discovery, chat attachments, and recoverable deletion. Open the [deployed skills library](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/skills).
 - ADK planning and interpretation with Gemini; schema embeddings and Firestore vector retrieval.
 - Guarded BigQuery/PostgreSQL connectors, independent query evidence, bounded result pages.
@@ -87,6 +87,8 @@ See [local setup](docs/setup.md), [deployment guide](docs/deployment-guide.md), 
 
 Both services are deployed in `asia-southeast1` in project `project-e8b1593d-009a-4822-abf`, using dedicated service accounts. The named Firestore database, vector index, BigQuery dataset, Cloud SQL database, secrets, build bucket, and image repository are configured. The scoped IAM grants were explicitly approved and applied.
 
-The deployed smoke test verifies hosted numbers, follow-ups, forks, browser CORS, and Gemini Live audio/transcripts. A separate private runtime check verifies denial on existing data resources and real Firestore concurrency. See [the skills/animation release checks](docs/validation.md#skills-and-animation-cloud-release--2026-10-16), `docs/evaluation/skills-release-smoke.json`, and `docs/evaluation/cloud-runtime.json`. The final hosted numerical evaluation passes 31/31 cases, all using vector retrieval. Cloud SQL and Cloud Run are billable resources; instance/query/public usage limits are configured, while billing alerts require the billing administrator.
+The deployed application uses the **larger generated dataset**: 573,348 orders and 25,000 customers from January 2023 through September 2026. Its 45-month and 1,369-day charts reconcile to **$354,425,112.20** in merchandise revenue. Keep `--data-profile timeseries` on future backend releases; generated files are excluded from Git and Cloud Build uploads.
+
+[Hosted chart acceptance](docs/evaluation/charts-deployed.json) passes **40/40 checks**, including both analysis models, numerical references, cross-source results, follow-ups, forks, exports, replay, CORS, and Gemini Live audio/transcripts. The [runtime check](docs/evaluation/cloud-runtime.json) passes **21/21 checks** under the backend service account, including resource boundaries and Firestore concurrency. See [release validation](docs/validation.md#interactive-chart-cloud-release--2026-10-16) and [serving revisions](docs/deployment.json). Earlier 31-case reports describe the original small dataset. Cloud SQL and Cloud Run are billable resources; instance/query/public usage limits are configured, while billing alerts require the billing administrator.
 
 The existing Firestore databases and `enterprise_*` BigQuery datasets are outside this application's scope.
