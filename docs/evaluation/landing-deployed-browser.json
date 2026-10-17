@@ -1,0 +1,64 @@
+{
+  "verified_at": "2026-10-17T06:12:33.489155+00:00",
+  "scope": "Hosted landing page and existing saved content only; no model calls, raw audio, new analyses or source writes",
+  "frontend": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app",
+  "checks": {
+    "homepage_and_static_copy": true,
+    "tab_keyboard_selection": true,
+    "prediction_cutoff_and_dashed_series": true,
+    "manual_scripted_voice_followup": true,
+    "no_audio_or_microphone_request": true,
+    "mobile_no_overflow_390px": true,
+    "mobile_sheet_and_escape": true,
+    "open_querylane_to_app": true,
+    "legacy_chat_and_extra_query_preserved": true,
+    "existing_daily_chart_loaded": true,
+    "canonical_copied_conversation_url": true,
+    "new_exploration_stays_app": true,
+    "report_reader_workspace_link": true,
+    "dashboard_source_conversation_links": true,
+    "footer_hover_white_text": true,
+    "mobile_focus_trap_and_escape_recovery": true
+  },
+  "landing_network": {
+    "requests": 23,
+    "backend_requests_before_app_entry": 0,
+    "guest_session_requests_before_app_entry": 0,
+    "application_prefetch_requests": 0
+  },
+  "accessibility": {
+    "desktop": {
+      "violations": 0,
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    "predictions": {
+      "violations": 0,
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    "voice": {
+      "violations": 0,
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    "sheet": {
+      "violations": 0,
+      "incomplete": [
+        "aria-hidden-focus",
+        "color-contrast"
+      ]
+    }
+  },
+  "limitations": [
+    "Axe retains manual-review items for SVG text/background contrast and modal aria-hidden focus.",
+    "Clipboard writer was intercepted; no OS clipboard-read certification.",
+    "No new live voice/report/model execution, hardware microphone, full screen-reader or physical touch-device checks in this frontend-only release. Historical backend/report verification remains dated evidence."
+  ],
+  "browser_errors": [],
+  "all_passed": true,
+  "new_frontend_revision_error_entries": 0
+}

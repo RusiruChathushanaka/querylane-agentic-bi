@@ -35,7 +35,7 @@ flowchart LR
     API --> Secrets[Secret Manager / workload identity]
 ```
 
-The current source includes a [landing/workspace route split](landing-page.md), locally verified and awaiting its own frontend release; the cloud record above remains the previous deployment. The landing page has no analytics or voice client and makes no backend requests. `/app` owns conversation history and shared links. Existing library/detail routes are unchanged.
+The [landing/workspace route split](landing-page.md) is deployed as frontend `00012-mv5`, verified on 17 October 2026. Backend `00017-cnf` and private worker `00006-sk6` remain unchanged. The landing page has no analytics or voice client and makes no backend requests. `/app` owns conversation history and shared links. Existing library/detail routes are unchanged.
 
 The frontend contains no database credentials or Google model keys. `/api/config` supplies only the public backend URL at runtime. Direct browser requests use explicit CORS origins; the WebSocket validates Origin and its first authentication frame. Guest tokens identify requests and cancellation ownership without providing account privacy.
 

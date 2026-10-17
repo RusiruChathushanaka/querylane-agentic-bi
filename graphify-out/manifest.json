@@ -1128,10 +1128,10 @@
     "semantic_hash": "807599428ed630912bd0e16742c84918"
   },
   "README.md": {
-    "mtime": 1792216273.299841,
-    "seen": 1792216707.2783968,
-    "ast_hash": "ac86ec14bc595b0b1f4ceac0cf578755",
-    "semantic_hash": "ac86ec14bc595b0b1f4ceac0cf578755"
+    "mtime": 1792217606.0676465,
+    "seen": 1792218122.960983,
+    "ast_hash": "d0962645f4ac05e97df64415101ff965",
+    "semantic_hash": "d0962645f4ac05e97df64415101ff965"
   },
   "docs/adr/0001-public-workspace-without-accounts.md": {
     "mtime": 1792073376.6843567,
@@ -1182,10 +1182,10 @@
     "semantic_hash": "0560db0b93ce116bb4ce16edfd1f557a"
   },
   "docs/architecture.md": {
-    "mtime": 1792216273.3011336,
-    "seen": 1792216707.278402,
-    "ast_hash": "20771046918b712aa4393be8e2330a07",
-    "semantic_hash": "20771046918b712aa4393be8e2330a07"
+    "mtime": 1792217606.0681093,
+    "seen": 1792218122.960993,
+    "ast_hash": "791b438965626fce62992fa96037412c",
+    "semantic_hash": "791b438965626fce62992fa96037412c"
   },
   "docs/charts.md": {
     "mtime": 1792155999.748274,
@@ -1212,10 +1212,10 @@
     "semantic_hash": "f3b2c98a3d1ba876c42adc29d98982b8"
   },
   "docs/demo.md": {
-    "mtime": 1792216273.300908,
-    "seen": 1792216707.2784052,
-    "ast_hash": "8f166bb505cac0fb254b4b7ff9a9fb1e",
-    "semantic_hash": "8f166bb505cac0fb254b4b7ff9a9fb1e"
+    "mtime": 1792217606.068254,
+    "seen": 1792218122.9609978,
+    "ast_hash": "816a307ffd1a81eebd66eaab8816b724",
+    "semantic_hash": "816a307ffd1a81eebd66eaab8816b724"
   },
   "docs/deployment-guide.md": {
     "mtime": 1792216273.3013794,
@@ -1266,10 +1266,10 @@
     "semantic_hash": "b88b626cb4857735010c43c28355fa38"
   },
   "docs/validation.md": {
-    "mtime": 1792216532.0307145,
-    "seen": 1792216707.278411,
-    "ast_hash": "53929a3cef22b62760563adf434477b2",
-    "semantic_hash": "53929a3cef22b62760563adf434477b2"
+    "mtime": 1792217606.0685527,
+    "seen": 1792218122.961007,
+    "ast_hash": "b9ad3120a76b845c41711d3c8954f08c",
+    "semantic_hash": "b9ad3120a76b845c41711d3c8954f08c"
   },
   "docs/voice-skill-author-plan.md": {
     "mtime": 1792095850.629606,
@@ -1338,9 +1338,9 @@
     "semantic_hash": "8e689673042bd31647197c0fd438fd4e"
   },
   "docs/landing-page.md": {
-    "mtime": 1792216273.27533,
-    "seen": 1792216707.278406,
-    "ast_hash": "c3a05192aa59089abafd355d6b8c510b",
-    "semantic_hash": "c3a05192aa59089abafd355d6b8c510b"
+    "mtime": 1792217606.067879,
+    "seen": 1792218122.961,
+    "ast_hash": "155fe382bbef3dbe25bb59cd1a25e4e1",
+    "semantic_hash": "155fe382bbef3dbe25bb59cd1a25e4e1"
   }
 }

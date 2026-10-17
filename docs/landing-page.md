@@ -1,6 +1,6 @@
 # Public landing page and workspace entry
 
-The homepage `/` introduces Querylane; `/app` opens the public conversation workspace without sign-in. Reports, Dashboards, Skills and Settings retain their existing paths. This change is locally implemented and verified; it requires a separately authorized frontend release before it is available on Cloud Run. It changes no backend contract, analytical data, IAM or Firestore schema.
+The homepage `/` introduces Querylane; `/app` opens the public conversation workspace without sign-in. Reports, Dashboards, Skills and Settings retain their existing paths. Deployed and verified on 17 October 2026 as frontend `agentic-bi-frontend-00012-mv5`. The [deployment record](deployment.json) and [hosted acceptance](evaluation/landing-deployed-api.json) describe the release; backend `00017-cnf` and report worker `00006-sk6` remain unchanged. It changes no backend contract, analytical data, IAM or Firestore schema.
 
 ## Product story
 
@@ -28,8 +28,8 @@ The preview fixture is versioned with the page; the browser does not fetch its s
 
 The Next.js `redirects()` configuration matches only `/` with a `chat` query key, returns a temporary 307 to the fixed `/app` destination, and forwards query parameters. No query-controlled host or path is accepted. Bare `/` stays the landing page; `/app` never redirects back. Legacy `/?chat=ID&other=value` links continue to work in one hop. [ADR 0008](adr/0008-landing-workspace-routes.md) records the choice.
 
-## Verification and release preparation
+## Verification and release
 
 Run frontend tests, lint, TypeScript and a production build, then the loaded browser flow. Focused regression tests cover encoded paths, redirect configuration, verified preview values and live-client import boundaries. Browser coverage includes tour tabs/arrow keys, manual follow-up, chart tables, FAQ, mobile sheet/Escape, route/query preservation, workspace navigation/share/New exploration and saved preferences. Check narrow reflow, desktop, reduced motion and no-JavaScript content. Inspect network and the production route bundle to ensure no backend clients or app prefetch are pulled into the landing page.
 
-See the dated local acceptance in [validation.md](validation.md). Deployment follows the [primary runbook](deployment-guide.md), including existing `timeseries` profile preservation; homepage publication is a frontend release, not a data operation. Do not overwrite the last actual deployment record with local build results.
+See the dated local and hosted acceptance in [validation.md](validation.md#landing-page-cloud-release--2026-10-17). Deployment follows the [primary runbook](deployment-guide.md), including existing `timeseries` profile preservation; homepage publication is a frontend release, not a data operation. Do not overwrite the last actual deployment record with local build results.

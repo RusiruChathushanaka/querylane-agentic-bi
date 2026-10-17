@@ -2,13 +2,13 @@
 
 Public retail analytics using Next.js + shadcn/ui, FastAPI, Google ADK, Gemini, Firestore, BigQuery, and PostgreSQL. No registration or sign-in. All conversations are public.
 
-Open the [deployed application](https://agentic-bi-frontend-wekihucn7q-as.a.run.app), [full daily chart](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/?chat=b13399e915de46d78f950d08345f0893), or [validated cross-source example](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/?chat=92b4d70a61414b8e9e77a2bcd5c97d45).
+Open the [deployed application](https://agentic-bi-frontend-wekihucn7q-as.a.run.app), [full daily chart](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/app?chat=b13399e915de46d78f950d08345f0893), or [validated cross-source example](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/app?chat=92b4d70a61414b8e9e77a2bcd5c97d45).
 
 Personalize the workspace in [Settings](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/settings). Appearance, chart, conversation, and voice preferences are saved per browser.
 
 Explore the public [Dashboards](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/dashboards), [Reports](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/reports), and [Skills](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/skills) libraries. Dashboards have View/Edit modes, public share links, and PNG, JPEG, PDF, full-data CSV ZIP, and JSON downloads. Reports provide immutable versions and PDF, Word, and data downloads. Questions, saved results, skills, dashboards and reports are public; guest tokens provide request attribution rather than private accounts.
 
-The current source adds a [public landing page](docs/landing-page.md) at `/` and moves the workspace to `/app`. Open Querylane enters directly without authentication; legacy root conversation links remain compatible. This landing-page change is locally verified and awaiting a separately requested release; the cloud records below describe the previous release.
+The current source adds a [public landing page](docs/landing-page.md) at `/` and moves the workspace to `/app`. Open Querylane enters directly without authentication; legacy root conversation links remain compatible. The landing page is deployed on Cloud Run; [release evidence](docs/evaluation/landing-deployed-api.json) verifies routing, saved results and the unchanged larger data profile.
 
 ## Repository map
 
@@ -111,7 +111,7 @@ For Firestore transaction and durability coverage, run the backend suite with `F
 
 ## Cloud status
 
-The last verified release is dated **17 October 2026**. The public frontend and backend, plus a separate **private report worker**, are deployed in `asia-southeast1` in project `project-e8b1593d-009a-4822-abf`, using dedicated service accounts. Reports dispatch through Cloud Tasks; a scheduled reconciler recovers pending work and report files stay in a private bucket. The named Firestore database, vector index, BigQuery dataset, Cloud SQL database, secrets, build bucket, and image repository are configured. Search research remains disabled in the recorded production configuration.
+The last verified release is dated **17 October 2026**. The latest [landing-page release](docs/validation.md#landing-page-cloud-release--2026-10-17) serves frontend **00012-mv5** with `/` as the introduction and `/app` as the workspace. It passed 33 frontend tests, lint/types, a clean local and Cloud Build production build, 28 hosted API checks and four hosted accessibility scans with zero reported violations. Backend **00017-cnf** and private worker **00006-sk6** remain unchanged; production dependency audit reports zero vulnerabilities. The public frontend and backend, plus a separate **private report worker**, are deployed in `asia-southeast1` in project `project-e8b1593d-009a-4822-abf`, using dedicated service accounts. Reports dispatch through Cloud Tasks; a scheduled reconciler recovers pending work and report files stay in a private bucket. The named Firestore database, vector index, BigQuery dataset, Cloud SQL database, secrets, build bucket, and image repository are configured. Search research remains disabled in the recorded production configuration.
 
 The deployed application uses the **larger generated dataset**: 573,348 orders and 25,000 customers from January 2023 through September 2026. Its 45-month and 1,369-day charts reconcile to **$354,425,112.20** in merchandise revenue. Keep `--data-profile timeseries` on future backend releases; generated files are excluded from Git and Cloud Build uploads.
 

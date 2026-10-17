@@ -1,0 +1,296 @@
+{
+  "captured_for": "Landing page frontend-only release",
+  "services": {
+    "agentic-bi-frontend": {
+      "ready_revision": "agentic-bi-frontend-00011-vr4",
+      "traffic": [
+        {
+          "percent": 100,
+          "revisionName": "agentic-bi-frontend-00011-vr4"
+        }
+      ],
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend:1792188442",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app",
+      "runtime_environment": [
+        {
+          "name": "BACKEND_URL",
+          "value": "https://agentic-bi-backend-wekihucn7q-as.a.run.app"
+        }
+      ],
+      "identity": "agentic-bi-frontend@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
+      "resources": {
+        "limits": {
+          "cpu": "1000m",
+          "memory": "512Mi"
+        }
+      },
+      "timeout_seconds": 300,
+      "container_concurrency": 40
+    },
+    "agentic-bi-backend": {
+      "ready_revision": "agentic-bi-backend-00017-cnf",
+      "traffic": [
+        {
+          "percent": 100,
+          "revisionName": "agentic-bi-backend-00017-cnf"
+        }
+      ],
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend:1792188441",
+      "url": "https://agentic-bi-backend-wekihucn7q-as.a.run.app",
+      "runtime_environment": [
+        {
+          "name": "ENVIRONMENT",
+          "value": "production"
+        },
+        {
+          "name": "STORAGE_BACKEND",
+          "value": "firestore"
+        },
+        {
+          "name": "DATA_BACKEND",
+          "value": "cloud"
+        },
+        {
+          "name": "DATA_PROFILE",
+          "value": "timeseries"
+        },
+        {
+          "name": "SOURCE_ROW_LIMIT",
+          "value": "30000"
+        },
+        {
+          "name": "AI_BACKEND",
+          "value": "gemini"
+        },
+        {
+          "name": "GOOGLE_CLOUD_PROJECT",
+          "value": "project-e8b1593d-009a-4822-abf"
+        },
+        {
+          "name": "FIRESTORE_DATABASE",
+          "value": "agentic-bi-demo"
+        },
+        {
+          "name": "BIGQUERY_DATASET",
+          "value": "agentic_bi_demo"
+        },
+        {
+          "name": "BIGQUERY_LOCATION",
+          "value": "asia-southeast1"
+        },
+        {
+          "name": "CLOUD_SQL_INSTANCE",
+          "value": "project-e8b1593d-009a-4822-abf:asia-southeast1:agentic-bi-demo-pg"
+        },
+        {
+          "name": "ALLOWED_ORIGINS",
+          "value": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app"
+        },
+        {
+          "name": "TEXT_MODEL",
+          "value": "gemini-3.8-flash"
+        },
+        {
+          "name": "TEXT_MODEL_LOCATION",
+          "value": "global"
+        },
+        {
+          "name": "LIVE_MODEL",
+          "value": "gemini-live-2.5-flash-native-audio"
+        },
+        {
+          "name": "LIVE_MODEL_LOCATION",
+          "value": "us-central1"
+        },
+        {
+          "name": "REPORTS_ENABLED",
+          "value": "true"
+        },
+        {
+          "name": "REPORT_DISPATCH",
+          "value": "cloud_tasks"
+        },
+        {
+          "name": "REPORT_WORKER_URL",
+          "value": "https://agentic-bi-report-worker-wekihucn7q-as.a.run.app"
+        },
+        {
+          "name": "REPORT_BUCKET",
+          "value": "project-e8b1593d-009a-4822-abf-agentic-bi-reports"
+        },
+        {
+          "name": "REPORT_DISPATCH_SERVICE_ACCOUNT",
+          "value": "agentic-bi-report-dispatch@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com"
+        },
+        {
+          "name": "REPORT_REGION",
+          "value": "asia-southeast1"
+        },
+        {
+          "name": "REPORT_QUEUE",
+          "value": "agentic-bi-reports"
+        },
+        {
+          "name": "GUEST_SIGNING_KEY",
+          "valueFrom": {
+            "secretKeyRef": {
+              "key": "latest",
+              "name": "agentic-bi-guest-signing"
+            }
+          }
+        },
+        {
+          "name": "POSTGRES_PASSWORD",
+          "valueFrom": {
+            "secretKeyRef": {
+              "key": "latest",
+              "name": "agentic-bi-postgres-reader"
+            }
+          }
+        }
+      ],
+      "identity": "agentic-bi-backend@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
+      "resources": {
+        "limits": {
+          "cpu": "1",
+          "memory": "2Gi"
+        }
+      },
+      "timeout_seconds": 3600,
+      "container_concurrency": 8
+    },
+    "agentic-bi-report-worker": {
+      "ready_revision": "agentic-bi-report-worker-00006-sk6",
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100,
+          "revisionName": "agentic-bi-report-worker-00006-sk6"
+        }
+      ],
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:bcb725a3cf6f960b7d2f433c61b9f5f4aab4ee0ec564cad2364ecdb5b20b2c2a",
+      "url": "https://agentic-bi-report-worker-wekihucn7q-as.a.run.app",
+      "runtime_environment": [
+        {
+          "name": "ENVIRONMENT",
+          "value": "production"
+        },
+        {
+          "name": "STORAGE_BACKEND",
+          "value": "firestore"
+        },
+        {
+          "name": "DATA_BACKEND",
+          "value": "cloud"
+        },
+        {
+          "name": "AI_BACKEND",
+          "value": "gemini"
+        },
+        {
+          "name": "DATA_PROFILE",
+          "value": "timeseries"
+        },
+        {
+          "name": "SOURCE_ROW_LIMIT",
+          "value": "30000"
+        },
+        {
+          "name": "GOOGLE_CLOUD_PROJECT",
+          "value": "project-e8b1593d-009a-4822-abf"
+        },
+        {
+          "name": "FIRESTORE_DATABASE",
+          "value": "agentic-bi-demo"
+        },
+        {
+          "name": "BIGQUERY_DATASET",
+          "value": "agentic_bi_demo"
+        },
+        {
+          "name": "BIGQUERY_LOCATION",
+          "value": "asia-southeast1"
+        },
+        {
+          "name": "CLOUD_SQL_INSTANCE",
+          "value": "project-e8b1593d-009a-4822-abf:asia-southeast1:agentic-bi-demo-pg"
+        },
+        {
+          "name": "ALLOWED_ORIGINS",
+          "value": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app"
+        },
+        {
+          "name": "TEXT_MODEL",
+          "value": "gemini-3.8-flash"
+        },
+        {
+          "name": "TEXT_MODEL_LOCATION",
+          "value": "global"
+        },
+        {
+          "name": "APP_MODULE",
+          "value": "app.report_worker:app"
+        },
+        {
+          "name": "REPORTS_ENABLED",
+          "value": "true"
+        },
+        {
+          "name": "REPORT_DISPATCH",
+          "value": "cloud_tasks"
+        },
+        {
+          "name": "REPORT_REGION",
+          "value": "asia-southeast1"
+        },
+        {
+          "name": "REPORT_QUEUE",
+          "value": "agentic-bi-reports"
+        },
+        {
+          "name": "REPORT_BUCKET",
+          "value": "project-e8b1593d-009a-4822-abf-agentic-bi-reports"
+        },
+        {
+          "name": "REPORT_DISPATCH_SERVICE_ACCOUNT",
+          "value": "agentic-bi-report-dispatch@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com"
+        },
+        {
+          "name": "REPORT_RESEARCH_ENABLED",
+          "value": "false"
+        },
+        {
+          "name": "GUEST_SIGNING_KEY",
+          "valueFrom": {
+            "secretKeyRef": {
+              "key": "latest",
+              "name": "agentic-bi-guest-signing"
+            }
+          }
+        },
+        {
+          "name": "POSTGRES_PASSWORD",
+          "valueFrom": {
+            "secretKeyRef": {
+              "key": "latest",
+              "name": "agentic-bi-postgres-reader"
+            }
+          }
+        },
+        {
+          "name": "REPORT_WORKER_URL",
+          "value": "https://agentic-bi-report-worker-wekihucn7q-as.a.run.app"
+        }
+      ],
+      "identity": "agentic-bi-report-worker@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
+      "resources": {
+        "limits": {
+          "cpu": "2",
+          "memory": "2Gi"
+        }
+      },
+      "timeout_seconds": 660,
+      "container_concurrency": 1
+    }
+  }
+}

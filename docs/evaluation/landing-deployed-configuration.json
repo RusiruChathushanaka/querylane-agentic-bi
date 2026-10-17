@@ -1,0 +1,51 @@
+{
+  "verified_at": "2026-10-17T06:11:50.472285+00:00",
+  "scope": "Landing page frontend-only release",
+  "checks": {
+    "frontend_identity_unchanged": true,
+    "frontend_environment_unchanged": true,
+    "frontend_resources_unchanged": true,
+    "frontend_candidate_serving": true,
+    "agentic-bi-backend_configuration_unchanged": true,
+    "agentic-bi-backend_revision_unchanged": true,
+    "agentic-bi-backend_timeseries_preserved": true,
+    "agentic-bi-report-worker_configuration_unchanged": true,
+    "agentic-bi-report-worker_revision_unchanged": true,
+    "agentic-bi-report-worker_timeseries_preserved": true,
+    "sales_orders_large_dataset_rows": true,
+    "sales_order_items_large_dataset_rows": true,
+    "calendar_large_dataset_rows": true,
+    "larger_history_ready": true,
+    "sales_orders_unchanged_after_release": true,
+    "sales_order_items_unchanged_after_release": true,
+    "calendar_unchanged_after_release": true
+  },
+  "data_profile": "timeseries",
+  "source_mutations": false,
+  "model_calls": false,
+  "source_tables": {
+    "sales_orders": {
+      "rows": 573348,
+      "last_modified_time": "1792151258786",
+      "checked_after_release": true
+    },
+    "sales_order_items": {
+      "rows": 1317941,
+      "last_modified_time": "1792151258786",
+      "checked_after_release": true
+    },
+    "calendar": {
+      "rows": 1369,
+      "last_modified_time": "1792151258786",
+      "checked_after_release": true
+    }
+  },
+  "data_state": {
+    "id": "current",
+    "status": "ready",
+    "anchor_start": "2023-01-01",
+    "end_date": "2026-09-30",
+    "batch_hash": "01163d6edfbe5c7ca2f4a6090fc6254aecfa2422a36bc2f45b55a0a324e71578"
+  },
+  "all_passed": true
+}

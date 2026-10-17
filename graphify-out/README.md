@@ -3,12 +3,12 @@
 Generated using the official project-local [Graphify skill](../.agents/skills/graphify/SKILL.md) and installed Graphify 0.9.51 package on 17 October 2026.
 
 - [graph.html](graph.html): interactive code/documentation graph. Open locally; search for `LandingPage`, `workspacePath`, `ReportEngine`, `Dashboards` or `Skills` and click a result to inspect source/neighbor details. The viewer loads its pinned vis-network library from a CDN.
-- [graph.json](graph.json): native Graphify graph, with **1,777 nodes**, **4,671 edges** and **126 named communities**.
+- [graph.json](graph.json): native Graphify graph, with **1,786 nodes**, **4,681 edges** and **121 named communities**.
 - [GRAPH_REPORT.md](GRAPH_REPORT.md): central concepts, communities/cohesion, cross-community links, questions and integrity notes.
 - [VALIDATION.json](VALIDATION.json): source hashes, generation scope, diagnostics, verification and limitations.
 - [cost.json](cost.json): separate model-API token accounting; host-session semantic usage is explicitly unknown.
 
-The corpus contains **178 code files and 46 documents**. Code extraction is local AST analysis; the existing cache retained 36 document extractions and one host-session agent refreshed 10 changed documents. No separate model API, cloud database, provisioning or deployment was invoked. Generated/secret inputs are excluded by [`.graphifyignore`](../.graphifyignore).
+The corpus contains **178 code files and 46 documents**. Code extraction is local AST analysis; the existing cache retained 41 document extractions and one host-session agent refreshed 5 changed documents. No separate model API, cloud database, provisioning or deployment was invoked. Generated/secret inputs are excluded by [`.graphifyignore`](../.graphifyignore).
 
 ## Use
 

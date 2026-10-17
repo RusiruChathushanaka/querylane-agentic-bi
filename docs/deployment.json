@@ -6,8 +6,8 @@
   "bigquery_dataset": "agentic_bi_demo",
   "cloud_sql_instance": "agentic-bi-demo-pg",
   "vector_dimensions": 768,
-  "verified_at": "2026-10-16T22:23:19.043155+00:00",
-  "release": "Dashboard View/Edit, public sharing and saved-result downloads",
+  "verified_at": "2026-10-17T06:11:50.472285+00:00",
+  "release": "Public landing page, guided product previews and /app workspace routing",
   "runtime_configuration_preserved": true,
   "analytical_seed_or_history_reset": false,
   "data_profile": "timeseries",
@@ -23,11 +23,11 @@
     "months": 45,
     "merchandise_revenue": "354425112.20"
   },
-  "rollback_record": "evaluation/deployment-before-dashboard-actions.json",
-  "traffic_note": "Both services retained earlier explicit traffic pins after image deployment. Exact verified candidate revisions were explicitly routed to 100%; prior revisions remain available for rollback.",
+  "rollback_record": "evaluation/deployment-before-landing.json",
+  "traffic_note": "Existing explicit traffic pin was retained after deployment; verified candidate agentic-bi-frontend-00012-mv5 was explicitly routed to 100%. Prior frontend 00011-vr4 is retained for rollback.",
   "temporary_runtime_job_removed": true,
-  "source_base_commit": "ea9e5c3706a87ba5fa53ce58940c608e14546b43",
-  "deployed_uncommitted_application_changes": true,
+  "source_base_commit": "97ae2b7eff444a78a28508e6a3fd393e0757622b",
+  "deployed_uncommitted_application_changes": false,
   "services": {
     "agentic-bi-backend": {
       "url": "https://agentic-bi-backend-wekihucn7q-as.a.run.app",
@@ -176,28 +176,28 @@
     },
     "agentic-bi-frontend": {
       "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app",
-      "ready_revision": "agentic-bi-frontend-00011-vr4",
+      "ready_revision": "agentic-bi-frontend-00012-mv5",
       "service_account": "agentic-bi-frontend@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
-      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend:1792188442",
-      "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:598703873c046a3d009137632bb83b638c275b16c5040d21d2c8cd43771f3291",
-      "build_id": "3a0143f7-9586-4256-a5fc-0f04c5ee12bb",
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend:1792217158",
+      "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:790c3c07a3c8db4f8992f3e7ecde8f52e6b99cbb7ddb8b0aa3974c92b1abd5f7",
+      "build_id": "b1410727-4cbb-4034-84d3-9508d8f55904",
       "build_source": {
         "storageSource": {
           "bucket": "project-e8b1593d-009a-4822-abf-agentic-bi-build",
-          "generation": "1792188445145733",
-          "object": "source/1792188442.304874-c326394372714e329ee80d98caddd310.tgz"
+          "generation": "1792217162414616",
+          "object": "source/1792217158.608568-bf26e4efa3f045bd942327de68fe6e01.tgz"
         }
       },
-      "source_base_commit": "ea9e5c3706a87ba5fa53ce58940c608e14546b43",
+      "source_base_commit": "97ae2b7eff444a78a28508e6a3fd393e0757622b",
       "source_is_working_tree": true,
       "ready": true,
       "traffic": [
         {
           "percent": 100,
-          "revisionName": "agentic-bi-frontend-00011-vr4"
+          "revisionName": "agentic-bi-frontend-00012-mv5"
         }
       ],
-      "previous_revision": "agentic-bi-frontend-00010-z4h",
+      "previous_revision": "agentic-bi-frontend-00011-vr4",
       "runtime_environment": [
         {
           "name": "BACKEND_URL",
@@ -211,7 +211,8 @@
         }
       },
       "container_concurrency": 40,
-      "timeout_seconds": 300
+      "timeout_seconds": 300,
+      "source_commit": "97ae2b7eff444a78a28508e6a3fd393e0757622b"
     },
     "agentic-bi-report-worker": {
       "url": "https://agentic-bi-report-worker-wekihucn7q-as.a.run.app",
@@ -361,9 +362,10 @@
     }
   },
   "configuration_changes": {
-    "application": "Dashboard presentation actions and bounded saved-result downloads",
+    "application": "Landing page at /, workspace at /app, query-aware 307 legacy compatibility",
     "infrastructure_changes": false,
     "runtime_configuration_preserved": true,
+    "backend_unchanged": "agentic-bi-backend-00017-cnf",
     "report_worker_unchanged": "agentic-bi-report-worker-00006-sk6",
     "reports_enabled": true,
     "report_dispatch": "cloud_tasks",
@@ -374,20 +376,20 @@
   "github": {
     "repository": "https://github.com/RusiruChathushanaka/querylane-agentic-bi",
     "branch": "main",
-    "publication_performed": false,
-    "last_recorded_published_application_commit": "8873e8dd478ed4c76a9728cdb3099e8c476323e8",
-    "source_base_commit": "ea9e5c3706a87ba5fa53ce58940c608e14546b43"
+    "publication_performed": true,
+    "last_recorded_published_application_commit": "97ae2b7eff444a78a28508e6a3fd393e0757622b",
+    "source_base_commit": "97ae2b7eff444a78a28508e6a3fd393e0757622b",
+    "publication_note": "Application commit pushed to origin/main; this release evidence is committed and pushed separately."
   },
   "new_revision_error_entries": 0,
   "verification": [
-    "evaluation/dashboard-actions.json",
-    "evaluation/dashboard-actions-release-source.json",
-    "evaluation/dashboard-actions-backend-runtime.json",
-    "evaluation/dashboard-actions-deployed-api.json",
-    "evaluation/dashboard-actions-deployed-browser.json",
-    "evaluation/dashboard-actions-deployed-configuration.json"
+    "evaluation/landing-local.json",
+    "evaluation/landing-release-source.json",
+    "evaluation/landing-deployed-api.json",
+    "evaluation/landing-deployed-configuration.json",
+    "evaluation/landing-deployed-browser.json"
   ],
-  "source_verification_manifest": "evaluation/dashboard-actions-release-source.json",
+  "source_verification_manifest": "evaluation/landing-release-source.json",
   "latest_verified_sample": {
     "report_id": "b900baa4adb461dec439d869b7c8e20a",
     "version": 4,
@@ -401,5 +403,6 @@
     "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/dashboards/2256ab45585e458184dd3efd39a800b6",
     "csv_months": 45,
     "csv_merchandise_revenue": "354425112.20"
-  }
+  },
+  "source_commit": "97ae2b7eff444a78a28508e6a3fd393e0757622b"
 }

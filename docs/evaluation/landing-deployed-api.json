@@ -1,0 +1,131 @@
+{
+  "verified_at": "2026-10-17T06:09:41.217452+00:00",
+  "frontend": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app",
+  "backend": "https://agentic-bi-backend-wekihucn7q-as.a.run.app",
+  "scope": "Frontend-only release; GET/OPTIONS checks against public services and immutable saved results; no new analyses, skills, dashboards or reports.",
+  "checks": [
+    {
+      "name": "landing_headline",
+      "passed": true
+    },
+    {
+      "name": "landing_metadata",
+      "passed": true
+    },
+    {
+      "name": "public_synthetic_labels",
+      "passed": true
+    },
+    {
+      "name": "static_advanced_preview",
+      "passed": true
+    },
+    {
+      "name": "workspace_route",
+      "passed": true
+    },
+    {
+      "name": "legacy_redirect",
+      "passed": true,
+      "status": 307,
+      "location": "/app?chat=b13399e915de46d78f950d08345f0893&landing_check=preserve"
+    },
+    {
+      "name": "route_/reports",
+      "passed": true
+    },
+    {
+      "name": "route_/dashboards",
+      "passed": true
+    },
+    {
+      "name": "route_/skills",
+      "passed": true
+    },
+    {
+      "name": "route_/settings",
+      "passed": true
+    },
+    {
+      "name": "route_/reports/b900baa4adb461dec439d869b7c8e20a",
+      "passed": true
+    },
+    {
+      "name": "route_/dashboards/2256ab45585e458184dd3efd39a800b6",
+      "passed": true
+    },
+    {
+      "name": "packaged_social_png",
+      "passed": true,
+      "bytes": 46215,
+      "sha256": "d72a642095afca5a91b2c9247acd8789b7e9624419754fce128676a64a8ebbeb"
+    },
+    {
+      "name": "runtime_backend_url",
+      "passed": true
+    },
+    {
+      "name": "frontend_backend_health",
+      "passed": true
+    },
+    {
+      "name": "backend_live",
+      "passed": true
+    },
+    {
+      "name": "backend_ready",
+      "passed": true
+    },
+    {
+      "name": "timeseries_cloud_sources",
+      "passed": true
+    },
+    {
+      "name": "bigquery_schema",
+      "passed": true
+    },
+    {
+      "name": "postgres_schema",
+      "passed": true
+    },
+    {
+      "name": "cors_origin_preserved",
+      "passed": true
+    },
+    {
+      "name": "monthly_timeseries_saved_result",
+      "passed": true
+    },
+    {
+      "name": "monthly_chart_full_saved_coverage",
+      "passed": true,
+      "rows": 45
+    },
+    {
+      "name": "monthly_csv_rows_and_revenue",
+      "passed": true,
+      "rows": 45,
+      "merchandise_revenue": "354425112.20"
+    },
+    {
+      "name": "daily_timeseries_saved_result",
+      "passed": true
+    },
+    {
+      "name": "daily_chart_full_saved_coverage",
+      "passed": true,
+      "rows": 1369
+    },
+    {
+      "name": "daily_csv_rows_and_revenue",
+      "passed": true,
+      "rows": 1369,
+      "merchandise_revenue": "354425112.20"
+    },
+    {
+      "name": "saved_zero_sales_date",
+      "passed": true
+    }
+  ],
+  "all_passed": true
+}
