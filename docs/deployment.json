@@ -17,8 +17,8 @@
     "merchandise_revenue": "354425112.20"
   },
   "date": "2026-10-17",
-  "verified_at": "2026-10-17T16:40:06.545233+00:00",
-  "release": "Agent-selected TimesFM 3.0 Preview forecasts and explicit conditional scenarios",
+  "verified_at": "2026-10-17T17:49:17.836198+00:00",
+  "release": "TimesFM forecast and conditional-scenario landing previews (frontend only)",
   "services": {
     "agentic-bi-backend": {
       "url": "https://agentic-bi-backend-wekihucn7q-as.a.run.app",
@@ -328,28 +328,28 @@
     },
     "agentic-bi-frontend": {
       "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app",
-      "ready_revision": "agentic-bi-frontend-00015-6ff",
+      "ready_revision": "agentic-bi-frontend-00016-tw2",
       "service_account": "agentic-bi-frontend@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
-      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:77fd8661893eac2e34e83f1274313068d48e6eff6c1dbbb685be14aac4e56e4c",
-      "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:77fd8661893eac2e34e83f1274313068d48e6eff6c1dbbb685be14aac4e56e4c",
-      "build_id": "b96c840d-289d-4014-b367-210698fe3a8c",
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:0b6f98bbd6b967fa6d8f99b73fecec7b870c088779fc9f764d4457954a1d3db5",
+      "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:0b6f98bbd6b967fa6d8f99b73fecec7b870c088779fc9f764d4457954a1d3db5",
+      "build_id": "45478798-8192-45c2-bedd-f44973e1366c",
       "build_source": {
         "storageSource": {
           "bucket": "project-e8b1593d-009a-4822-abf-agentic-bi-build",
-          "generation": "1792254184195587",
-          "object": "source/1792254182.606962-f4731b5a0aa44a4692e8a1bc58a540de.tgz"
+          "generation": "1792258942820012",
+          "object": "source/1792258941.327523-f4b3a28fb2fb4da7b63d4e243f30a8d8.tgz"
         }
       },
-      "source_base_commit": "3e9c685d259b5acb3afb21d778d9016fa4cdd465",
+      "source_base_commit": "ca58fedf4623c02048e4da9f8f829b7bd01f7af3",
       "source_is_working_tree": true,
       "ready": true,
       "traffic": [
         {
           "percent": 100,
-          "revisionName": "agentic-bi-frontend-00015-6ff"
+          "revisionName": "agentic-bi-frontend-00016-tw2"
         }
       ],
-      "previous_revision": "agentic-bi-frontend-00014-8p8",
+      "previous_revision": "agentic-bi-frontend-00015-6ff",
       "runtime_environment": [
         {
           "name": "BACKEND_URL",
@@ -371,10 +371,10 @@
   "runtime_configuration_preserved_except_timesfm_gates": true,
   "analytical_seed_or_history_reset": false,
   "configuration_changes": {
-    "REPORT_TIMESFM_ENABLED": "true on API and worker",
-    "REPORT_TIMESFM_VERIFIED": "true on API and worker",
+    "frontend_image_only": true,
+    "backend_worker": "unchanged",
+    "timesfm_gates": "enabled/verified on API and worker, unchanged",
     "iam_changes": false,
-    "other_runtime_settings": "preserved",
     "source_row_limit": 30000,
     "research_enabled": false
   },
@@ -391,13 +391,16 @@
     "evaluation/timesfm-sources-after.json",
     "evaluation/timesfm-sources-before.json",
     "evaluation/timesfm-voice-regression.json",
-    "evaluation/timesfm-worker-runtime.json"
+    "evaluation/timesfm-worker-runtime.json",
+    "evaluation/landing-timesfm-local.json",
+    "evaluation/landing-timesfm-deployed.json",
+    "evaluation/landing-timesfm-deployed.md"
   ],
   "source_verification_manifest": "evaluation/timesfm-release-source.json",
   "github": {
     "repository": "https://github.com/RusiruChathushanaka/querylane-agentic-bi",
     "branch": "main",
-    "source_base_commit": "3e9c685d259b5acb3afb21d778d9016fa4cdd465",
+    "source_base_commit": "ca58fedf4623c02048e4da9f8f829b7bd01f7af3",
     "publication_note": "Release source and evidence are committed together after the deployed checks; images were built from the matching runtime working tree."
   },
   "latest_verified_sample": {
@@ -413,5 +416,7 @@
     "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/dashboards/7d213e6c777244fb99c9bc363ff42f22"
   },
   "temporary_runtime_jobs": "TimesFM worker probe and backend runtime check removed after completion",
-  "unexpected_application_error_entries": 0
+  "unexpected_application_error_entries": 0,
+  "runtime_configuration_preserved": true,
+  "frontend_source_verification_manifest": "evaluation/landing-timesfm-deployed.json"
 }

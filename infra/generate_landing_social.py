@@ -24,16 +24,16 @@ d.text((55, 158), "From business questions", font=f(43, True), fill="#18283b")
 d.text((55, 215), "to evidence-backed", font=f(43, True), fill="#315dee")
 d.text((55, 272), "decisions.", font=f(43, True), fill="#18283b")
 d.text(
-    (58, 365), "Advanced reports. Validated predictions.", font=f(21), fill="#596a82"
+    (58, 365), "Advanced reports. TimesFM forecasts.", font=f(21), fill="#596a82"
 )
-d.text((58, 400), "Conversational voice BI.", font=f(21), fill="#596a82")
+d.text((58, 400), "Conditional scenarios. Voice BI.", font=f(21), fill="#596a82")
 d.rounded_rectangle((55, 488, 325, 548), 10, fill="#315dee")
 d.text((78, 502), "Open Querylane →", font=f(23, True), fill="white")
 d.text(
     (58, 578), "No sign-up · Public synthetic retail demo", font=f(16), fill="#596a82"
 )
 d.rounded_rectangle((730, 110, 1150, 527), 16, fill="white", outline="#dbe2ed", width=2)
-d.text((755, 138), "SAVED FORECAST EXAMPLE", font=f(13, True), fill="#176f69")
+d.text((755, 138), "TIMESFM 3.0 · PREVIEW", font=f(13, True), fill="#176f69")
 d.text((755, 181), "Monthly revenue · USD", font=f(20, True), fill="#18283b")
 points = json.loads((root / "Frontend/src/lib/landing-preview-data.json").read_text())[
     "points"

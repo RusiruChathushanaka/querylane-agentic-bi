@@ -44,7 +44,7 @@ export function RevenueIllustration({
         role="img"
         aria-label={
           forecast
-            ? "Observed monthly revenue, January to September 2026; dashed ETS point forecast, October to December 2026. No validated prediction intervals."
+            ? "Observed monthly revenue, January to September 2026; dashed TimesFM 3.0 Preview point forecast, October to December 2026. No validated prediction intervals."
             : "Observed monthly revenue, January to September 2026, ranging from 6.36 to 9.58 million US dollars."
         }
       >
@@ -137,6 +137,115 @@ export function RevenueIllustration({
   );
 }
 
+export function ScenarioIllustration() {
+  const points = data.scenario.points;
+  const x = (i: number) => 44 + i * (424 / (points.length - 1));
+  const y = (value: number) => 190 - (value / 500_000) * 154;
+  const total = (field: "baseline" | "alternative") =>
+    points.reduce((sum, point) => sum + point[field], 0);
+  return (
+    <figure className="landing-chart">
+      <div className="landing-chart-heading">
+        <span>Conditional daily revenue · Oct 1–14, 2026</span>
+        <span>USD</span>
+      </div>
+      <svg
+        viewBox="0 0 500 230"
+        role="img"
+        aria-label="Two saved conditional TimesFM revenue predictions for October 1 to 14, 2026. Dashed baseline assumes no promotion days; dotted alternative assumes promotion every day. Neither series is observed data or a causal effect. No validated prediction intervals."
+      >
+        {[0, 250, 500].map((v) => (
+          <g key={v} className="landing-chart-grid">
+            <line x1="44" x2="474" y1={y(v * 1000)} y2={y(v * 1000)} />
+            <text x="2" y={y(v * 1000) + 4}>
+              ${v}k
+            </text>
+          </g>
+        ))}
+        <polyline
+          className="landing-scenario-baseline"
+          points={points.map((p, i) => `${x(i)},${y(p.baseline)}`).join(" ")}
+        />
+        <polyline
+          className="landing-scenario-alternative"
+          points={points.map((p, i) => `${x(i)},${y(p.alternative)}`).join(" ")}
+        />
+        <rect
+          className="landing-scenario-endpoint"
+          x={x(13) - 4}
+          y={y(points[13].baseline) - 4}
+          width="8"
+          height="8"
+        />
+        <circle
+          className="landing-scenario-alternative-endpoint"
+          cx={x(13)}
+          cy={y(points[13].alternative)}
+          r="4"
+        />
+        {[0, 6, 13].map((i) => (
+          <text
+            className="landing-chart-tick"
+            key={i}
+            x={x(i)}
+            y="216"
+            textAnchor="middle"
+          >
+            Oct {i + 1}
+          </text>
+        ))}
+      </svg>
+      <figcaption>
+        <span className="landing-legend-item landing-legend-baseline">
+          <i />
+          Baseline · no promotion days
+        </span>
+        <span className="landing-legend-item landing-legend-alternative">
+          <i />
+          Alternative · promotion every day
+        </span>
+      </figcaption>
+      <dl className="landing-scenario-totals">
+        <div>
+          <dt>Baseline predicted total</dt>
+          <dd>{money(total("baseline"))}</dd>
+        </div>
+        <div>
+          <dt>Alternative predicted total</dt>
+          <dd>{money(total("alternative"))}</dd>
+        </div>
+      </dl>
+      <details className="landing-data-alternative">
+        <summary>View scenario data</summary>
+        <div className="landing-table-scroll">
+          <table>
+            <caption>
+              Saved conditional predictions · USD, rounded to dollars · Oct
+              1–14, 2026
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Baseline</th>
+                <th scope="col">Alternative</th>
+              </tr>
+            </thead>
+            <tbody>
+              {points.map((p) => (
+                <tr key={p.date}>
+                  <th scope="row">{p.date}</th>
+                  <td>{money(p.baseline)}</td>
+                  <td>{money(p.alternative)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </figure>
+  );
+}
+
 export function HeroProduct() {
   return (
     <div
@@ -164,7 +273,7 @@ export function HeroProduct() {
           A clearer picture.
           <br />A better next question.
         </h2>
-        <p>From 45 months of sales history to findings you can inspect.</p>
+        <p>From 45 months of history to evidence and TimesFM forecasts.</p>
         <div className="landing-metric-pair">
           <div>
             <span>Total orders</span>
@@ -192,8 +301,8 @@ export function HeroProduct() {
         <ArrowUpRight size={17} aria-hidden />
       </div>
       <p className="landing-product-caption">
-        Illustrative composition · cutoff Sep 30, 2026 · point forecasts, no
-        intervals
+        TimesFM 3.0 · Preview · saved synthetic example · cutoff Sep 30, 2026 ·
+        no validated intervals
       </p>
     </div>
   );

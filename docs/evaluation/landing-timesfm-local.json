@@ -1,0 +1,98 @@
+{
+  "verified_at": "2026-10-17T17:12:26.737023+00:00",
+  "scope": "Local landing update only; no deployment, GitHub publication, analytical-data change or inference.",
+  "frontend_tests": 49,
+  "lint": "passed",
+  "typescript": "passed",
+  "production_build": "passed",
+  "next_runtime": {
+    "compilation_issues": [],
+    "config_errors": [],
+    "session_errors": []
+  },
+  "browser": {
+    "forecast": {
+      "selectedTab": "Forecasts",
+      "methodOpen": true,
+      "tableCaption": "Saved monthly revenue comparison \u00b7 three-month horizon",
+      "methodRows": 4,
+      "reportHref": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/reports/2ed05089e9a86e1ef3046fa6c6728680?version=1",
+      "keyboardFocus": "SUMMARY",
+      "noOverflow": true,
+      "backendRequests": []
+    },
+    "mobile_320": {
+      "width": 320,
+      "noOverflow": true,
+      "selectedTab": "Scenarios",
+      "tabColumns": "139px 139px",
+      "baselineStroke": "rgb(49, 93, 238)",
+      "baselineLegend": "2px solid rgb(49, 93, 238)",
+      "alternativeLegend": "2px solid rgb(49, 93, 238)",
+      "reportHref": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/reports/f0853cca9462ee293ddaf45e6627e843?version=1"
+    },
+    "scenario_table": {
+      "open": true,
+      "rows": 14,
+      "scopeHeaders": 3,
+      "tableAlternative": "Saved conditional predictions \u00b7 USD, rounded to dollars \u00b7 Oct 1\u201314, 2026",
+      "noOverflow": true
+    },
+    "production": {
+      "selectedTab": "Scenarios",
+      "noOverflow": true,
+      "baselineStroke": "rgb(49, 93, 238)",
+      "alternativeStroke": "rgb(23, 111, 105)",
+      "baselinePattern": "8px, 4px",
+      "alternativePattern": "2px, 4px",
+      "baselineLegend": "2px dashed rgb(49, 93, 238)",
+      "alternativeLegend": "2px dotted rgb(23, 111, 105)",
+      "backendRequests": [],
+      "ctaPaths": [
+        "/app",
+        "/app",
+        "/app",
+        "/app"
+      ]
+    },
+    "production_table": {
+      "open": true,
+      "rows": 14,
+      "noOverflow": true,
+      "tableScrollWidth": 267,
+      "tableClientWidth": 267,
+      "reducedMotion": false
+    },
+    "preferences": {
+      "width": 390,
+      "noOverflow": true,
+      "reducedMotion": true,
+      "darkSystem": true,
+      "landingCanvas": "rgb(255, 255, 255)",
+      "selectedTab": "Forecasts",
+      "preview": true
+    },
+    "axe_counts": {
+      "inapplicable": 39,
+      "incomplete": 1,
+      "passes": 50,
+      "violations": 0
+    },
+    "uncaught_errors": ""
+  },
+  "limitations": [
+    "One incomplete axe contrast rule for SVG text; no automated violations. Full screen-reader and Safari/Firefox testing not performed.",
+    "Development HMR briefly retained stale chart CSS; a fresh production build verified the final strokes, dashed/dotted legends and layout.",
+    "Report examples are frozen version-1 synthetic outputs; no future accuracy or causal effect is claimed."
+  ],
+  "source_sha256": {
+    "Frontend/src/app/page.tsx": "1db7ef0193abc6a05920bcc2a30a57d392f4567f450589875d8d893afc2d7fbc",
+    "Frontend/src/app/globals.css": "43c57f82171b20d0af56152f2d7c81b944461b848e57448c3e90c96a3b3b2bb3",
+    "Frontend/src/components/landing/product-illustrations.tsx": "cd9ff456c41c7cc08877ce7b63ad4561dd2aea7e9363039958a80b24a7c3059a",
+    "Frontend/src/components/landing/product-tour.tsx": "2343205db3d3610b8512c4c8d135e6885ce52e01675b0fa439abf7b57ad36f05",
+    "Frontend/src/lib/landing-preview-data.json": "5dfcde4101efdb1ee9faeecb1d71aa62e54473587ac46316a1d5009e9971d0d1",
+    "Frontend/tests/landing.test.mjs": "3226f4e1b6006d4975cee914349e2061223dfd4c119cb5611f4e54a4e8e3c618",
+    "Frontend/public/querylane-social.png": "ba740c6f2e2b18fc091179b0e285f07577b057788657c96ed7a3f62bb2a32090",
+    "infra/generate_landing_social.py": "2f88eafd9476bce6f490507f85fccf74b1607a256867a40df0bf2753ad88c71d"
+  }
+}

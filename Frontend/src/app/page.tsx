@@ -26,7 +26,7 @@ import { workspacePath } from "@/lib/workspace-links";
 
 const origin = "https://agentic-bi-frontend-wekihucn7q-as.a.run.app";
 const description =
-  "Turn business questions into evidence-backed reports, validated forecasts and shared dashboards. Explore Querylane's voice-enabled AI analyst in a public synthetic retail demo. No sign-up.";
+  "Ask by voice or text. Build evidence-backed reports, compare TimesFM 3.0 Preview forecasts and explore explicit what-if scenarios in Querylane's public synthetic retail demo. No sign-up.";
 export const metadata: Metadata = {
   title: "Querylane — From questions to evidence-backed decisions",
   description,
@@ -124,6 +124,14 @@ const faqs = [
     "Allow several minutes, typically around 3–8 minutes depending on scope and service availability. The report shows meaningful progress, supports cancellation by its requester, and can be reopened after navigating away. Ordinary chat remains available while it runs.",
   ],
   [
+    "How does Querylane choose TimesFM?",
+    "The agent proposes relevant forecasting work. TimesFM 3.0 Preview is compared with eligible statistical methods on the same chronological backtest periods. Numerical validation selects the published method; TimesFM is not guaranteed to win. Saved model scores, cutoffs and assumptions remain inspectable in the report.",
+  ],
+  [
+    "What does a scenario tell me?",
+    "A scenario predicts under explicit future assumptions you provide, such as alternative promotion schedules. Baseline and alternative use the same validated model and history. Conditional backtests assume those driver paths are known; they do not prove the drivers are predictable or that a promotion causes revenue lift.",
+  ],
+  [
     "Can I rely on every prediction?",
     "Predictions are conditional estimates, not guarantees. Forecasts are checked with chronological backtests and baseline comparisons. Short histories, incomplete data or poor validation can withhold a forecast. Scenarios require explicit future driver assumptions; observational relationships do not prove causation.",
   ],
@@ -175,8 +183,8 @@ export default function LandingPage() {
             </h1>
             <p className="landing-hero-description">
               Meet your conversational AI analyst. Ask by voice or text, build
-              detailed reports, explore validated forecasts, and bring the
-              findings together in shared dashboards.
+              detailed reports, explore TimesFM forecasts and explicit what-if
+              scenarios, and bring the findings together in shared dashboards.
             </p>
             <div className="landing-hero-actions">
               <OpenQuerylane />
@@ -253,10 +261,10 @@ export default function LandingPage() {
             </article>
             <article id="predictions">
               <TrendingUp aria-hidden />
-              <h3>Predictions with context</h3>
+              <h3>TimesFM forecasts &amp; scenarios</h3>
               <p>
-                Backtested forecasts, explicit assumptions and clear limits on
-                what the data can support.
+                Compare Google TimesFM 3.0 Preview with statistical methods.
+                Explore alternative futures with visible assumptions.
               </p>
             </article>
             <article id="voice-bi">
@@ -297,8 +305,8 @@ export default function LandingPage() {
                 <FileChartColumn aria-hidden />
                 <h3>Request deeper analysis</h3>
                 <p>
-                  Build a detailed report. Add a forecast when the evidence
-                  supports it.
+                  Build a detailed report. Compare forecasting methods and
+                  explicit scenarios when the evidence supports them.
                 </p>
               </li>
               <li>
@@ -418,6 +426,8 @@ export default function LandingPage() {
           <strong>Google ADK</strong>
           <span>+</span>
           <strong>Gemini</strong>
+          <span>+</span>
+          <strong>TimesFM 3.0 · Preview</strong>
           <i />
           <span>BigQuery</span>
           <span>PostgreSQL</span>
@@ -463,7 +473,7 @@ export default function LandingPage() {
             your next insight.
           </h2>
           <p>
-            Explore advanced reports, forecasts and voice BI.
+            Explore reports, TimesFM forecasts, scenarios and voice BI.
             <br />
             No sign-up. A shared workspace. Synthetic retail data.
           </p>

@@ -3050,6 +3050,69 @@
 .landing-tour {
   gap: 30px;
 }
+.landing-tour .landing-tour-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  width: 100%;
+  max-width: 640px;
+  min-height: 56px;
+  height: auto;
+  margin-inline: auto;
+}
+.landing-example-link {
+  margin-top: 20px;
+  flex-wrap: wrap;
+  font-size: 12px;
+}
+.landing-scenario-baseline,
+.landing-scenario-alternative {
+  fill: none;
+  stroke-width: 2.5px;
+  stroke: var(--primary);
+  stroke-dasharray: 8 4;
+  stroke-linejoin: round;
+}
+.landing-scenario-alternative {
+  stroke: var(--landing-teal);
+  stroke-dasharray: 2 4;
+}
+.landing-scenario-endpoint {
+  fill: var(--primary);
+}
+.landing-scenario-alternative-endpoint {
+  fill: var(--landing-teal);
+}
+.landing-legend-item.landing-legend-baseline i {
+  border-top: 2px dashed var(--primary);
+  background: transparent;
+}
+.landing-legend-item.landing-legend-alternative i {
+  border-top: 2px dotted var(--landing-teal);
+  background: transparent;
+}
+.landing-scenario-totals {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-block: 18px;
+  padding: 14px 0;
+  border-block: 1px solid #e4eaf3;
+}
+.landing-scenario-totals dt {
+  color: var(--muted-foreground);
+  font-size: 10px;
+}
+.landing-scenario-totals dd {
+  font-size: clamp(15px, 2vw, 20px);
+  font-weight: 700;
+  margin: 6px 0 0;
+  font-variant-numeric: tabular-nums;
+}
+@media (max-width: 600px) {
+  .landing-tour .landing-tour-tabs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
 .landing-preview-anchor {
   scroll-margin-top: 24px;
 }

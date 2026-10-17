@@ -1,8 +1,8 @@
 {
-  "source": "Saved report v4, forecast artifact 0401fa3ce367eaa4bafccde082b00e6e; see docs/evaluation/reports-deployed.json",
+  "source": "Verified TimesFM release; docs/evaluation/timesfm-deployed.json, immutable report revision 1",
   "cutoff": "2026-09-30",
   "currency": "USD",
-  "method": "ETS",
+  "method": "TimesFM 3.0",
   "backtestOrigins": 3,
   "intervalAvailable": false,
   "orders": 573348,
@@ -58,17 +58,135 @@
     {
       "date": "2026-10-01",
       "observed": null,
-      "forecast": 9821574.38515586
+      "forecast": 10272054.0
     },
     {
       "date": "2026-11-01",
       "observed": null,
-      "forecast": 13396864.111970706
+      "forecast": 14367920.0
     },
     {
       "date": "2026-12-01",
       "observed": null,
-      "forecast": 13004166.888183326
+      "forecast": 13845351.0
     }
-  ]
+  ],
+  "preview": true,
+  "reportId": "2ed05089e9a86e1ef3046fa6c6728680",
+  "version": 1,
+  "artifactId": "47bca8c3fbc89b5e2f50c5b4e92e484d",
+  "reportUrl": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/reports/2ed05089e9a86e1ef3046fa6c6728680?version=1",
+  "scores": [
+    {
+      "method": "timesfm_3",
+      "mae": 251955.16666666645,
+      "rmse": 307092.05719368544,
+      "selected": true
+    },
+    {
+      "method": "seasonal_naive",
+      "mae": 790444.8233333334,
+      "rmse": 821560.4136049921,
+      "selected": false
+    },
+    {
+      "method": "ets",
+      "mae": 273664.89243369043,
+      "rmse": 410277.81090705155,
+      "selected": false
+    },
+    {
+      "method": "sarimax",
+      "mae": 288069.88027932483,
+      "rmse": 351426.0011745475,
+      "selected": false
+    }
+  ],
+  "scenario": {
+    "reportId": "f0853cca9462ee293ddaf45e6627e843",
+    "version": 1,
+    "artifactId": "8931efa3298ac039d18105973aad4e7f",
+    "reportUrl": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/reports/f0853cca9462ee293ddaf45e6627e843?version=1",
+    "method": "TimesFM 3.0",
+    "cutoff": "2026-09-30",
+    "horizon": 14,
+    "historyDays": 1369,
+    "contextDays": 1312,
+    "intervalAvailable": false,
+    "driver": "promotion_day",
+    "baselineDriver": 0,
+    "alternativeDriver": 1,
+    "points": [
+      {
+        "date": "2026-10-01",
+        "baseline": 294982.09375,
+        "alternative": 318104.0625
+      },
+      {
+        "date": "2026-10-02",
+        "baseline": 294190.25,
+        "alternative": 312947.125
+      },
+      {
+        "date": "2026-10-03",
+        "baseline": 357303.875,
+        "alternative": 382513.4375
+      },
+      {
+        "date": "2026-10-04",
+        "baseline": 358373.0,
+        "alternative": 379796.375
+      },
+      {
+        "date": "2026-10-05",
+        "baseline": 303503.1875,
+        "alternative": 315902.34375
+      },
+      {
+        "date": "2026-10-06",
+        "baseline": 291642.625,
+        "alternative": 303550.0
+      },
+      {
+        "date": "2026-10-07",
+        "baseline": 303961.0625,
+        "alternative": 314704.75
+      },
+      {
+        "date": "2026-10-08",
+        "baseline": 310503.65625,
+        "alternative": 324128.3125
+      },
+      {
+        "date": "2026-10-09",
+        "baseline": 317477.59375,
+        "alternative": 333436.46875
+      },
+      {
+        "date": "2026-10-10",
+        "baseline": 383794.125,
+        "alternative": 404381.78125
+      },
+      {
+        "date": "2026-10-11",
+        "baseline": 399542.375,
+        "alternative": 417584.6875
+      },
+      {
+        "date": "2026-10-12",
+        "baseline": 334879.0,
+        "alternative": 355701.875
+      },
+      {
+        "date": "2026-10-13",
+        "baseline": 317162.53125,
+        "alternative": 339641.96875
+      },
+      {
+        "date": "2026-10-14",
+        "baseline": 304655.625,
+        "alternative": 326180.125
+      }
+    ]
+  }
 }

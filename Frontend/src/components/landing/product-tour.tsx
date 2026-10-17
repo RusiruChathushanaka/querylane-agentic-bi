@@ -1,22 +1,29 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { motion } from "motion/react";
 import {
   AudioLines,
   Check,
   FileChartColumn,
+  GitBranch,
   MicOff,
   TrendingUp,
 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { useAppMotion } from "@/hooks/use-app-motion";
-import { RevenueIllustration } from "./product-illustrations";
+import {
+  RevenueIllustration,
+  ScenarioIllustration,
+} from "./product-illustrations";
+import data from "@/lib/landing-preview-data.json";
 
 const views = [
   { id: "reports", label: "Reports", icon: FileChartColumn },
-  { id: "predictions", label: "Predictions", icon: TrendingUp },
+  { id: "predictions", label: "Forecasts", icon: TrendingUp },
+  { id: "scenarios", label: "Scenarios", icon: GitBranch },
   { id: "voice", label: "Voice BI", icon: AudioLines },
 ] as const;
 
@@ -27,7 +34,7 @@ export function ProductTour() {
     <Tabs defaultValue="reports" className="landing-tour">
       <TabsList
         aria-label="Guided product preview"
-        className="min-h-14 w-full max-w-lg mx-auto"
+        className="landing-tour-tabs"
       >
         {views.map(({ id, label, icon: Icon }) => (
           <TabsTrigger key={id} value={id} className="min-h-11 px-3">
@@ -128,46 +135,48 @@ export function ProductTour() {
               <>
                 <div className="landing-tour-copy">
                   <span className="landing-eyebrow">
-                    02 / VALIDATED PREDICTIONS
+                    02 / TIMESFM FORECASTING
                   </span>
                   <h3>
                     Look ahead.
                     <br />
-                    Know the limits.
+                    Put models to the test.
                   </h3>
                   <p>
-                    Explore a forecast grounded in history, checked against
-                    chronological backtests and simple baselines.
+                    Google TimesFM 3.0 Preview brings managed time-series
+                    forecasting to Advanced Analysis. The agent proposes useful
+                    forecasts; measured backtests choose the published method.
                   </p>
                   <ul className="landing-checks">
                     <li>
                       <Check aria-hidden />
-                      Observed and predicted values clearly separated
+                      Compared with statistical methods and a seasonal baseline
                     </li>
                     <li>
                       <Check aria-hidden />
-                      Model diagnostics and observation cutoffs
+                      Three chronological backtests across the full horizon
                     </li>
                     <li>
                       <Check aria-hidden />
-                      Conditional scenarios with explicit future inputs
+                      Saved predictions, model scores and observation cutoffs
                     </li>
                   </ul>
                   <p className="landing-fine-print">
                     Insufficient history or weak validation can withhold a
-                    prediction. Scenarios describe associations under stated
-                    assumptions; they do not establish causal lift.
+                    prediction. When TimesFM is unavailable, supported
+                    statistical findings remain available with clear
+                    limitations.
                   </p>
                 </div>
                 <div className="landing-preview-paper">
                   <div className="landing-preview-label">
                     <TrendingUp size={16} aria-hidden />
-                    SAVED FORECAST EXAMPLE<span>ETS · monthly</span>
+                    VERIFIED FORECAST<span>TimesFM 3.0 · Preview</span>
                   </div>
                   <p className="landing-example-question">
                     “What could revenue look like next quarter?”
                   </p>
-                  <h4>History, then the horizon</h4>
+                  <h4>A saved, backtested revenue outlook</h4>
                   <p className="landing-preview-subtitle">
                     Observation cutoff: September 30, 2026
                   </p>
@@ -176,11 +185,145 @@ export function ProductTour() {
                     <span>3 rolling-origin backtests</span>
                     <span>October–December 2026 horizon</span>
                   </div>
+                  <details className="landing-methodology">
+                    <summary>Compare the verified forecasting methods</summary>
+                    <p>
+                      Three monthly backtest folds. MAE is average absolute
+                      error in USD; lower is better. A candidate must improve
+                      baseline MAE by at least 5% and win at least two folds.
+                    </p>
+                    <div className="landing-table-scroll">
+                      <table>
+                        <caption>
+                          Saved monthly revenue comparison · three-month horizon
+                        </caption>
+                        <thead>
+                          <tr>
+                            <th scope="col">Method</th>
+                            <th scope="col">MAE · USD</th>
+                            <th scope="col">Outcome</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {data.scores.map((score) => (
+                            <tr key={score.method}>
+                              <th scope="row">
+                                {score.method === "timesfm_3"
+                                  ? "TimesFM 3.0 · Preview"
+                                  : score.method === "seasonal_naive"
+                                    ? "Seasonal-naive baseline"
+                                    : score.method.toUpperCase()}
+                              </th>
+                              <td>
+                                {score.mae.toLocaleString("en-US", {
+                                  maximumFractionDigits: 2,
+                                  minimumFractionDigits: 2,
+                                })}
+                              </td>
+                              <td>
+                                {score.selected ? "Selected" : "Compared"}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </details>
                   <p className="landing-caution">
                     Point predictions from the saved validated example. No
                     validated prediction intervals are available for this
                     example. Forecasts are estimates, not guarantees.
                   </p>
+                  <Link
+                    prefetch={false}
+                    href={data.reportUrl}
+                    className="landing-text-link landing-example-link"
+                  >
+                    Open verified forecast report{" "}
+                    <TrendingUp size={15} aria-hidden />
+                  </Link>
+                </div>
+              </>
+            )}
+            {id === "scenarios" && (
+              <>
+                <div className="landing-tour-copy">
+                  <span className="landing-eyebrow">
+                    03 / CONDITIONAL SCENARIOS
+                  </span>
+                  <h3>
+                    Change the assumptions.
+                    <br />
+                    Compare the outlook.
+                  </h3>
+                  <p>
+                    Explore what the model predicts under explicit alternative
+                    driver paths. The same validated method and history keep the
+                    comparison consistent.
+                  </p>
+                  <ul className="landing-checks">
+                    <li>
+                      <Check aria-hidden />
+                      You supply each future driver for the full horizon
+                    </li>
+                    <li>
+                      <Check aria-hidden />
+                      Historical support and backtests gate the analysis
+                    </li>
+                    <li>
+                      <Check aria-hidden />A separate saved scenario artifact
+                      retains both paths
+                    </li>
+                  </ul>
+                  <p className="landing-fine-print">
+                    These are conditional estimates based on historical
+                    associations. They do not establish causal promotion lift or
+                    guaranteed revenue.
+                  </p>
+                </div>
+                <div className="landing-preview-paper">
+                  <div className="landing-preview-label">
+                    <GitBranch size={16} aria-hidden />
+                    VERIFIED SCENARIO<span>TimesFM 3.0 · Preview</span>
+                  </div>
+                  <p className="landing-example-question">
+                    “Compare no promotion days with promotion every day for the
+                    next 14 days.”
+                  </p>
+                  <h4>Two assumptions. One consistent model.</h4>
+                  <p className="landing-preview-subtitle">
+                    Saved synthetic example · observation cutoff September 30,
+                    2026
+                  </p>
+                  <ScenarioIllustration />
+                  <div className="landing-forecast-notes">
+                    <span>14 explicit future driver values per path</span>
+                    <span>1,369 saved days of history</span>
+                  </div>
+                  <details className="landing-methodology">
+                    <summary>Inspect scenario assumptions</summary>
+                    <p>
+                      The requester supplied promotion_day=0 for every baseline
+                      date and promotion_day=1 for every alternative date,
+                      October 1–14, 2026. TimesFM used the same
+                      1,312-observation context for each comparison fold.
+                      Conditional backtest errors assume driver paths are known.
+                      Full values and model evidence remain in report version 1.
+                    </p>
+                  </details>
+                  <p className="landing-caution">
+                    Both lines are predictions. Totals and chart values are
+                    rounded; no validated prediction intervals are available. A
+                    different future schedule requires a new analysis.
+                  </p>
+                  <Link
+                    prefetch={false}
+                    href={data.scenario.reportUrl}
+                    className="landing-text-link landing-example-link"
+                  >
+                    Open verified scenario report{" "}
+                    <GitBranch size={15} aria-hidden />
+                  </Link>
                 </div>
               </>
             )}
@@ -188,7 +331,7 @@ export function ProductTour() {
               <>
                 <div className="landing-tour-copy">
                   <span className="landing-eyebrow">
-                    03 / CONVERSATIONAL VOICE BI
+                    04 / CONVERSATIONAL VOICE BI
                   </span>
                   <h3>
                     Good questions.
