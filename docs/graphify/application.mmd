@@ -1,6 +1,8 @@
 flowchart LR
     Landing[Server-rendered public landing /] -->|Native CTA without prefetch| Browser[Next.js /app workspace and libraries]
-    Landing --> Preview[Local saved-evidence preview / no API or audio]
+    Landing --> Preview[Local Reports / Forecasts / Scenarios / Voice BI previews]
+    Preview --> Fixture[Packaged verified values / cutoff / model scores]
+    Preview -->|Explicit evidence link / no prefetch| Version[Saved report version / no inference]
     Legacy[Legacy root chat links] -->|307 /app with query preserved| Browser
     Browser -->|HTTP and SSE| API[Public FastAPI on Cloud Run]
     Browser <-->|PCM and transcripts| Voice[WebSocket handlers in public API]

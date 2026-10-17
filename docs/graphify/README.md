@@ -77,3 +77,9 @@ The [deployed fix assessment](../evaluation/e2e-fixes-deployed.md) records the n
 ## Managed forecasting release coverage
 
 The latest map includes `TimesFM`, `compare`, `reserve_candidates`, shared series preparation, deterministic inference recovery, immutable prediction/scenario artifacts and the worker-identity release probe. [TimesFM guidance](../timesfm.md) separates disabled local defaults from the verified enabled hosted release. [The deployed assessment](../evaluation/timesfm-deployed.md) records the actual worker gate, 31 analytical/reuse checks and unchanged larger data; the graph itself is navigation evidence rather than a runtime test.
+
+## TimesFM landing preview coverage
+
+The refreshed map includes `ProductTour`, `ScenarioIllustration`, the four preview views, fixed saved-version evidence links, packaged model-comparison/scenario values and `/app` entry boundaries. The [landing-only release](../evaluation/landing-timesfm-deployed.md) records frontend `00016-tw2` with backend `00021-6rd` and worker `00010-wnw` unchanged. The separate [TimesFM assessment](../evaluation/timesfm-deployed.md) records numerical forecasts and scenarios; graph generation does not repeat inference. Both analytical runtimes preserve the larger `timeseries` profile, 30,000-row limit and verified enabled TimesFM gates. Local/unverified environments still require the compatibility gate.
+
+The application diagram distinguishes static preview content from an explicit evidence-link navigation to a saved report. Historical evaluation JSON and `deployment.json` remain excluded from raw graph ingestion; the graph indexes their documented references without treating old observations as live discovery.

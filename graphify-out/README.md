@@ -1,34 +1,35 @@
 # Querylane knowledge graph
 
-Generated with the project-local [Graphify skill](../.agents/skills/graphify/SKILL.md) and Graphify 0.9.51 on 17 October 2026, after the verified TimesFM Cloud Run release.
+Generated with the project-local [Graphify skill](../.agents/skills/graphify/SKILL.md) and Graphify 0.9.51 on 2026-10-17, after the verified TimesFM analytical and landing-page releases.
 
-- [graph.html](graph.html): interactive code/documentation graph. Search for `TimesFM`, `compare`, `prepare_series`, `ReportEngine`, `ReportRepository` or `PredictionEvidence`, then inspect the source/neighbor details. The viewer loads its pinned vis-network library from a CDN.
-- [graph.json](graph.json): native graph with **1,996 nodes**, **5,353 edges** and **121 named communities**.
-- [GRAPH_REPORT.md](GRAPH_REPORT.md): central concepts, community cohesion, cross-community links, questions and integrity notes.
-- [VALIDATION.json](VALIDATION.json): source hashes, generation scope, diagnostics, verification and limitations.
-- [cost.json](cost.json): separate model-API accounting; host-session semantic usage is unknown.
+- [graph.html](graph.html): interactive graph with search and named communities. Try `TimesFM`, `ReportEngine`, `ProductTour`, `ScenarioIllustration` or `Landing Page`. The viewer loads its pinned vis-network library from a CDN.
+- [graph.json](graph.json): native graph with **2,037 nodes**, **5,397 edges** and **113 named communities**.
+- [GRAPH_REPORT.md](GRAPH_REPORT.md): central concepts, cohesion, cross-community connections and suggested questions.
+- [VALIDATION.json](VALIDATION.json): source hashes, extraction diagnostics, scope and verification limits.
+- [cost.json](cost.json): separate model-API accounting; host-session semantic token usage is unknown.
 
-The corpus contains **193 code files and 49 documents** (~176,966 words). Local AST extraction covers code; 42 document extractions were reused and one host-session agent refreshed 7 changed documents in two passes (including the README correction). No separate model API, cloud database, provisioning or deployment was invoked. [`.graphifyignore`](../.graphifyignore) excludes credentials/environments, generated data, historical evaluation files and graph outputs. Machine-specific paths and extraction caches remain ignored.
+The corpus contains **193 code files and 49 documents** (~179,380 words). Local AST extraction covers code; 44 document extractions were reused and one host-session agent refreshed 5 documents. No separate model API, cloud/database read or write, provisioning or deployment was invoked. [`.graphifyignore`](../.graphifyignore) excludes environments, generated data/media, raw historical evaluation files, deployment JSON, third-party skills and graph outputs. Machine-specific paths and caches remain ignored.
 
-## Latest forecasting coverage
+## TimesFM and landing coverage
 
-The graph maps agent-prioritized candidate reservations, common chronological validation, fixed managed TimesFM queries, stable job recovery, immutable forecast/scenario artifacts, shared diagnostics and the worker-identity probe. [Hosted acceptance](../docs/evaluation/timesfm-deployed.md) passed 31 checks: actual worker ADC compatibility and report/scenario inference, immutable exports, presentation reuse, dashboard pinning and larger-data preservation. The API/worker gates are enabled in the recorded release; local defaults remain disabled. [TimesFM guidance](../docs/timesfm.md) describes the bounded controls. Graph extraction itself makes no cloud/model call and is not runtime verification.
+The graph maps agent-proposed forecasts, measured chronological candidate selection, immutable captured inputs, fixed BigQuery TimesFM jobs, deterministic recovery, statistical fallback and explicit conditional driver paths. [TimesFM hosted acceptance](../docs/evaluation/timesfm-deployed.md) records 31 actual analytical/reuse checks and worker-identity verification. API/worker gates are enabled in that recorded release; local defaults and unverified environments remain disabled. The graph does not itself establish runtime access or forecast quality.
 
+The four local previews—Reports, Forecasts, Scenarios and Voice BI—use packaged examples. `ProductTour` and `ScenarioIllustration` expose saved monthly model comparisons and fourteen-day baseline/alternative paths, with cutoff, Preview and uncertainty/association caveats. Evidence links target immutable report version 1; primary CTAs enter `/app` without sign-in. Preview browsing makes no backend or microphone calls. [Landing acceptance](../docs/evaluation/landing-timesfm-deployed.md) records frontend `00016-tw2`, backend `00021-6rd` and worker `00010-wnw`; the frontend-only release preserved analytical runtime settings and the larger dataset.
 
 ## Use
 
-From the repository root:
-
 ```bash
 graphify query "TimesFM comparison job identity cancellation" --budget 1500
-graphify explain "TimesFM"
-graphify path "ReportEngine" "ExportStorage" --undirected
+graphify query "landing preview saved scenario report evidence" --budget 1500
+graphify explain "ScenarioIllustration"
 ```
 
-Invoke **`$graphify .`** in Codex for a full code/document refresh. `graphify update .` covers code-only maintenance; document changes still need semantic extraction. Keep the local skill aligned with the installed CLI. This refresh used the repository-local 0.9.51 skill without modifying older global skill installations.
+From the repository root, invoke **`$graphify .`** for a code/document refresh. `graphify update .` covers code-only maintenance; changed documents also need the skill's semantic pass. Keep the local skill aligned with installed Graphify. Curated Mermaid copies live in [docs/graphify/](../docs/graphify/README.md), derived from authoritative architecture blocks.
 
 ## Interpretation and limits
 
-Centrality reflects indexed code, tests and documentation, not production traffic or architectural quality. An undirected path through shared error handling does not establish a call between its endpoints. The graph retains the default undirected projection for compatibility; diagnostics record **826 unresolved endpoint references** and **491 collapsed same-endpoint relationships**, with zero missing endpoint fields and zero self-loops. Many unresolved references are external imports. Graphify reports a potentially partial parse of `Frontend/src/components/workspace.tsx` at line 1080 (13 extracted symbols).
+This is a working-tree snapshot over base commit `ec84f540`. Per-file SHA-256 hashes identify indexed content. Centrality/community links are navigation heuristics, not execution traces. The undirected projection can combine relationships: diagnostics record **829 unresolved endpoints** and **521 collapsed same-endpoint relationships**, with zero missing endpoint fields and zero self-loops. External references explain many unresolved nodes. Graphify reports a potentially partial parse of `Frontend/src/components/workspace.tsx` at line 1080 (13 extracted symbols). Host-session token usage is unavailable, not zero.
 
-This is a working-tree snapshot over base commit `3e9c685d`; per-file SHA-256 hashes establish the indexed content. Host-agent token counts are unavailable, not zero. Read the report/validation before assuming exhaustive coverage. The curated Mermaid views remain in [docs/graphify/](../docs/graphify/README.md); [deployment.json](../docs/deployment.json) records the last verified release. The larger `timeseries` dataset and serving application were unchanged by this refresh.
+See [deployment.json](../docs/deployment.json) for dated serving configuration and [validation.md](../docs/validation.md) for test evidence. This documentation refresh did not rerun application tests, inference or cloud checks and did not alter the larger `timeseries` dataset, `SOURCE_ROW_LIMIT=30000`, TimesFM gates or deployed services.
+
+The CLI query smoke passed and found the saved scenario evidence and `ScenarioIllustration` source node. Its 1,500-token view was explicitly truncated. The CLI warns about an older global 0.9.42 skill installation; this refresh used the matching project-local 0.9.51 skill directly and did not modify global installations.
