@@ -1,5 +1,6 @@
 "use client";
 
+import { PredictionEvidence } from "@/components/prediction-evidence";
 import { useEffect, useState } from "react";
 import {
   Braces,
@@ -240,37 +241,7 @@ export default function ResultCard({
             </SelectContent>
           </Select>
         </div>
-        {artifact.prediction && (
-          <div className="report-note">
-            <strong>Observed history and conditional predictions</strong>
-            <p>
-              Observed through {artifact.prediction.cutoff} ·{" "}
-              {artifact.prediction.method.replaceAll("_", " ")} ·{" "}
-              {artifact.prediction.horizon} future periods. Dashed series are
-              predictions, not observations.
-            </p>
-            {artifact.prediction.scenario_name && (
-              <p>
-                Scenario: {artifact.prediction.scenario_name}. Historical
-                associations do not establish causal impact.
-              </p>
-            )}
-            <p>
-              {artifact.prediction.interval
-                ? `Nominal ${artifact.prediction.interval.level * 100}% historical residual band · backtest coverage ${(artifact.prediction.interval.coverage * 100).toFixed(1)}% · future coverage is not guaranteed`
-                : "Validated prediction intervals unavailable; uncertainty is not quantified."}
-            </p>
-            {artifact.prediction.scores && <details><summary>Forecast validation & assumptions</summary><p>Chronological backtests evaluate the whole prediction horizon. MAE is average absolute error; RMSE gives greater weight to larger errors. Lower values are better, within the same metric.</p><Table><TableCaption>Candidate backtest errors; {artifact.prediction.method.replaceAll("_", " ")} retained.</TableCaption><TableHeader><TableRow><TableHead scope="col">Method</TableHead><TableHead scope="col">MAE</TableHead><TableHead scope="col">RMSE</TableHead></TableRow></TableHeader><TableBody>{Object.entries(artifact.prediction.scores).map(([name, score]) => <TableRow key={name}><TableCell>{name.replaceAll("_", " ")}{name === artifact.prediction?.method ? " · retained" : ""}</TableCell><TableCell>{valueDisplay(score.mae, "forecast")}</TableCell><TableCell>{valueDisplay(score.rmse, "forecast")}</TableCell></TableRow>)}</TableBody></Table><pre tabIndex={0} role="region" aria-label="Prediction reproducibility details">{JSON.stringify({ backtests: artifact.prediction.scores, drivers: artifact.prediction.drivers, assumptions: artifact.prediction.assumptions, future_drivers: artifact.prediction.future_drivers, scenario_drivers: artifact.prediction.scenario_drivers, libraries: artifact.prediction.libraries, data_hash: artifact.prediction.data_hash }, null, 2)}</pre></details>}
-            {artifact.report_id && (
-              <a
-                className="underline"
-                href={`/reports/${artifact.report_id}?version=${artifact.report_version}`}
-              >
-                Report version {artifact.report_version}
-              </a>
-            )}
-          </div>
-        )}
+        {artifact.prediction && <PredictionEvidence prediction={artifact.prediction} artifactId={artifact.id} reportId={artifact.report_id} reportVersion={artifact.report_version} />}
         <div className="result-meta">
           {artifact.provenance.map((source) => (
             <Badge key={source.source} variant="secondary">

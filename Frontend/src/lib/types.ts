@@ -118,6 +118,23 @@ export type Artifact = {
   report_id?: string;
   report_version?: number;
   prediction?: {
+    kind?: "forecast" | "scenario";
+    provider?: string;
+    model?: string | null;
+    preview?: boolean;
+    selection_reason?: string;
+    comparison?: {
+      status: "skipped" | "evaluated" | "unavailable";
+      model: string;
+      preview: boolean;
+      reason?: string | null;
+      context?: number;
+      scope_note?: string;
+      jobs: unknown[];
+      input_hash: string;
+      selection_policy_version: number;
+      [key: string]: unknown;
+    };
     method: string;
     cutoff: string;
     horizon: number;

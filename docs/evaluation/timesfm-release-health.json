@@ -1,0 +1,39 @@
+{
+  "verified_at": "2026-10-17T16:39:58.288529+00:00",
+  "backend_live": {
+    "status": "ok",
+    "service": "agentic-bi-backend"
+  },
+  "backend_ready": {
+    "status": "ready",
+    "mode": "gemini",
+    "storage": "firestore",
+    "visibility": "public"
+  },
+  "frontend_health": {
+    "status": "ready",
+    "backend": 200
+  },
+  "frontend_runtime": {
+    "backend_url": "https://agentic-bi-backend-wekihucn7q-as.a.run.app"
+  },
+  "reports_config": {
+    "enabled": true,
+    "research_enabled": false,
+    "mode": "cloud_tasks",
+    "target_minutes": "3\u20138",
+    "timesfm": {
+      "enabled": true,
+      "model": "TimesFM 3.0",
+      "preview": true
+    }
+  },
+  "worker_anonymous_status": 403,
+  "landing_status": 200,
+  "workspace_status": 200,
+  "legacy_redirect": {
+    "status": 307,
+    "location": "/app?chat=f8416f6c7b064c97aa3c2e53de972760"
+  },
+  "passed": true
+}

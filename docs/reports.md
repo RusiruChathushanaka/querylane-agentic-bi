@@ -26,6 +26,9 @@ Schema strings, source cells and shared skills are untrusted input. Existing rea
 
 ## Forecasts and learned scenarios
 
+Workflow version 2 supports [managed TimesFM 3.0 Preview comparison](timesfm.md). Local defaults are disabled; the [TimesFM release](evaluation/timesfm-deployed.md) enables the verified worker/API configuration. The agent proposes relevant forecasts; common chronological scoring selects the method, with statistical fallback. Driver scenarios can have a separate artifact so their baseline always shares the scenario method. Existing version 1 runs and completed evidence retain their original path. The capabilities endpoint reports availability; no public forecasting endpoint or Gemini model-setting change is added.
+
+
 The numerical child process supports seasonal-naive baselines, ETS, bounded SARIMAX, and regularized driver/lag regression. Large seasonal periods avoid the costly SARIMAX candidate. Preprocessing is fitted inside training folds; future target lags are recursive predictions, never held-out actuals. Each evaluation covers the full requested horizon.
 
 | Grain | Default horizon | Maximum |

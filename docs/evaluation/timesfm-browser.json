@@ -1,0 +1,55 @@
+{
+  "desktop": {
+    "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/reports/2ed05089e9a86e1ef3046fa6c6728680",
+    "title": "Analysis report \u2014 Querylane",
+    "preview": true,
+    "comparisonOpen": true,
+    "keyboardFocus": "SUMMARY",
+    "caption": "Candidate backtest errors; TimesFM 3.0 \u00b7 Preview retained.",
+    "headers": 4,
+    "overflow": false
+  },
+  "mobile": {
+    "width": 390,
+    "noOverflow": true,
+    "comparisonOpen": true,
+    "preview": true
+  },
+  "dashboard": {
+    "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/dashboards/7d213e6c777244fb99c9bc363ff42f22",
+    "title": "Shared dashboard \u2014 Querylane",
+    "preview": true,
+    "cards": 1,
+    "noOverflow": true,
+    "viewMode": true
+  },
+  "scenario": {
+    "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/reports/f0853cca9462ee293ddaf45e6627e843",
+    "scenarioLabel": true,
+    "preview": true,
+    "noOverflow": true,
+    "width": 390,
+    "reportNoteCount": 4
+  },
+  "axe": {
+    "counts": {
+      "inapplicable": 41,
+      "incomplete": 1,
+      "passes": 48,
+      "violations": 0
+    },
+    "manual_review": "One incomplete contrast rule affects SVG chart labels; no automatic violation. Mobile chart labels inspected visually; this does not replace full assistive-technology testing."
+  },
+  "uncaught_browser_errors": "",
+  "ordinary_chat_while_report_running": {
+    "conversation_id": "f8416f6c7b064c97aa3c2e53de972760",
+    "observed_completed_orders": 573348,
+    "submission_through_browser": true
+  },
+  "landing_cta": {
+    "from": "/",
+    "to": "/app",
+    "no_authentication": true
+  },
+  "verified_at": "2026-10-17T16:37:50.880080+00:00"
+}

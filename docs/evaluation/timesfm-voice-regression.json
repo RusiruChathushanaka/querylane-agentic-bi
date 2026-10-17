@@ -1,0 +1,73 @@
+{
+  "verified_at": "2026-10-17T16:31:09.398507+00:00",
+  "checks": {
+    "two_spoken_analyses_same_connection": true,
+    "counts_match_independent_large_dataset": true,
+    "query_jobs_distinct_under_one_parent_run": true,
+    "timeseries_only": true
+  },
+  "errors": [],
+  "turns": [
+    {
+      "artifact_id": "ac510b152f2c4015a0b40cfe0119ba17",
+      "rows": [
+        {
+          "completed_orders": 573348
+        }
+      ],
+      "provenance": [
+        {
+          "complete": true,
+          "sql": "SELECT COUNT(DISTINCT order_id) AS completed_orders FROM `project-e8b1593d-009a-4822-abf`.agentic_bi_demo.sales_orders WHERE status = 'completed'",
+          "elapsed_ms": 1164,
+          "source": "bigquery",
+          "executed_at": "2026-10-17T16:31:23.958243+00:00",
+          "job_id": "abi_0e8beeb17126bf420eb7e2e1660c6285_206ff96c887149529d79c2fba97f9459_0",
+          "bytes_processed": 0,
+          "columns": [
+            {
+              "type": "INTEGER",
+              "name": "completed_orders"
+            }
+          ],
+          "row_count": 1
+        }
+      ],
+      "spoken": "Across all history, there are 573,348 completed orders.",
+      "audio_frames": 23,
+      "data_profile": "timeseries"
+    },
+    {
+      "artifact_id": "54e344eb94de4ec68d4488d4ffa5b09c",
+      "rows": [
+        {
+          "completed_orders_count": 152694
+        }
+      ],
+      "provenance": [
+        {
+          "complete": true,
+          "sql": "SELECT COUNT(DISTINCT order_id) AS completed_orders_count FROM `project-e8b1593d-009a-4822-abf`.agentic_bi_demo.sales_orders WHERE status = 'completed' AND order_date >= '2024-01-01' AND order_date <= '2024-12-31'",
+          "elapsed_ms": 1000,
+          "source": "bigquery",
+          "executed_at": "2026-10-17T16:31:45.890161+00:00",
+          "job_id": "abi_0e8beeb17126bf420eb7e2e1660c6285_9b68abe0769a492daee21a2546110855_0",
+          "bytes_processed": 5649678,
+          "columns": [
+            {
+              "type": "INTEGER",
+              "name": "completed_orders_count"
+            }
+          ],
+          "row_count": 1
+        }
+      ],
+      "spoken": "In 2024, there were 152,694 completed orders.",
+      "audio_frames": 21,
+      "data_profile": "timeseries"
+    }
+  ],
+  "conversation_id": "d528db3001574501a17e99e26a57d9f2",
+  "run_id": "0e8beeb17126bf420eb7e2e1660c6285",
+  "passed": true
+}

@@ -38,6 +38,26 @@
       "output_tokens": 0,
       "host_input_tokens": null,
       "host_output_tokens": null
+    },
+    {
+      "date": "2026-10-17T15:31:51.873853+00:00",
+      "files": 240,
+      "reextracted_documents": 14,
+      "cached_documents": 35,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "host_input_tokens": null,
+      "host_output_tokens": null
+    },
+    {
+      "date": "2026-10-17T16:46:04.199267+00:00",
+      "files": 242,
+      "reextracted_documents": 7,
+      "cached_documents": 42,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "host_input_tokens": null,
+      "host_output_tokens": null
     }
   ],
   "total_input_tokens": 0,

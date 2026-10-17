@@ -156,19 +156,12 @@ def _valid_domain(values, domain):
     return True
 
 
-def _forecast(rows, spec_dict, max_fits, max_seconds, baseline_only=False):
-    import warnings
-
+def prepare_series(rows, spec_dict):
+    """Shared eligibility checks; no target imputation, clipping, or future leakage."""
     import numpy as np
     import pandas as pd
-    from sklearn.linear_model import Ridge
-    from sklearn.pipeline import make_pipeline
-    from sklearn.preprocessing import StandardScaler
-    from statsmodels.tsa.holtwinters import ExponentialSmoothing
-    from statsmodels.tsa.statespace.sarimax import SARIMAX
 
     spec = ForecastSpec.model_validate(spec_dict)
-    started, fits = time.monotonic(), 0
     horizon = spec.horizon or HORIZONS[spec.grain][0]
     if horizon > HORIZONS[spec.grain][1]:
         raise ValueError("Requested forecast horizon exceeds the supported grain limit.")
@@ -217,6 +210,60 @@ def _forecast(rows, spec_dict, max_fits, max_seconds, baseline_only=False):
             for name in spec.drivers
         ):
             raise ValueError("Future/target-derived features are not approved historical drivers.")
+
+    return {
+        "spec": spec,
+        "frame": frame,
+        "dates": dates,
+        "y": y,
+        "x": x,
+        "horizon": horizon,
+        "season": season,
+        "n": n,
+    }
+
+
+def driver_paths(prepared):
+    import numpy as np
+
+    spec, x, horizon = prepared["spec"], prepared["x"], prepared["horizon"]
+    if x is None:
+        return None, None
+    if not spec.future_drivers:
+        raise ValueError("Future driver paths must be supplied explicitly before forecasting.")
+
+    def path(values):
+        if len(values) != horizon or any(set(v) != set(spec.drivers) for v in values):
+            raise ValueError("Supply each approved driver for every future period.")
+        values = np.array([[v[d] for d in spec.drivers] for v in values], dtype=float)
+        if not np.isfinite(values).all() or np.any(values < x.min(axis=0)) or np.any(values > x.max(axis=0)):
+            raise ValueError("Future drivers fall outside observed historical support.")
+        scale = np.std(x, axis=0)
+        nearest = np.min(np.mean(((values[:, None, :] - x[None, :, :]) / scale) ** 2, axis=2), axis=1)
+        if np.any(nearest > 4):
+            raise ValueError("Future driver combinations have insufficient joint historical support.")
+        return values
+
+    return path(spec.future_drivers), path(spec.scenario_drivers) if spec.scenario_drivers else None
+
+
+def _forecast(rows, spec_dict, max_fits, max_seconds, baseline_only=False, comparison=False):
+    import warnings
+
+    import numpy as np
+    import pandas as pd
+    from sklearn.linear_model import Ridge
+    from sklearn.pipeline import make_pipeline
+    from sklearn.preprocessing import StandardScaler
+    from statsmodels.tsa.holtwinters import ExponentialSmoothing
+    from statsmodels.tsa.statespace.sarimax import SARIMAX
+
+    prepared = prepare_series(rows, spec_dict)
+    spec, frame, dates, y, x, horizon, season, n = (
+        prepared[k] for k in ("spec", "frame", "dates", "y", "x", "horizon", "season", "n")
+    )
+    started, fits = time.monotonic(), 0
+    freq = "D" if spec.grain == "day" else "7D" if spec.grain == "week" else "MS"
 
     def fit_guard():
         nonlocal fits
@@ -341,35 +388,11 @@ def _forecast(rows, spec_dict, max_fits, max_seconds, baseline_only=False):
         limitations.append(
             "Candidate models did not pass the baseline improvement gate; seasonal-naive forecast retained."
         )
-    if scores[chosen]["mae"] > 0.5 * max(float(np.mean(np.abs(y))), 1e-9):
+    if not comparison and scores[chosen]["mae"] > 0.5 * max(float(np.mean(np.abs(y))), 1e-9):
         raise ValueError(
             "The selected forecast has excessive held-out error relative to the metric scale; predictions were withheld."
         )
-    future_x, scenario_x = None, None
-    if x is not None:
-        if not spec.future_drivers:
-            raise ValueError("Future driver paths must be supplied explicitly before forecasting.")
-
-        def path(values):
-            if len(values) != horizon or any(set(v) != set(spec.drivers) for v in values):
-                raise ValueError("Supply each approved driver for every future period.")
-            values = np.array([[v[d] for d in spec.drivers] for v in values], dtype=float)
-            if (
-                not np.isfinite(values).all()
-                or np.any(values < x.min(axis=0))
-                or np.any(values > x.max(axis=0))
-            ):
-                raise ValueError("Future drivers fall outside observed historical support.")
-            scale = np.std(x, axis=0)
-            # Reject unsupported joint combinations even when individual ranges are plausible.
-            nearest = np.min(np.mean(((values[:, None, :] - x[None, :, :]) / scale) ** 2, axis=2), axis=1)
-            if np.any(nearest > 4):
-                raise ValueError("Future driver combinations have insufficient joint historical support.")
-            return values
-
-        future_x = path(spec.future_drivers)
-        if spec.scenario_drivers:
-            scenario_x = path(spec.scenario_drivers)
+    future_x, scenario_x = driver_paths(prepared)
     predicted = predict(chosen, y, horizon, x, future_x)
     if not _valid_domain(predicted, spec.domain):
         raise ValueError("Final predictions violate the metric domain.")
@@ -396,8 +419,17 @@ def _forecast(rows, spec_dict, max_fits, max_seconds, baseline_only=False):
                 scenario = None
                 limitations.append("Scenario predictions violated the metric domain and were withheld.")
             else:
-                predicted = scenario_baseline
-                chosen = "driver_ridge"
+                if not comparison:
+                    predicted = scenario_baseline
+                    chosen = "driver_ridge"
+    separate_scenario = None
+    if comparison and scenario is not None:
+        separate_scenario = {
+            "method": "driver_ridge",
+            "baseline": scenario_baseline.tolist(),
+            "scenario": scenario.tolist(),
+        }
+        scenario = None
     for i, d in enumerate(future_dates):
         output.append(
             {
@@ -440,6 +472,7 @@ def _forecast(rows, spec_dict, max_fits, max_seconds, baseline_only=False):
         )
     return {
         "rows": output,
+        **({"evaluation": scores, "scenario_candidate": separate_scenario} if comparison else {}),
         "method": chosen,
         "horizon": horizon,
         "grain": spec.grain,
@@ -480,29 +513,31 @@ def _forecast(rows, spec_dict, max_fits, max_seconds, baseline_only=False):
     }
 
 
-def _entry(pipe, rows, spec, fits, seconds):
+def _entry(pipe, rows, spec, fits, seconds, comparison=False):
     os.environ["OMP_NUM_THREADS"] = "1"
     os.environ["OPENBLAS_NUM_THREADS"] = "1"
     try:
         # Publish a validated baseline before fitting candidates, so an expensive candidate
         # cannot discard supported baseline evidence when the child process hits its deadline.
         try:
-            baseline = _forecast(rows, spec, fits, seconds, baseline_only=True)
+            baseline = _forecast(rows, spec, fits, seconds, baseline_only=True, comparison=comparison)
             pipe.send({"baseline": baseline})
         except ValueError:
             pass  # A poor baseline must not prevent a better candidate from being validated.
-        pipe.send({"result": _forecast(rows, spec, fits, seconds)})
+        pipe.send({"result": _forecast(rows, spec, fits, seconds, comparison=comparison)})
     except Exception as exc:
         pipe.send({"error": str(exc)[:600]})
     finally:
         pipe.close()
 
 
-async def forecast(rows, spec, *, max_fits=12, max_seconds=30):
+async def forecast(rows, spec, *, max_fits=12, max_seconds=30, comparison=False):
     context = mp.get_context("spawn")
     parent, child = context.Pipe(duplex=False)
     process = context.Process(
-        target=_entry, args=(child, rows, spec.model_dump(mode="json"), max_fits, max_seconds), daemon=True
+        target=_entry,
+        args=(child, rows, spec.model_dump(mode="json"), max_fits, max_seconds, comparison),
+        daemon=True,
     )
     process.start()
     child.close()

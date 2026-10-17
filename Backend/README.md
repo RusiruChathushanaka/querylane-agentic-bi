@@ -29,3 +29,7 @@ Use the **[Deployment guide](../docs/deployment-guide.md)** before deploying, pr
 Follow [repository instructions](../AGENTS.md). Administrative seed/reset commands are separate from routine releases and have the data effects described in the guide.
 
 Preserve the larger `timeseries` profile and existing `REPORT_*` dispatch configuration during routine releases. Report-worker releases follow the guide's separate worker path; skill seeding and analytical data upload remain explicit operator operations.
+
+## Managed forecasting
+
+Advanced Analysis supports optional TimesFM 3.0 Preview comparison through fixed BigQuery queries over saved evidence. Local defaults are disabled; the recorded hosted release enables it after worker-identity verification. See [TimesFM behavior and compatibility probe](../docs/timesfm.md) before enabling it. `uv run python -m scripts.smoke_timesfm` prints a local plan; `--live` is a separate bounded billable probe and never deploys or changes source data.

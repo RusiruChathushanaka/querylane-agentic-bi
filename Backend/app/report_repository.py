@@ -11,6 +11,7 @@ from app.errors import AppError
 from app.maintenance import MAINTENANCE, check_maintenance
 from app.model_selection import resolve_text_model
 from app.repository import now_iso
+from app.timesfm import policy as forecast_policy
 
 active_report_lease = ContextVar("active_report_lease", default=None)
 
@@ -205,7 +206,7 @@ class ReportRepository:
                 "id": run_id,
                 "report_id": report_id,
                 "version": version,
-                "workflow_version": 1,
+                "workflow_version": 2,
                 "conversation_id": conversation_id,
                 "guest_id": guest_id,
                 "fingerprint": fingerprint,
@@ -245,6 +246,7 @@ class ReportRepository:
                     "manual_skills": manual,
                     "mode": getattr(body, "mode", "reanalyze"),
                     "base_version": getattr(body, "base_version", None),
+                    "forecast_policy": forecast_policy(self.settings),
                 },
             }
             updates.update(
@@ -388,7 +390,7 @@ class ReportRepository:
 
         def spend(run, _):
             for name, amount in amounts.items():
-                count = max(0, run["budgets"][name] + amount)
+                count = max(0, run["budgets"].get(name, 0) + amount)
                 if amount > 0 and count > limits[name]:
                     raise AppError(
                         f"Report {name.replace('_', ' ')} budget reached. Narrow the request.",
@@ -400,6 +402,54 @@ class ReportRepository:
 
         await self.guard(lease)
         return await self.change(lease, spend)
+
+    def forecast_limits(self, run):
+        policy = run["brief"].get("forecast_policy", {})
+        return {
+            "queries": self.settings.report_query_limit,
+            "scan_bytes": self.settings.report_scan_bytes,
+            "fits": self.settings.report_fit_limit,
+            "fit_seconds": self.settings.report_fit_seconds,
+            **{
+                "timesfm_" + k: policy.get(k, 0)
+                for k in ("targets", "jobs", "input_tokens", "output_tokens", "seconds")
+            },
+        }
+
+    async def reserve_once(self, lease, name, amounts, value):
+        """Operation and conservative budget reservation commit in one fenced transaction."""
+        key = (f"report_runs/{lease['run_id']}/checkpoints", name)
+
+        def reserve(run, docs):
+            prior = docs[key]
+            if prior is not None:
+                return {}, prior["value"]
+            limits = self.forecast_limits(run)
+            for field, amount in amounts.items():
+                if amount < 0 or run["budgets"].get(field, 0) + amount > limits[field]:
+                    raise AppError(
+                        "TimesFM work budget reached; statistical evidence remains available.",
+                        422,
+                        "timesfm_budget",
+                    )
+                run["budgets"][field] = run["budgets"].get(field, 0) + amount
+            return {key: {"value": value, "created_at": now_iso()}}, value
+
+        await self.guard(lease)
+        return await self.change(lease, reserve, [key])
+
+    async def settle_forecast_seconds(self, lease, name, reserved, elapsed):
+        key = (f"report_runs/{lease['run_id']}/checkpoints", name + "_settled")
+
+        def settle(run, docs):
+            if docs[key] is not None:
+                return {}, None
+            run["budgets"]["timesfm_seconds"] = max(
+                0, run["budgets"].get("timesfm_seconds", 0) - max(0, reserved - elapsed)
+            )
+            return {key: {"value": True, "created_at": now_iso()}}, None
+
+        return await self.change(lease, settle, [key])
 
     async def checkpoint(self, lease, name, value):
         key = (f"report_runs/{lease['run_id']}/checkpoints", name)

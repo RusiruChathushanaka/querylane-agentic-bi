@@ -33,10 +33,13 @@ flowchart LR
     API --> Reports[Report admission and versioned library]
     Reports --> Store
     Reports --> Dispatch[Cloud Tasks to private report worker]
+    Dispatch --> Comparison[Saved-series validation / candidate comparison]
+    Comparison --> TimesFM[Fixed parameterized TimesFM / verified gate]
+    TimesFM --> BQ
     API --> Secrets[Secret Manager / workload identity]
 ```
 
-The [landing/workspace route split](landing-page.md) was introduced in frontend `00012-mv5`. The latest [resilience release](evaluation/resilience-deployed.md), verified on 17 October 2026, serves frontend `00014-8p8`, backend `00019-kwg` and private worker `00008-xwl`; the preceding [analytics/voice fix release](evaluation/e2e-fixes-deployed.md) remains historical evidence. The landing page has no analytics or voice client and makes no backend requests. `/app` owns conversation history and shared links. Existing library/detail routes are unchanged.
+The [landing/workspace route split](landing-page.md) was introduced in frontend `00012-mv5`. The latest [TimesFM release](evaluation/timesfm-deployed.md), verified on 17 October 2026, serves frontend `00015-6ff`, backend `00021-6rd` and private worker `00010-wnw`. The preceding [resilience release](evaluation/resilience-deployed.md) and [analytics/voice fix release](evaluation/e2e-fixes-deployed.md) remain historical evidence. The landing page has no analytics or voice client and makes no backend requests. `/app` owns conversation history and shared links. Existing library/detail routes are unchanged.
 
 The frontend contains no database credentials or Google model keys. `/api/config` supplies only the public backend URL at runtime. Direct browser requests use explicit CORS origins; the WebSocket validates Origin and its first authentication frame. Guest tokens identify requests and cancellation ownership without providing account privacy.
 
@@ -57,6 +60,7 @@ The voice bridge and skill author are handlers within the public backend, not ad
 | Skills and author interviews | `Backend/app/skills.py`, `skill_author.py`, `skill_author_voice.py`, `Frontend/src/components/skills-workspace.tsx`, `skill-voice-author.tsx` | [Skills](skills.md), [voice author](voice-skill-author-plan.md) |
 | Analytics/prediction playbooks | `Backend/app/skill_library/`, `skill_examples.py` | [Playbook catalog](analytics-skills.md) |
 | Report orchestration and recovery | `Backend/app/report_harness.py`, `report_engine.py`, `report_repository.py`, `report_dispatch.py`, `report_worker.py` | `Backend/app/report_models.py`, [reports](reports.md) |
+| Forecast selection and managed inference | `Backend/app/report_forecasting.py`, `timesfm.py` | [TimesFM](timesfm.md), [ADR 0009](adr/0009-managed-timesfm-comparison.md) |
 | Statistics, files and isolated research | `Backend/app/report_statistics.py`, `report_exports.py`, `report_research.py` | [Reports](reports.md), [ADR 0007](adr/0007-public-report-evidence.md) |
 | Report library/reader | `Frontend/src/components/reports-library.tsx`, `report-workspace.tsx`, `report-run-card.tsx` | `Frontend/src/lib/report-types.ts` |
 | Persistence, maintenance and data publication | `Backend/app/storage.py`, `adk_sessions.py`, `maintenance.py`, `retail_generator.py`, `retail_upload.py` | [Data workflow](retail-timeseries.md), [deployment runbook](deployment-guide.md) |
@@ -79,6 +83,10 @@ The browser chooses a pinned analysis model from `GET /api/v1/models`. The backe
 7. Release the lease only if its run ID and fencing generation still match.
 
 LLM generation uses LOW thinking, bounded output, 45-second HTTP deadlines, a 55-second structured-call deadline, and a 180-second analysis deadline. Live sessions are limited to three minutes. These are execution controls, not a guaranteed monetary spending cap.
+
+## Managed forecasting comparison
+
+[TimesFM](timesfm.md) is enabled in the recorded hosted release after actual worker-identity verification; local defaults and unverified environments remain disabled. Workflow version 2 freezes its policy and reserves inference work transactionally; version 1 execution remains supported. The agent chooses relevant forecasts/candidate priority, while shared three-fold numerical scoring chooses the published method. Fixed parameterized BigQuery jobs consume saved observations rather than fresh source SQL. Completed jobs/candidate outcomes are checkpointed, and different scenario methods publish separate artifacts. Native intervals are diagnostic until the application coverage gate passes. New job/token/time bounds share existing report ceilings. No downloaded model, permanent staging data or new database access is introduced.
 
 ## Errors and recovery
 
@@ -155,7 +163,13 @@ flowchart LR
     Worker --> Checkpoints[Fenced run events and stage checkpoints]
     Worker --> Graph[ADK graph + bounded policy]
     Graph --> Sources[Existing guarded connectors + typed fusion]
-    Graph --> Math[Isolated statistical tools + chronological backtests]
+    Graph --> Math[Saved-series preparation + chronological backtests]
+    Math --> Statistics[Isolated statistical candidates]
+    Math --> Managed[Fixed TimesFM queries / verified gate]
+    Managed --> Jobs[BigQuery job identity + fenced reservations]
+    Statistics --> Selection[Measured selection + separate scenarios]
+    Jobs --> Selection
+    Selection --> Checkpoints
     Graph --> Claims[Validated claims / writer / reviewer]
     Claims --> Versions[Immutable Firestore report revisions]
     Claims --> Files[Private PDF / DOCX / CSV bundle bucket]

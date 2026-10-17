@@ -102,3 +102,6 @@ _Avoid_: Random time-series split, training accuracy
 
 **Research Panel**: A transient requester-only display of externally grounded context, separate from public report evidence.
 _Avoid_: Saved report section, shared Search archive
+
+- **Forecast Candidate:** An eligible forecasting method evaluated against the same chronological validation periods before its predictions can be selected.
+- **TimesFM Comparison:** Evaluation of Google's managed time-series foundation model against approved statistical methods using saved analytical evidence.

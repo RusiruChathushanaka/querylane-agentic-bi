@@ -35,6 +35,7 @@ For overall ratios such as average order value, request source-calculated SUM(re
 Do not infer causality, guaranteed ROI or full business profit. Distinguish refund-date and order-cohort measures.
 Forecast only if relevant. Every ForecastSpec must reference a task producing a complete evenly spaced calendar series, exactly one row per date, explicit aliases matching date_column/target/drivers. Add zero dates only when the source calendar proves genuine zero activity; do not impute unknowns.
 Choose numeric metric domains carefully: counts/revenue nonnegative, net margin signed, rate fraction or percentage. Exclude incomplete calendar periods and immature cohorts.
+For forecasts specify candidate_policy auto_compare or statistical_only, a short rationale, and priority (one is highest). Prefer auto_compare when managed TimesFM is available; measured backtests select the winner, never a narrative preference. Forecasts are optional. When managed comparison is available, prefer at most three evidence tasks so query capacity remains for forecast validation. Shared skill examples may list an older subset of approved methods; the application capability list is authoritative.
 Future paths MUST NOT be invented. Leave future_drivers and scenario_drivers empty; application tools accept visitor-supplied paths only.
 Use driver scenarios only when the question requires them; unknown future drivers require clarification. Predictions are associations, not intervention effects.
 The output should describe analysis, not executable code, formulas, tools or credentials. Date coverage is synthetic and ends at the supplied as-of date, not necessarily today.
@@ -154,7 +155,7 @@ class ReportEngine:
 
     async def prepare(self, run, lease):
         await self.stage(lease, "Preparing scope")
-        if run.get("workflow_version") != 1:
+        if run.get("workflow_version") not in {1, 2}:
             raise AppError(
                 "This report requires its original workflow version. The operator must drain or restore compatible workers.",
                 409,
@@ -278,6 +279,10 @@ class ReportEngine:
                                 "schema": schema,
                                 "data_context": self.connectors.data_context,
                                 "skills": skills["snapshots"],
+                                "forecasting_capabilities": run["brief"].get(
+                                    "forecast_policy", {"enabled": False}
+                                ),
+                                "remaining_budgets": (await self.repo.guard(lease))["budgets"],
                             }
                         ),
                         ReportPlan,
@@ -318,6 +323,10 @@ class ReportEngine:
             )
         validated = ReportPlan.model_validate(plan).model_dump(mode="json")
         await self.repo.checkpoint(lease, f"final_plan_{len(run['clarifications'])}", validated)
+        if run.get("workflow_version") == 2 and run["brief"]["mode"] != "presentation":
+            from app.report_forecasting import reserve_candidates
+
+            await reserve_candidates(self, run, lease, validated)
         await self.repo.event(
             lease,
             "scope",
@@ -553,18 +562,22 @@ class ReportEngine:
         await self.stage(lease, "Validating predictions")
         from app.report_models import ForecastSpec
 
-        for index, value in enumerate(plan["forecasts"]):
+        ordered = list(enumerate(plan["forecasts"]))
+        if run.get("workflow_version") == 2:
+            ordered.sort(key=lambda pair: pair[1].get("priority", 1))
+        for index, value in ordered:
             cached = await self.repo.read_checkpoint(run["id"], f"prediction_{index}")
             if cached:
-                if cached.get("artifact_id"):
-                    ids.append(cached["artifact_id"])
-                    prediction_artifact, prediction_rows = await self._load(cached["artifact_id"])
-                    claims.extend(factual_claims(prediction_artifact, prediction_rows))
+                for saved_id in cached.get("artifact_ids", [cached.get("artifact_id")]):
+                    if saved_id:
+                        ids.append(saved_id)
+                        prediction_artifact, prediction_rows = await self._load(saved_id)
+                        claims.extend(factual_claims(prediction_artifact, prediction_rows))
                 limitations.extend(cached.get("limitations", []))
                 predictions.append(cached)
                 continue
             committed = await self.repo.read_checkpoint(run["id"], f"prediction_artifact_{index}")
-            if committed:
+            if committed and run.get("workflow_version") == 1:
                 artifact, rows = await self._load(committed)
                 info = {
                     "artifact_id": committed,
@@ -601,99 +614,59 @@ class ReportEngine:
                     return begin <= stamp and following - timedelta(days=1) <= end
 
                 rows = [row for row in rows if full_period(row)]
-            budgets = (await self.repo.guard(lease))["budgets"]
-            fits = min(12, self.settings.report_fit_limit - budgets["fits"])
-            seconds = min(30, self.settings.report_fit_seconds - budgets["fit_seconds"])
-            if fits <= 0 or seconds <= 0:
-                limitations.append("Prediction fitting budget reached; remaining forecasts were withheld.")
-                break
-            await self.repo.spend(lease, fits=fits, fit_seconds=seconds)
-            try:
-                result = await forecast(
-                    rows, ForecastSpec.model_validate(value), max_fits=fits, max_seconds=seconds
-                )
-                await self.repo.spend(
-                    lease,
-                    fits=result["fits"] - fits,
-                    fit_seconds=min(seconds, result["fit_seconds"]) - seconds,
-                )
-                prediction_rows = result.pop("rows")
-                from datetime import datetime
-                from zoneinfo import ZoneInfo
-
-                requested_date = (
-                    datetime.fromisoformat(run["created_at"])
-                    .astimezone(ZoneInfo("Asia/Singapore"))
-                    .date()
-                    .isoformat()
-                )
-                if result["cutoff"] < requested_date:
-                    result["limitations"].append(
-                        f"Saved observations end at {result['cutoff']}; predictions start after that cutoff, rather than assuming data reaches the report request date {requested_date}."
+            if run.get("workflow_version") == 1:
+                budgets = (await self.repo.guard(lease))["budgets"]
+                fits = min(12, self.settings.report_fit_limit - budgets["fits"])
+                seconds = min(30, self.settings.report_fit_seconds - budgets["fit_seconds"])
+                if fits <= 0 or seconds <= 0:
+                    limitations.append(
+                        "Prediction fitting budget reached; remaining forecasts were withheld."
                     )
-                source_measure = next(
-                    (
-                        m
-                        for m in artifact["visualization"].get("measures", [])
-                        if m["field"] == value["target"]
-                    ),
-                    {"unit": "number"},
-                )
-                ys = ["observed", "forecast"] + (["scenario"] if result["scenario_name"] else [])
-                measures = [
-                    {
-                        "field": y,
-                        "label": y.title(),
-                        "unit": source_measure["unit"],
-                        "currency": source_measure.get("currency"),
-                        "percent_scale": source_measure.get("percent_scale"),
-                        "additive": False,
-                        "role": y,
-                        "direction": "neutral",
-                    }
-                    for y in ys
-                ]
-                pid = hashlib.sha256(f"report:{run['id']}:prediction:{index}".encode()).hexdigest()[:32]
-                pa = {
-                    **artifact,
-                    "id": pid,
-                    "title": f"{value['target'].replace('_', ' ').title()} — observed and predicted",
-                    "columns": [{"name": "date", "type": "DATE"}]
-                    + [{"name": y, "type": "DOUBLE"} for y in ys],
-                    "row_count": len(prediction_rows),
-                    "preview_count": min(len(prediction_rows), 1000),
-                    "visualization": {
-                        "type": "line",
-                        "title": "Observed and predicted",
-                        "version": 2,
-                        "x": "date",
-                        "y": ys,
-                        "dimension_kind": "temporal",
-                        "granularity": value["grain"],
-                        "format": "number",
-                        "measures": measures,
-                    },
-                    "prediction": result | {"source_artifact_id": source_id},
-                    "assumptions": artifact["assumptions"] + result["assumptions"] + result["limitations"],
-                    "created_at": now_iso(),
-                }
-                if result.get("interval"):
-                    pa["columns"] += [
-                        {"name": "interval_lower", "type": "DOUBLE"},
-                        {"name": "interval_upper", "type": "DOUBLE"},
-                    ]
-                claims.extend(factual_claims(pa, prediction_rows))
-                await self.repo.save_artifact(lease, pa, prediction_rows, f"prediction_artifact_{index}")
+                    break
+                await self.repo.spend(lease, fits=fits, fit_seconds=seconds)
+            try:
+                if run.get("workflow_version") == 2:
+                    from app.report_forecasting import compare
+
+                    result = await compare(self, run, lease, index, rows, ForecastSpec.model_validate(value))
+                else:
+                    result = await forecast(
+                        rows, ForecastSpec.model_validate(value), max_fits=fits, max_seconds=seconds
+                    )
+                    await self.repo.spend(
+                        lease,
+                        fits=result["fits"] - fits,
+                        fit_seconds=min(seconds, result["fit_seconds"]) - seconds,
+                    )
+                additional = result.pop("additional_predictions", [])
+                all_ids = []
+                for suffix, prediction in [(str(index), result)] + [
+                    (f"{index}_scenario_{i}", item) for i, item in enumerate(additional)
+                ]:
+                    saved_id, prediction_artifact, prediction_rows = await self.save_prediction(
+                        run, lease, suffix, artifact, source_id, value, prediction
+                    )
+                    all_ids.append(saved_id)
+                    ids.append(saved_id)
+                    claims.extend(factual_claims(prediction_artifact, prediction_rows))
                 info = {
-                    "artifact_id": pid,
+                    "artifact_id": all_ids[0],
+                    "artifact_ids": all_ids,
                     "limitations": result["limitations"],
                     "method": result["method"],
                     "cutoff": result["cutoff"],
                 }
-                ids.append(pid)
                 predictions.append(info)
                 limitations.extend(result["limitations"])
             except AppError as exc:
+                if exc.code in {
+                    "cancelled",
+                    "report_stale_lease",
+                    "report_budget",
+                    "maintenance",
+                    "timesfm_reconcile",
+                }:
+                    raise
                 info = {"limitations": [f"{value['target']}: {exc.message}"]}
                 limitations.extend(info["limitations"])
             await self.repo.checkpoint(lease, f"prediction_{index}", info)
@@ -745,8 +718,10 @@ class ReportEngine:
 
     def fallback(self, evidence):
         sections = []
-        for index, artifact_id in enumerate(evidence["artifact_ids"]):
-            claims = [c for c in evidence["claims"] if c["artifact_id"] == artifact_id]
+        group_size = 2 if len(evidence["artifact_ids"]) > 12 else 1
+        for index in range(0, len(evidence["artifact_ids"]), group_size):
+            group = evidence["artifact_ids"][index : index + group_size]
+            claims = [c for c in evidence["claims"] if c["artifact_id"] in group]
             text = (
                 "\n".join(f"- {{{{evidence:{c['id']}}}}}" for c in claims[:10])
                 or "Inspect the saved result and methodology. Predictions are conditional estimates, not observed outcomes."
@@ -757,7 +732,7 @@ class ReportEngine:
                     title="Saved analytical evidence",
                     markdown=text,
                     claim_ids=[c["id"] for c in claims[:10]],
-                    artifact_ids=[artifact_id],
+                    artifact_ids=group,
                 )
             )
         if not sections:
@@ -773,6 +748,74 @@ class ReportEngine:
             summary="This report presents saved analytical evidence. Review its definitions, completeness, and limitations before making a decision.",
             sections=sections,
         )
+
+    async def save_prediction(self, run, lease, index, artifact, source_id, value, result):
+        existing = await self.repo.read_checkpoint(run["id"], f"prediction_artifact_{index}")
+        if existing:
+            saved, prediction_rows = await self._load(existing)
+            return existing, saved, prediction_rows
+        prediction_rows = result.pop("rows")
+        from datetime import datetime
+        from zoneinfo import ZoneInfo
+
+        requested_date = (
+            datetime.fromisoformat(run["created_at"])
+            .astimezone(ZoneInfo("Asia/Singapore"))
+            .date()
+            .isoformat()
+        )
+        if result["cutoff"] < requested_date:
+            result["limitations"].append(
+                f"Saved observations end at {result['cutoff']}; predictions start after that cutoff, rather than assuming data reaches the report request date {requested_date}."
+            )
+        source_measure = next(
+            (m for m in artifact["visualization"].get("measures", []) if m["field"] == value["target"]),
+            {"unit": "number"},
+        )
+        ys = ["observed", "forecast"] + (["scenario"] if result["scenario_name"] else [])
+        measures = [
+            {
+                "field": y,
+                "label": y.title(),
+                "unit": source_measure["unit"],
+                "currency": source_measure.get("currency"),
+                "percent_scale": source_measure.get("percent_scale"),
+                "additive": False,
+                "role": y,
+                "direction": "neutral",
+            }
+            for y in ys
+        ]
+        pid = hashlib.sha256(f"report:{run['id']}:prediction:{index}".encode()).hexdigest()[:32]
+        pa = {
+            **artifact,
+            "id": pid,
+            "title": f"{value['target'].replace('_', ' ').title()} — {'conditional scenario' if result.get('kind') == 'scenario' else 'observed and predicted'}",
+            "columns": [{"name": "date", "type": "DATE"}] + [{"name": y, "type": "DOUBLE"} for y in ys],
+            "row_count": len(prediction_rows),
+            "preview_count": min(len(prediction_rows), 1000),
+            "visualization": {
+                "type": "line",
+                "title": "Observed and predicted",
+                "version": 2,
+                "x": "date",
+                "y": ys,
+                "dimension_kind": "temporal",
+                "granularity": value["grain"],
+                "format": "number",
+                "measures": measures,
+            },
+            "prediction": result | {"source_artifact_id": source_id},
+            "assumptions": artifact["assumptions"] + result["assumptions"] + result["limitations"],
+            "created_at": now_iso(),
+        }
+        if result.get("interval"):
+            pa["columns"] += [
+                {"name": "interval_lower", "type": "DOUBLE"},
+                {"name": "interval_upper", "type": "DOUBLE"},
+            ]
+        await self.repo.save_artifact(lease, pa, prediction_rows, f"prediction_artifact_{index}")
+        return pid, pa, prediction_rows
 
     async def compose(self, run, lease):
         if await self.repo.read_checkpoint(run["id"], "document"):

@@ -8,7 +8,13 @@ flowchart LR
     Worker --> Checkpoints[Fenced run events and stage checkpoints]
     Worker --> Graph[ADK graph + bounded policy]
     Graph --> Sources[Existing guarded connectors + typed fusion]
-    Graph --> Math[Isolated statistical tools + chronological backtests]
+    Graph --> Math[Saved-series preparation + chronological backtests]
+    Math --> Statistics[Isolated statistical candidates]
+    Math --> Managed[Fixed TimesFM queries / verified gate]
+    Managed --> Jobs[BigQuery job identity + fenced reservations]
+    Statistics --> Selection[Measured selection + separate scenarios]
+    Jobs --> Selection
+    Selection --> Checkpoints
     Graph --> Claims[Validated claims / writer / reviewer]
     Claims --> Versions[Immutable Firestore report revisions]
     Claims --> Files[Private PDF / DOCX / CSV bundle bucket]

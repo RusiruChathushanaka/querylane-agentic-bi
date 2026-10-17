@@ -1,0 +1,46 @@
+{
+  "jobs": [
+    {
+      "job_id": "abi_report_2ed05089e9a86e1ef3046fa6c6728680_tf_4a336ad9b7d536931d40364f",
+      "user_email": "agentic-bi-report-worker@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
+      "state": "DONE",
+      "error_reason": null,
+      "creation_time": "2026-10-17 16:31:41.466000+00:00",
+      "total_bytes_processed": 0
+    },
+    {
+      "job_id": "abi_report_2ed05089e9a86e1ef3046fa6c6728680_tf_88cf3c136ad134e43174f300",
+      "user_email": "agentic-bi-report-worker@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
+      "state": "DONE",
+      "error_reason": null,
+      "creation_time": "2026-10-17 16:31:49.234000+00:00",
+      "total_bytes_processed": 0
+    },
+    {
+      "job_id": "abi_report_f0853cca9462ee293ddaf45e6627e843_tf_b9198085ca85ae2675c72e33",
+      "user_email": "agentic-bi-report-worker@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
+      "state": "DONE",
+      "error_reason": null,
+      "creation_time": "2026-10-17 16:32:20.234000+00:00",
+      "total_bytes_processed": 0
+    },
+    {
+      "job_id": "abi_report_f0853cca9462ee293ddaf45e6627e843_tf_3f3796333dc5497361ad1eaa",
+      "user_email": "agentic-bi-report-worker@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
+      "state": "DONE",
+      "error_reason": null,
+      "creation_time": "2026-10-17 16:32:30.196000+00:00",
+      "total_bytes_processed": 0
+    }
+  ],
+  "inference_counts": {
+    "2ed05089e9a86e1ef3046fa6c6728680": 2,
+    "f0853cca9462ee293ddaf45e6627e843": 2,
+    "1a0062cf1c1bdbb94062a965aa8e2cc2": 0
+  },
+  "worker_identity_confirmed": true,
+  "exactly_two_jobs_per_analysis": true,
+  "presentation_inference_jobs": 0,
+  "expected_jobs": 4,
+  "passed": true
+}

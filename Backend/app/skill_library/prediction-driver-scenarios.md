@@ -24,6 +24,8 @@ Estimate conditional scenarios from a supported historical model, without presen
 4. Use only the application's supported regression/SARIMAX scenario tools and existing bounds. Reject unsupported extrapolation/combinations. If the scenario cannot pass validation, retain the supported descriptive analysis and explain the limitation.
 5. Compare baseline and scenario predictions at identical periods and scope. Label differences as conditional model predictions, not guaranteed lift, causal impact, incremental ROI or inventory feasibility.
 
+Use optional managed TimesFM only when the application reports it available and complete covariate context/future paths exist. Compare it with validated driver regression using the same folds. Baseline and alternative must use the same method; a different ordinary forecast winner belongs in a separate artifact. Never invent future drivers or causal effects.
+
 ## Deliverable
 Show explicit future assumptions, historical support, validation, predicted paths/differences and uncertainty limitations, with observed values separate.
 

@@ -73,3 +73,7 @@ The [deployed fix assessment](../evaluation/e2e-fixes-deployed.md) records the n
 - Use [validation.md](../validation.md) and [evaluation/](../evaluation/) for dated test evidence and limitations.
 - Use [the deployment guide](../deployment-guide.md) before cloud operations. Diagram maintenance does not authorize deployment, seeding, IAM changes or history resets.
 - Keep credentials, raw database rows, visitor transcripts and generated analytical bundles outside graph references.
+
+## Managed forecasting release coverage
+
+The latest map includes `TimesFM`, `compare`, `reserve_candidates`, shared series preparation, deterministic inference recovery, immutable prediction/scenario artifacts and the worker-identity release probe. [TimesFM guidance](../timesfm.md) separates disabled local defaults from the verified enabled hosted release. [The deployed assessment](../evaluation/timesfm-deployed.md) records the actual worker gate, 31 analytical/reuse checks and unchanged larger data; the graph itself is navigation evidence rather than a runtime test.

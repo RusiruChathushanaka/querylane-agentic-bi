@@ -89,6 +89,11 @@ class AnalysisTask(StrictModel):
 
 
 class ForecastSpec(StrictModel):
+    candidate_policy: Literal["auto_compare", "statistical_only"] = "auto_compare"
+    rationale: str = Field(
+        default="Compare eligible candidates against chronological backtests.", max_length=600
+    )
+    priority: int = Field(default=1, ge=1, le=6)
     task_id: str = Field(max_length=64)
     date_column: str = Field(min_length=1, max_length=128)
     target: str = Field(min_length=1, max_length=128)

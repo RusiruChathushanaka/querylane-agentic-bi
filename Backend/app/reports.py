@@ -41,6 +41,11 @@ def report_router(guest):
             "research_enabled": s.report_research_enabled and s.ai_backend == "gemini",
             "mode": "cloud_tasks" if s.report_dispatch == "cloud_tasks" else "local-ephemeral",
             "target_minutes": "3–8",
+            "timesfm": {
+                "enabled": s.report_timesfm_enabled and s.report_timesfm_verified,
+                "model": "TimesFM 3.0",
+                "preview": True,
+            },
         }
 
     @router.post("/conversations/{conversation_id}/reports", status_code=202)

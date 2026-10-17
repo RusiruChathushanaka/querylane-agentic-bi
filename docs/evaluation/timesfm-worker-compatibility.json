@@ -1,0 +1,25 @@
+{
+  "scope": "Managed compatibility over synthetic inline parameters; not a production enablement record.",
+  "identity": "agentic-bi-report-worker@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
+  "model": "TimesFM 3.0",
+  "preview": true,
+  "project": "project-e8b1593d-009a-4822-abf",
+  "location": "asia-southeast1",
+  "source_queries": 0,
+  "source_writes": 0,
+  "iam_changes": 0,
+  "production_feature_enabled": false,
+  "checks": {},
+  "jobs": [],
+  "passed": false,
+  "error": {
+    "type": "CalledProcessError",
+    "message": "Existing credentials could not authenticate this identity; no IAM grants were changed.",
+    "required_existing_permission": "iam.serviceAccounts.getAccessToken"
+  },
+  "recorded_at": "2026-10-17T15:27:29.758906+00:00",
+  "notes": [
+    "Initial ADC attempt found no default credentials.",
+    "Existing CLI identity lacks permission to impersonate the private worker. No access was added."
+  ]
+}

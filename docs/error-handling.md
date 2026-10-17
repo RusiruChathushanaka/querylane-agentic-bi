@@ -36,3 +36,7 @@ Retries can consume another model request and additional time; they are not guar
 - `Frontend/tests/api-recovery.test.mjs`, `voice-preferences.test.mjs`: bounded reconnect, cursor replay, concurrent 401, malformed frames and audio cleanup.
 
 Run the backend checks from `Backend/` and frontend checks from `Frontend/` using the [README commands](../README.md#verify). Authorized hosted verification additionally follows the [deployment guide](deployment-guide.md); do not replace failure-injection coverage with a successful model probe. Preserve `timeseries` and the worker's dispatch configuration when a release is requested.
+
+## Managed TimesFM (local, disabled)
+
+[TimesFM](timesfm.md) failures preserve supported statistical results. Ambiguous submission remains recoverable under the same job identity; terminal failures are saved. Cancellation, stale leases and overall expiry propagate. Per-operation cancellation flags survive delayed submission responses. Existing bounded report delivery remains authoritative. This path is not enabled in the dated deployed release.

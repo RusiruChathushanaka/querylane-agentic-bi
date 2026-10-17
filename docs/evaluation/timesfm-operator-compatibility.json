@@ -1,0 +1,61 @@
+{
+  "scope": "Managed compatibility over synthetic inline parameters; not a production enablement record.",
+  "identity": "operator ADC",
+  "model": "TimesFM 3.0",
+  "preview": true,
+  "project": "project-e8b1593d-009a-4822-abf",
+  "location": "asia-southeast1",
+  "source_queries": 0,
+  "source_writes": 0,
+  "iam_changes": 0,
+  "production_feature_enabled": false,
+  "checks": {
+    "0_backtest_parameterized_output": true,
+    "0_final_parameterized_output": true,
+    "1_backtest_parameterized_output": true,
+    "1_final_parameterized_output": true
+  },
+  "jobs": [
+    {
+      "job_id": "abi_report_6099bff5ae6b51dc69efe998e8a918bf_tf_cf9f6d806707e2b99a1548ea",
+      "identity": "cf9f6d806707e2b99a1548ea373c58aeb66e5a41f1ae714c9b749628ee64acbb",
+      "model": "TimesFM 3.0",
+      "context": 64,
+      "input_tokens_estimated": 192,
+      "output_tokens_estimated": 9,
+      "bytes_processed": 0,
+      "executed_at": "2026-10-17T20:45:49.881222+05:30"
+    },
+    {
+      "job_id": "abi_report_6099bff5ae6b51dc69efe998e8a918bf_tf_6982e19b2281c0dab0378a19",
+      "identity": "6982e19b2281c0dab0378a19e8b16ecfc9db0af5296fd1e7aeba0574eef71415",
+      "model": "TimesFM 3.0",
+      "context": 64,
+      "input_tokens_estimated": 64,
+      "output_tokens_estimated": 3,
+      "bytes_processed": 0,
+      "executed_at": "2026-10-17T20:45:57.555063+05:30"
+    },
+    {
+      "job_id": "abi_report_6099bff5ae6b51dc69efe998e8a918bf_tf_a9a20e5b54344d969a81bb7e",
+      "identity": "a9a20e5b54344d969a81bb7efb74748c38544833b7df60b099cd7945ba5d6270",
+      "model": "TimesFM 3.0",
+      "context": 96,
+      "input_tokens_estimated": 597,
+      "output_tokens_estimated": 21,
+      "bytes_processed": 0,
+      "executed_at": "2026-10-17T20:46:08.301132+05:30"
+    },
+    {
+      "job_id": "abi_report_6099bff5ae6b51dc69efe998e8a918bf_tf_b9f1201ba7e162d49d9fc5ce",
+      "identity": "b9f1201ba7e162d49d9fc5ce587492172ddc43740fdd2f4a7a67ddd47ee9e165",
+      "model": "TimesFM 3.0",
+      "context": 96,
+      "input_tokens_estimated": 398,
+      "output_tokens_estimated": 14,
+      "bytes_processed": 0,
+      "executed_at": "2026-10-17T20:46:16.952261+05:30"
+    }
+  ],
+  "passed": true
+}

@@ -85,6 +85,14 @@ class Settings(BaseSettings):
     report_fit_limit: int = Field(default=64, ge=1, le=64)
     report_fit_seconds: int = Field(default=120, ge=1, le=120)
     report_research_enabled: bool = False
+    report_timesfm_enabled: bool = False
+    report_timesfm_verified: bool = False
+    report_timesfm_targets: int = Field(default=2, ge=1, le=2)
+    report_timesfm_jobs: int = Field(default=4, ge=1, le=4)
+    report_timesfm_job_seconds: int = Field(default=45, ge=1, le=45)
+    report_timesfm_seconds: int = Field(default=120, ge=1, le=120)
+    report_timesfm_input_tokens: int = Field(default=100000, ge=1, le=100000)
+    report_timesfm_output_tokens: int = Field(default=10000, ge=1, le=10000)
 
     @property
     def origins(self) -> list[str]:

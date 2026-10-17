@@ -24,4 +24,7 @@ flowchart LR
     API --> Reports[Report admission and versioned library]
     Reports --> Store
     Reports --> Dispatch[Cloud Tasks to private report worker]
+    Dispatch --> Comparison[Saved-series validation / candidate comparison]
+    Comparison --> TimesFM[Fixed parameterized TimesFM / verified gate]
+    TimesFM --> BQ
     API --> Secrets[Secret Manager / workload identity]
