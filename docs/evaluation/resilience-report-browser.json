@@ -1,0 +1,14 @@
+{
+  "verified_at": "2026-10-17T08:11:22.660Z",
+  "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/reports/4cdb492ffa39d745be7c53c00ebc25c1?version=2",
+  "checks": {
+    "report_heading": true,
+    "version_choices": true,
+    "technical_version_selected": true,
+    "pdf_download_available": true,
+    "word_download_available": true,
+    "forecast_section": true,
+    "saved_evidence_tables": true
+  },
+  "harness_correction": "Initial test used select[aria-label], but the native select is correctly associated with label[for=report-version]. Rechecked #report-version and switched to saved version 2; no application code changed."
+}

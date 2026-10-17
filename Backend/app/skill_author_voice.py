@@ -16,6 +16,7 @@ from pydantic import ValidationError
 from starlette.websockets import WebSocketDisconnect
 
 from app.errors import AppError
+from app.model_errors import model_failure
 from app.repository import active_lease
 from app.skill_author import SkillAuthor, snapshot
 
@@ -229,11 +230,7 @@ async def skill_author_voice(websocket, services, guest_id, session_id):
                 user_id=guest_id, session_id=adk_session_id, live_request_queue=queue, run_config=config
             ):
                 if event.error_code:
-                    raise AppError(
-                        "The live model could not continue the interview. Reconnect to your saved draft.",
-                        502,
-                        "author_model_error",
-                    )
+                    raise model_failure(event.error_code)
                 if event.interrupted:
                     await send({"type": "interrupted"})
                     await flush()
@@ -334,14 +331,16 @@ async def skill_author_voice(websocket, services, guest_id, session_id):
     except AppError as exc:
         with contextlib.suppress(Exception):
             await send({"type": "error", "message": exc.message, "code": exc.code})
-    except Exception:
-        logger.exception("Voice skill author failed", extra={"author_session_id": session_id})
+    except Exception as exc:
+        failure = model_failure(exc)
+        if failure is None:
+            logger.error("Voice skill author failed session_id=%s error_type=%s", session_id, type(exc).__name__)
         with contextlib.suppress(Exception):
             await send(
                 {
                     "type": "error",
-                    "message": "The voice author is unavailable. Reconnect to the saved interview or use the manual skill editor.",
-                    "code": "author_voice_failed",
+                    "message": failure.message if failure else "The voice author is unavailable. Reconnect to the saved interview or use the manual skill editor.",
+                    "code": failure.code if failure else "author_voice_failed",
                 }
             )
     finally:
@@ -349,7 +348,7 @@ async def skill_author_voice(websocket, services, guest_id, session_id):
         for task in tasks:
             task.cancel()
         await asyncio.gather(*tasks, return_exceptions=True)
-        with contextlib.suppress(AppError):
+        with contextlib.suppress(Exception):
             await flush()
         try:
             state = await author.release(lease)

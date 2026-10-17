@@ -1,0 +1,32 @@
+{
+  "artifact_ids": [
+    "3d3038c424954ba6bc7d113103b01e92",
+    "95aeb0bb453a4389b918291782b8b516"
+  ],
+  "checks": {
+    "distinct_query_jobs": true,
+    "large_dataset_counts": true,
+    "microphone_released": true,
+    "muted_track_disabled": true,
+    "spoken_transcripts_once": true,
+    "timeseries_only": true,
+    "two_spoken_analyses_same_connection": true,
+    "unmuted_track_enabled": true,
+    "user_transcripts_once": true
+  },
+  "conversation_id": "f10e7d80d3b94ebeaac4e7979937b38a",
+  "errors": [],
+  "events": {
+    "artifact": 2,
+    "audio": 48,
+    "ready": 1,
+    "transcript": 19,
+    "turn_complete": 4
+  },
+  "passed": true,
+  "physical_microphone_tested": false,
+  "raw_audio_stored": false,
+  "run_id": "ed9cc6b3db19c26aca4b5403b9e69a9a",
+  "synthetic_microphone": true,
+  "verified_at": "2026-10-17T08:05:37.054Z"
+}

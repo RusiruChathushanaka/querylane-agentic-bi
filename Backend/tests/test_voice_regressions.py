@@ -76,7 +76,7 @@ async def test_live_partial_final_transcripts_persist_once_and_allow_repeated_tu
         repo=repo,
         analysis=analysis,
         sessions=FirestoreSessionService(store),
-        connectors=SimpleNamespace(data_context="synthetic", forget=lambda _: None),
+        connectors=SimpleNamespace(data_context="synthetic", cancel=AsyncMock(), forget=lambda _: None),
     )
     socket = SimpleNamespace(receive_json=inbound.get, send_json=send)
     await asyncio.wait_for(voice_session(socket, services, "guest", chat["id"]), 5)

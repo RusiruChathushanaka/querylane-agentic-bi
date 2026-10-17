@@ -914,3 +914,56 @@ def test_grouped_ratios_cannot_become_overall_unweighted_average_claims():
     assert any(c["calculation"].startswith("total(revenue)") and c["value"] == "1000" for c in claims)
     assert any(c["calculation"].startswith("total(orders)") and c["value"] == "101" for c in claims)
     assert not any(c["value"] == "54.5" for c in claims)
+
+
+@pytest.mark.parametrize(
+    "code, retryable",
+    [
+        ("model_unavailable", False),
+        ("model_error", False),
+        ("model_rate_limited", True),
+        ("model_transient", True),
+    ],
+)
+async def test_worker_retries_only_recoverable_model_failures(monkeypatch, code, retryable):
+    store, settings, chat, repo = await setup()
+    run = await repo.create(chat["id"], "guest", body())
+    connectors = SimpleNamespace(forget=lambda _: None, cancel=AsyncMock())
+    engine = ReportEngine(SimpleNamespace(settings=settings, ai=None, connectors=connectors), repo, None)
+    monkeypatch.setattr(
+        "app.report_engine.run_report_graph", AsyncMock(side_effect=AppError("Safe model failure", 502, code))
+    )
+    if retryable:
+        with pytest.raises(AppError):
+            await engine.work(run["id"])
+        assert (await repo.get("report_runs", run["id"]))["status"] == "running"
+    else:
+        await engine.work(run["id"])
+        assert (await repo.get("report_runs", run["id"]))["status"] == "failed"
+
+
+async def test_report_cleanup_read_failure_always_resets_model_and_lease_context(monkeypatch):
+    from app.model_selection import active_text_model
+    from app.report_repository import active_report_lease
+
+    store, settings, chat, repo = await setup()
+    run = await repo.create(chat["id"], "guest", body())
+    connectors = SimpleNamespace(forget=lambda _: None, cancel=AsyncMock())
+    engine = ReportEngine(SimpleNamespace(settings=settings, ai=None, connectors=connectors), repo, None)
+    monkeypatch.setattr("app.report_engine.run_report_graph", AsyncMock())
+    original = repo.get
+    calls = 0
+
+    async def read(collection, key):
+        nonlocal calls
+        calls += 1
+        if calls > 1:
+            raise RuntimeError("storage outage during cleanup")
+        return await original(collection, key)
+
+    monkeypatch.setattr(repo, "get", read)
+    model_before, lease_before = active_text_model.get(), active_report_lease.get()
+    with pytest.raises(RuntimeError):
+        await engine.work(run["id"])
+    assert active_text_model.get() == model_before
+    assert active_report_lease.get() == lease_before

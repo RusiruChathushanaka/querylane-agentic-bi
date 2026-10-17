@@ -12,6 +12,7 @@ export class LiveVoice {
   private nextStart = 0;
   private closed = false;
   private ready = false;
+  private graceful = false;
   private muted = false;
   private closeTimer?: ReturnType<typeof setTimeout>;
   private connectionTimer?: ReturnType<typeof setTimeout>;
@@ -83,7 +84,8 @@ export class LiveVoice {
       });
       this.stop();
     }, 15000);
-    socket.onopen = () =>
+    socket.onopen = () => {
+      if (this.closed) return;
       socket.send(
         JSON.stringify({
           type: "authenticate",
@@ -91,8 +93,14 @@ export class LiveVoice {
           model: this.options.analysisModel,
         }),
       );
+    };
     socket.onmessage = async (message) => {
+      if (this.closed && !this.graceful) return;
+      try {
       const event = JSON.parse(message.data) as VoiceEvent;
+      if (!event || typeof event !== "object" || typeof event.type !== "string")
+        throw new Error("Invalid voice response.");
+      if (this.closed && !["stopped", "error", "transcript", "turn_complete"].includes(event.type)) return;
       if (event.type === "ready" && !this.ready) {
         clearTimeout(this.connectionTimer);
         this.ready = true;
@@ -113,8 +121,13 @@ export class LiveVoice {
         this.clearPlayback();
       }
       this.onEvent(event);
+      } catch {
+        this.onEvent({ type: "error", message: "The voice response could not be read. Reconnect or use text." });
+        this.stop();
+      }
     };
     socket.onerror = () => {
+      if (this.closed) return;
       this.onEvent({
         type: "error",
         message:
@@ -223,9 +236,11 @@ export class LiveVoice {
   stop(graceful = false) {
     if (this.closed) return;
     this.closed = true;
+    this.graceful = graceful;
     clearTimeout(this.connectionTimer);
-    if (this.socket?.readyState === WebSocket.OPEN)
-      this.socket.send(JSON.stringify({ type: "stop" }));
+    if (this.socket?.readyState === WebSocket.OPEN) {
+      try { this.socket.send(JSON.stringify({ type: "stop" })); } catch { /* The socket may already be closing. */ }
+    }
     if (graceful && this.socket?.readyState === WebSocket.OPEN) {
       // Release microphone/speakers immediately while the server flushes its
       // last transcript and returns the final fenced draft state.
@@ -234,8 +249,8 @@ export class LiveVoice {
     this.microphone?.getTracks().forEach((track) => track.stop());
     this.worklet?.disconnect();
     this.clearPlayback();
-    void this.capture?.close();
-    void this.playback?.close();
+    void this.capture?.close().catch(() => {});
+    void this.playback?.close().catch(() => {});
     this.onLevel(0);
   }
 }

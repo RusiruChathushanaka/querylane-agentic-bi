@@ -1,13 +1,13 @@
 {
   "project": "project-e8b1593d-009a-4822-abf",
   "region": "asia-southeast1",
-  "date": "2026-10-17",
   "firestore": "agentic-bi-demo",
   "bigquery_dataset": "agentic_bi_demo",
   "cloud_sql_instance": "agentic-bi-demo-pg",
   "vector_dimensions": 768,
-  "verified_at": "2026-10-17T07:15:15.843380+00:00",
-  "release": "Analytics join safety, live query identity, transcript finalization and report table accessibility fixes",
+  "date": "2026-10-17",
+  "verified_at": "2026-10-17T08:12:07.810841+00:00",
+  "release": "Bounded model retries, recoverable Live tools, cancellation and browser recovery hardening",
   "runtime_configuration_preserved": true,
   "analytical_seed_or_history_reset": false,
   "data_profile": "timeseries",
@@ -23,35 +23,35 @@
     "months": 45,
     "merchandise_revenue": "354425112.20"
   },
-  "rollback_record": "evaluation/deployment-before-e2e-fixes.json",
-  "traffic_note": "All three digest-verified candidate revisions were explicitly promoted to 100%; prior revisions retained for rollback.",
-  "source_base_commit": "98af447a3d9515635dbdbaeed172fbc5415976b5",
+  "rollback_record": "evaluation/deployment-before-resilience.json",
+  "traffic_note": "Digest-verified candidates explicitly promoted to 100%; previous revisions retained for rollback.",
+  "source_base_commit": "598b72f78020c9116051a87ca1424b9965810dd3",
   "deployed_uncommitted_application_changes": true,
   "services": {
     "agentic-bi-backend": {
       "url": "https://agentic-bi-backend-wekihucn7q-as.a.run.app",
-      "ready_revision": "agentic-bi-backend-00018-ctv",
+      "ready_revision": "agentic-bi-backend-00019-kwg",
       "service_account": "agentic-bi-backend@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
-      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend:1792220470",
-      "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:f8379a30ad7622e8487121d6905d61a16eefdc36aef25bd73e53a41576ac9ca7",
-      "build_id": "14b05862-1df9-4504-a238-37e017a92e9d",
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:c93be9aad6042ec635a6ea4de743de87714d465931dee0c0996fb2ae1285e10b",
+      "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:c93be9aad6042ec635a6ea4de743de87714d465931dee0c0996fb2ae1285e10b",
+      "build_id": "ed8d4bfd-5aa1-47a9-8efd-0043d53fd399",
       "build_source": {
         "storageSource": {
           "bucket": "project-e8b1593d-009a-4822-abf-agentic-bi-build",
-          "generation": "1792220474523659",
-          "object": "source/1792220471.360956-62822502d00140e2ac6d066527e02ae7.tgz"
+          "generation": "1792223663858127",
+          "object": "source/1792223661.330481-18a249e6e5ba41f4a3039f368681e890.tgz"
         }
       },
-      "source_base_commit": "98af447a3d9515635dbdbaeed172fbc5415976b5",
+      "source_base_commit": "598b72f78020c9116051a87ca1424b9965810dd3",
       "source_is_working_tree": true,
       "ready": true,
       "traffic": [
         {
           "percent": 100,
-          "revisionName": "agentic-bi-backend-00018-ctv"
+          "revisionName": "agentic-bi-backend-00019-kwg"
         }
       ],
-      "previous_revision": "agentic-bi-backend-00017-cnf",
+      "previous_revision": "agentic-bi-backend-00018-ctv",
       "runtime_environment": [
         {
           "name": "ENVIRONMENT",
@@ -173,70 +173,30 @@
       "container_concurrency": 8,
       "timeout_seconds": 3600
     },
-    "agentic-bi-frontend": {
-      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app",
-      "ready_revision": "agentic-bi-frontend-00013-hrz",
-      "service_account": "agentic-bi-frontend@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
-      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend:1792220476",
-      "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:3f5dfe01fdbbf6b930d8e7f486312c237397d8c31a39b67b26b428b82e211e5e",
-      "build_id": "1706a293-6cdd-4431-a5cc-c7568296fe28",
-      "build_source": {
-        "storageSource": {
-          "bucket": "project-e8b1593d-009a-4822-abf-agentic-bi-build",
-          "generation": "1792220479752188",
-          "object": "source/1792220476.677278-4ac6bdcd1d334991abc55e881028dd12.tgz"
-        }
-      },
-      "source_base_commit": "98af447a3d9515635dbdbaeed172fbc5415976b5",
-      "source_is_working_tree": true,
-      "ready": true,
-      "traffic": [
-        {
-          "percent": 100,
-          "revisionName": "agentic-bi-frontend-00013-hrz"
-        }
-      ],
-      "previous_revision": "agentic-bi-frontend-00012-mv5",
-      "runtime_environment": [
-        {
-          "name": "BACKEND_URL",
-          "value": "https://agentic-bi-backend-wekihucn7q-as.a.run.app"
-        }
-      ],
-      "resources": {
-        "limits": {
-          "cpu": "1000m",
-          "memory": "512Mi"
-        }
-      },
-      "container_concurrency": 40,
-      "timeout_seconds": 300,
-      "source_commit": "97ae2b7eff444a78a28508e6a3fd393e0757622b"
-    },
     "agentic-bi-report-worker": {
       "url": "https://agentic-bi-report-worker-wekihucn7q-as.a.run.app",
-      "ready_revision": "agentic-bi-report-worker-00007-pfq",
+      "ready_revision": "agentic-bi-report-worker-00008-xwl",
       "service_account": "agentic-bi-report-worker@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
-      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend:1792220470",
-      "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:f8379a30ad7622e8487121d6905d61a16eefdc36aef25bd73e53a41576ac9ca7",
-      "build_id": "14b05862-1df9-4504-a238-37e017a92e9d",
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:c93be9aad6042ec635a6ea4de743de87714d465931dee0c0996fb2ae1285e10b",
+      "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:c93be9aad6042ec635a6ea4de743de87714d465931dee0c0996fb2ae1285e10b",
+      "build_id": "ed8d4bfd-5aa1-47a9-8efd-0043d53fd399",
       "build_source": {
         "storageSource": {
           "bucket": "project-e8b1593d-009a-4822-abf-agentic-bi-build",
-          "generation": "1792220474523659",
-          "object": "source/1792220471.360956-62822502d00140e2ac6d066527e02ae7.tgz"
+          "generation": "1792223663858127",
+          "object": "source/1792223661.330481-18a249e6e5ba41f4a3039f368681e890.tgz"
         }
       },
-      "source_base_commit": "98af447a3d9515635dbdbaeed172fbc5415976b5",
+      "source_base_commit": "598b72f78020c9116051a87ca1424b9965810dd3",
       "source_is_working_tree": true,
       "ready": true,
       "traffic": [
         {
           "percent": 100,
-          "revisionName": "agentic-bi-report-worker-00007-pfq"
+          "revisionName": "agentic-bi-report-worker-00008-xwl"
         }
       ],
-      "previous_revision": "agentic-bi-report-worker-00006-sk6",
+      "previous_revision": "agentic-bi-report-worker-00007-pfq",
       "runtime_environment": [
         {
           "name": "ENVIRONMENT",
@@ -357,14 +317,51 @@
       },
       "container_concurrency": 1,
       "timeout_seconds": 660
+    },
+    "agentic-bi-frontend": {
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app",
+      "ready_revision": "agentic-bi-frontend-00014-8p8",
+      "service_account": "agentic-bi-frontend@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:b8c71208cb573667a49915079c3bb27e99e67f561142f6df239e427aaedd0506",
+      "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:b8c71208cb573667a49915079c3bb27e99e67f561142f6df239e427aaedd0506",
+      "build_id": "c760f4c9-3a28-4aef-8f12-28995f6a45e8",
+      "build_source": {
+        "storageSource": {
+          "bucket": "project-e8b1593d-009a-4822-abf-agentic-bi-build",
+          "generation": "1792223666018351",
+          "object": "source/1792223663.089537-5be63c02ac834c04a0546078c4e99db3.tgz"
+        }
+      },
+      "source_base_commit": "598b72f78020c9116051a87ca1424b9965810dd3",
+      "source_is_working_tree": true,
+      "ready": true,
+      "traffic": [
+        {
+          "percent": 100,
+          "revisionName": "agentic-bi-frontend-00014-8p8"
+        }
+      ],
+      "previous_revision": "agentic-bi-frontend-00013-hrz",
+      "runtime_environment": [
+        {
+          "name": "BACKEND_URL",
+          "value": "https://agentic-bi-backend-wekihucn7q-as.a.run.app"
+        }
+      ],
+      "resources": {
+        "limits": {
+          "cpu": "1000m",
+          "memory": "512Mi"
+        }
+      },
+      "container_concurrency": 40,
+      "timeout_seconds": 300
     }
   },
   "configuration_changes": {
-    "application": "Landing page at /, workspace at /app, query-aware 307 legacy compatibility",
+    "application": "Error classification, bounded model retries, Live tool recovery and reliable cancellation/cleanup; bounded browser HTTP/SSE recovery.",
     "infrastructure_changes": false,
     "runtime_configuration_preserved": true,
-    "backend_unchanged": "agentic-bi-backend-00017-cnf",
-    "report_worker_unchanged": "agentic-bi-report-worker-00006-sk6",
     "reports_enabled": true,
     "report_dispatch": "cloud_tasks",
     "search_enabled": false,
@@ -374,44 +371,41 @@
   "github": {
     "repository": "https://github.com/RusiruChathushanaka/querylane-agentic-bi",
     "branch": "main",
-    "publication_performed": true,
-    "last_recorded_published_application_commit": "97ae2b7eff444a78a28508e6a3fd393e0757622b",
-    "source_base_commit": "97ae2b7eff444a78a28508e6a3fd393e0757622b",
-    "publication_note": "Application commit pushed to origin/main; this release evidence is committed and pushed separately."
+    "source_base_commit": "598b72f78020c9116051a87ca1424b9965810dd3",
+    "publication_note": "Images were built from the working tree over this base. The source manifest hashes identify the deployed application; the release commit publishes that code together with its verification records."
   },
-  "new_revision_error_entries": 0,
-  "verification": [
-    "evaluation/landing-local.json",
-    "evaluation/landing-release-source.json",
-    "evaluation/landing-deployed-api.json",
-    "evaluation/landing-deployed-configuration.json",
-    "evaluation/landing-deployed-browser.json"
+  "new_revision_error_entries": 3,
+  "expected_cancellation_error_entries": 3,
+  "unexpected_application_error_entries": 0,
+  "reconciler_capacity_warning_entries": 1,
+  "source_verification_manifest": "evaluation/resilience-release-source.json",
+  "verification_reports": [
+    "evaluation/resilience-deployed.md",
+    "evaluation/resilience-configuration.json",
+    "evaluation/resilience-health.json",
+    "evaluation/resilience-timeseries-deployed.json",
+    "evaluation/resilience-voice-turns-deployed.json",
+    "evaluation/resilience-voice-recovery-deployed.json",
+    "evaluation/resilience-author-live.json",
+    "evaluation/resilience-browser-speech.json",
+    "evaluation/resilience-browser-reconnect.json",
+    "evaluation/resilience-report-browser.json",
+    "evaluation/resilience-report-browser-a11y.json",
+    "evaluation/resilience-reports-deployed.json",
+    "evaluation/resilience-source-preservation.json",
+    "evaluation/resilience-runtime-logs.json"
   ],
-  "source_verification_manifest": "evaluation/landing-release-source.json",
   "latest_verified_sample": {
-    "report_id": "b900baa4adb461dec439d869b7c8e20a",
-    "version": 4,
+    "report_id": "4cdb492ffa39d745be7c53c00ebc25c1",
+    "version": 1,
+    "presentation_revision": 2,
     "claim_policy_version": 2,
-    "reviewed_narrative": false,
-    "fallback": "Deterministic evidence summaries explicitly disclosed; saved numerical evidence and downloads verified."
+    "reviewed_narrative": true,
+    "forecast": "Validated ETS point forecast; observation cutoff 2026-09-30, three monthly steps. Prediction intervals unavailable and disclosed."
   },
   "latest_verified_dashboard": {
-    "id": "2256ab45585e458184dd3efd39a800b6",
-    "revision": 6,
-    "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/dashboards/2256ab45585e458184dd3efd39a800b6",
-    "csv_months": 45,
-    "csv_merchandise_revenue": "354425112.20"
+    "id": "4e1c7b1bea5c48b283542c66b1da3762",
+    "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/dashboards/4e1c7b1bea5c48b283542c66b1da3762"
   },
-  "source_commit": "97ae2b7eff444a78a28508e6a3fd393e0757622b",
-  "source_manifest": "evaluation/e2e-fixes-release-source.json",
-  "verification_reports": [
-    "evaluation/e2e-fixes-timeseries.json",
-    "evaluation/e2e-fixes-reports.json",
-    "evaluation/e2e-fixes-voice-turns.json",
-    "evaluation/e2e-fixes-browser-speech.json",
-    "evaluation/e2e-fixes-dashboards.json",
-    "evaluation/e2e-fixes-saved-evidence.json",
-    "evaluation/e2e-fixes-source-preservation.json"
-  ],
   "temporary_runtime_job_created": false
 }

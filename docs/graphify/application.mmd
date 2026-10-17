@@ -7,6 +7,7 @@ flowchart LR
     API --> ADK[ADK planner + interpreter]
     Voice --> Live[ADK run_live / Gemini Live]
     Live -->|analyze_data / distinct analysis ID| Analysis[Controlled analysis service]
+    ADK --> Failures[Classified model errors / bounded retries]
     ADK --> Analysis
     Analysis --> Guard[SQL AST + explicit key joins + budgets]
     Guard --> BQ[Demo BigQuery dataset]

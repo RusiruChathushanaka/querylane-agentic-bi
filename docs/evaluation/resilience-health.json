@@ -1,0 +1,12 @@
+{
+  "verified_at": "2026-10-17T08:01:54.869249+00:00",
+  "checks": {
+    "backend_live": true,
+    "backend_ready": true,
+    "frontend_health": true,
+    "runtime_config": true,
+    "backend_url_correct": true,
+    "worker_private": true
+  },
+  "passed": true
+}

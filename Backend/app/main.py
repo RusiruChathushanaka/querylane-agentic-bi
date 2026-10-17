@@ -433,6 +433,16 @@ def create_app(settings: Settings | None = None, store_override=None, credential
                 await websocket.send_json({"type": "error", "message": "Invalid or expired voice handshake."})
         except WebSocketDisconnect:
             pass
+        except Exception as exc:
+            logger.error("Voice endpoint failed error_type=%s", type(exc).__name__)
+            with contextlib.suppress(WebSocketDisconnect, RuntimeError):
+                await websocket.send_json(
+                    {
+                        "type": "error",
+                        "code": "voice_unavailable",
+                        "message": "The voice service could not connect. Reconnect or use the text interface.",
+                    }
+                )
         finally:
             with contextlib.suppress(WebSocketDisconnect, RuntimeError):
                 await websocket.close()
@@ -445,7 +455,7 @@ def create_app(settings: Settings | None = None, store_override=None, credential
         await websocket.accept()
         try:
             first = await asyncio.wait_for(websocket.receive_json(), timeout=5)
-            if first.get("type") != "authenticate":
+            if not isinstance(first, dict) or first.get("type") != "authenticate":
                 raise AppError("Authenticate the voice connection first.", 401, "guest_required")
             guest_id = verify(str(first.get("token", "")))
             await websocket.app.state.services.repo.conversation(conversation_id)
@@ -457,9 +467,23 @@ def create_app(settings: Settings | None = None, store_override=None, credential
                 websocket, websocket.app.state.services, guest_id, conversation_id, model=requested_model
             )
         except AppError as exc:
-            await websocket.send_json({"type": "error", "message": exc.message, "code": exc.code})
+            with contextlib.suppress(WebSocketDisconnect, RuntimeError):
+                await websocket.send_json({"type": "error", "message": exc.message, "code": exc.code})
         except (TimeoutError, ValueError, KeyError):
-            await websocket.send_json({"type": "error", "message": "Invalid or expired voice handshake."})
+            with contextlib.suppress(WebSocketDisconnect, RuntimeError):
+                await websocket.send_json({"type": "error", "message": "Invalid or expired voice handshake."})
+        except WebSocketDisconnect:
+            pass
+        except Exception as exc:
+            logger.error("Voice endpoint failed error_type=%s", type(exc).__name__)
+            with contextlib.suppress(WebSocketDisconnect, RuntimeError):
+                await websocket.send_json(
+                    {
+                        "type": "error",
+                        "code": "voice_unavailable",
+                        "message": "The voice service could not connect. Reconnect or use the text interface.",
+                    }
+                )
         finally:
             try:
                 await websocket.close()

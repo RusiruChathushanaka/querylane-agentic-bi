@@ -1,5 +1,6 @@
 import asyncio
 import base64
+import binascii
 import contextlib
 import logging
 import time
@@ -13,7 +14,8 @@ from google.adk.runners import Runner
 from google.genai import Client, types
 from starlette.websockets import WebSocketDisconnect
 
-from app.errors import AppError
+from app.errors import AppError, StaleLease
+from app.model_errors import model_failure
 from app.repository import active_lease
 
 logger = logging.getLogger(__name__)
@@ -65,27 +67,43 @@ async def voice_session(websocket, services, guest_id, conversation_id, model=No
 
         async def analyze_data(question: str) -> dict:
             """Analyze a retail data question; execute controlled read-only queries and return charts plus evidence."""
-            hour = datetime.now(UTC).strftime("%Y%m%d%H")
-            await repo.quota(
-                [
-                    (f"guest_{guest_id}_{hour}", settings.guest_hourly_limit),
-                    (f"workspace_{hour[:8]}", settings.workspace_daily_limit),
-                ]
-            )
-            await flush_transcript("user")
-            # Tool-created text and chart answers use the same fenced conversation as live events.
-            result = await analysis.execute(question[:4000], conversation_id)
-            if result.get("artifact_id"):
-                artifact = await repo.store.get("artifacts", result["artifact_id"])
-                await send({"type": "artifact", "data": artifact})
-            return result
+            try:
+                hour = datetime.now(UTC).strftime("%Y%m%d%H")
+                await repo.quota(
+                    [
+                        (f"guest_{guest_id}_{hour}", settings.guest_hourly_limit),
+                        (f"workspace_{hour[:8]}", settings.workspace_daily_limit),
+                    ]
+                )
+                await flush_transcript("user")
+                result = await asyncio.wait_for(
+                    analysis.execute(question[:4000], conversation_id), settings.analysis_timeout_seconds
+                )
+                if result.get("artifact_id"):
+                    artifact = await repo.store.get("artifacts", result["artifact_id"])
+                    await send({"type": "artifact", "data": artifact})
+                return result
+            except StaleLease:
+                raise
+            except (AppError, TimeoutError) as exc:
+                if isinstance(exc, AppError) and exc.code == "cancelled":
+                    raise
+                failure = (
+                    exc
+                    if isinstance(exc, AppError)
+                    else AppError(
+                        "Analysis exceeded its time budget. Try a narrower question.", 504, "analysis_timeout"
+                    )
+                )
+                await send({"type": "tool_error", "message": failure.message, "code": failure.code})
+                return {"error": {"code": failure.code, "message": failure.message}, "retryable": False}
 
         agent = LlmAgent(
             name="retail_voice_analyst",
             model=Gemini(model=settings.live_model, client=client),
             instruction="You are a concise English retail analyst in a public demo workspace. Use analyze_data for EVERY question about data, even follow-ups; never invent numbers. Explain important inferred relationship assumptions. "
             + services.connectors.data_context
-            + " Speak briefly and refer to charts shown in the workspace. You cannot change databases or reveal credentials. On tool errors explain the limitation. Do not expose hidden reasoning.",
+            + " Speak briefly and refer to charts shown in the workspace. You cannot change databases or reveal credentials. On tool errors explain the limitation and ask the visitor what to do next. Never automatically repeat a failed analysis or invent a result. Do not expose hidden reasoning.",
             tools=[analyze_data],
         )
         session_id = f"{conversation_id}_voice_{guest_id}"
@@ -113,11 +131,14 @@ async def voice_session(websocket, services, guest_id, conversation_id, model=No
     except BaseException:
         heartbeat.cancel()
         await asyncio.gather(heartbeat, return_exceptions=True)
-        if client is not None:
-            await client.aio.aclose()
-        with contextlib.suppress(AppError):
-            await repo.finish("failed")
-        active_lease.reset(token)
+        try:
+            with contextlib.suppress(Exception):
+                if client is not None:
+                    await client.aio.aclose()
+            with contextlib.suppress(Exception):
+                await repo.finish("failed")
+        finally:
+            active_lease.reset(token)
         raise
 
     async def receive():
@@ -132,30 +153,37 @@ async def voice_session(websocket, services, guest_id, conversation_id, model=No
         )
         while True:
             data = await websocket.receive_json()
+            if not isinstance(data, dict):
+                raise AppError("Invalid voice message.")
             if data.get("type") == "audio":
                 encoded = data.get("data", "")
                 if not isinstance(encoded, str) or len(encoded) > 44_000:
                     raise AppError("Audio frame exceeds the limit.")
-                audio = base64.b64decode(encoded, validate=True)
+                try:
+                    audio = base64.b64decode(encoded, validate=True)
+                except (binascii.Error, ValueError) as exc:
+                    raise AppError("Invalid audio frame.") from exc
                 if len(audio) % 2:
                     raise AppError("Invalid PCM frame.")
                 queue.send_realtime(types.Blob(data=audio, mime_type="audio/pcm;rate=16000"))
             elif data.get("type") == "text":
-                text = str(data.get("text", ""))[:4000]
+                text = data.get("text")
+                if not isinstance(text, str) or not text.strip() or len(text) > 4000:
+                    raise AppError("Enter a voice message of 1–4,000 characters.")
                 queue.send_content(types.Content(role="user", parts=[types.Part(text=text)]))
             elif data.get("type") == "stop":
                 break
             elif data.get("type") == "ping":
                 await send({"type": "pong"})
+            else:
+                raise AppError("Unsupported voice message.")
 
     async def respond():
         async for event in runner.run_live(
             user_id="public-demo", session_id=session_id, live_request_queue=queue, run_config=config
         ):
             if event.error_code:
-                raise AppError(
-                    "The live model could not complete the conversation.", 502, "voice_model_error"
-                )
+                raise model_failure(event.error_code)
             if event.interrupted:
                 await send({"type": "interrupted"})
             for role, transcription in [
@@ -228,14 +256,22 @@ async def voice_session(websocket, services, guest_id, conversation_id, model=No
             )
     except WebSocketDisconnect:
         status = "interrupted"
-    except Exception:
+    except asyncio.CancelledError:
+        status = "interrupted"
+        raise
+    except Exception as exc:
         status = "failed"
-        logger.exception("Live session failed", extra={"run_id": run["id"]})
+        failure = model_failure(exc)
+        if failure is None:
+            logger.error("Live session failed run_id=%s error_type=%s", run["id"], type(exc).__name__)
         with contextlib.suppress(Exception):
             await send(
                 {
                     "type": "error",
-                    "message": "Live voice is unavailable. Check model access or reconnect; text chat is still available.",
+                    "message": failure.message
+                    if failure
+                    else "Live voice is unavailable. Reconnect or use text chat.",
+                    "code": failure.code if failure else "voice_failed",
                 }
             )
     finally:
@@ -244,15 +280,22 @@ async def voice_session(websocket, services, guest_id, conversation_id, model=No
             task.cancel()
         heartbeat.cancel()
         await asyncio.gather(*tasks, return_exceptions=True)
-        with contextlib.suppress(AppError):
-            await repo.finish(status)
-        if status != "complete":
+        try:
+            # Stop/limit/disconnect can cancel a coroutine while its DB worker is
+            # still running. Always request cancellation before forgetting it.
             try:
                 await services.connectors.cancel(run["id"])
             except Exception:
-                logger.exception(
-                    "Voice query cancellation could not be confirmed", extra={"run_id": run["id"]}
-                )
-        services.connectors.forget(run["id"])
-        await client.aio.aclose()
-        active_lease.reset(token)
+                logger.error("Voice query cancellation could not be confirmed run_id=%s", run["id"])
+            with contextlib.suppress(Exception):
+                for role in ("user", "assistant"):
+                    await flush_transcript(role)
+            with contextlib.suppress(Exception):
+                await repo.finish(status)
+        finally:
+            try:
+                services.connectors.forget(run["id"])
+                with contextlib.suppress(Exception):
+                    await client.aio.aclose()
+            finally:
+                active_lease.reset(token)

@@ -1,0 +1,44 @@
+{
+  "verified_at": "2026-10-17T08:12:07.810841+00:00",
+  "metadata_before": "resilience-source-before.json",
+  "metadata_after": "resilience-source-after.json",
+  "checks": {
+    "bigquery_counts_identical": true,
+    "bigquery_modified_timestamps_identical": true,
+    "bigquery_schemas_identical": true,
+    "bigquery_bytes_identical": true,
+    "no_source_upload_seed_or_reset": true
+  },
+  "tables": {
+    "sales_orders": {
+      "rows": 573348,
+      "modified": "2026-10-16T11:47:38.786000+00:00",
+      "bytes": 152689649
+    },
+    "sales_order_items": {
+      "rows": 1317941,
+      "modified": "2026-10-16T11:47:38.786000+00:00",
+      "bytes": 300360180
+    },
+    "sales_products": {
+      "rows": 200,
+      "modified": "2026-10-16T11:47:38.786000+00:00",
+      "bytes": 32100
+    },
+    "sales_returns": {
+      "rows": 97122,
+      "modified": "2026-10-16T11:47:38.786000+00:00",
+      "bytes": 20031451
+    },
+    "calendar": {
+      "rows": 1369,
+      "modified": "2026-10-16T11:47:38.786000+00:00",
+      "bytes": 193029
+    }
+  },
+  "postgres_verification": "Hosted cross-source analysis reads retail_timeseries.customer_profiles and reconciles the complete 25,000-customer dimension; see resilience-timeseries-deployed.json.",
+  "query_jobs_for_metadata_capture": 0,
+  "data_profile": "timeseries",
+  "source_row_limit": 30000,
+  "passed": true
+}

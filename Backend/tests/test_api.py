@@ -90,6 +90,8 @@ def test_voice_rejects_unapproved_origin(client, origin):
         {"type": "audio", "data": "bad"},
         {"type": "authenticate", "token": "wrong"},
         {"type": "authenticate"},
+        [],
+        None,
     ],
 )
 def test_voice_rejects_invalid_handshake(client, first):
@@ -154,3 +156,22 @@ def test_stream_drains_events_committed_between_poll_and_terminal_read(client, m
     assert response.text.count("id: 2\n") == 1
     replay = client.get("/api/v1/runs/finishing/events?after=2")
     assert replay.text == ""
+
+
+def test_voice_setup_storage_failure_returns_safe_error(client, monkeypatch):
+    from unittest.mock import AsyncMock
+
+    headers = guest(client)
+    conversation = client.post("/api/v1/conversations", headers=headers, json={}).json()
+    monkeypatch.setattr(
+        client.app.state.services.repo,
+        "conversation",
+        AsyncMock(side_effect=RuntimeError("private storage error")),
+    )
+    with client.websocket_connect(
+        f"/api/v1/conversations/{conversation['id']}/voice", headers={"Origin": "http://localhost:3000"}
+    ) as socket:
+        socket.send_json({"type": "authenticate", "token": headers["Authorization"].split()[1]})
+        event = socket.receive_json()
+        assert event["type"] == "error" and event["code"] == "voice_unavailable"
+        assert "private" not in event["message"]

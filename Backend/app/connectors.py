@@ -1,6 +1,7 @@
 import asyncio
 import datetime as dt
 import json
+import threading
 import time
 from decimal import Decimal
 from pathlib import Path
@@ -35,6 +36,7 @@ class Connectors:
         self.credentials = credentials
         self.jobs: dict[str, list[Any]] = {}
         self.cancelled: set[str] = set()
+        self.cancel_flags: dict[str, threading.Event] = {}
         self.pg_pool = None
         self.sql_connector = None
         self.bq = None
@@ -266,7 +268,10 @@ class Connectors:
         if self.settings.data_backend == "fixture":
             rows, columns = await asyncio.to_thread(self._fixture_query, normalized, source)
         elif source == "bigquery":
-            rows, columns, job_id, billed = await asyncio.to_thread(self._bigquery, normalized, run_id, leg)
+            flag = self.cancel_flags.setdefault(run_id, threading.Event())
+            rows, columns, job_id, billed = await asyncio.to_thread(
+                self._bigquery, normalized, run_id, leg, flag
+            )
         else:
             async with self.pg_pool.acquire(timeout=5) as connection:
                 async with connection.transaction(readonly=True):
@@ -331,15 +336,20 @@ class Connectors:
             rows = [dict(zip([c["name"] for c in columns], row)) for row in result.fetchall()]
         return rows, columns
 
-    def _bigquery(self, sql: str, run_id: str, leg: int | str):
+    def _bigquery(self, sql: str, run_id: str, leg: int | str, cancel_flag=None):
         from google.cloud import bigquery
 
+        cancel_flag = cancel_flag or self.cancel_flags.setdefault(run_id, threading.Event())
+        if cancel_flag.is_set() or run_id in self.cancelled:
+            raise AppError("Cancellation requested.", code="cancelled")
         bounded = f"SELECT * FROM ({sql}) AS bounded_result LIMIT {self.settings.source_row_limit + 1}"
         dry = self.bq.query(bounded, job_config=bigquery.QueryJobConfig(dry_run=True, use_query_cache=False))
         if (dry.total_bytes_processed or 0) > self.settings.bigquery_max_bytes:
             raise AppError(
                 "Estimated BigQuery scan exceeds 1 GiB. Narrow the date range or columns.", code="scan_budget"
             )
+        if cancel_flag.is_set() or run_id in self.cancelled:
+            raise AppError("Cancellation requested.", code="cancelled")
         job_id = f"abi_{run_id}_{leg}"
         config = bigquery.QueryJobConfig(
             maximum_bytes_billed=self.settings.bigquery_max_bytes,
@@ -359,8 +369,11 @@ class Connectors:
                     "A recovered query job belongs to different SQL.", 409, "query_identity_conflict"
                 )
         self.jobs.setdefault(run_id, []).append(job)
-        if run_id in self.cancelled:
-            job.cancel()
+        if cancel_flag.is_set() or run_id in self.cancelled:
+            try:
+                job.cancel()
+            finally:
+                self.jobs.pop(run_id, None)
             raise AppError("Cancellation requested.", code="cancelled")
         try:
             result = job.result(timeout=self.settings.query_timeout_seconds)
@@ -373,6 +386,7 @@ class Connectors:
 
     async def cancel(self, run_id: str) -> dict:
         self.cancelled.add(run_id)
+        self.cancel_flags.setdefault(run_id, threading.Event()).set()
         jobs = self.jobs.get(run_id, [])
         confirmed = bool(jobs)
         for job in jobs:
@@ -384,3 +398,5 @@ class Connectors:
     def forget(self, run_id: str):
         self.jobs.pop(run_id, None)
         self.cancelled.discard(run_id)
+        # In-flight threads hold this Event even after registry cleanup.
+        self.cancel_flags.pop(run_id, None)

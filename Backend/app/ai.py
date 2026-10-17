@@ -12,10 +12,10 @@ from google.adk.models.google_llm import Gemini
 from google.adk.runners import Runner
 from google.adk.sessions.base_session_service import GetSessionConfig
 from google.genai import Client, types
-from google.genai.errors import APIError
 from pydantic import ValidationError
 
 from app.errors import AppError
+from app.model_errors import TRANSIENT_MODEL_CODES, model_failure, model_retry_delay
 from app.model_selection import active_text_model
 from app.models import AnalysisPlan, Answer, FusionPlan, JoinKey, Projection, SourceQuery, VisualizationSpec
 
@@ -58,6 +58,7 @@ class AI:
                 project=settings.google_cloud_project,
                 location=settings.embedding_location,
                 credentials=credentials,
+                http_options=types.HttpOptions(timeout=10000, retry_options=types.HttpRetryOptions(attempts=1)),
             )
 
     async def close(self):
@@ -175,23 +176,19 @@ class AI:
                     "\nRepair the structured response without changing safeguards. Validation errors:\n"
                     + str(exc)[:2500]
                 )
-            except (AppError, APIError) as exc:
-                if isinstance(exc, APIError) and exc.code in {403, 404}:
-                    selected = active_text_model.get() or self.settings.text_model
-                    raise AppError(
-                        f"The selected analysis model ({selected}) is unavailable in this project or location. Choose another model in Settings.",
-                        502,
-                        "model_unavailable",
-                    ) from exc
-                retryable = (
-                    exc.code in {499, 500, 502, 503, 504}
-                    if isinstance(exc, APIError)
-                    else exc.code in {"model_timeout", "model_transient"}
-                )
-                if not retryable or attempt:
+            except Exception as exc:
+                failure = model_failure(exc, active_text_model.get() or self.settings.text_model)
+                if failure is None:
                     raise
-                logging.getLogger(__name__).warning("Retrying transient model request once: %s", name)
-                await asyncio.sleep(1)
+                delay = model_retry_delay(exc)
+                if failure.code not in TRANSIENT_MODEL_CODES or attempt or delay is None:
+                    if failure is exc:
+                        raise
+                    raise failure from exc
+                logging.getLogger(__name__).warning(
+                    "Retrying model request once agent=%s code=%s", name, failure.code
+                )
+                await asyncio.sleep(delay)
 
     async def _structured_once(
         self, name: str, instruction: str, prompt: str, output_type, conversation_id: str
@@ -250,32 +247,10 @@ class AI:
                 async for event in events:
                     if event.error_code:
                         logging.getLogger(__name__).warning(
-                            "Structured model event agent=%s code=%s reason=%s",
-                            name,
-                            event.error_code,
-                            str(event.error_message)[:300],
+                            "Structured model event agent=%s code=%s", name, event.error_code
                         )
-                        if str(event.error_code).upper() in {"403", "404", "PERMISSION_DENIED", "NOT_FOUND"}:
-                            selected = active_text_model.get() or self.settings.text_model
-                            raise AppError(
-                                f"The selected analysis model ({selected}) is unavailable in this project or location. Choose another model in Settings.",
-                                502,
-                                "model_unavailable",
-                            )
-                        transient = str(event.error_code).upper() in {
-                            "499",
-                            "500",
-                            "502",
-                            "503",
-                            "504",
-                            "CANCELLED",
-                            "UNAVAILABLE",
-                            "DEADLINE_EXCEEDED",
-                        }
-                        raise AppError(
-                            "Gemini could not complete this analysis. Try again later.",
-                            502,
-                            "model_transient" if transient else "model_error",
+                        raise model_failure(
+                            event.error_code, active_text_model.get() or self.settings.text_model
                         )
                     if event.is_final_response() and event.content:
                         text = "".join(part.text or "" for part in event.content.parts if not part.thought)

@@ -1,0 +1,293 @@
+{
+  "captured_at": "2026-10-17T07:54:49.597305+00:00",
+  "tables": {
+    "sales_orders": {
+      "rows": 573348,
+      "modified": "2026-10-16T11:47:38.786000+00:00",
+      "bytes": 152689649,
+      "schema": [
+        {
+          "name": "order_id",
+          "type": "STRING"
+        },
+        {
+          "name": "customer_id",
+          "type": "STRING"
+        },
+        {
+          "name": "store_id",
+          "type": "STRING"
+        },
+        {
+          "name": "order_timestamp",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "order_date",
+          "type": "DATE"
+        },
+        {
+          "name": "month",
+          "type": "STRING"
+        },
+        {
+          "name": "region",
+          "type": "STRING"
+        },
+        {
+          "name": "channel",
+          "type": "STRING"
+        },
+        {
+          "name": "currency",
+          "type": "STRING"
+        },
+        {
+          "name": "gross_sales",
+          "type": "NUMERIC"
+        },
+        {
+          "name": "discount_amount",
+          "type": "NUMERIC"
+        },
+        {
+          "name": "revenue",
+          "type": "NUMERIC"
+        },
+        {
+          "name": "tax_amount",
+          "type": "NUMERIC"
+        },
+        {
+          "name": "shipping_amount",
+          "type": "NUMERIC"
+        },
+        {
+          "name": "total_paid",
+          "type": "NUMERIC"
+        },
+        {
+          "name": "units",
+          "type": "INTEGER"
+        },
+        {
+          "name": "status",
+          "type": "STRING"
+        },
+        {
+          "name": "campaign_id",
+          "type": "STRING"
+        },
+        {
+          "name": "record_hash",
+          "type": "STRING"
+        }
+      ]
+    },
+    "sales_order_items": {
+      "rows": 1317941,
+      "modified": "2026-10-16T11:47:38.786000+00:00",
+      "bytes": 300360180,
+      "schema": [
+        {
+          "name": "order_item_id",
+          "type": "STRING"
+        },
+        {
+          "name": "order_id",
+          "type": "STRING"
+        },
+        {
+          "name": "order_date",
+          "type": "DATE"
+        },
+        {
+          "name": "product_id",
+          "type": "STRING"
+        },
+        {
+          "name": "quantity",
+          "type": "INTEGER"
+        },
+        {
+          "name": "unit_price",
+          "type": "NUMERIC"
+        },
+        {
+          "name": "unit_cost",
+          "type": "NUMERIC"
+        },
+        {
+          "name": "gross_amount",
+          "type": "NUMERIC"
+        },
+        {
+          "name": "discount_amount",
+          "type": "NUMERIC"
+        },
+        {
+          "name": "line_revenue",
+          "type": "NUMERIC"
+        },
+        {
+          "name": "cost_amount",
+          "type": "NUMERIC"
+        },
+        {
+          "name": "promotion_id",
+          "type": "STRING"
+        },
+        {
+          "name": "record_hash",
+          "type": "STRING"
+        }
+      ]
+    },
+    "sales_products": {
+      "rows": 200,
+      "modified": "2026-10-16T11:47:38.786000+00:00",
+      "bytes": 32100,
+      "schema": [
+        {
+          "name": "product_id",
+          "type": "STRING"
+        },
+        {
+          "name": "product_name",
+          "type": "STRING"
+        },
+        {
+          "name": "category",
+          "type": "STRING"
+        },
+        {
+          "name": "brand",
+          "type": "STRING"
+        },
+        {
+          "name": "unit_price",
+          "type": "NUMERIC"
+        },
+        {
+          "name": "unit_cost",
+          "type": "NUMERIC"
+        },
+        {
+          "name": "launched_on",
+          "type": "DATE"
+        },
+        {
+          "name": "record_hash",
+          "type": "STRING"
+        }
+      ]
+    },
+    "sales_returns": {
+      "rows": 97122,
+      "modified": "2026-10-16T11:47:38.786000+00:00",
+      "bytes": 20031451,
+      "schema": [
+        {
+          "name": "return_id",
+          "type": "STRING"
+        },
+        {
+          "name": "order_id",
+          "type": "STRING"
+        },
+        {
+          "name": "order_item_id",
+          "type": "STRING"
+        },
+        {
+          "name": "product_id",
+          "type": "STRING"
+        },
+        {
+          "name": "order_date",
+          "type": "DATE"
+        },
+        {
+          "name": "return_date",
+          "type": "DATE"
+        },
+        {
+          "name": "quantity",
+          "type": "INTEGER"
+        },
+        {
+          "name": "refund_amount",
+          "type": "NUMERIC"
+        },
+        {
+          "name": "returned_cost",
+          "type": "NUMERIC"
+        },
+        {
+          "name": "reason",
+          "type": "STRING"
+        },
+        {
+          "name": "record_hash",
+          "type": "STRING"
+        }
+      ]
+    },
+    "calendar": {
+      "rows": 1369,
+      "modified": "2026-10-16T11:47:38.786000+00:00",
+      "bytes": 193029,
+      "schema": [
+        {
+          "name": "calendar_date",
+          "type": "DATE"
+        },
+        {
+          "name": "year",
+          "type": "INTEGER"
+        },
+        {
+          "name": "quarter",
+          "type": "INTEGER"
+        },
+        {
+          "name": "month",
+          "type": "STRING"
+        },
+        {
+          "name": "month_start",
+          "type": "DATE"
+        },
+        {
+          "name": "week_start",
+          "type": "DATE"
+        },
+        {
+          "name": "iso_year",
+          "type": "INTEGER"
+        },
+        {
+          "name": "iso_week",
+          "type": "INTEGER"
+        },
+        {
+          "name": "day_of_week",
+          "type": "INTEGER"
+        },
+        {
+          "name": "is_weekend",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "is_promotion_day",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "record_hash",
+          "type": "STRING"
+        }
+      ]
+    }
+  },
+  "query_jobs_submitted": 0
+}

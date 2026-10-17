@@ -13,6 +13,7 @@ from app.chart_presentation import normalized_spec, saved_rows
 from app.connectors import json_rows
 from app.errors import AppError
 from app.fusion import fuse
+from app.model_errors import PERMANENT_MODEL_CODES, TRANSIENT_MODEL_CODES
 from app.model_selection import active_text_model, model_evidence
 from app.models import AnalysisPlan, QueryResult
 from app.report_exports import FORMATS, render
@@ -119,7 +120,8 @@ class ReportEngine:
                 raise
             elif (
                 isinstance(exc, AppError)
-                and (exc.status >= 500 or exc.code in {"model_transient", "model_timeout"})
+                and exc.code not in PERMANENT_MODEL_CODES
+                and (exc.status >= 500 or exc.code in TRANSIENT_MODEL_CODES)
                 and current["attempts"] < 3
             ):
                 # Do not acknowledge retryable failures. Lease expires; checkpointed work is reused.
@@ -136,17 +138,19 @@ class ReportEngine:
             graph.cancel()
             beat.cancel()
             await asyncio.gather(graph, beat, return_exceptions=True)
-            latest = await self.repo.get("report_runs", run_id)
-            if (
-                latest["status"] != "complete"
-                and latest["owner"] == lease["owner"]
-                and latest["generation"] == lease["generation"]
-            ):
-                with contextlib.suppress(Exception):
-                    await self.connectors.cancel(run_id)
-            self.connectors.forget(run_id)
-            active_text_model.reset(token)
-            active_report_lease.reset(report_token)
+            try:
+                latest = await self.repo.get("report_runs", run_id)
+                if (
+                    latest["status"] != "complete"
+                    and latest["owner"] == lease["owner"]
+                    and latest["generation"] == lease["generation"]
+                ):
+                    with contextlib.suppress(Exception):
+                        await self.connectors.cancel(run_id)
+            finally:
+                self.connectors.forget(run_id)
+                active_text_model.reset(token)
+                active_report_lease.reset(report_token)
 
     async def prepare(self, run, lease):
         await self.stage(lease, "Preparing scope")

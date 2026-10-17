@@ -192,3 +192,18 @@ test("analysis model is included in the analyst voice handshake", async () => {
   assert.equal(harness.effects.frames[0].model, "gemini-3.5-flash-lite");
   harness.voice.stop();
 });
+
+test('malformed server frames fail safely and release audio rather than rejecting the handler', async () => {
+  const {voice,effects}=voiceHarness({textOnly:true});
+  await voice.start('chat');
+  await effects.socket.onmessage({data:'{broken'});
+  assert.equal(effects.closed,1);
+  assert.ok(effects.events.some(e=>e.type==='error'));
+});
+
+test('late ready after stop cannot reactivate a closed voice UI', async () => {
+  const {voice,effects}=voiceHarness({textOnly:true});
+  await voice.start('chat');voice.stop();
+  await effects.socket.onmessage({data:JSON.stringify({type:'ready'})});
+  assert.ok(!effects.events.some(e=>e.type==='ready'));
+});

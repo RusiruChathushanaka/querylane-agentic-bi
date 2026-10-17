@@ -699,6 +699,11 @@ export default function Workspace() {
               ((replace ? "" : previous) + String(event.text)).slice(-1000),
             );
           }
+          if (event.type === "tool_error") {
+            toast.error("Voice analysis could not finish", {
+              description: String(event.message),
+            });
+          }
           if (event.type === "artifact") {
             const data = event.data as { id: string };
             void loadArtifact(data.id);

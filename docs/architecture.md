@@ -16,6 +16,7 @@ flowchart LR
     API --> ADK[ADK planner + interpreter]
     Voice --> Live[ADK run_live / Gemini Live]
     Live -->|analyze_data / distinct analysis ID| Analysis[Controlled analysis service]
+    ADK --> Failures[Classified model errors / bounded retries]
     ADK --> Analysis
     Analysis --> Guard[SQL AST + explicit key joins + budgets]
     Guard --> BQ[Demo BigQuery dataset]
@@ -35,7 +36,7 @@ flowchart LR
     API --> Secrets[Secret Manager / workload identity]
 ```
 
-The [landing/workspace route split](landing-page.md) was introduced in frontend `00012-mv5`. The subsequent [analytics/voice fix release](evaluation/e2e-fixes-deployed.md), verified on 17 October 2026, serves frontend `00013-hrz`, backend `00018-ctv` and private worker `00007-pfq`. The landing page has no analytics or voice client and makes no backend requests. `/app` owns conversation history and shared links. Existing library/detail routes are unchanged.
+The [landing/workspace route split](landing-page.md) was introduced in frontend `00012-mv5`. The latest [resilience release](evaluation/resilience-deployed.md), verified on 17 October 2026, serves frontend `00014-8p8`, backend `00019-kwg` and private worker `00008-xwl`; the preceding [analytics/voice fix release](evaluation/e2e-fixes-deployed.md) remains historical evidence. The landing page has no analytics or voice client and makes no backend requests. `/app` owns conversation history and shared links. Existing library/detail routes are unchanged.
 
 The frontend contains no database credentials or Google model keys. `/api/config` supplies only the public backend URL at runtime. Direct browser requests use explicit CORS origins; the WebSocket validates Origin and its first authentication frame. Guest tokens identify requests and cancellation ownership without providing account privacy.
 
@@ -49,6 +50,7 @@ The voice bridge and skill author are handlers within the public backend, not ad
 | Workspace route compatibility | `Frontend/src/app/app/page.tsx`, `Frontend/next.config.ts`, `Frontend/src/lib/workspace-links.ts` | [Landing page](landing-page.md) |
 | Workspace and runtime API configuration | `Frontend/src/components/workspace.tsx`, `Frontend/src/lib/api.ts`, `Frontend/src/app/api/config/route.ts` | [Setup](setup.md), [settings](settings.md) |
 | Public routing and ordinary analysis | `Backend/app/main.py`, `analysis.py`, `ai.py`, `repository.py` | `Backend/app/models.py`, [ADRs](adr/) |
+| Model failure policy and browser recovery | `Backend/app/model_errors.py`, `ai.py`, `voice.py`; `Frontend/src/lib/api.ts`, `voice.ts` | [Error handling](error-handling.md) |
 | SQL and cross-source fusion | `Backend/app/connectors.py`, `sql_guard.py`, `fusion.py` | [Retail schema](retail-timeseries-schema.md), [ADR 0003](adr/0003-bounded-cross-source-fusion.md) |
 | Saved-result chart preparation | `Backend/app/chart_presentation.py`, `Frontend/src/components/charts/insightful-chart.tsx` | [Charts](charts.md) |
 | Shared dashboards and downloads | `Backend/app/dashboards.py`, `dashboard_exports.py`, `Frontend/src/components/dashboard-workspace.tsx`, `dashboard-actions.tsx` | `Backend/app/dashboard_models.py`, [dashboards](dashboards.md) |
@@ -77,6 +79,10 @@ The browser chooses a pinned analysis model from `GET /api/v1/models`. The backe
 7. Release the lease only if its run ID and fencing generation still match.
 
 LLM generation uses LOW thinking, bounded output, 45-second HTTP deadlines, a 55-second structured-call deadline, and a 180-second analysis deadline. Live sessions are limited to three minutes. These are execution controls, not a guaranteed monetary spending cap.
+
+## Errors and recovery
+
+The [resilience policy](error-handling.md) separates tool-free model retries from SQL repair, saved-event replay, explicit Live reconnect and durable report redelivery. Shared model classification covers transient statuses/transport failures without leaking provider bodies; permanent errors fail fast. Browser JSON calls and idle streams have deadlines. Analyst tools return expected failures without ending the conversation. Every analyst voice exit requests query cancellation, with thread-held flags surviving registry cleanup. Context/task cleanup remains local and reliable when persistence fails; fenced leases and report checkpoints govern recovery. The [local fault-injection audit](evaluation/error-resilience-20261017.md) and [deployed assessment](evaluation/resilience-deployed.md) separate injected outage/race coverage from real hosted model, voice and report acceptance.
 
 ## Persistence
 
@@ -170,8 +176,8 @@ The private worker, queue, export bucket and scheduled reconciler are **deployed
 
 Follow [deployment-guide.md](deployment-guide.md) for routine releases, rollback and runtime verification. A frontend/backend dashboard release does not automatically require a report-worker release; check changed workflow code and compatibility before selecting services. Explicitly preserve `timeseries` on backend releases and retain report dispatch configuration. Analytical uploads, skill seeding, shared-history reset and application deployment are separate operations.
 
-The latest [deployed fix assessment](evaluation/e2e-fixes-deployed.md), verified on 17 October 2026, records the SQL join guard, per-invocation query identities, transcript replacement/deduplication and table-region fixes. It passed 317 backend tests with one existing skip, 35 frontend tests, lint/types/build, 40 hosted analytics checks, 4 repeated-tool Live checks, 9 synthetic spoken-browser checks, 26 report checks and 10 dashboard checks. Four axe scans reported zero violations. [Saved evidence](evaluation/e2e-fixes-saved-evidence.json) independently validates forecast promotion/backtests and all five dashboard export formats; [document evidence](evaluation/e2e-fixes-document-content.json) reconciles PDF/Word figures, versions and checksums.
+The latest [deployed resilience assessment](evaluation/resilience-deployed.md), verified on 17 October 2026, records bounded model retries, expected Live tool failure recovery, cancellation flags that survive registry cleanup, reliable finalization and browser HTTP/SSE recovery. Local gates passed 340 backend tests with one existing skip, 44 frontend tests, Ruff, lint, types and production build. Hosted acceptance passed 40 analytics, 4 repeated-tool Live, 7 voice recovery, 5 author, 9 synthetic spoken-browser, 3 reconnect/permission and 26 report checks. The saved report reader passed seven browser assertions and an axe scan with zero violations. Prior dashboard-specific checks remain [dated evidence](evaluation/e2e-fixes-deployed.md).
 
-Both analytical runtimes retain `DATA_PROFILE=timeseries` and `SOURCE_ROW_LIMIT=30000`. [Source preservation evidence](evaluation/e2e-fixes-source-preservation.json) records identical counts and modification timestamps before/after the release: 573,348 orders, 1,317,941 line items and 1,369 calendar days. The complete 45-month and daily results reconcile to USD 354,425,112.20; source data was not regenerated or uploaded.
+Both analytical runtimes retain `DATA_PROFILE=timeseries` and `SOURCE_ROW_LIMIT=30000`. [Source preservation evidence](evaluation/resilience-source-preservation.json) records identical BigQuery counts, bytes, schemas and modification timestamps: 573,348 orders, 1,317,941 line items and 1,369 calendar days. The complete 45-month and daily results reconcile to USD 354,425,112.20; source data was not regenerated or uploaded. The private worker retains existing queue, scheduler and export configuration. One capacity-related reconciler rejection recovered on the next scheduled minute; three error traces came from the intentional owner-cancellation test ([logs](evaluation/resilience-runtime-logs.json)).
 
-These are recorded checks, not tests rerun by editing this document. Synthetic speech exercised the real browser AudioWorklet, hosted Live runtime and source queries; physical microphone/speaker quality, Safari/Firefox, full screen-reader use and production worker crash injection remain outside that verification. See the assessment for complete boundaries. Preserve the [original failed assessment](evaluation/e2e-deployed-20261017.md) and its artifacts as historical evidence. The generated [Graphify snapshot](../graphify-out/README.md) maps current source/documents with explicit extraction limitations; it is not runtime or deployment evidence.
+These are recorded checks, not tests rerun by editing this document. Synthetic speech exercised the real browser AudioWorklet, hosted Live runtime and source queries; physical microphone/speaker quality, Safari/Firefox, full screen-reader use and production worker crash injection remain outside that verification. See the assessment for complete boundaries. Preserve the [original failed assessment](evaluation/e2e-deployed-20261017.md) and its artifacts as historical evidence. The generated [Graphify snapshot](../graphify-out/README.md) predates the resilience changes; the curated Mermaid diagrams are synchronized with this document. Its extraction has explicit limitations; it is not runtime or deployment evidence.

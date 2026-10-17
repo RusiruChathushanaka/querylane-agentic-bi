@@ -1,0 +1,95 @@
+{
+  "verified_at": "2026-10-17T08:12:07.810841+00:00",
+  "runtime_spec_preserved": true,
+  "services": {
+    "agentic-bi-backend": {
+      "ready_revision": "agentic-bi-backend-00019-kwg",
+      "traffic": [
+        {
+          "percent": 100,
+          "revisionName": "agentic-bi-backend-00019-kwg"
+        }
+      ],
+      "previous_revision": "agentic-bi-backend-00018-ctv",
+      "service_account": "agentic-bi-backend@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
+      "resources": {
+        "limits": {
+          "cpu": "1",
+          "memory": "2Gi"
+        }
+      },
+      "container_concurrency": 8,
+      "timeout_seconds": 3600
+    },
+    "agentic-bi-report-worker": {
+      "ready_revision": "agentic-bi-report-worker-00008-xwl",
+      "traffic": [
+        {
+          "percent": 100,
+          "revisionName": "agentic-bi-report-worker-00008-xwl"
+        }
+      ],
+      "previous_revision": "agentic-bi-report-worker-00007-pfq",
+      "service_account": "agentic-bi-report-worker@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
+      "resources": {
+        "limits": {
+          "cpu": "2",
+          "memory": "2Gi"
+        }
+      },
+      "container_concurrency": 1,
+      "timeout_seconds": 660
+    },
+    "agentic-bi-frontend": {
+      "ready_revision": "agentic-bi-frontend-00014-8p8",
+      "traffic": [
+        {
+          "percent": 100,
+          "revisionName": "agentic-bi-frontend-00014-8p8"
+        }
+      ],
+      "previous_revision": "agentic-bi-frontend-00013-hrz",
+      "service_account": "agentic-bi-frontend@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
+      "resources": {
+        "limits": {
+          "cpu": "1000m",
+          "memory": "512Mi"
+        }
+      },
+      "container_concurrency": 40,
+      "timeout_seconds": 300
+    }
+  },
+  "queue": {
+    "name": "projects/project-e8b1593d-009a-4822-abf/locations/asia-southeast1/queues/agentic-bi-reports",
+    "state": "RUNNING",
+    "rateLimits": {
+      "maxBurstSize": 10,
+      "maxConcurrentDispatches": 2,
+      "maxDispatchesPerSecond": 2.0
+    },
+    "retryConfig": {
+      "maxAttempts": 3,
+      "maxBackoff": "60s",
+      "maxDoublings": 16,
+      "minBackoff": "30s"
+    }
+  },
+  "scheduler": {
+    "name": "projects/project-e8b1593d-009a-4822-abf/locations/asia-southeast1/jobs/agentic-bi-report-reconcile",
+    "state": "ENABLED",
+    "schedule": "* * * * *",
+    "retryConfig": {
+      "maxBackoffDuration": "3600s",
+      "maxDoublings": 5,
+      "maxRetryDuration": "0s",
+      "minBackoffDuration": "5s"
+    },
+    "lastAttemptTime": "2026-10-17T08:10:04.411940Z",
+    "status": {}
+  },
+  "worker_unauthenticated_status": 403,
+  "iam_secret_or_infrastructure_changes": false,
+  "data_profile": "timeseries",
+  "source_row_limit": 30000
+}

@@ -91,16 +91,20 @@ class AnalysisService:
             analysis.cancel()
             heartbeat.cancel()
             await asyncio.gather(analysis, heartbeat, return_exceptions=True)
-            if status != "complete":
+            try:
+                if status != "complete":
+                    try:
+                        await self.connectors.cancel(run["id"])
+                    except Exception:
+                        logger.error("Query cancellation could not be confirmed run_id=%s", run["id"])
                 try:
-                    await self.connectors.cancel(run["id"])
+                    await self.repo.finish(status)
                 except Exception:
-                    logger.exception("Query cancellation could not be confirmed", extra={"run_id": run["id"]})
-            with contextlib.suppress(AppError):
-                await self.repo.finish(status)
-            self.connectors.forget(run["id"])
-            active_lease.reset(token)
-            self.tasks.pop(run["id"], None)
+                    logger.error("Analysis finalization unavailable run_id=%s; lease will expire", run["id"])
+            finally:
+                self.connectors.forget(run["id"])
+                active_lease.reset(token)
+                self.tasks.pop(run["id"], None)
 
     async def execute(self, question: str, conversation_id: str):
         lease = active_lease.get()

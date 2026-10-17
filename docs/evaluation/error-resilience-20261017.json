@@ -1,0 +1,87 @@
+{
+  "recorded_at": "2026-10-17T07:51:08.879997+00:00",
+  "scope": "Local source audit, fault injection and isolated Chromium fixture browser; no deployed verification",
+  "source_base_commit": "598b72f78020c9116051a87ca1424b9965810dd3",
+  "source_is_working_tree": true,
+  "reproduction": {
+    "backend_initial": {
+      "failed": 9,
+      "passed": 3
+    },
+    "frontend_initial": {
+      "failed": 5,
+      "passed": 11
+    },
+    "late_bigquery_submission_race": "failed before cancellation Event fix"
+  },
+  "verification": {
+    "backend": {
+      "passed": 340,
+      "skipped": 1,
+      "duration_seconds": 43.98,
+      "warning": "Existing Starlette/httpx deprecation"
+    },
+    "frontend_tests": {
+      "passed": 44
+    },
+    "backend_ruff": "passed from Backend/",
+    "frontend_lint": "passed",
+    "typescript": "passed",
+    "production_build": "passed; isolated .next-resilience-build, all routes built",
+    "git_diff_check": "passed",
+    "pre_final_full_suite_targeted": {
+      "targeted_passed": 28
+    },
+    "local_links_checked": 193,
+    "mermaid_diagrams_synchronized": 2
+  },
+  "browser": {
+    "engine": "Chromium via agent-browser 0.39.1",
+    "frontend": "http://127.0.0.1:3011",
+    "backend": "http://127.0.0.1:8029",
+    "profile": "legacy deterministic fixtures, explicitly labeled; no live AI",
+    "normal_question": "monthly chart displayed",
+    "injected_submit_failure": "error banner/toast visible; draft preserved and submit reenabled",
+    "restored_submit": "regional result displayed; exactly two user messages, no automatic submission replay",
+    "microphone_denial": "simulated NotAllowedError; error visible, text usable, microphone controls removed",
+    "corrupt_guest_storage": "actual sessionStorage malformed JSON replaced after reloading/submitting; result visible, exactly one user message",
+    "uncaught_errors_after_final_reload": 0
+  },
+  "cloud_operations": {
+    "model_calls": 0,
+    "analytical_queries": 0,
+    "deployments": 0,
+    "source_uploads": 0,
+    "iam_changes": 0,
+    "history_or_quota_resets": 0,
+    "github_pushes": 0
+  },
+  "limits": [
+    "No live Gemini/provider outage was injected in production.",
+    "No physical microphone, speaker quality, Safari/Firefox or full screen-reader verification.",
+    "Existing emulator-dependent durability variant skipped; no new Firestore emulator run.",
+    "Cloud Tasks production redelivery/crash injection was not performed; existing deterministic recovery tests passed.",
+    "No exactly-once guarantee for unacknowledged upstream Live tool delivery.",
+    "BigQuery cancellation is a request, not a terminal-state guarantee.",
+    "Native Graphify output remains the preceding dated snapshot; curated Mermaid diagrams reflect this audit."
+  ],
+  "source_sha256": {
+    "Backend/app/model_errors.py": "160e43fd7d32591db4056b77e18428700486e8b11416893ce77111d0894b9542",
+    "Backend/app/ai.py": "99dac85c3320d178bf3bb9cdaebfbfb1c4b2a2f5f66bca61c4cb693f00c085b2",
+    "Backend/app/voice.py": "fc2844da46efa9505d1d9b4168a2df120887fa223c9b122508b794db95ede087",
+    "Backend/app/skill_author_voice.py": "8487946cc9191054fc4ebdc39721a3005bfcf9c840eac108be0ce979090c0671",
+    "Backend/app/analysis.py": "ba2966429143493675f9f9fa7aa6d0bcc84cf1a742e53284a5a11f36cb5387be",
+    "Backend/app/report_engine.py": "bb4149c9a681e281929f62dd883fa91e9a8943b3cc7f0b7527d9e80722081d0c",
+    "Backend/app/connectors.py": "62c77d2caf14d74f8ce2259269ed964bc06250ae0d353206020d588404c2d79f",
+    "Backend/app/main.py": "b95b43d3440690cf5e1d819d5596e3e62fbdc3db54dc95ba126c8c3fbf8ef1a6",
+    "Frontend/src/lib/api.ts": "7aef933214639b257bd3270b7483ef912f981d9414ac3b47da50cfcc1e0c90f0",
+    "Frontend/src/lib/voice.ts": "70cd983d6529b7c3da30f81b17a8543ccb73f691f6f142a35058ff1c25ff7209",
+    "Frontend/src/components/workspace.tsx": "01d3ca938494d08410cf2fe78ba4080ceb325ab2032968fe954b02d06f0b4b81",
+    "Backend/tests/test_ai_resilience.py": "5a7cece6d10b8f34d5ac00e19f472ce4817be3eac76490f3ff09ee1d05aa7ab6",
+    "Backend/tests/test_reports.py": "4f94bf145c039a5ffc14da9d0bd5af433436009d11595c6e2cbba45f830a11d2",
+    "Backend/tests/test_api.py": "369d5abcd89f9ed9f43e992994a533f4bb0fd5ca2c9d11e4c9c63b43b2525399",
+    "Frontend/tests/api-recovery.test.mjs": "295a3eb81c01896f823e757d96b576713e3ef41a793e99b9e35c2c33e998465b",
+    "Frontend/tests/voice-preferences.test.mjs": "9bc782e122a01f87c0dda0526dc94bf33435dbc2f5731978ea825d17bb020878",
+    "Backend/tests/test_voice_regressions.py": "0ba84eff5867edaa63f152b6e56a1ad43c25fea7ac55b0d182e73abf5211a09d"
+  }
+}

@@ -1,0 +1,145 @@
+{
+  "verified_at": "2026-10-17T08:12:07.810841+00:00",
+  "scope": "New serving revisions, warning/error inspection through test-window capture plus reconciler requests through 08:10 UTC; not a continuous monitor.",
+  "entries": [
+    {
+      "timestamp": "2026-10-17T08:05:11.920488Z",
+      "severity": "ERROR",
+      "revision": "agentic-bi-report-worker-00008-xwl",
+      "http_status": null,
+      "path": null,
+      "classification": "expected_owner_cancellation",
+      "message_summary": "RuntimeError: Error in plugin 'report_policy' during 'before_model_callback' callback: Report cancellation requested."
+    },
+    {
+      "timestamp": "2026-10-17T08:05:11.920451Z",
+      "severity": "ERROR",
+      "revision": "agentic-bi-report-worker-00008-xwl",
+      "http_status": null,
+      "path": null,
+      "classification": "expected_owner_cancellation",
+      "message_summary": "app.errors.AppError: Report cancellation requested."
+    },
+    {
+      "timestamp": "2026-10-17T08:05:11.870306Z",
+      "severity": "ERROR",
+      "revision": "agentic-bi-report-worker-00008-xwl",
+      "http_status": null,
+      "path": null,
+      "classification": "expected_owner_cancellation",
+      "message_summary": "app.errors.AppError: Report cancellation requested."
+    },
+    {
+      "timestamp": "2026-10-17T08:05:11.313983Z",
+      "severity": "WARNING",
+      "revision": "agentic-bi-backend-00019-kwg",
+      "http_status": 403,
+      "path": "/api/v1/report-runs/a45f9c9cad53e98b5f97bb796bed2cd0/cancel",
+      "classification": "intentional_auth_origin_or_revision_guard",
+      "message_summary": null
+    },
+    {
+      "timestamp": "2026-10-17T08:04:36.943900Z",
+      "severity": "WARNING",
+      "revision": "agentic-bi-backend-00019-kwg",
+      "http_status": 409,
+      "path": "/api/v1/reports/4cdb492ffa39d745be7c53c00ebc25c1",
+      "classification": "intentional_auth_origin_or_revision_guard",
+      "message_summary": null
+    },
+    {
+      "timestamp": "2026-10-17T08:02:27.700830Z",
+      "severity": "WARNING",
+      "revision": "agentic-bi-backend-00019-kwg",
+      "http_status": 403,
+      "path": "/api/v1/conversations/dd1749003b804d06b644ba44fd0d74be/voice",
+      "classification": "intentional_auth_origin_or_revision_guard",
+      "message_summary": null
+    },
+    {
+      "timestamp": "2026-10-17T08:02:04.992367Z",
+      "severity": "WARNING",
+      "revision": "agentic-bi-report-worker-00008-xwl",
+      "http_status": 429,
+      "path": "/internal/reports/reconcile",
+      "classification": "worker_capacity_reconciler_rejection",
+      "message_summary": null
+    },
+    {
+      "timestamp": "2026-10-17T08:01:56.741456Z",
+      "severity": "WARNING",
+      "revision": "agentic-bi-report-worker-00008-xwl",
+      "http_status": 403,
+      "path": "/health/live",
+      "classification": "intentional_auth_origin_or_revision_guard",
+      "message_summary": null
+    },
+    {
+      "timestamp": "2026-10-17T08:01:14.609512Z",
+      "severity": "WARNING",
+      "revision": "agentic-bi-backend-00019-kwg",
+      "http_status": 401,
+      "path": "/api/v1/report-runs/4cdb492ffa39d745be7c53c00ebc25c1/cancel",
+      "classification": "intentional_auth_origin_or_revision_guard",
+      "message_summary": null
+    }
+  ],
+  "error_entries": 3,
+  "expected_cancellation_error_entries": 3,
+  "unexpected_application_error_entries": 0,
+  "capacity_warning_entries": 1,
+  "reconciler_requests": [
+    {
+      "timestamp": "2026-10-17T08:10:04.429246Z",
+      "status": 200,
+      "revision": "agentic-bi-report-worker-00008-xwl"
+    },
+    {
+      "timestamp": "2026-10-17T08:09:04.934083Z",
+      "status": 200,
+      "revision": "agentic-bi-report-worker-00008-xwl"
+    },
+    {
+      "timestamp": "2026-10-17T08:08:04.958236Z",
+      "status": 200,
+      "revision": "agentic-bi-report-worker-00008-xwl"
+    },
+    {
+      "timestamp": "2026-10-17T08:07:04.332036Z",
+      "status": 200,
+      "revision": "agentic-bi-report-worker-00008-xwl"
+    },
+    {
+      "timestamp": "2026-10-17T08:06:04.978960Z",
+      "status": 200,
+      "revision": "agentic-bi-report-worker-00008-xwl"
+    },
+    {
+      "timestamp": "2026-10-17T08:05:04.949274Z",
+      "status": 200,
+      "revision": "agentic-bi-report-worker-00008-xwl"
+    },
+    {
+      "timestamp": "2026-10-17T08:04:04.418426Z",
+      "status": 200,
+      "revision": "agentic-bi-report-worker-00008-xwl"
+    },
+    {
+      "timestamp": "2026-10-17T08:03:04.367173Z",
+      "status": 200,
+      "revision": "agentic-bi-report-worker-00008-xwl"
+    },
+    {
+      "timestamp": "2026-10-17T08:02:04.992367Z",
+      "status": 429,
+      "revision": "agentic-bi-report-worker-00008-xwl"
+    },
+    {
+      "timestamp": "2026-10-17T08:01:04.321185Z",
+      "status": 200,
+      "revision": "agentic-bi-report-worker-00008-xwl"
+    }
+  ],
+  "recovery": "One 429 at 08:02:04 UTC while worker capacity was occupied; next scheduled minute and subsequent recorded invocations returned 200. No configuration or concurrency boundary was broadened.",
+  "production_provider_outage_injected": false
+}

@@ -1,0 +1,214 @@
+{
+  "verified_at": "2026-10-17T08:01:11.743625+00:00",
+  "backend": "https://agentic-bi-backend-wekihucn7q-as.a.run.app",
+  "frontend": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app",
+  "checks": {
+    "production_dispatch_enabled": true,
+    "larger_profile_preserved": true,
+    "idempotent_report_admission": true,
+    "mutations_require_guest_credentials": true,
+    "ordinary_chat_during_report": true,
+    "private_worker_completes_report": true,
+    "report_profile_and_evidence": true,
+    "reviewed_narrative": true,
+    "monthly_revenue_matches_independent_ledger": true,
+    "prediction_or_explicit_limitation": true,
+    "download_pdf": true,
+    "download_docx": true,
+    "download_data": true,
+    "data_manifest_version_and_claims": true,
+    "full_csv_checksums_and_row_counts": true,
+    "word_is_editable_document": true,
+    "stale_metadata_edit_rejected": true,
+    "presentation_revision_complete": true,
+    "revision_reuses_immutable_artifacts": true,
+    "original_revision_unchanged": true,
+    "persisted_event_replay": true,
+    "report_chart_can_be_pinned": true,
+    "dashboard_retains_deleted_report_evidence": true,
+    "recoverable_report_deletion": true,
+    "cancellation_requires_initiating_guest": true,
+    "cancellation_confirmed": true
+  },
+  "source_upload_or_reset": false,
+  "conversation_id": "9f331543a32249f1a59741319798e970",
+  "report_id": "4cdb492ffa39d745be7c53c00ebc25c1",
+  "run_id": "4cdb492ffa39d745be7c53c00ebc25c1",
+  "outcome": {
+    "clarification_requirements": null,
+    "clarification": null,
+    "generation": 1,
+    "workflow_version": 1,
+    "error": null,
+    "created_at": "2026-10-17T08:01:13.694125+00:00",
+    "version": 1,
+    "report_id": "4cdb492ffa39d745be7c53c00ebc25c1",
+    "sequence": 8,
+    "id": "4cdb492ffa39d745be7c53c00ebc25c1",
+    "delivery": 0,
+    "expires_at": 1792245673.8324795,
+    "status": "complete",
+    "revision": 1,
+    "cancel_requested": false,
+    "stage": "Preparing downloads",
+    "attempts": 1,
+    "conversation_id": "9f331543a32249f1a59741319798e970",
+    "updated_at": "2026-10-17T08:04:30.335598+00:00",
+    "clarifications": []
+  },
+  "artifact_ids": [
+    "c3fccb047afcccd9f71af175fb575dfb",
+    "aebd822242f4d397b78960bb9a0e62d6",
+    "5c49166a5e677e8cc11a10b4efa5c229",
+    "29adf2a50440c0f242abfa99ca4057ea",
+    "c74a200392c031f70dd906b71a010025"
+  ],
+  "independent_reconciliation": [
+    {
+      "artifact_id": "c3fccb047afcccd9f71af175fb575dfb",
+      "field": "total_revenue",
+      "rows": 45,
+      "total": "354425112.20",
+      "matches": true
+    },
+    {
+      "artifact_id": "29adf2a50440c0f242abfa99ca4057ea",
+      "field": "merchandise_revenue",
+      "rows": 45,
+      "total": "354425112.20",
+      "matches": true
+    }
+  ],
+  "predictions": [
+    {
+      "cutoff": "2026-09-30",
+      "scenario_drivers": [],
+      "assumptions": [
+        "Chronological rolling-origin evaluation across at least 3 folds governs model promotion over naive/seasonal-naive baselines.",
+        "Revenue domain is strictly nonnegative.",
+        "Predictions reflect statistical associations based purely on historical completed order revenue patterns without assumed future promotional interventions."
+      ],
+      "source_artifact_id": "29adf2a50440c0f242abfa99ca4057ea",
+      "season": 12,
+      "horizon": 3,
+      "scores": {
+        "ets": {
+          "mae": 273664.89243369043,
+          "rmse": 410277.81090705155,
+          "folds": [
+            {
+              "test_start": "2026-01-01T00:00:00",
+              "mae": 625965.1582188628,
+              "train_end": "2025-12-01T00:00:00",
+              "test_end": "2026-03-01T00:00:00"
+            },
+            {
+              "test_start": "2026-04-01T00:00:00",
+              "mae": 61071.00631728768,
+              "train_end": "2026-03-01T00:00:00",
+              "test_end": "2026-06-01T00:00:00"
+            },
+            {
+              "test_start": "2026-07-01T00:00:00",
+              "mae": 133958.5127649208,
+              "train_end": "2026-06-01T00:00:00",
+              "test_end": "2026-09-01T00:00:00"
+            }
+          ]
+        },
+        "sarimax": {
+          "mae": 288069.88027932483,
+          "rmse": 351426.0011745475,
+          "folds": [
+            {
+              "test_start": "2026-01-01T00:00:00",
+              "mae": 420634.81828485866,
+              "train_end": "2025-12-01T00:00:00",
+              "test_end": "2026-03-01T00:00:00"
+            },
+            {
+              "test_start": "2026-04-01T00:00:00",
+              "mae": 149839.13145392048,
+              "train_end": "2026-03-01T00:00:00",
+              "test_end": "2026-06-01T00:00:00"
+            },
+            {
+              "test_start": "2026-07-01T00:00:00",
+              "mae": 293735.69109919545,
+              "train_end": "2026-06-01T00:00:00",
+              "test_end": "2026-09-01T00:00:00"
+            }
+          ]
+        },
+        "seasonal_naive": {
+          "mae": 790444.8233333334,
+          "rmse": 821560.4136049921,
+          "folds": [
+            {
+              "test_start": "2026-01-01T00:00:00",
+              "mae": 754049.4866666669,
+              "train_end": "2025-12-01T00:00:00",
+              "test_end": "2026-03-01T00:00:00"
+            },
+            {
+              "test_start": "2026-04-01T00:00:00",
+              "mae": 921451.5899999999,
+              "train_end": "2026-03-01T00:00:00",
+              "test_end": "2026-06-01T00:00:00"
+            },
+            {
+              "test_start": "2026-07-01T00:00:00",
+              "mae": 695833.3933333332,
+              "train_end": "2026-06-01T00:00:00",
+              "test_end": "2026-09-01T00:00:00"
+            }
+          ]
+        }
+      },
+      "seed": 42,
+      "drivers": [],
+      "interval": null,
+      "fits": 7,
+      "scenario_name": null,
+      "fit_seconds": 0.748550999999992,
+      "target": "merchandise_revenue",
+      "libraries": {
+        "scikit-learn": "1.9.1",
+        "pandas": "3.0.6",
+        "numpy": "2.5.4",
+        "statsmodels": "0.15.0"
+      },
+      "limitations": [
+        "Historical predictive associations are not causal effects or guaranteed future performance.",
+        "Validated prediction intervals are unavailable for this bounded backtest; point predictions carry unquantified uncertainty.",
+        "Saved observations end at 2026-09-30; predictions start after that cutoff, rather than assuming data reaches the report request date 2026-10-17."
+      ],
+      "grain": "month",
+      "specification": {
+        "scenario_drivers": [],
+        "assumptions": [
+          "Chronological rolling-origin evaluation across at least 3 folds governs model promotion over naive/seasonal-naive baselines.",
+          "Revenue domain is strictly nonnegative.",
+          "Predictions reflect statistical associations based purely on historical completed order revenue patterns without assumed future promotional interventions."
+        ],
+        "date_column": "month_start",
+        "horizon": 3,
+        "grain": "month",
+        "drivers": [],
+        "season": 12,
+        "task_id": "monthly_revenue_forecast_prep",
+        "scenario_name": null,
+        "future_drivers": [],
+        "target": "merchandise_revenue",
+        "domain": "nonnegative"
+      },
+      "last_observed_period": "2026-09-01",
+      "future_drivers": [],
+      "data_hash": "d21f9b3199505b8ddfeab7d7fe2d58a2a46a4dcb20fc25ef227ae9e075585a8a",
+      "method": "ets"
+    }
+  ],
+  "dashboard_id": "4e1c7b1bea5c48b283542c66b1da3762",
+  "cancellation_run_id": "a45f9c9cad53e98b5f97bb796bed2cd0",
+  "passed": true
+}

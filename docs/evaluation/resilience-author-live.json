@@ -1,0 +1,28 @@
+{
+  "verified_at": "2026-10-17T08:02:44.284916+00:00",
+  "checks": {
+    "greeting_and_spoken_reply": true,
+    "requirements_updated": true,
+    "review_draft_saved": true,
+    "stopped_acknowledged": true,
+    "unpublished": true
+  },
+  "errors": [],
+  "published": false,
+  "session_id": "884268d0d32ec00279757d71fc209542",
+  "events": {
+    "ready": 1,
+    "transcript": 59,
+    "audio": 105,
+    "turn_complete": 2,
+    "user_message": 1,
+    "interrupted": 1,
+    "brief": 1,
+    "draft": 1,
+    "stopped": 1
+  },
+  "audio_frames": 105,
+  "draft_name": "Monthly revenue forecasting readiness",
+  "status": "draft_ready",
+  "passed": true
+}
