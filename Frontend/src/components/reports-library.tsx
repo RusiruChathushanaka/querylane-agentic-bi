@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { workspacePath } from "@/lib/workspace-links";
 import { useCallback, useEffect, useState } from "react";
 import {
   ArrowUpRight,
@@ -131,7 +132,7 @@ export function ReportsLibrary() {
             </p>
           </div>
           <Button asChild>
-            <Link href="/">
+            <Link href={workspacePath()}>
               <Plus aria-hidden />
               Create in workspace
             </Link>
@@ -261,7 +262,7 @@ export function ReportsLibrary() {
                 while you continue chatting.
               </p>
               <Button asChild>
-                <Link href="/">Ask an advanced question</Link>
+                <Link href={workspacePath()}>Ask an advanced question</Link>
               </Button>
             </div>
           )

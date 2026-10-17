@@ -8,6 +8,7 @@ import {
   type FormEvent,
 } from "react";
 import Link from "next/link";
+import { workspacePath } from "@/lib/workspace-links";
 import {
   ArrowLeft,
   ArrowUpRight,
@@ -378,7 +379,7 @@ export function SkillsWorkspace() {
         </Link>
         <nav aria-label="Workspace">
           <Button variant="ghost" asChild>
-            <Link href="/">
+            <Link href={workspacePath()}>
               <ArrowLeft aria-hidden /> Workspace
             </Link>
           </Button>

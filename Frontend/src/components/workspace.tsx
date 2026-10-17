@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import { workspacePath } from "@/lib/workspace-links";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -386,7 +387,7 @@ export default function Workspace() {
       setError("");
       setMessages([]);
       activeConversation.current = id;
-      history.replaceState(null, "", `?chat=${id}`);
+      history.replaceState(null, "", workspacePath(id, window.location.search));
       try {
         const result = await loadMessages(id);
         if (activeConversation.current === id) {
@@ -487,7 +488,7 @@ export default function Workspace() {
     setProgress("");
     setDraftArtifact(null);
     setVoiceState("off");
-    history.replaceState(null, "", "/");
+    history.replaceState(null, "", workspacePath());
     input.current?.focus();
   }
 
@@ -500,7 +501,7 @@ export default function Workspace() {
     });
     activeConversation.current = created.id;
     setConversation(created);
-    history.replaceState(null, "", `?chat=${created.id}`);
+    history.replaceState(null, "", workspacePath(created.id));
     await refreshList();
     return created;
   }
@@ -778,21 +779,21 @@ export default function Workspace() {
 
   const busy = Boolean(
     updatingSkills ||
-    runId ||
-    starting ||
-    voiceState === "live" ||
-    voiceState === "connecting",
+      runId ||
+      starting ||
+      voiceState === "live" ||
+      voiceState === "connecting",
   );
   const sidebar = (
     <>
-      <div className="brand">
+      <Link className="brand" href="/" aria-label="Querylane home">
         <Mark />
         <span>
           Querylane
           <span className="brand-subtitle">Agentic business intelligence</span>
         </span>
         <Badge variant="outline">DEMO</Badge>
-      </div>
+      </Link>
       <Button className="new-chat" variant="outline" onClick={newConversation}>
         <Plus data-icon="inline-start" />
         New exploration<kbd>↗</kbd>
@@ -1023,7 +1024,12 @@ export default function Workspace() {
                   aria-label="Copy conversation link"
                   onClick={async () => {
                     try {
-                      await navigator.clipboard.writeText(window.location.href);
+                      await navigator.clipboard.writeText(
+                        new URL(
+                          workspacePath(conversation.id),
+                          window.location.origin,
+                        ).href,
+                      );
                       toast.success("Public conversation link copied", {
                         id: "copy-conversation",
                       });

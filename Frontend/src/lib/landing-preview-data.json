@@ -1,0 +1,74 @@
+{
+  "source": "Saved report v4, forecast artifact 0401fa3ce367eaa4bafccde082b00e6e; see docs/evaluation/reports-deployed.json",
+  "cutoff": "2026-09-30",
+  "currency": "USD",
+  "method": "ETS",
+  "backtestOrigins": 3,
+  "intervalAvailable": false,
+  "orders": 573348,
+  "revenue": 354425112.2,
+  "aov": 618.17,
+  "months": 45,
+  "points": [
+    {
+      "date": "2026-01-01",
+      "observed": 6829832.61,
+      "forecast": null
+    },
+    {
+      "date": "2026-02-01",
+      "observed": 6360155.65,
+      "forecast": null
+    },
+    {
+      "date": "2026-03-01",
+      "observed": 8675206.75,
+      "forecast": null
+    },
+    {
+      "date": "2026-04-01",
+      "observed": 8483338.93,
+      "forecast": null
+    },
+    {
+      "date": "2026-05-01",
+      "observed": 8852343.78,
+      "forecast": null
+    },
+    {
+      "date": "2026-06-01",
+      "observed": 8101287.96,
+      "forecast": null
+    },
+    {
+      "date": "2026-07-01",
+      "observed": 8733930.08,
+      "forecast": null
+    },
+    {
+      "date": "2026-08-01",
+      "observed": 9576580.1,
+      "forecast": null
+    },
+    {
+      "date": "2026-09-01",
+      "observed": 9447724.9,
+      "forecast": null
+    },
+    {
+      "date": "2026-10-01",
+      "observed": null,
+      "forecast": 9821574.38515586
+    },
+    {
+      "date": "2026-11-01",
+      "observed": null,
+      "forecast": 13396864.111970706
+    },
+    {
+      "date": "2026-12-01",
+      "observed": null,
+      "forecast": 13004166.888183326
+    }
+  ]
+}

@@ -4,6 +4,10 @@ A shared workspace for asking business questions across retail data sources and 
 
 ## Language
 
+**Landing Page**: The public introduction to Querylane’s capabilities and synthetic retail demo, with direct entry to the application.
+
+**Guided Preview**: An illustrative product walkthrough using saved examples and scripted interactions, without running a live analysis or recording audio.
+
 **Skill**: A publicly editable Markdown playbook with discovery metadata, business definitions, and analytical guidance. It adds no tools or executable code.
 
 **Skill Author Session**: A guest-scoped, expiring interview that captures requirements, transcripts, and an unpublished draft. It is separate from public analytics conversations.

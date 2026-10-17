@@ -8,11 +8,13 @@ Personalize the workspace in [Settings](https://agentic-bi-frontend-wekihucn7q-a
 
 Explore the public [Dashboards](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/dashboards), [Reports](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/reports), and [Skills](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/skills) libraries. Dashboards have View/Edit modes, public share links, and PNG, JPEG, PDF, full-data CSV ZIP, and JSON downloads. Reports provide immutable versions and PDF, Word, and data downloads. Questions, saved results, skills, dashboards and reports are public; guest tokens provide request attribution rather than private accounts.
 
+The current source adds a [public landing page](docs/landing-page.md) at `/` and moves the workspace to `/app`. Open Querylane enters directly without authentication; legacy root conversation links remain compatible. This landing-page change is locally verified and awaiting a separately requested release; the cloud records below describe the previous release.
+
 ## Repository map
 
 | Path | Responsibility |
 | --- | --- |
-| [`Frontend/`](Frontend/README.md) | Next.js workspace, shared libraries, chart exploration, settings and browser voice transport |
+| [`Frontend/`](Frontend/README.md) | Next.js landing page, `/app` workspace, shared libraries, chart exploration, settings and browser voice transport |
 | [`Backend/`](Backend/README.md) | Public FastAPI API, controlled analytics, versioned libraries and private report-worker entrypoint |
 | [`Backend/app/skill_library/`](Backend/app/skill_library/) | Source-controlled analytics and prediction playbooks; publication is a separate operator action |
 | [`infra/`](infra/) | Scoped cloud provisioning, release and runtime-verification helpers |
@@ -49,7 +51,7 @@ npm ci
 npm run dev
 ```
 
-Open [the local workspace](http://localhost:3000). Local mode uses deterministic, synthetic fixtures and in-memory history. The interface labels it explicitly; it does not pretend to call AI or hosted databases.
+Open [the local landing page](http://localhost:3000), then select **Open Querylane**, or go directly to [the workspace](http://localhost:3000/app). Local mode uses deterministic, synthetic fixtures and in-memory history. The interface labels it explicitly; it does not pretend to call AI or hosted databases.
 
 To try **real Gemini text and live voice against synthetic fixtures**, use the currently authenticated gcloud operator in the backend terminal:
 

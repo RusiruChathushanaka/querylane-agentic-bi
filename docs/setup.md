@@ -22,7 +22,7 @@ npm ci
 npm run dev
 ```
 
-Open [localhost:3000](http://localhost:3000). Default local mode uses synthetic fixture sources, deterministic planning, and in-memory history. It needs no cloud credentials and is labeled in the interface.
+Open [the landing page](http://localhost:3000), then **Open Querylane**, or enter [the workspace](http://localhost:3000/app) directly. The [guided preview](landing-page.md) uses local evidence and does not call the backend. Default local mode uses synthetic fixture sources, deterministic planning, and in-memory history. It needs no cloud credentials and is labeled in the interface.
 
 ## Environment files
 

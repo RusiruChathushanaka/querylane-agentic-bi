@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { workspacePath } from "@/lib/workspace-links";
 import { useEffect, useRef, useState } from "react";
 import {
   ArrowLeft,
@@ -33,7 +34,7 @@ export function DashboardHeader() {
       </Link>
       <nav aria-label="Application">
         <Button asChild variant="ghost" size="sm">
-          <Link href="/">
+          <Link href={workspacePath()}>
             <ArrowLeft data-icon="inline-start" />
             Workspace
           </Link>

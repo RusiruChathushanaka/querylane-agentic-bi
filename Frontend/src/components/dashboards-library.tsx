@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { workspacePath } from "@/lib/workspace-links";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   LayoutDashboard,
@@ -252,7 +253,7 @@ export function DashboardsLibrary() {
                 </EmptyHeader>
                 <EmptyContent>
                   <Button asChild variant="outline">
-                    <Link href="/">Ask a question</Link>
+                    <Link href={workspacePath()}>Ask a question</Link>
                   </Button>
                 </EmptyContent>
               </Empty>

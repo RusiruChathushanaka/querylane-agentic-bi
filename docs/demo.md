@@ -2,7 +2,7 @@
 
 [Open the deployed application](https://agentic-bi-frontend-wekihucn7q-as.a.run.app). The public history currently includes validation conversations; use the credentialed reset command before a clean rehearsal if desired.
 
-1. **Open the workspace — 30 seconds.** Explain that conversations are public, data is synthetic, and source access is read-only. Open a source schema from the sidebar.
+1. **Open the workspace — 30 seconds.** After the landing-page release, start at `/`, briefly show Reports/Predictions/Voice BI previews, then select **Open Querylane** to enter `/app`. Explain that conversations are public, data is synthetic, and source access is read-only. Open a source schema from the sidebar.
 2. **Ask a warehouse question — 45 seconds.** “Show monthly revenue as a line chart.” Switch the result to a table. Open SQL & evidence and identify the executed SQL, row counts, timestamps, and source.
 3. **Combine sources — 75 seconds.** Start another exploration: “Compare regional revenue with targets.” Explain that warehouse actuals and operational targets are queried independently. Show the inferred relationship, coverage, and cardinality checks.
 4. **Follow up — 45 seconds.** “Only September 2026.” Explain that the conversation preserves the analytical context and narrows both source windows.

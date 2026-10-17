@@ -1,0 +1,120 @@
+{
+  "date": "2026-10-17",
+  "scope": "Local landing-page implementation; no deployment, data upload or model calls",
+  "automated": {
+    "frontend_tests": 33,
+    "lint": "passed",
+    "typescript": "passed",
+    "production_build": "passed",
+    "static_routes": [
+      "/",
+      "/app"
+    ],
+    "standalone_smoke": "passed after clean build; social PNG HTTP 200; no browser runtime errors"
+  },
+  "network": {
+    "development_requests": 28,
+    "production_requests": 24,
+    "backend_requests_before_entry": 0,
+    "guest_session_requests_before_entry": 0,
+    "application_prefetch_requests": 0,
+    "preview_microphone_calls": 0
+  },
+  "routing": {
+    "root": "landing",
+    "workspace": "/app",
+    "legacy_status": 307,
+    "legacy_location": "/app?chat=legacy-id&source=test&next=https%3A%2F%2Fexample.com",
+    "additional_query_survives_workspace_load": true,
+    "fixture_conversation_and_fork": "passed",
+    "new_chat_path": "/app",
+    "copied_link": "canonical /app?chat=ID; clipboard writer intercepted to avoid OS permission"
+  },
+  "browser": {
+    "viewports": [
+      320,
+      390,
+      768,
+      1440
+    ],
+    "horizontal_overflow": false,
+    "zoom": "200% CSS zoom reflow checked; not a separate assistive-technology certification",
+    "no_javascript": "script requests blocked; core copy, native CTAs, default report preview and FAQ remained available",
+    "keyboard": "arrow-key tabs, native links, mobile focus trap and Escape recovery",
+    "preferences": "dark/rose/compact/reduced-motion persisted into /app; landing stayed fixed light palette",
+    "reduced_motion": "system media preference produced zero preview animations",
+    "accent_themes": [
+      "cobalt",
+      "teal",
+      "violet",
+      "rose"
+    ],
+    "faq_expansion": "Native details/summary expanded without API calls",
+    "footer_hover": "white text rgb(255,255,255) on cobalt rgb(36,74,210)"
+  },
+  "bundle_boundary": {
+    "workspace_client": false,
+    "live_voice_client": false,
+    "query_backed_charts": false,
+    "report_reader": false
+  },
+  "accessibility": {
+    "reports-desktop": {
+      "violations": 0,
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    "predictions": {
+      "violations": 0,
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    "voice": {
+      "violations": 0,
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    "mobile-sheet": {
+      "violations": 0,
+      "incomplete": [
+        "aria-hidden-focus",
+        "color-contrast"
+      ]
+    },
+    "dark-preferences": {
+      "violations": 0,
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    "standalone-footer-hover": {
+      "violations": 0,
+      "incomplete": [
+        "color-contrast"
+      ]
+    }
+  },
+  "limitations": [
+    "Axe flags SVG text/background contrast and modal-hidden focus for manual review. Settled-state scans are recorded; animated opacity was removed from tour transitions.",
+    "OS clipboard read was unavailable; application copy-handler output was tested with an intercepted clipboard writer.",
+    "No screen-reader hardware, live audio/model/database execution, Cloud Run or GitHub publication was performed."
+  ],
+  "local_vitals": {
+    "cls": {
+      "entries": [],
+      "score": 0.0
+    },
+    "fcp": 204.0,
+    "lcp": {
+      "element": "h1",
+      "size": 53452,
+      "startTime": 204,
+      "url": null
+    },
+    "ttfb": 15.7,
+    "note": "Single local run; not a production performance SLA."
+  }
+}

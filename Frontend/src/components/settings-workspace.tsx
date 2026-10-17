@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { workspacePath } from "@/lib/workspace-links";
 import { useState } from "react";
 import { useTheme } from "next-themes";
 import { LayoutGroup, motion } from "motion/react";
@@ -279,7 +280,7 @@ export function SettingsWorkspace() {
           Querylane<span className="brand-period">.</span>
         </Link>
         <Button asChild variant="outline" className="settings-back">
-          <Link href="/">
+          <Link href={workspacePath()}>
             <ArrowLeft data-icon="inline-start" /> Back to workspace
           </Link>
         </Button>
@@ -358,7 +359,7 @@ export function SettingsWorkspace() {
           </div>
           <div className="settings-mobile-back">
             <Button asChild variant="outline" size="sm">
-              <Link href="/">
+              <Link href={workspacePath()}>
                 <ArrowLeft data-icon="inline-start" /> Workspace
               </Link>
             </Button>

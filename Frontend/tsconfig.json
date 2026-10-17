@@ -42,7 +42,11 @@
     ".next-dashboard-preview/types/**/*.ts",
     ".next-dashboard-preview/dev/types/**/*.ts",
     ".next-dashboard-build/types/**/*.ts",
-    ".next-dashboard-build/dev/types/**/*.ts"
+    ".next-dashboard-build/dev/types/**/*.ts",
+    ".next-landing-preview/types/**/*.ts",
+    ".next-landing-preview/dev/types/**/*.ts",
+    ".next-landing-build/types/**/*.ts",
+    ".next-landing-build/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

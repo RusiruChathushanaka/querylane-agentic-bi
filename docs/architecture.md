@@ -8,7 +8,10 @@ Standalone Mermaid copies live in [graphify/](graphify/README.md). Refresh them 
 
 ```mermaid
 flowchart LR
-    Browser[Next.js / shadcn workspace and libraries] -->|HTTP and SSE| API[Public FastAPI on Cloud Run]
+    Landing[Server-rendered public landing /] -->|Native CTA without prefetch| Browser[Next.js /app workspace and libraries]
+    Landing --> Preview[Local saved-evidence preview / no API or audio]
+    Legacy[Legacy root chat links] -->|307 /app with query preserved| Browser
+    Browser -->|HTTP and SSE| API[Public FastAPI on Cloud Run]
     Browser <-->|PCM and transcripts| Voice[WebSocket handlers in public API]
     API --> ADK[ADK planner + interpreter]
     Voice --> Live[ADK run_live / Gemini Live]
@@ -32,6 +35,8 @@ flowchart LR
     API --> Secrets[Secret Manager / workload identity]
 ```
 
+The current source includes a [landing/workspace route split](landing-page.md), locally verified and awaiting its own frontend release; the cloud record above remains the previous deployment. The landing page has no analytics or voice client and makes no backend requests. `/app` owns conversation history and shared links. Existing library/detail routes are unchanged.
+
 The frontend contains no database credentials or Google model keys. `/api/config` supplies only the public backend URL at runtime. Direct browser requests use explicit CORS origins; the WebSocket validates Origin and its first authentication frame. Guest tokens identify requests and cancellation ownership without providing account privacy.
 
 The voice bridge and skill author are handlers within the public backend, not additional deployed services. Browser pages use the API for every persistent read/write. The separate report worker accepts authenticated task/scheduler invocation; its internal endpoints are not mounted on the public API. Database/model credentials stay in workload identity and backend secret references.
@@ -40,6 +45,8 @@ The voice bridge and skill author are handlers within the public backend, not ad
 
 | Capability | Main implementation | Contract / guide |
 | --- | --- | --- |
+| Public landing and guided preview | `Frontend/src/app/page.tsx`, `Frontend/src/components/landing/`, `Frontend/src/lib/landing-preview-data.json` | [Landing page](landing-page.md), [ADR 0008](adr/0008-landing-workspace-routes.md) |
+| Workspace route compatibility | `Frontend/src/app/app/page.tsx`, `Frontend/next.config.ts`, `Frontend/src/lib/workspace-links.ts` | [Landing page](landing-page.md) |
 | Workspace and runtime API configuration | `Frontend/src/components/workspace.tsx`, `Frontend/src/lib/api.ts`, `Frontend/src/app/api/config/route.ts` | [Setup](setup.md), [settings](settings.md) |
 | Public routing and ordinary analysis | `Backend/app/main.py`, `analysis.py`, `ai.py`, `repository.py` | `Backend/app/models.py`, [ADRs](adr/) |
 | SQL and cross-source fusion | `Backend/app/connectors.py`, `sql_guard.py`, `fusion.py` | [Retail schema](retail-timeseries-schema.md), [ADR 0003](adr/0003-bounded-cross-source-fusion.md) |

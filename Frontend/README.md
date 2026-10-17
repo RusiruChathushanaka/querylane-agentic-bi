@@ -2,7 +2,7 @@
 
 Next.js App Router, TypeScript, shadcn/ui, and Recharts. Application code is under `src/`; the backend runs separately in `Backend/`.
 
-Routes include the conversation workspace (`/`), shared dashboard library (`/dashboards`), report library (`/reports`), skills library (`/skills`) and browser-local settings (`/settings`). Dashboard View/Edit is URL-driven presentation state; all shared dashboards remain publicly editable. Charts and downloads preserve saved evidence. See [architecture](../docs/architecture.md) and [graph references](../docs/graphify/README.md).
+Routes include the public [landing page](../docs/landing-page.md) (`/`), conversation workspace (`/app`), shared dashboard library (`/dashboards`), report library (`/reports`), skills library (`/skills`) and browser-local settings (`/settings`). Dashboard View/Edit is URL-driven presentation state; all shared dashboards remain publicly editable. Charts and downloads preserve saved evidence. See [architecture](../docs/architecture.md) and [graph references](../docs/graphify/README.md).
 
 From this directory:
 
@@ -11,7 +11,7 @@ npm ci
 npm run dev
 ```
 
-Open [localhost:3000](http://localhost:3000). The default API URL is `http://localhost:8000`; see [local setup](../docs/setup.md) for backend modes and environment configuration.
+Open [the landing page](http://localhost:3000) or [workspace](http://localhost:3000/app). Legacy `/?chat=…` links receive a 307 redirect to `/app?chat=…`, preserving query parameters. The default API URL is `http://localhost:8000`; see [local setup](../docs/setup.md) for backend modes and environment configuration.
 
 ```bash
 npm run lint

@@ -1,6 +1,7 @@
 "use client";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import { workspacePath } from "@/lib/workspace-links";
 import { useCallback, useEffect, useState } from "react";
 import {
   ArrowLeft,
@@ -204,7 +205,7 @@ export function ReportWorkspace({
                   ? "The report did not finish. Its saved intermediate evidence remains available for operator inspection. Create a narrower report from the workspace."
                   : "No completed version is available."}
                 <Button asChild variant="outline">
-                  <Link href={`/?chat=${report.conversation_id}`}>
+                  <Link href={workspacePath(report.conversation_id)}>
                     Return to chat
                   </Link>
                 </Button>

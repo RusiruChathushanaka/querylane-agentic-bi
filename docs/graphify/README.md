@@ -11,7 +11,7 @@ The official Graphify skill is registered locally at `.agents/skills/graphify/SK
 | [`graphify-out/GRAPH_REPORT.md`](../../graphify-out/GRAPH_REPORT.md) | Community/cohesion analysis, central concepts, cross-community connections and suggested questions |
 | [`graphify-out/VALIDATION.json`](../../graphify-out/VALIDATION.json) | Generation scope, source hashes, integrity diagnostics and extraction limitations |
 
-Generation uses the installed Graphify **0.9.51** package: local deterministic AST extraction for code, plus two host-session agents for semantic document extraction. No separate model API or cloud database is invoked. Host-agent token usage is unavailable from the collaboration tool and is explicitly recorded as unknown. `.graphifyignore` excludes dependencies, environments, generated data/media, third-party skills, historical evaluation files and graph outputs. Local caches and machine-specific paths are Git-ignored; graph artifacts are excluded from Cloud Build.
+Generation uses the installed Graphify **0.9.51** package: local deterministic AST extraction for code, plus cached semantics and a host-session agent for changed document extraction. No separate model API or cloud database is invoked. Host-agent token usage is unavailable from the collaboration tool and is explicitly recorded as unknown. `.graphifyignore` excludes dependencies, environments, generated data/media, third-party skills, historical evaluation files and graph outputs. Local caches and machine-specific paths are Git-ignored; graph artifacts are excluded from Cloud Build.
 
 Graphify's audit records unresolved external-reference endpoints, relationships collapsed by its default undirected graph, and a potentially partial tree-sitter parse of `Frontend/src/components/workspace.tsx`. These graphs help navigation; source files and feature contracts remain authoritative. Consult `VALIDATION.json` and the report for actual counts rather than assuming exhaustive extraction.
 
@@ -33,7 +33,7 @@ To regenerate code **and document semantics**, invoke the installed skill in Cod
 
 | File | Scope | Source |
 | --- | --- | --- |
-| [application.mmd](application.mmd) | Public workspace/API, text/live analysis, guarded sources, saved charts/dashboards and report dispatch | [Application boundaries](../architecture.md#application-boundaries) |
+| [application.mmd](application.mmd) | Public landing, `/app` workspace/API, text/live analysis, guarded sources, saved charts/dashboards and report dispatch | [Application boundaries](../architecture.md#application-boundaries) |
 | [reports.mmd](reports.mmd) | Report outbox, task dispatch, private worker, checkpoints, evidence, exports and isolated research | [Advanced analysis reports](../architecture.md#advanced-analysis-reports) |
 
 The fenced Mermaid blocks in [architecture.md](../architecture.md) are authoritative for these two curated views. They are distinct from the generated Graphify graph. The architecture's source-code map identifies implementation owners. [Root agent instructions](../../AGENTS.md) describe when to update them.

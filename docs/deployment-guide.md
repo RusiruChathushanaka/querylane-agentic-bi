@@ -495,6 +495,8 @@ Do not disable/delete the previous secret version while a serving revision still
 
 ## Acceptance checks
 
+For the [landing/workspace split](landing-page.md), verify bare `/` shows the introduction, every **Open Querylane** CTA opens `/app`, and legacy `/?chat=ID&other=value` returns one HTTP 307 to `/app` with both query values retained. Test New exploration, shared/forked conversations and report/dashboard source links. Before application entry, the landing preview must make no backend, guest-session or microphone requests; app links disable prefetching. Keep the existing backend/worker configuration and larger `timeseries` data profile. Local landing checks do not update `deployment.json`; record actual serving revisions only after an authorized release.
+
 ### Basic health and service readiness
 
 ```bash

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { workspacePath } from "@/lib/workspace-links";
 import dynamic from "next/dynamic";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -291,7 +292,7 @@ function DashboardWidget({
             Original chat removed; saved data and evidence remain available.
           </span>
         ) : (
-          <Link href={`/?chat=${item.conversation_id}`}>
+          <Link href={workspacePath(item.conversation_id)}>
             Open original conversation ↗
           </Link>
         )}
@@ -762,7 +763,7 @@ export function DashboardWorkspace({
                         </EmptyHeader>
                         <EmptyContent>
                           <Button asChild>
-                            <Link href="/">Ask a question</Link>
+                            <Link href={workspacePath()}>Ask a question</Link>
                           </Button>
                         </EmptyContent>
                       </Empty>
