@@ -84,8 +84,10 @@ The refreshed map includes `ProductTour`, `ScenarioIllustration`, the four previ
 
 The application diagram distinguishes static preview content from an explicit evidence-link navigation to a saved report. Historical evaluation JSON and `deployment.json` remain excluded from raw graph ingestion; the graph indexes their documented references without treating old observations as live discovery.
 
-## Metrics and planning implementation
+## Metrics and planning release coverage
 
-The source map includes the public metric compiler/revisions, reviewed AI dashboard jobs and adaptive hierarchical planning. See [Metrics](../business-metrics.md), [Dashboard Builder](../ai-dashboard-builder.md) and [Forecast Plans](../forecast-plans.md). These are local implementation changes, not a new serving-release record. Preserve shared worker quotas/fencing, old report workflows, exact-version evidence and modeled/allocated/adjusted distinctions in graph updates.
+The source map includes the public metric compiler/revisions, reviewed AI dashboard jobs and adaptive hierarchical planning. See [Metrics](../business-metrics.md), [Dashboard Builder](../ai-dashboard-builder.md) and [Forecast Plans](../forecast-plans.md). They are included in the dated 18 October deployment; consult its release record for actual serving revisions and verification boundaries. Preserve shared worker quotas/fencing, old report workflows, exact-version evidence and modeled/allocated/adjusted distinctions in graph updates.
 
-The [18 October planning release](../evaluation/planning-release-20261018.md) adds deployed Metrics, reviewed AI dashboards and Forecast Plans. Its quota-limited hosted acceptance is distinct from the local 237-node numerical evidence; graph relationships are not proof of successful fresh worker execution.
+The [18 October planning release](../evaluation/planning-release-20261018.md) records deployed Metrics, reviewed AI dashboards and Forecast Plans, 129 hosted checks, and both final metric-intent/SDK corrections. Its quota-limited hosted acceptance is distinct from the local 237-node numerical evidence; graph relationships are not proof of successful fresh worker execution.
+
+The final metric-agent map includes `requests_ad_hoc` and `AI._structured_once`: affirmative ad hoc requests, negated opt-outs, JSON metric scope, strict filter validation, frozen definitions and controlled compilation. Serving references are frontend `00017-dxz`, API `00024-rnd` and worker `00013-sm4` in the dated release record. Regenerating this graph runs no model-backed analytics or live deployment checks.

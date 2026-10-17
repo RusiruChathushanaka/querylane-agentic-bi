@@ -21,7 +21,8 @@ flowchart LR
     Skills --> Store
     ADK --> Store
     API --> Metrics[Public metric catalog / immutable revisions]
-    Metrics --> Compiler[Closed measure compiler / forecast-value guard]
+    Metrics -->|Frozen published definitions| Compiler[Closed measure compiler / forecast-value guard]
+    ADK -->|Validated metric scope / JSON| Compiler
     Compiler --> Guard
     API --> Planning[Reviewed dashboard builds / Forecast Plans]
     Planning --> Dispatch

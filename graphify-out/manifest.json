@@ -1020,10 +1020,10 @@
     "semantic_hash": "ca25fe234f223d659813d5932b9de159"
   },
   "AGENTS.md": {
-    "mtime": 1792272352.1425767,
-    "seen": 1792272917.347741,
-    "ast_hash": "e92973688b782a20ed76c8270bb225ed",
-    "semantic_hash": "e92973688b782a20ed76c8270bb225ed"
+    "mtime": 1792273820.3905296,
+    "seen": 1792273982.8295062,
+    "ast_hash": "d67c89f1a4d77f7fcc3e0ecfd62ce421",
+    "semantic_hash": "d67c89f1a4d77f7fcc3e0ecfd62ce421"
   },
   "Backend/README.md": {
     "mtime": 1792255047.9951062,
@@ -1128,10 +1128,10 @@
     "semantic_hash": "807599428ed630912bd0e16742c84918"
   },
   "README.md": {
-    "mtime": 1792273271.321972,
-    "seen": 1792273349.783298,
-    "ast_hash": "408be1a5b0e44419407a65cdbf75d85e",
-    "semantic_hash": "408be1a5b0e44419407a65cdbf75d85e"
+    "mtime": 1792273820.3897462,
+    "seen": 1792273982.829524,
+    "ast_hash": "0fa2c883ad3f4c2ad472b57836a0b1fd",
+    "semantic_hash": "0fa2c883ad3f4c2ad472b57836a0b1fd"
   },
   "docs/adr/0001-public-workspace-without-accounts.md": {
     "mtime": 1792073376.6843567,
@@ -1182,10 +1182,10 @@
     "semantic_hash": "bbdc9e2b6756c399254cd3e4e5526ea8"
   },
   "docs/architecture.md": {
-    "mtime": 1792273271.3235195,
-    "seen": 1792273349.7833118,
-    "ast_hash": "51a1ff94aaa3e0398f892ff9fa89f285",
-    "semantic_hash": "51a1ff94aaa3e0398f892ff9fa89f285"
+    "mtime": 1792273820.3911808,
+    "seen": 1792273982.829538,
+    "ast_hash": "a240f2c9110ec44fadd5eff6fa01d894",
+    "semantic_hash": "a240f2c9110ec44fadd5eff6fa01d894"
   },
   "docs/charts.md": {
     "mtime": 1792155999.748274,
@@ -1266,10 +1266,10 @@
     "semantic_hash": "b88b626cb4857735010c43c28355fa38"
   },
   "docs/validation.md": {
-    "mtime": 1792273271.322655,
-    "seen": 1792273349.783329,
-    "ast_hash": "b0386e0b206bc722f6e9181ad5584be3",
-    "semantic_hash": "b0386e0b206bc722f6e9181ad5584be3"
+    "mtime": 1792273853.7661858,
+    "seen": 1792273982.829555,
+    "ast_hash": "3b2267745d9e35569c306e0ef2703fe9",
+    "semantic_hash": "3b2267745d9e35569c306e0ef2703fe9"
   },
   "docs/voice-skill-author-plan.md": {
     "mtime": 1792095850.629606,

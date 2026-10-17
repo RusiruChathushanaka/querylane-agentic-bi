@@ -1,6 +1,6 @@
 # Validation and remaining deployment gates
 
-Latest deployment assessment: **18 October 2026 — Metrics, AI Dashboard Builder and Forecast Plans deployed; partial end-to-end acceptance**. [The release assessment](evaluation/planning-release-20261018.md) records 121 passing core hosted checks and unchanged larger-data fingerprints/TimesFM gates. Fresh builder and hierarchical-plan generation was correctly quota-denied at the existing 12/12 workspace allowance and remains unverified until the normal reset. No quota was reset or raised. The historical [17 October fix assessment](evaluation/e2e-fixes-deployed.md) and [original failed assessment](evaluation/e2e-deployed-20261017.md) remain dated evidence; they do not replace fresh new-feature acceptance.
+Latest deployment assessment: **18 October 2026 — Metrics, AI Dashboard Builder and Forecast Plans deployed; partial end-to-end acceptance**. [The release assessment](evaluation/planning-release-20261018.md) records 129 passing hosted checks (121 core and eight final metric-guided text/Live checks), 442 backend tests with one existing skip, 53 frontend tests, and unchanged larger-data fingerprints/TimesFM gates. Fresh builder and hierarchical-plan generation was correctly quota-denied at the shared 12/12 workspace allowance during that test; a new run after the normal reset remains unverified. No quota was reset or raised. The historical [17 October fix assessment](evaluation/e2e-fixes-deployed.md) and [original failed assessment](evaluation/e2e-deployed-20261017.md) remain dated evidence; they do not replace fresh new-feature acceptance.
 
 ## Historical baseline automated checks
 
@@ -388,6 +388,6 @@ The preview used isolated in-memory application storage, fixture agent planning 
 
 ## 18 October — Metrics and planning Cloud Run release
 
-The [deployed assessment](evaluation/planning-release-20261018.md) records worker/API/frontend rollout, **121 passing available hosted checks**, 442 backend tests (one existing skip), 53 frontend tests, lint/types/build, immutable metric publication and full 45-month revenue reconciliation. All five larger-source fingerprints and verified TimesFM gates were preserved. No IAM, analytical data, example seed, history reset or quota change was performed.
+The [deployed assessment](evaluation/planning-release-20261018.md) records worker/API/frontend rollout, **129 passing hosted checks** (121 core plus eight final metric-guided text/Live checks), 442 backend tests (one existing skip), 53 frontend tests, lint/types/build, immutable metric publication and full 45-month revenue reconciliation. All five larger-source fingerprints and verified TimesFM gates were preserved. No IAM, analytical data, example seed, history reset or quota change was performed.
 
 Fresh AI-dashboard and 237-node forecast-plan generation was correctly quota-denied at the pre-existing 12/12 UTC daily allowance. Deployment is complete, but those new worker workflows still require fresh acceptance after the normal reset; saved evidence checks and local numerical tests do not substitute for that run. See the assessment and `deployment.json` for revisions and boundaries.
