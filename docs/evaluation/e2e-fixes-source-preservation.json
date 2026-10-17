@@ -1,0 +1,31 @@
+{
+  "before": {
+    "sales_orders": {
+      "rows": 573348,
+      "modified": "2026-10-16T11:47:38.786000+00:00"
+    },
+    "sales_order_items": {
+      "rows": 1317941,
+      "modified": "2026-10-16T11:47:38.786000+00:00"
+    },
+    "calendar": {
+      "rows": 1369,
+      "modified": "2026-10-16T11:47:38.786000+00:00"
+    }
+  },
+  "after": {
+    "sales_orders": {
+      "rows": 573348,
+      "modified": "2026-10-16T11:47:38.786000+00:00"
+    },
+    "sales_order_items": {
+      "rows": 1317941,
+      "modified": "2026-10-16T11:47:38.786000+00:00"
+    },
+    "calendar": {
+      "rows": 1369,
+      "modified": "2026-10-16T11:47:38.786000+00:00"
+    }
+  },
+  "unchanged": true
+}

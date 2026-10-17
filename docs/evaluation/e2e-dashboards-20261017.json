@@ -1,0 +1,24 @@
+{
+  "verified_at": "2026-10-17T12:12:55.715152+05:30",
+  "backend": "https://agentic-bi-backend-wekihucn7q-as.a.run.app",
+  "checks": {
+    "metadata_has_no_preview_rows": true,
+    "idempotent_pin": true,
+    "shared_public_result": true,
+    "stale_revision_denied": true,
+    "unpin_only_one_board": true,
+    "old_pin_retry_cannot_resurrect": true,
+    "restore_card": true,
+    "artifact_evidence_unchanged": true,
+    "saved_csv_available": true,
+    "dashboard_restore_keeps_card": true
+  },
+  "created_dashboards": [
+    "da7132e7e11c4fb3b668759b0a7f7b1a",
+    "f36a587936fc4b3dab074c4f3f56fbf0"
+  ],
+  "source_queries_requested": false,
+  "model_calls_requested": false,
+  "cleanup": "Verification dashboards soft-deleted; recovery references remain until an authorized expiry purge.",
+  "passed": true
+}

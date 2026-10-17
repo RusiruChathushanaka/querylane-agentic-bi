@@ -1,0 +1,21 @@
+{
+  "checks": {
+    "pdf_report_id": true,
+    "word_report_id": true,
+    "pdf_revenue": true,
+    "word_revenue": true,
+    "pdf_forecast_cutoff": true,
+    "pdf_uncertainty": true,
+    "word_uncertainty": true,
+    "pdf_manifest_hash": true,
+    "docx_manifest_hash": true,
+    "browser_pdf_matches_saved_version": true,
+    "pdf_claimed_monthly_count_range": true,
+    "word_claimed_monthly_count_range": true
+  },
+  "passed": true,
+  "pages": 10,
+  "notes": [
+    "This report describes monthly order-count ranges; it does not claim an all-period order-count total. Validate its stated figures rather than requiring a particular narrative."
+  ]
+}

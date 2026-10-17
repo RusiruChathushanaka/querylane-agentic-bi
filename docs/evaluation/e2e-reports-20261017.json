@@ -1,0 +1,206 @@
+{
+  "verified_at": "2026-10-17T06:39:24.103870+00:00",
+  "backend": "https://agentic-bi-backend-wekihucn7q-as.a.run.app",
+  "frontend": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app",
+  "checks": {
+    "production_dispatch_enabled": true,
+    "larger_profile_preserved": true,
+    "idempotent_report_admission": true,
+    "mutations_require_guest_credentials": true,
+    "ordinary_chat_during_report": true,
+    "private_worker_completes_report": true,
+    "report_profile_and_evidence": true,
+    "reviewed_narrative": true,
+    "monthly_revenue_matches_independent_ledger": true,
+    "prediction_or_explicit_limitation": true,
+    "download_pdf": true,
+    "download_docx": true,
+    "download_data": true,
+    "data_manifest_version_and_claims": true,
+    "full_csv_checksums_and_row_counts": true,
+    "word_is_editable_document": true,
+    "stale_metadata_edit_rejected": true,
+    "presentation_revision_complete": true,
+    "revision_reuses_immutable_artifacts": true,
+    "original_revision_unchanged": true,
+    "persisted_event_replay": true,
+    "report_chart_can_be_pinned": true,
+    "dashboard_retains_deleted_report_evidence": true,
+    "recoverable_report_deletion": true,
+    "cancellation_requires_initiating_guest": true,
+    "cancellation_confirmed": true
+  },
+  "source_upload_or_reset": false,
+  "conversation_id": "f806ea9c004648ca9924f2eaded350f3",
+  "report_id": "972a2453eb11478182bf855af5d65d94",
+  "run_id": "972a2453eb11478182bf855af5d65d94",
+  "outcome": {
+    "delivery": 0,
+    "generation": 1,
+    "report_id": "972a2453eb11478182bf855af5d65d94",
+    "conversation_id": "f806ea9c004648ca9924f2eaded350f3",
+    "cancel_requested": false,
+    "clarifications": [],
+    "stage": "Preparing downloads",
+    "id": "972a2453eb11478182bf855af5d65d94",
+    "version": 1,
+    "error": null,
+    "updated_at": "2026-10-17T06:41:27.965198+00:00",
+    "sequence": 8,
+    "created_at": "2026-10-17T06:39:26.042395+00:00",
+    "expires_at": 1792240766.123622,
+    "revision": 1,
+    "attempts": 1,
+    "status": "complete",
+    "workflow_version": 1,
+    "clarification": null,
+    "clarification_requirements": null
+  },
+  "artifact_ids": [
+    "47a35a006ce2eafdd847fc782fb78942",
+    "db669053d5fdc92e9c47ee2745575d35",
+    "2e39a7f3a2842176e7d651b9be062db9",
+    "535ab8df103e66643a232f731a4118ff"
+  ],
+  "independent_reconciliation": [
+    {
+      "artifact_id": "47a35a006ce2eafdd847fc782fb78942",
+      "field": "monthly_revenue",
+      "rows": 45,
+      "total": "354425112.20",
+      "matches": true
+    }
+  ],
+  "predictions": [
+    {
+      "scenario_drivers": [],
+      "fit_seconds": 0.6329930809988582,
+      "interval": null,
+      "specification": {
+        "assumptions": [
+          "Evaluated via rolling-origin chronological backtesting against naive/seasonal baselines.",
+          "Forecast horizon covers 3 complete calendar months: October 2026 through December 2026.",
+          "No future external drivers are assumed."
+        ],
+        "scenario_name": null,
+        "scenario_drivers": [],
+        "domain": "nonnegative",
+        "drivers": [],
+        "date_column": "order_month",
+        "grain": "month",
+        "future_drivers": [],
+        "season": 12,
+        "task_id": "monthly_sales_trend",
+        "target": "monthly_revenue",
+        "horizon": 3
+      },
+      "libraries": {
+        "statsmodels": "0.15.0",
+        "pandas": "3.0.6",
+        "numpy": "2.5.4",
+        "scikit-learn": "1.9.1"
+      },
+      "cutoff": "2026-09-30",
+      "season": 12,
+      "future_drivers": [],
+      "target": "monthly_revenue",
+      "scenario_name": null,
+      "assumptions": [
+        "Evaluated via rolling-origin chronological backtesting against naive/seasonal baselines.",
+        "Forecast horizon covers 3 complete calendar months: October 2026 through December 2026.",
+        "No future external drivers are assumed."
+      ],
+      "source_artifact_id": "47a35a006ce2eafdd847fc782fb78942",
+      "fits": 7,
+      "last_observed_period": "2026-09-01",
+      "drivers": [],
+      "method": "ets",
+      "seed": 42,
+      "limitations": [
+        "Historical predictive associations are not causal effects or guaranteed future performance.",
+        "Validated prediction intervals are unavailable for this bounded backtest; point predictions carry unquantified uncertainty.",
+        "Saved observations end at 2026-09-30; predictions start after that cutoff, rather than assuming data reaches the report request date 2026-10-17."
+      ],
+      "data_hash": "9793af7b9cfa41b1054ff2a83a0034895e1fcabe11341a5e2ad65d993b3c9c71",
+      "grain": "month",
+      "scores": {
+        "ets": {
+          "rmse": 410277.81090705155,
+          "folds": [
+            {
+              "test_start": "2026-01-01T00:00:00",
+              "mae": 625965.1582188628,
+              "test_end": "2026-03-01T00:00:00",
+              "train_end": "2025-12-01T00:00:00"
+            },
+            {
+              "test_start": "2026-04-01T00:00:00",
+              "mae": 61071.00631728768,
+              "test_end": "2026-06-01T00:00:00",
+              "train_end": "2026-03-01T00:00:00"
+            },
+            {
+              "test_start": "2026-07-01T00:00:00",
+              "mae": 133958.5127649208,
+              "test_end": "2026-09-01T00:00:00",
+              "train_end": "2026-06-01T00:00:00"
+            }
+          ],
+          "mae": 273664.89243369043
+        },
+        "seasonal_naive": {
+          "rmse": 821560.4136049921,
+          "folds": [
+            {
+              "test_start": "2026-01-01T00:00:00",
+              "mae": 754049.4866666669,
+              "test_end": "2026-03-01T00:00:00",
+              "train_end": "2025-12-01T00:00:00"
+            },
+            {
+              "test_start": "2026-04-01T00:00:00",
+              "mae": 921451.5899999999,
+              "test_end": "2026-06-01T00:00:00",
+              "train_end": "2026-03-01T00:00:00"
+            },
+            {
+              "test_start": "2026-07-01T00:00:00",
+              "mae": 695833.3933333332,
+              "test_end": "2026-09-01T00:00:00",
+              "train_end": "2026-06-01T00:00:00"
+            }
+          ],
+          "mae": 790444.8233333334
+        },
+        "sarimax": {
+          "rmse": 351426.0011745475,
+          "folds": [
+            {
+              "test_start": "2026-01-01T00:00:00",
+              "mae": 420634.81828485866,
+              "test_end": "2026-03-01T00:00:00",
+              "train_end": "2025-12-01T00:00:00"
+            },
+            {
+              "test_start": "2026-04-01T00:00:00",
+              "mae": 149839.13145392048,
+              "test_end": "2026-06-01T00:00:00",
+              "train_end": "2026-03-01T00:00:00"
+            },
+            {
+              "test_start": "2026-07-01T00:00:00",
+              "mae": 293735.69109919545,
+              "test_end": "2026-09-01T00:00:00",
+              "train_end": "2026-06-01T00:00:00"
+            }
+          ],
+          "mae": 288069.88027932483
+        }
+      },
+      "horizon": 3
+    }
+  ],
+  "dashboard_id": "77e0df7c96ff41f2bf3a61e90d683298",
+  "cancellation_run_id": "1e46f7ae91381fa685e284de89c123c4",
+  "passed": true
+}

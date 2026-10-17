@@ -89,6 +89,46 @@ FORBIDDEN_NODES = {
 }
 
 
+def linked_predicate(node, right: str, left: set[str]) -> bool:
+    """Every admitted OR branch must constrain the new relation to a prior one."""
+    if isinstance(node, exp.Paren):
+        return linked_predicate(node.this, right, left)
+    if isinstance(node, exp.And):
+        return linked_predicate(node.this, right, left) or linked_predicate(node.expression, right, left)
+    if isinstance(node, exp.Or):
+        return linked_predicate(node.this, right, left) and linked_predicate(node.expression, right, left)
+    if not isinstance(node, exp.EQ) or any(node.find_all(exp.Query)):
+        return False
+    sides = [{c.table for c in side.find_all(exp.Column)} for side in (node.this, node.expression)]
+    return any(a == {right} and bool(b) and b <= left for a, b in (sides, sides[::-1]))
+
+
+def validate_joins(tree):
+    # Inspect each SELECT separately, including nested CTEs/subqueries. Only
+    # explicit key joins are supported; implicit/CROSS/tautological joins are
+    # rejected rather than multiplying observations silently.
+    for select in tree.find_all(exp.Select):
+        origin = select.args.get("from_")
+        previous = {origin.this.alias_or_name} if origin else set()
+        for join in select.args.get("joins", []):
+            right = join.this.alias_or_name
+            using = join.args.get("using")
+            if (
+                not right
+                or not previous
+                or right in previous
+                or join.args.get("kind") == "CROSS"
+                or join.args.get("method") == "NATURAL"
+                or not (using or linked_predicate(join.args.get("on"), right, previous))
+            ):
+                raise AppError(
+                    "Unsupported join: use explicit equality keys connecting each joined table; "
+                    "Cartesian, constant and unrelated join conditions are not allowed.",
+                    code="unsafe_sql",
+                )
+            previous.add(right)
+
+
 def validate_sql(
     sql: str, source: str, project: str, dataset: str, *, tables=None, postgres_schema="retail"
 ) -> str:
@@ -102,6 +142,7 @@ def validate_sql(
     if len(statements) != 1 or not isinstance(statements[0], exp.Query):
         raise AppError("Only one read-only SELECT query is allowed.", code="unsafe_sql")
     tree = statements[0]
+    validate_joins(tree)
     ctes = {cte.alias for cte in tree.find_all(exp.CTE)}
     physical_tables = 0
     for node in tree.walk():

@@ -1,0 +1,54 @@
+{
+  "verified_at": "2026-10-17T06:47:56.463229+00:00",
+  "services": {
+    "frontend": {
+      "ready_revision": "agentic-bi-frontend-00012-mv5",
+      "traffic": [
+        {
+          "percent": 100,
+          "revisionName": "agentic-bi-frontend-00012-mv5"
+        }
+      ],
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend:1792217158",
+      "configuration": {}
+    },
+    "backend": {
+      "ready_revision": "agentic-bi-backend-00017-cnf",
+      "traffic": [
+        {
+          "percent": 100,
+          "revisionName": "agentic-bi-backend-00017-cnf"
+        }
+      ],
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend:1792188441",
+      "configuration": {
+        "STORAGE_BACKEND": "firestore",
+        "DATA_BACKEND": "cloud",
+        "DATA_PROFILE": "timeseries",
+        "SOURCE_ROW_LIMIT": "30000",
+        "REPORTS_ENABLED": "true",
+        "REPORT_DISPATCH": "cloud_tasks"
+      }
+    },
+    "worker": {
+      "ready_revision": "agentic-bi-report-worker-00006-sk6",
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100,
+          "revisionName": "agentic-bi-report-worker-00006-sk6"
+        }
+      ],
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:bcb725a3cf6f960b7d2f433c61b9f5f4aab4ee0ec564cad2364ecdb5b20b2c2a",
+      "configuration": {
+        "STORAGE_BACKEND": "firestore",
+        "DATA_BACKEND": "cloud",
+        "DATA_PROFILE": "timeseries",
+        "SOURCE_ROW_LIMIT": "30000",
+        "REPORTS_ENABLED": "true",
+        "REPORT_DISPATCH": "cloud_tasks",
+        "REPORT_RESEARCH_ENABLED": "false"
+      }
+    }
+  }
+}

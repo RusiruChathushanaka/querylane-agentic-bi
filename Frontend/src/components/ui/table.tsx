@@ -9,8 +9,9 @@ function Table({ className, ...props }: React.ComponentProps<"table">) {
       data-slot="table-container"
       className="relative w-full overflow-x-auto focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2"
       tabIndex={0}
-      role="region"
-      aria-label={`${props["aria-label"] ?? "Data table"} scroll area`}
+      role={props["aria-label"] || props["aria-labelledby"] ? "region" : undefined}
+      aria-label={props["aria-label"] ? `${props["aria-label"]} scroll area` : undefined}
+      aria-labelledby={props["aria-labelledby"]}
     >
       <table
         data-slot="table"

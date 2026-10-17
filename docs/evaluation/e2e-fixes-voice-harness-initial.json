@@ -1,0 +1,13 @@
+{
+  "verified_at": "2026-10-17T07:07:42.466795+00:00",
+  "checks": {
+    "two_spoken_analyses_same_connection": false
+  },
+  "errors": [
+    "'rows'"
+  ],
+  "turns": [],
+  "conversation_id": "767eaf191202406289612b6ad6eeae6e",
+  "run_id": "cf04bb27139f7e8a6e514dd30a67a056",
+  "passed": false
+}

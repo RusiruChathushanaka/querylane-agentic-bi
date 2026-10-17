@@ -8,7 +8,7 @@ flowchart LR
     Voice --> Live[ADK run_live / Gemini Live]
     Live -->|analyze_data tool| Analysis[Controlled analysis service]
     ADK --> Analysis
-    Analysis --> Guard[SQL AST validation + budgets]
+    Analysis --> Guard[SQL AST + explicit key joins + budgets]
     Guard --> BQ[Demo BigQuery dataset]
     Guard --> PG[Demo PostgreSQL / SELECT-only role]
     Analysis --> Fusion[Typed fusion compiler / isolated DuckDB]

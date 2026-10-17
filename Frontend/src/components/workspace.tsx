@@ -679,6 +679,7 @@ export default function Workspace() {
     });
     try {
       const chat = await ensureConversation();
+      let transcriptRole: unknown;
       const session = new LiveVoice(
         (event) => {
           if (event.type === "ready") {
@@ -691,16 +692,20 @@ export default function Workspace() {
               duration: 5000,
             });
           }
-          if (event.type === "transcript")
+          if (event.type === "transcript") {
+            const replace = event.replace || transcriptRole !== event.role;
+            transcriptRole = event.role;
             setVoiceText((previous) =>
-              (previous + String(event.text)).slice(-1000),
+              ((replace ? "" : previous) + String(event.text)).slice(-1000),
             );
+          }
           if (event.type === "artifact") {
             const data = event.data as { id: string };
             void loadArtifact(data.id);
             setDraftArtifact(data.id);
           }
           if (event.type === "turn_complete") {
+            transcriptRole = undefined;
             void loadMessages(chat.id).then(() => setDraftArtifact(null));
             void refreshList();
           }

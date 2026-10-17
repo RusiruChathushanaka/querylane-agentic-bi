@@ -1,0 +1,45 @@
+{
+  "checks": {
+    "two_spoken_browser_analyses_one_connection": true,
+    "saved_questions_once": true,
+    "saved_spoken_answers_once": true,
+    "spoken_counts_reconciled": true,
+    "distinct_jobs_same_parent": true,
+    "muted_track_disabled": true,
+    "unmuted_track_enabled": true,
+    "reconnect_ready_without_error": true,
+    "both_query_records_preserved": true
+  },
+  "passed": true,
+  "conversation_id": "28662d1ef3f5459d98e6f663a32db587",
+  "events": {
+    "artifact": 2,
+    "audio": 57,
+    "ready": 1,
+    "transcript": 25,
+    "turn_complete": 4
+  },
+  "user_messages": [
+    "How many completed orders are there across all available history? Query the data and show a key performance indicator.",
+    "What about only the calendar year 2024? Query the completed order count for that year."
+  ],
+  "spoken_messages": [
+    "Across the full history from 2023 through September 2026, there are 573,348 completed orders.",
+    "For the calendar year 2024, there were 152,694 completed orders."
+  ],
+  "jobs": [
+    "abi_14f36289d8136226dd75db1df03c430b_74281b837c22481ab28945cbde6e9c1a_0",
+    "abi_14f36289d8136226dd75db1df03c430b_fc1bd4136c1e48c58c1f91648ca01608_0"
+  ],
+  "artifact_ids": [
+    "09721aea4f504d5794ee84584a024a5c",
+    "f2e7d4d5dc5541e982f81ad2dd4b1f7e"
+  ],
+  "query_record_ids": [
+    "74281b837c22481ab28945cbde6e9c1a_0_0",
+    "fc1bd4136c1e48c58c1f91648ca01608_0_0"
+  ],
+  "synthetic_microphone": true,
+  "physical_microphone_tested": false,
+  "raw_audio_stored": false
+}

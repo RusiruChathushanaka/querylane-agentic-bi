@@ -17,7 +17,7 @@ flowchart LR
     Voice --> Live[ADK run_live / Gemini Live]
     Live -->|analyze_data tool| Analysis[Controlled analysis service]
     ADK --> Analysis
-    Analysis --> Guard[SQL AST validation + budgets]
+    Analysis --> Guard[SQL AST + explicit key joins + budgets]
     Guard --> BQ[Demo BigQuery dataset]
     Guard --> PG[Demo PostgreSQL / SELECT-only role]
     Analysis --> Fusion[Typed fusion compiler / isolated DuckDB]
@@ -35,7 +35,7 @@ flowchart LR
     API --> Secrets[Secret Manager / workload identity]
 ```
 
-The [landing/workspace route split](landing-page.md) is deployed as frontend `00012-mv5`, verified on 17 October 2026. Backend `00017-cnf` and private worker `00006-sk6` remain unchanged. The landing page has no analytics or voice client and makes no backend requests. `/app` owns conversation history and shared links. Existing library/detail routes are unchanged.
+The [landing/workspace route split](landing-page.md) was introduced in frontend `00012-mv5`. The subsequent [analytics/voice fix release](evaluation/e2e-fixes-deployed.md), verified on 17 October 2026, serves frontend `00013-hrz`, backend `00018-ctv` and private worker `00007-pfq`. The landing page has no analytics or voice client and makes no backend requests. `/app` owns conversation history and shared links. Existing library/detail routes are unchanged.
 
 The frontend contains no database credentials or Google model keys. `/api/config` supplies only the public backend URL at runtime. Direct browser requests use explicit CORS origins; the WebSocket validates Origin and its first authentication frame. Guest tokens identify requests and cancellation ownership without providing account privacy.
 
@@ -71,7 +71,7 @@ The browser chooses a pinned analysis model from `GET /api/v1/models`. The backe
 2. Retrieve versioned schema context; use Gemini embeddings/vector search when available, retaining complete context for the small seeded schema.
    Before schema planning, resolve shared manual skill attachments, select relevant additional skills from metadata in one bounded call, and persist exact revisions. At most three skills apply. Planner repairs and interpretation reuse these snapshots in analysis-scoped ADK sessions. Public playbooks cannot change application safeguards.
 3. Ask an ADK planner for a typed analysis plan. The nested fusion/chart contract exceeds Vertex's structured-output complexity limit, so planning and SQL repair use JSON response mode with the full schema in the instruction, followed by strict local Pydantic validation before execution. Smaller selection/answer contracts retain native structured output. Tool-free planning uses one model call; at most two SQL repairs are permitted.
-4. Validate all SQL, then execute with restricted data access, time/scan/row/byte limits, and persisted job IDs.
+4. Validate all SQL, including explicit equality keys linking each joined relation. Reject Cartesian, constant/unrelated and unproven OR join predicates in nested queries too. Execute with restricted data access, time/scan/row/byte limits, and persisted job IDs. These controls do not prove that every admitted join has the correct business grain.
 5. For two sources, register bounded, complete Arrow results in a fresh DuckDB child process. Compile an allowlisted typed fusion plan. Check key types, null semantics, cardinality, coverage, and output limits. No arbitrary model-generated Python or fusion SQL is executed.
 6. Persist immutable paginated results and source evidence; ask the interpreter for an explanation grounded in the result. Stream named progress and public answer events.
 7. Release the lease only if its run ID and fencing generation still match.
@@ -93,6 +93,8 @@ This ordinary-chat recovery rule differs from durable reports: reports have inde
 ## Voice
 
 An AudioWorklet produces 16 kHz signed PCM samples; the browser queues 24 kHz PCM playback. Audio streams through FastAPI to ADK `Runner.run_live()`. The `analyze_data` tool calls the same bounded analysis service as text. Audio is streamed rather than recorded. Durable transcripts and public result references are distinct from the private, short-lived Live resumption handle.
+
+Every analytical invocation uses its captured `analysis_id` in query-record keys and BigQuery job legs, so several tools in one voice run cannot overwrite each other's evidence or collide on a job ID. Repair legs remain deterministic within that invocation. All jobs remain registered under the parent run for cancellation; BigQuery recovery still rejects different SQL. Ordinary text replay does not re-enter execution. ADK partial transcripts append; finalized full text replaces the buffer and is marked as replacement for the browser. A user transcript flushed before a tool is not saved again if the same final text arrives before turn completion. Buffers reset between turns so intentional repeated questions remain valid.
 
 ## Explicit limits
 

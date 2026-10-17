@@ -1,0 +1,78 @@
+{
+  "verified_at": "2026-10-17T06:49:14.661539+00:00",
+  "checks": {
+    "forecast_training_matches_all_45_independent_months": true,
+    "baseline_fold_2026-01": true,
+    "baseline_fold_2026-04": true,
+    "baseline_fold_2026-07": true,
+    "independent_baseline_MAE": true,
+    "candidate_passes_promotion_gates": true,
+    "only_three_future_point_predictions": true,
+    "no_fabricated_prediction_intervals": true,
+    "cutoff_is_latest_complete_history": true,
+    "dashboard_public_and_forecast_pin": true,
+    "dashboard_download_png": true,
+    "dashboard_download_jpeg": true,
+    "dashboard_download_pdf": true,
+    "dashboard_download_data": true,
+    "dashboard_csv_hashes_and_full_rows": true,
+    "dashboard_csv_matches_revenue_ledger": true,
+    "dashboard_download_json": true,
+    "dashboard_metadata_snapshot_has_forecast_evidence": true,
+    "downloads_do_not_change_saved_dashboard": true
+  },
+  "downloads": {
+    "png": {
+      "bytes": 211379,
+      "sha256": "3d8842f106b42ff39b30437df6e447d778464b320acc2e45d81cbdf864229bba"
+    },
+    "jpeg": {
+      "bytes": 443030,
+      "sha256": "9d043e76ac199ee7c2d35dd27459b7dc89b17684f2d3fb50275eb017721e06ce"
+    },
+    "pdf": {
+      "bytes": 60856,
+      "sha256": "b52f0677dbc73ee981b15ab992ea025ae56fb69c15b75e2ad4cad6df883dd626"
+    },
+    "data": {
+      "bytes": 5024,
+      "sha256": "bd92da09bf1240de52db36b12fb255632524ff05bff893d3d47c3d3d6c3685b8"
+    },
+    "json": {
+      "bytes": 15985,
+      "sha256": "4bc723d221d1b434d0a8b10cfad490a8c900cc94574f135782c2b5f1027aeac8"
+    }
+  },
+  "source_queries_requested": false,
+  "model_calls_requested": false,
+  "forecast": {
+    "method": "ets",
+    "baseline_mae": 790444.8233333334,
+    "candidate_mae": 273664.89243369043,
+    "folds": 3,
+    "points": [
+      {
+        "observed": null,
+        "date": "2026-10-01",
+        "forecast": 9821574.38515586,
+        "scenario": null
+      },
+      {
+        "observed": null,
+        "date": "2026-11-01",
+        "forecast": 13396864.111970706,
+        "scenario": null
+      },
+      {
+        "observed": null,
+        "date": "2026-12-01",
+        "forecast": 13004166.888183326,
+        "scenario": null
+      }
+    ],
+    "artifact_id": "535ab8df103e66643a232f731a4118ff"
+  },
+  "dashboard_id": "77e0df7c96ff41f2bf3a61e90d683298",
+  "dashboard_revision": 4,
+  "passed": true
+}

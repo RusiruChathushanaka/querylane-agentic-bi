@@ -210,7 +210,7 @@ class Connectors:
             )
         return tables
 
-    async def query(self, source: str, sql: str, run_id: str, leg: int = 0) -> QueryResult:
+    async def query(self, source: str, sql: str, run_id: str, leg: int | str = 0) -> QueryResult:
         try:
             return await self._query(source, sql, run_id, leg)
         except AppError:
@@ -249,7 +249,7 @@ class Connectors:
                 ) from exc
             raise
 
-    async def _query(self, source: str, sql: str, run_id: str, leg: int = 0) -> QueryResult:
+    async def _query(self, source: str, sql: str, run_id: str, leg: int | str = 0) -> QueryResult:
         await self.ensure_data_ready()
         if run_id in self.cancelled:
             raise asyncio.CancelledError()
@@ -331,7 +331,7 @@ class Connectors:
             rows = [dict(zip([c["name"] for c in columns], row)) for row in result.fetchall()]
         return rows, columns
 
-    def _bigquery(self, sql: str, run_id: str, leg: int):
+    def _bigquery(self, sql: str, run_id: str, leg: int | str):
         from google.cloud import bigquery
 
         bounded = f"SELECT * FROM ({sql}) AS bounded_result LIMIT {self.settings.source_row_limit + 1}"

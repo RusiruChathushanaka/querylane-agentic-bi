@@ -248,7 +248,7 @@ async def test_analysis_snapshots_numeric_fixture_and_idempotent_replay():
     assert (await skills.get(skill["id"], 1))["instructions"] == CONTENT["instructions"]
 
 
-async def test_voice_analyses_each_capture_a_distinct_skill_snapshot():
+async def test_voice_analyses_each_capture_a_distinct_skill_snapshot(monkeypatch):
     settings, store, repo, ai, skills = services()
     skill = await skills.mutate("g", content=SkillContent(**CONTENT))
     chat = await repo.create_conversation("Voice", "bigquery")
@@ -258,6 +258,8 @@ async def test_voice_analyses_each_capture_a_distinct_skill_snapshot():
     token = active_lease.set(lease)
     try:
         analysis = AnalysisService(repo, ai.connectors, ai, settings)
+        query = AsyncMock(wraps=ai.connectors.query)
+        monkeypatch.setattr(ai.connectors, "query", query)
         first = await analysis.execute("What is revenue?", chat["id"])
         await skills.mutate(
             "g",
@@ -269,6 +271,11 @@ async def test_voice_analyses_each_capture_a_distinct_skill_snapshot():
         assert first["skills_used"][0]["revision"] == 1
         assert second["skills_used"][0]["revision"] == 2
         assert len(await store.list(f"runs/{run['id']}/skill_snapshots")) == 2
+        legs = [call.args[3] for call in query.await_args_list]
+        assert len(set(legs)) == len(legs), "Voice analyses must not reuse BigQuery query identities"
+        assert all(call.args[2] == run["id"] for call in query.await_args_list)
+        records = await store.list(f"runs/{run['id']}/queries")
+        assert len(records) == len(legs), "Evidence from earlier voice calls must not be overwritten"
     finally:
         active_lease.reset(token)
 

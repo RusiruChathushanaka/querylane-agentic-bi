@@ -168,6 +168,8 @@ python3 infra/deploy_report_worker.py \
 
 Only the explicitly authorized release adds `--apply`. This helper deploys the private worker with reports disabled, discovers its **actual** URL, then enables its self-dispatch configuration. It does not provision IAM, queue, bucket or scheduler. The image must come from this project's dedicated backend repository. Set `BI_REPORT_WORKER_URL` to the returned URL.
 
+For a routine image-only update of an **already provisioned, enabled** worker, preserve its live configuration with `gcloud run services update agentic-bi-report-worker --image "$BI_BACKEND_IMAGE" --no-traffic --project "$BI_PROJECT_ID" --region "$BI_REGION"`. Inspect the exact new revision's readiness and image digest against the successful backend build, then use `update-traffic --to-revisions VERIFIED_WORKER_REVISION=100`. This avoids the first-time helper's temporary disable/enable bootstrap. Recheck the private access policy, report dispatch and unchanged environment/secret references before frontend release.
+
 Worker settings: `APP_MODULE=app.report_worker:app`, Cloud Run timeout 660 seconds, concurrency one, max instances two, two CPUs and 2 GiB memory. Application computation remains capped at 600 seconds; task dispatch deadline is 665 seconds. The worker holds the request until a committed terminal outcome or a retryable failure. Never expose its internal handlers on the public backend or grant `allUsers` invoker access.
 
 Grant the dispatch identity invoker on only the new worker using `Backend/.venv/bin/python infra/provision_reports.py --stage invoker --worker-url "$BI_REPORT_WORKER_URL" --apply`. Verify an OIDC task reaches its private health endpoint and anonymous invocation is rejected. Then create the schedule with the helper's `--stage scheduler --worker-url "$BI_REPORT_WORKER_URL" --apply`, or equivalently:
@@ -498,6 +500,8 @@ Do not disable/delete the previous secret version while a serving revision still
 For the [landing/workspace split](landing-page.md), verify bare `/` shows the introduction, every **Open Querylane** CTA opens `/app`, and legacy `/?chat=ID&other=value` returns one HTTP 307 to `/app` with both query values retained. Test New exploration, shared/forked conversations and report/dashboard source links. Before application entry, the landing preview must make no backend, guest-session or microphone requests; app links disable prefetching. Keep the existing backend/worker configuration and larger `timeseries` data profile. Local landing checks do not update `deployment.json`; record actual serving revisions only after an authorized release.
 
 ### Basic health and service readiness
+
+For the 17 October analytics/voice fixes, release the shared backend image to the public API **and** private report worker before the frontend. Preserve the active `timeseries` profile and report configuration. Verify explicit source join validation, a reconciled 1,369-day result, at least two distinct `analyze_data` invocations in one Live connection, non-duplicated saved transcripts and a report with multiple uniquely named table scroll regions. Preserve the original failed [assessment](evaluation/e2e-deployed-20261017.md); write re-test evidence to new files. No seed/upload, IAM expansion or history/usage reset is needed.
 
 ```bash
 curl --fail --silent --show-error "$BI_BACKEND_URL/health/live"

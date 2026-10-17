@@ -1,0 +1,18 @@
+{
+  "backend_tests": {
+    "passed": 317,
+    "skipped": 1,
+    "skip": "Existing memory-store independent-client durability case; emulator variant not run in this process"
+  },
+  "backend_ruff": "passed from Backend/ with repository configuration",
+  "targeted_red_regressions": "9 SQL/identity failures and the transcript failure reproduced before fixes",
+  "targeted_after_fixes": "93 passed; transcript test rerun after save_live_blob change: 1 passed",
+  "frontend_tests": 35,
+  "frontend_lint": "passed",
+  "typescript": "passed",
+  "production_build": "passed",
+  "notes": [
+    "One pre-existing E731 lint issue in the social-image generator was corrected without changing generated output.",
+    "No dependency or analytical schema change."
+  ]
+}

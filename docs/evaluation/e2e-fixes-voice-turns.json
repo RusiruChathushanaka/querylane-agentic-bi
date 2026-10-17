@@ -1,0 +1,73 @@
+{
+  "verified_at": "2026-10-17T07:08:48.812059+00:00",
+  "checks": {
+    "two_spoken_analyses_same_connection": true,
+    "counts_match_independent_large_dataset": true,
+    "query_jobs_distinct_under_one_parent_run": true,
+    "timeseries_only": true
+  },
+  "errors": [],
+  "turns": [
+    {
+      "artifact_id": "17b7cf406fe24969a69d98bfbd73c3e5",
+      "rows": [
+        {
+          "completed_orders_count": 573348
+        }
+      ],
+      "provenance": [
+        {
+          "job_id": "abi_54f3ead35e4eb049153325b448e68d00_6a413d1714de4ab7baa9adaee83bae7d_0",
+          "columns": [
+            {
+              "type": "INTEGER",
+              "name": "completed_orders_count"
+            }
+          ],
+          "row_count": 1,
+          "complete": true,
+          "elapsed_ms": 1883,
+          "bytes_processed": 16627092,
+          "sql": "SELECT COUNT(DISTINCT order_id) AS completed_orders_count FROM `project-e8b1593d-009a-4822-abf`.agentic_bi_demo.sales_orders WHERE status = 'completed'",
+          "source": "bigquery",
+          "executed_at": "2026-10-17T07:09:04.528858+00:00"
+        }
+      ],
+      "spoken": "The total count of completed orders is 573,348.",
+      "audio_frames": 23,
+      "data_profile": "timeseries"
+    },
+    {
+      "artifact_id": "9861017ad9a0443492bbfab70e5f5cb4",
+      "rows": [
+        {
+          "completed_orders_count": 152694
+        }
+      ],
+      "provenance": [
+        {
+          "job_id": "abi_54f3ead35e4eb049153325b448e68d00_3d395a22602f4ec4974b29cd2c8aff83_0",
+          "columns": [
+            {
+              "type": "INTEGER",
+              "name": "completed_orders_count"
+            }
+          ],
+          "row_count": 1,
+          "complete": true,
+          "elapsed_ms": 901,
+          "bytes_processed": 5649678,
+          "sql": "SELECT COUNT(order_id) AS completed_orders_count FROM `project-e8b1593d-009a-4822-abf`.agentic_bi_demo.sales_orders WHERE status = 'completed' AND order_date >= CAST('2024-01-01' AS DATE) AND order_date <= CAST('2024-12-31' AS DATE)",
+          "source": "bigquery",
+          "executed_at": "2026-10-17T07:09:53.714308+00:00"
+        }
+      ],
+      "spoken": "In calendar year 2024, there were 152,694 completed orders.",
+      "audio_frames": 26,
+      "data_profile": "timeseries"
+    }
+  ],
+  "conversation_id": "1921d3f0e6ab44ed86f45d037135e11d",
+  "run_id": "54f3ead35e4eb049153325b448e68d00",
+  "passed": true
+}

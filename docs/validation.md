@@ -1,10 +1,10 @@
 # Validation and remaining deployment gates
 
-Latest release validation: 2026-10-16. Earlier sections retain dated baseline evidence. Results distinguish local integration from deployed acceptance.
+Latest hosted end-to-end assessment: **2026-10-17 — four reported findings fixed, deployed and re-tested**. [The release assessment](evaluation/e2e-fixes-deployed.md) records passing daily numerical reconciliation, repeated browser speech with distinct jobs/non-duplicated transcripts, report generation/forecasting/downloads, dashboard flows and four zero-violation axe scans. The larger dataset is unchanged. Physical microphone/speaker quality and other manual-review boundaries remain explicit. [The original failed assessment](evaluation/e2e-deployed-20261017.md) is preserved; earlier sections are dated historical evidence.
 
-## Automated checks
+## Historical baseline automated checks
 
-The current suite includes the deployed skills library/animation release and the new locally implemented conversational voice author. The voice-author feature has not been deployed. Original evaluation files below remain dated baseline records; the latest hosted-source results are linked in the release section.
+This baseline was recorded at the skills library/animation release and local conversational voice-author milestone. Subsequent dated sections record later releases. Original evaluation files below remain historical records; use the assessment above for the latest hosted acceptance outcome.
 
 | Check | Result | Scope |
 | --- | --- | --- |

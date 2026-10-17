@@ -153,3 +153,48 @@ def test_logical_filters_are_operators_not_unapproved_functions(source, table):
 def test_logical_filters_do_not_hide_unsafe_nested_calls(predicate):
     with pytest.raises(AppError, match="not approved"):
         validate_sql(f"SELECT * FROM customer_profiles WHERE {predicate}", "postgres", PROJECT, DATASET)
+
+
+@pytest.mark.parametrize(
+    "join",
+    [
+        "CROSS JOIN products p",
+        "RIGHT JOIN products p ON 1=1",
+        "JOIN products p ON TRUE",
+        "JOIN products p ON o.order_id=o.order_id",
+        "JOIN products p ON p.product_id=p.product_id",
+        "JOIN products p ON o.order_id=p.product_id OR 1=1",
+        ", products p",
+    ],
+)
+def test_cartesian_or_unrelated_join_predicates_rejected(join):
+    with pytest.raises(AppError, match="join"):
+        validate_sql(f"SELECT SUM(o.revenue) FROM orders o {join}", "bigquery", PROJECT, DATASET)
+
+
+def test_daily_fanout_regression_is_rejected_even_inside_cte():
+    sql = """WITH daily AS (
+    SELECT c.calendar_date, SUM(o.revenue) AS revenue
+    FROM sales_products p RIGHT JOIN calendar c ON 1=1
+    LEFT JOIN sales_orders o ON c.calendar_date=o.order_date GROUP BY c.calendar_date)
+    SELECT * FROM daily"""
+    with pytest.raises(AppError, match="join"):
+        validate_sql(
+            sql,
+            "bigquery",
+            PROJECT,
+            DATASET,
+            tables={"bigquery": {"sales_products", "calendar", "sales_orders"}},
+        )
+
+
+@pytest.mark.parametrize(
+    "join",
+    [
+        "JOIN order_items i ON i.order_id=o.order_id",
+        "LEFT JOIN order_items i ON (i.order_id=o.order_id AND o.status='completed')",
+        "JOIN order_items i USING(order_id)",
+    ],
+)
+def test_explicit_linked_joins_still_allowed(join):
+    assert validate_sql(f"SELECT o.order_id FROM orders o {join}", "bigquery", PROJECT, DATASET)

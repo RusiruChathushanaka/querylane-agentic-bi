@@ -1,0 +1,282 @@
+{
+  "verified_at": "2026-10-17T06:51:28.629355+00:00",
+  "frontend": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app",
+  "checks": {
+    "landing_has_no_backend_or_guest_requests": true,
+    "landing_reports_predictions_voice_tabs": true,
+    "landing_390px_no_page_overflow": true,
+    "mobile_sheet_CTA_opens_app_without_auth": true,
+    "composer_question_returns_verified_KPIs": true,
+    "advanced_toggle_exposes_style_and_create_report": true,
+    "dashboard_card_edit_saved": true,
+    "dashboard_share_handler_canonical_url": true,
+    "dashboard_PNG_downloaded_through_UI": true,
+    "report_forecast_pinned_through_UI": true,
+    "report_PDF_downloaded_through_UI": true,
+    "report_version_selection": true,
+    "report_390px_no_page_overflow": true,
+    "new_chat_resets_to_app": true,
+    "legacy_conversation_redirect_loads_saved_results": true,
+    "observed_solid_forecast_dashed_with_cutoff_and_uncertainty": true,
+    "voice_initial_spoken_question_query_transcript_audio": true,
+    "voice_multi_analysis_session_without_error": false,
+    "a11y_landing": true,
+    "a11y_workspace": true,
+    "a11y_dashboard": true,
+    "a11y_report": false,
+    "browser_uncaught_JS_errors_absent": true
+  },
+  "voice": {
+    "conversation_id": "aa77ecaabcca4230bf7ea9863ecdf31b",
+    "input": "Synthetic local speech supplied to a simulated getUserMedia stream. Actual browser capture worklet, WebSocket, deployed ADK/Gemini, source queries, transcripts and PCM output exercised.",
+    "microphone_hardware_tested": false,
+    "speaker_hardware_tested": false,
+    "raw_audio_stored": false,
+    "events": {
+      "artifact": 2,
+      "audio": 36,
+      "error": 1,
+      "ready": 3,
+      "transcript": 18,
+      "turn_complete": 3
+    },
+    "sent_frame_counts": {
+      "audio": 2864,
+      "authenticate": 3,
+      "stop": 3
+    },
+    "artifact_ids": [
+      "55256bdc894b423495099ad418c0163c",
+      "585192b14513488e9684589b3445a365"
+    ],
+    "errors": [
+      "Live voice is unavailable. Check model access or reconnect; text chat is still available."
+    ],
+    "first_spoken_answer": "Across all available history from 2023 through 2026, there are 573,348 completed orders.",
+    "followup_saved_order_count": 152694,
+    "permission_denial_feedback": true,
+    "mute_unmute_control_feedback": true,
+    "reconnect_ready_events": 3,
+    "duplicate_transcripts_persisted": true
+  },
+  "accessibility": {
+    "landing": {
+      "axeVersion": "4.12.1",
+      "counts": {
+        "inapplicable": 44,
+        "incomplete": 1,
+        "passes": 45,
+        "violations": 0
+      },
+      "violations": []
+    },
+    "workspace": {
+      "axeVersion": "4.12.1",
+      "counts": {
+        "inapplicable": 44,
+        "incomplete": 0,
+        "passes": 45,
+        "violations": 0
+      },
+      "violations": []
+    },
+    "dashboard": {
+      "axeVersion": "4.12.1",
+      "counts": {
+        "inapplicable": 45,
+        "incomplete": 0,
+        "passes": 44,
+        "violations": 0
+      },
+      "violations": []
+    },
+    "report": {
+      "axeVersion": "4.12.1",
+      "counts": {
+        "inapplicable": 40,
+        "incomplete": 1,
+        "passes": 49,
+        "violations": 1
+      },
+      "violations": [
+        {
+          "help": "Landmarks should have a unique role or role/label/title (i.e. accessible name) combination",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/landmark-unique?application=axeAPI",
+          "id": "landmark-unique",
+          "impact": "moderate",
+          "nodeCount": 1,
+          "nodes": [
+            {
+              "failureSummary": "Fix any of the following:\n  The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable",
+              "html": "<div data-slot=\"table-container\" class=\"relative w-full overflow-x-auto focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2\" tabindex=\"0\" role=\"region\" aria-label=\"Data table scroll area\">",
+              "target": [
+                ".group\\/card.flex-col.gap-\\(--card-spacing\\):nth-child(4) > .px-\\(--card-spacing\\)[data-slot=\"card-content\"] > .result-table[role=\"region\"] > .relative.overflow-x-auto.focus-visible\\:outline-2"
+              ]
+            }
+          ],
+          "tags": [
+            "cat.semantics",
+            "best-practice"
+          ]
+        }
+      ]
+    }
+  },
+  "limitations": [
+    "Physical microphone/speaker and real touch devices not tested.",
+    "Synthetic speech followed the real browser audio path; the simple protocol smoke separately used text over Live.",
+    "Voice barge-in and long reconnect reliability not certified after the observed job collision.",
+    "Clipboard writer intercepted to inspect the actual copy-handler URL; OS clipboard and native share-sheet sending not certified.",
+    "Representative PDF pages inspected, not all-page PDF layout or PDF/UA certification.",
+    "Axe SVG contrast items require manual review; no full screen-reader, Safari or Firefox audit.",
+    "No fault injection into production workers, source writes, history/usage reset, IAM changes or deployment.",
+    "Google Search research remains disabled; conditional future-driver scenarios not exercised."
+  ],
+  "landing_requests": [
+    {
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/media/5c285b27cdda1fe8-s.p.2_mbdogr7ni8i.woff2",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/media/99e609270109b47d-s.p.40sczeszzbjw1.woff2",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/media/a343f882a40d2cc9-s.p.1sj6eobyi31rd.woff2",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/media/effe91970fc4db64-s.p.0oace-s_gkfks.woff2",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/05ncp5p1u2w2x.css",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/3fx3m13ig5k8v.css",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/3xic34odrqk7-.js",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/3-rp__fazq2qp.js",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/0-8qqqs0ffky1.js",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/217kmgt0mht9e.js",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/turbopack-3-ry682tkyiqk.js",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/0znwq1yo4f6o8.js",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/29tww0h0idzl8.js",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/3pefv_itzqydi.js",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/00mr0tj6zi79o.js",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/1ocqmpk_qtmoi.js",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/1yfhuw4xpa6mx.js",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/43goez7l9he80.js",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/2rg5thd6-3_az.js",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/icon.svg?icon.008fiad4yqwce.svg",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/?_rsc=5CB68i4pnAekjehf",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/?_rsc=8nTjltbQWvg6NcbE",
+      "method": "GET",
+      "status": 200
+    }
+  ],
+  "legacy_conversation": {
+    "hasFollowup": true,
+    "hasSavedResult": true,
+    "sourceConnected": false,
+    "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/app?chat=3fdcf9f716864e0395b8111ac2e3adc1&e2e=20261017"
+  },
+  "prediction_presentation": {
+    "cutoffVisible": true,
+    "forecastPaths": [
+      {
+        "dash": null,
+        "stroke": "var(--chart-1)"
+      },
+      {
+        "dash": null,
+        "stroke": "var(--chart-2)"
+      },
+      {
+        "dash": null,
+        "stroke": "var(--chart-1)"
+      },
+      {
+        "dash": "6 4",
+        "stroke": "var(--chart-2)"
+      }
+    ],
+    "htmlOverflow": false,
+    "uncertaintyExplained": true
+  },
+  "passed": false
+}

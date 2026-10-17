@@ -168,18 +168,19 @@ class AnalysisService:
                 )
                 await self.repo.write(
                     f"runs/{lease['run_id']}/queries",
-                    f"{index}_{attempt}",
+                    f"{analysis_id}_{index}_{attempt}",
                     {
                         "source": query.source,
                         "sql": query.sql,
-                        "job_id": f"abi_{lease['run_id']}_{index + attempt * 2}"
+                        "analysis_id": analysis_id,
+                        "job_id": f"abi_{lease['run_id']}_{analysis_id}_{index + attempt * 2}"
                         if query.source == "bigquery"
                         else None,
                     },
                 )
                 try:
                     result = await self.connectors.query(
-                        query.source, query.sql, lease["run_id"], index + attempt * 2
+                        query.source, query.sql, lease["run_id"], f"{analysis_id}_{index + attempt * 2}"
                     )
                     results.append(result)
                     break

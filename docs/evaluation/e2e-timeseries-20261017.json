@@ -1,0 +1,109 @@
+{
+  "verified_at": "2026-10-17T12:09:21.488069+05:30",
+  "backend": "https://agentic-bi-backend-wekihucn7q-as.a.run.app",
+  "frontend": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app",
+  "reference": "Independent deterministic bundle ledger and local Parquet SQL",
+  "checks": {
+    "live": true,
+    "ready": true,
+    "cloud_sources": true,
+    "timeseries_profile": true,
+    "frontend_health": true,
+    "runtime_url": true,
+    "cors": true,
+    "complete_Release: monthly sales": true,
+    "gemini_Release: monthly sales": true,
+    "evidence_Release: monthly sales": true,
+    "idempotent_Release: monthly sales": true,
+    "replay_Release: monthly sales": true,
+    "monthly_numbers": true,
+    "monthly_chart": true,
+    "measure_units": true,
+    "csv_full_result": true,
+    "complete_Release: 2024 follow-up": true,
+    "gemini_Release: 2024 follow-up": true,
+    "evidence_Release: 2024 follow-up": true,
+    "idempotent_Release: 2024 follow-up": true,
+    "replay_Release: 2024 follow-up": true,
+    "followup_numbers": true,
+    "fork_evidence": true,
+    "complete_Release: daily history": true,
+    "gemini_Release: daily history": true,
+    "evidence_Release: daily history": true,
+    "idempotent_Release: daily history": true,
+    "replay_Release: daily history": true,
+    "daily_full_chart": false,
+    "daily_zero_sales": true,
+    "complete_Release: cross-source segments": true,
+    "gemini_Release: cross-source segments": true,
+    "evidence_Release: cross-source segments": true,
+    "idempotent_Release: cross-source segments": true,
+    "replay_Release: cross-source segments": true,
+    "cross_source_numbers": true,
+    "cross_source_evidence": true,
+    "voice_origin_denied": true,
+    "voice_token_denied": true,
+    "live_analysis_audio_transcript": true
+  },
+  "analyses": [
+    {
+      "title": "Release: monthly sales",
+      "conversation_id": "3fdcf9f716864e0395b8111ac2e3adc1",
+      "artifact_id": "862d5f34fac44b2d82683f7df0500165",
+      "run_id": "bf97917d6f4e81b992b78f36fd6639dd",
+      "model": "gemini-3.8-flash",
+      "rows": 45,
+      "sql": [
+        "SELECT month, SUM(revenue) AS revenue FROM `project-e8b1593d-009a-4822-abf`.agentic_bi_demo.sales_orders WHERE status = 'completed' GROUP BY month ORDER BY month"
+      ]
+    },
+    {
+      "title": "Release: 2024 follow-up",
+      "conversation_id": "3fdcf9f716864e0395b8111ac2e3adc1",
+      "artifact_id": "6a26f15fa2554f6b98d167055649f63d",
+      "run_id": "94ca2fc8911616e9741a007af0006a53",
+      "model": "gemini-3.8-flash",
+      "rows": 12,
+      "sql": [
+        "SELECT month, SUM(revenue) AS revenue FROM `project-e8b1593d-009a-4822-abf`.agentic_bi_demo.sales_orders WHERE status = 'completed' AND order_date >= '2024-01-01' AND order_date <= '2024-12-31' GROUP BY month ORDER BY month"
+      ]
+    },
+    {
+      "title": "Release: daily history",
+      "conversation_id": "a58e244ea66e4228913e21222fe801ab",
+      "artifact_id": "8523f9fa68e447af8d7204f4c476dc36",
+      "run_id": "55aa4815015ad2f015ceabab4c247c90",
+      "model": "gemini-3.5-flash-lite",
+      "rows": 1369,
+      "sql": [
+        "SELECT c.calendar_date AS order_date, COALESCE(SUM(o.revenue), 0) AS revenue FROM `project-e8b1593d-009a-4822-abf`.agentic_bi_demo.`sales_products` AS p RIGHT JOIN `project-e8b1593d-009a-4822-abf`.agentic_bi_demo.`calendar` AS c ON 1 = 1 LEFT JOIN `project-e8b1593d-009a-4822-abf`.agentic_bi_demo.`sales_orders` AS o ON c.calendar_date = o.order_date AND o.status = 'completed' GROUP BY order_date ORDER BY c.calendar_date"
+      ]
+    },
+    {
+      "title": "Release: cross-source segments",
+      "conversation_id": "0fdfc841852246f1bd47dd243dfc8093",
+      "artifact_id": "d57bbc65f43e48f29923f6a43bba17e2",
+      "run_id": "b32c3a8fc22ed07dc373bfc268733a55",
+      "model": "gemini-3.8-flash",
+      "rows": 2,
+      "sql": [
+        "SELECT customer_id, SUM(revenue) AS revenue FROM `project-e8b1593d-009a-4822-abf`.agentic_bi_demo.sales_orders WHERE status = 'completed' AND NOT customer_id IS NULL GROUP BY customer_id",
+        "SELECT customer_id, segment FROM retail_timeseries.customer_profiles WHERE customer_id IS NOT NULL"
+      ]
+    }
+  ],
+  "voice": {
+    "events": [
+      "artifact",
+      "audio",
+      "ready",
+      "transcript",
+      "turn_complete"
+    ],
+    "errors": [],
+    "raw_audio_recorded": false,
+    "input": "text through live transport; microphone hardware not tested"
+  },
+  "reference_total": "354425112.20",
+  "passed": false
+}

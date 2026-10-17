@@ -9,9 +9,13 @@ from PIL import Image, ImageDraw, ImageFont
 
 root = Path(__file__).resolve().parents[1]
 fonts = Path(get_data_path()) / "fonts/ttf"
-f = lambda size, bold=False: ImageFont.truetype(
-    str(fonts / ("DejaVuSans-Bold.ttf" if bold else "DejaVuSans.ttf")), size
-)
+
+def f(size, bold=False):
+    return ImageFont.truetype(
+        str(fonts / ("DejaVuSans-Bold.ttf" if bold else "DejaVuSans.ttf")), size
+    )
+
+
 im = Image.new("RGB", (1200, 630), "#f7f9fc")
 d = ImageDraw.Draw(im)
 d.rounded_rectangle((45, 45, 90, 90), 12, fill="#315dee")

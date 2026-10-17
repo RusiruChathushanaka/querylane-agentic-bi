@@ -1,0 +1,206 @@
+{
+  "verified_at": "2026-10-17T07:07:36.825870+00:00",
+  "backend": "https://agentic-bi-backend-wekihucn7q-as.a.run.app",
+  "frontend": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app",
+  "checks": {
+    "production_dispatch_enabled": true,
+    "larger_profile_preserved": true,
+    "idempotent_report_admission": true,
+    "mutations_require_guest_credentials": true,
+    "ordinary_chat_during_report": true,
+    "private_worker_completes_report": true,
+    "report_profile_and_evidence": true,
+    "reviewed_narrative": true,
+    "monthly_revenue_matches_independent_ledger": true,
+    "prediction_or_explicit_limitation": true,
+    "download_pdf": true,
+    "download_docx": true,
+    "download_data": true,
+    "data_manifest_version_and_claims": true,
+    "full_csv_checksums_and_row_counts": true,
+    "word_is_editable_document": true,
+    "stale_metadata_edit_rejected": true,
+    "presentation_revision_complete": true,
+    "revision_reuses_immutable_artifacts": true,
+    "original_revision_unchanged": true,
+    "persisted_event_replay": true,
+    "report_chart_can_be_pinned": true,
+    "dashboard_retains_deleted_report_evidence": true,
+    "recoverable_report_deletion": true,
+    "cancellation_requires_initiating_guest": true,
+    "cancellation_confirmed": true
+  },
+  "source_upload_or_reset": false,
+  "conversation_id": "94becef882a243c6b1123da7124f94bb",
+  "report_id": "8a9a241d23d4c83384af22896ace71fd",
+  "run_id": "8a9a241d23d4c83384af22896ace71fd",
+  "outcome": {
+    "attempts": 1,
+    "cancel_requested": false,
+    "expires_at": 1792242459.0060172,
+    "updated_at": "2026-10-17T07:09:30.183423+00:00",
+    "workflow_version": 1,
+    "revision": 1,
+    "clarification": null,
+    "version": 1,
+    "report_id": "8a9a241d23d4c83384af22896ace71fd",
+    "clarification_requirements": null,
+    "status": "complete",
+    "stage": "Preparing downloads",
+    "sequence": 8,
+    "id": "8a9a241d23d4c83384af22896ace71fd",
+    "generation": 1,
+    "created_at": "2026-10-17T07:07:38.896261+00:00",
+    "error": null,
+    "clarifications": [],
+    "conversation_id": "94becef882a243c6b1123da7124f94bb",
+    "delivery": 0
+  },
+  "artifact_ids": [
+    "b4c0a078adc6a541f68e20de9142efb9",
+    "ba46563362ce9d3d3a4fdedfd3dc84f3",
+    "7923619a3747a53c60d5d12ffae1e53f",
+    "56abfe1ba5dd2a9ee1d979fdb419335b",
+    "0aca847b8d12122e9ae8b43f58212f16",
+    "60c7604468443ea93cd1c7aa6dc267d2"
+  ],
+  "independent_reconciliation": [
+    {
+      "artifact_id": "0aca847b8d12122e9ae8b43f58212f16",
+      "field": "merchandise_revenue",
+      "rows": 45,
+      "total": "354425112.20",
+      "matches": true
+    }
+  ],
+  "predictions": [
+    {
+      "horizon": 3,
+      "assumptions": [
+        "Conditioned on rolling-origin backtest beating baseline by >= 5% MAE across majority folds; otherwise retain baseline or withhold.",
+        "Zero future external drivers assumed; strictly univariate extrapolative modeling."
+      ],
+      "drivers": [],
+      "cutoff": "2026-09-30",
+      "scenario_name": null,
+      "season": 12,
+      "interval": null,
+      "grain": "month",
+      "method": "ets",
+      "limitations": [
+        "Historical predictive associations are not causal effects or guaranteed future performance.",
+        "Validated prediction intervals are unavailable for this bounded backtest; point predictions carry unquantified uncertainty.",
+        "Saved observations end at 2026-09-30; predictions start after that cutoff, rather than assuming data reaches the report request date 2026-10-17."
+      ],
+      "fit_seconds": 0.5023290700000018,
+      "fits": 7,
+      "scenario_drivers": [],
+      "data_hash": "abadbd1fd9487208c5ae4510a8e2893c2d66ece23b40a78a1bc35ca4e09db10f",
+      "scores": {
+        "seasonal_naive": {
+          "mae": 790444.8233333334,
+          "folds": [
+            {
+              "test_end": "2026-03-01T00:00:00",
+              "mae": 754049.4866666669,
+              "train_end": "2025-12-01T00:00:00",
+              "test_start": "2026-01-01T00:00:00"
+            },
+            {
+              "test_end": "2026-06-01T00:00:00",
+              "mae": 921451.5899999999,
+              "train_end": "2026-03-01T00:00:00",
+              "test_start": "2026-04-01T00:00:00"
+            },
+            {
+              "test_end": "2026-09-01T00:00:00",
+              "mae": 695833.3933333332,
+              "train_end": "2026-06-01T00:00:00",
+              "test_start": "2026-07-01T00:00:00"
+            }
+          ],
+          "rmse": 821560.4136049921
+        },
+        "ets": {
+          "mae": 274501.83062073734,
+          "folds": [
+            {
+              "test_end": "2026-03-01T00:00:00",
+              "mae": 629775.6379562501,
+              "train_end": "2025-12-01T00:00:00",
+              "test_start": "2026-01-01T00:00:00"
+            },
+            {
+              "test_end": "2026-06-01T00:00:00",
+              "mae": 61235.75568979637,
+              "train_end": "2026-03-01T00:00:00",
+              "test_start": "2026-04-01T00:00:00"
+            },
+            {
+              "test_end": "2026-09-01T00:00:00",
+              "mae": 132494.09821616547,
+              "train_end": "2026-06-01T00:00:00",
+              "test_start": "2026-07-01T00:00:00"
+            }
+          ],
+          "rmse": 413473.91697585216
+        },
+        "sarimax": {
+          "mae": 288069.8802793255,
+          "folds": [
+            {
+              "test_end": "2026-03-01T00:00:00",
+              "mae": 420634.81828485866,
+              "train_end": "2025-12-01T00:00:00",
+              "test_start": "2026-01-01T00:00:00"
+            },
+            {
+              "test_end": "2026-06-01T00:00:00",
+              "mae": 149839.1314539217,
+              "train_end": "2026-03-01T00:00:00",
+              "test_start": "2026-04-01T00:00:00"
+            },
+            {
+              "test_end": "2026-09-01T00:00:00",
+              "mae": 293735.69109919603,
+              "train_end": "2026-06-01T00:00:00",
+              "test_start": "2026-07-01T00:00:00"
+            }
+          ],
+          "rmse": 351426.00117454794
+        }
+      },
+      "target": "revenue",
+      "future_drivers": [],
+      "source_artifact_id": "b4c0a078adc6a541f68e20de9142efb9",
+      "last_observed_period": "2026-09-01",
+      "specification": {
+        "horizon": 3,
+        "domain": "nonnegative",
+        "scenario_drivers": [],
+        "task_id": "monthly_revenue_orders_trend",
+        "drivers": [],
+        "target": "revenue",
+        "future_drivers": [],
+        "season": 12,
+        "scenario_name": null,
+        "date_column": "month_start",
+        "grain": "month",
+        "assumptions": [
+          "Conditioned on rolling-origin backtest beating baseline by >= 5% MAE across majority folds; otherwise retain baseline or withhold.",
+          "Zero future external drivers assumed; strictly univariate extrapolative modeling."
+        ]
+      },
+      "seed": 42,
+      "libraries": {
+        "numpy": "2.5.4",
+        "scikit-learn": "1.9.1",
+        "pandas": "3.0.6",
+        "statsmodels": "0.15.0"
+      }
+    }
+  ],
+  "dashboard_id": "f068828374df446fb968264e9c4288d8",
+  "cancellation_run_id": "5d318e006acdd8bff415bfd9820d1314",
+  "passed": true
+}

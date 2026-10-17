@@ -51,6 +51,13 @@ async def voice_session(websocket, services, guest_id, conversation_id, model=No
             credentials=getattr(services, "credentials", None),
         )
         observed_transcript = {"user": "", "assistant": ""}
+        persisted_transcript = {"user": "", "assistant": ""}
+
+        async def flush_transcript(role):
+            text = observed_transcript[role].strip()
+            if text and text != persisted_transcript[role]:
+                await analysis.save_message(conversation_id, role, text[:12000])
+                persisted_transcript[role] = text
 
         async def send(payload):
             async with send_lock:
@@ -65,9 +72,7 @@ async def voice_session(websocket, services, guest_id, conversation_id, model=No
                     (f"workspace_{hour[:8]}", settings.workspace_daily_limit),
                 ]
             )
-            if observed_transcript["user"].strip():
-                await analysis.save_message(conversation_id, "user", observed_transcript["user"][:4000])
-                observed_transcript["user"] = ""
+            await flush_transcript("user")
             # Tool-created text and chart answers use the same fenced conversation as live events.
             result = await analysis.execute(question[:4000], conversation_id)
             if result.get("artifact_id"):
@@ -102,7 +107,7 @@ async def voice_session(websocket, services, guest_id, conversation_id, model=No
                 sliding_window=types.SlidingWindow()
             ),
             max_llm_calls=8,
-            save_live_audio=False,
+            save_live_blob=False,
         )
 
     except BaseException:
@@ -158,8 +163,19 @@ async def voice_session(websocket, services, guest_id, conversation_id, model=No
                 ("assistant", event.output_transcription),
             ]:
                 if transcription and transcription.text:
-                    observed_transcript[role] += transcription.text
-                    await send({"type": "transcript", "role": role, "text": transcription.text})
+                    observed_transcript[role] = (
+                        observed_transcript[role] + transcription.text
+                        if event.partial
+                        else transcription.text
+                    )
+                    await send(
+                        {
+                            "type": "transcript",
+                            "role": role,
+                            "text": transcription.text,
+                            "replace": not event.partial,
+                        }
+                    )
             if event.content:
                 for part in event.content.parts or []:
                     if (
@@ -189,9 +205,9 @@ async def voice_session(websocket, services, guest_id, conversation_id, model=No
                 )
             if event.turn_complete:
                 for role in ("user", "assistant"):
-                    if observed_transcript[role].strip():
-                        await analysis.save_message(conversation_id, role, observed_transcript[role][:12000])
-                        observed_transcript[role] = ""
+                    await flush_transcript(role)
+                    observed_transcript[role] = ""
+                    persisted_transcript[role] = ""
                 await send({"type": "turn_complete"})
 
     tasks = []

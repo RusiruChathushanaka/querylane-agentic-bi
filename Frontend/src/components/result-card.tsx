@@ -346,11 +346,8 @@ export default function ResultCard({
             <div
               className="result-table"
               aria-busy={loading}
-              tabIndex={0}
-              role="region"
-              aria-label={`${artifact.title} data table`}
             >
-              <Table>
+              <Table aria-label={`${artifact.title} data table`}>
                 <TableCaption>
                   {artifact.title}. Page {page + 1} of{" "}
                   {Math.max(1, artifact.page_count)}.
