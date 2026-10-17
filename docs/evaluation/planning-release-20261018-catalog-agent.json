@@ -1,0 +1,57 @@
+{
+  "verified_at": "2026-10-17T21:45:57.166484+00:00",
+  "checks": {
+    "agent_uses_published_version": true,
+    "complete_45_months": true,
+    "catalog_revenue_matches_fixture": true
+  },
+  "metric": {
+    "id": "1a533e8152c847688126f80587fc66a5",
+    "version": 1
+  },
+  "source_writes": false,
+  "conversation_id": "f06e2d3c328b4a2fb7b1e76ca7e045f3",
+  "run_id": "5a5e2883ef6c28853a218fb654cdf8c4",
+  "events": [
+    {
+      "type": "complete",
+      "data": {
+        "run_id": "5a5e2883ef6c28853a218fb654cdf8c4"
+      }
+    }
+  ],
+  "artifact_id": "6888bfd59a1d482898107bc05492b8ad",
+  "columns": [
+    {
+      "name": "date",
+      "type": "DATE"
+    },
+    {
+      "name": "value",
+      "type": "NUMERIC"
+    }
+  ],
+  "provenance": [
+    {
+      "complete": true,
+      "elapsed_ms": 894,
+      "columns": [
+        {
+          "type": "DATE",
+          "name": "date"
+        },
+        {
+          "type": "NUMERIC",
+          "name": "value"
+        }
+      ],
+      "job_id": "abi_5a5e2883ef6c28853a218fb654cdf8c4_e274c4c0dea34a9e9fff00c2c28f7a3c_0",
+      "source": "bigquery",
+      "sql": "WITH q0 AS (SELECT DATE_TRUNC(t.order_date, MONTH) AS date, SUM(t.revenue) AS value FROM `project-e8b1593d-009a-4822-abf.agentic_bi_demo.sales_orders` AS t WHERE t.order_date >= CAST('2023-01-01' AS DATE) AND t.order_date <= CAST('2026-09-30' AS DATE) GROUP BY date), spine AS (SELECT date FROM q0) SELECT s.date, COALESCE(q0.value, 0) AS value FROM spine AS s LEFT JOIN q0 ON s.date = q0.date ORDER BY s.date",
+      "row_count": 45,
+      "executed_at": "2026-10-17T21:46:07.305146+00:00",
+      "bytes_processed": 0
+    }
+  ],
+  "passed": true
+}

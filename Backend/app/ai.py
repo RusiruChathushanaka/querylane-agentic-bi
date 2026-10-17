@@ -58,7 +58,9 @@ class AI:
                 project=settings.google_cloud_project,
                 location=settings.embedding_location,
                 credentials=credentials,
-                http_options=types.HttpOptions(timeout=10000, retry_options=types.HttpRetryOptions(attempts=1)),
+                http_options=types.HttpOptions(
+                    timeout=10000, retry_options=types.HttpRetryOptions(attempts=1)
+                ),
             )
 
     async def close(self):
@@ -197,10 +199,10 @@ class AI:
 
         report_policy = active_report_policy.get()
         model = Gemini(model=active_text_model.get() or self.settings.text_model, client=self.client)
-        # The nested fusion + visualization schema exceeds Vertex's structured
-        # output complexity limit. JSON mode keeps planning available without
-        # weakening local Pydantic validation or any execution safeguards.
-        json_plan = output_type is AnalysisPlan or report_policy is not None
+        # Nested plans exceed Vertex's schema limit; metric filter maps also
+        # cannot pass ADK's response_schema conversion. Both use JSON mode
+        # with the same strict local validation before any query execution.
+        json_plan = output_type is AnalysisPlan or name == "metric_scope" or report_policy is not None
         if json_plan:
             instruction += "\nReturn one JSON object matching this JSON Schema (no Markdown):\n" + json.dumps(
                 output_type.model_json_schema(), separators=(",", ":")
@@ -214,7 +216,7 @@ class AI:
                 response_mime_type="application/json" if json_plan else None,
                 thinking_config=types.ThinkingConfig(thinking_level=types.ThinkingLevel.LOW),
                 max_output_tokens=4096
-                if name in {"query_planner", "report_planner", "report_writer"}
+                if name in {"query_planner", "report_planner", "report_writer", "dashboard_planner"}
                 else 1536,
                 http_options=types.HttpOptions(
                     timeout=45000, retry_options=types.HttpRetryOptions(attempts=1)
@@ -270,14 +272,38 @@ class AI:
         *,
         skills=None,
         analysis_id=None,
+        forecast_spec=None,
     ):
         sources = ["bigquery", "postgres"] if source == "all" else [source]
         schema, retrieval = await self.retrieve(question, sources)
+        from app.metrics import catalog_plan
+
+        catalog = await catalog_plan(self, question, history, source, analysis_id or conversation_id)
+        metric_binding = None
+        if catalog is not None and forecast_spec and catalog.metric_snapshots:
+            from app.metric_forecasts import bind_forecast
+
+            catalog = bind_forecast(catalog, forecast_spec)
+            if forecast_spec.drivers:
+                metric_binding, catalog = catalog, None
+        if catalog is not None:
+            return catalog, retrieval + " / published metric compiler"
         if self.settings.ai_backend == "fixture":
             if self.settings.data_profile == "timeseries":
                 from app.retail_planner import timeseries_plan
 
-                return timeseries_plan(question, history, source), retrieval
+                fixture = timeseries_plan(question, history, source)
+                if metric_binding:
+                    fixture.metric_snapshots, fixture.metric_scope = (
+                        metric_binding.metric_snapshots,
+                        metric_binding.metric_scope,
+                    )
+                    fixture.metric_guard = {
+                        "sql": metric_binding.queries[0].sql,
+                        "date_column": forecast_spec.date_column,
+                        "target": forecast_spec.target,
+                    }
+                return fixture, retrieval
             return fixture_plan(question, history, source), retrieval
         prompt = json.dumps(
             {
@@ -288,6 +314,9 @@ class AI:
                 "recent_conversation": [{"role": m["role"], "text": m["text"][:3000]} for m in history[-10:]],
                 "validation_feedback": feedback,
                 "current_skills": skills or [],
+                "published_metric_binding": metric_binding.model_dump(mode="json")
+                if metric_binding
+                else None,
             }
         )
         plan = await self._structured(
@@ -297,6 +326,17 @@ class AI:
             AnalysisPlan,
             analysis_id or conversation_id,
         )
+        plan.metric_snapshots, plan.metric_scope, plan.metric_guard = [], None, None
+        if metric_binding:
+            plan.metric_snapshots, plan.metric_scope = (
+                metric_binding.metric_snapshots,
+                metric_binding.metric_scope,
+            )
+            plan.metric_guard = {
+                "sql": metric_binding.queries[0].sql,
+                "date_column": forecast_spec.date_column,
+                "target": forecast_spec.target,
+            }
         if any(query.source not in sources for query in plan.queries):
             raise AppError("The plan selected a source outside this conversation.", code="plan_invalid")
         if len(plan.queries) == 2 and (

@@ -1,0 +1,117 @@
+{
+  "verified_at": "2026-10-17T21:48:04.449887+00:00",
+  "status": "deployed; partial end-to-end acceptance at existing advanced-job daily limit",
+  "services": {
+    "agentic-bi-backend": {
+      "ready_revision": "agentic-bi-backend-00024-rnd",
+      "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:73e239ec3a76e390f271d71fbdad9d0c3e6fa167331990786871e9eae9dd9d94",
+      "traffic": [
+        {
+          "percent": 100,
+          "revisionName": "agentic-bi-backend-00024-rnd"
+        }
+      ],
+      "previous_revision": "agentic-bi-backend-00021-6rd"
+    },
+    "agentic-bi-frontend": {
+      "ready_revision": "agentic-bi-frontend-00017-dxz",
+      "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:0d545a6b9a04758b481bf0d87041658982e40e61a6c60edf05b8a57bc3603f46",
+      "traffic": [
+        {
+          "percent": 100,
+          "revisionName": "agentic-bi-frontend-00017-dxz"
+        }
+      ],
+      "previous_revision": "agentic-bi-frontend-00016-tw2"
+    },
+    "agentic-bi-report-worker": {
+      "ready_revision": "agentic-bi-report-worker-00013-sm4",
+      "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:73e239ec3a76e390f271d71fbdad9d0c3e6fa167331990786871e9eae9dd9d94",
+      "traffic": [
+        {
+          "percent": 100,
+          "revisionName": "agentic-bi-report-worker-00013-sm4"
+        }
+      ],
+      "previous_revision": "agentic-bi-report-worker-00010-wnw"
+    }
+  },
+  "suites": {
+    "runtime": {
+      "checks_passed": 21,
+      "evidence": "planning-release-20261018-runtime.json"
+    },
+    "analytics": {
+      "checks_passed": 39,
+      "evidence": "planning-release-20261018-analytics.json"
+    },
+    "voice": {
+      "checks_passed": 4,
+      "evidence": "planning-release-20261018-voice.json"
+    },
+    "api": {
+      "checks_passed": 45,
+      "evidence": "planning-release-20261018-api.json"
+    },
+    "browser": {
+      "checks_passed": 12,
+      "evidence": "planning-release-20261018-browser.json"
+    },
+    "catalog-agent": {
+      "checks_passed": 3,
+      "evidence": "planning-release-20261018-catalog-agent.json",
+      "scope": "Final corrected API 00024-rnd; real model/SQL calls"
+    },
+    "voice-catalog": {
+      "checks_passed": 5,
+      "evidence": "planning-release-20261018-voice-catalog.json",
+      "scope": "Final corrected API 00024-rnd; real model/SQL calls"
+    }
+  },
+  "available_check_count": 129,
+  "local": {
+    "backend_passed": 442,
+    "backend_skipped": 1,
+    "frontend_passed": 53,
+    "ruff": "passed",
+    "lint": "passed",
+    "typescript": "passed",
+    "isolated_production_build": "passed"
+  },
+  "preservation": {
+    "data_profile": "timeseries",
+    "source_row_limit": 30000,
+    "timesfm_enabled": true,
+    "timesfm_verified": true,
+    "source_fingerprints_unchanged": true,
+    "private_worker_iam_unchanged": true,
+    "iam_changes": false,
+    "analytical_seed_upload_reset": false,
+    "hosted_example_seeding": false
+  },
+  "fresh_expensive_jobs": {
+    "dashboard_builder": "quota-denied; not executed",
+    "forecast_plan": "quota-denied; not executed",
+    "workspace_used": 12,
+    "workspace_daily_limit": 12,
+    "reset_utc": "2026-10-18T00:00:00Z",
+    "reset_local": "2026-10-18T05:30:00+05:30",
+    "quota_reset_or_raise": false
+  },
+  "unexpected_application_errors": 0,
+  "complete_end_to_end_acceptance": false,
+  "additional_regressions": {
+    "ad_hoc_intent_cases": 7,
+    "sdk_map_validation_cases": 2
+  },
+  "metric_guided_text_and_live": "Passed after both documented corrections; exact published version and independent totals verified.",
+  "error_log_scope": {
+    "from_utc": "2026-10-17T21:45:40Z",
+    "revisions": [
+      "agentic-bi-backend-00024-rnd",
+      "agentic-bi-report-worker-00013-sm4",
+      "agentic-bi-frontend-00017-dxz"
+    ],
+    "earlier_reproduced_schema_failure": "planning-release-20261018-metric-scope-initial.json"
+  }
+}

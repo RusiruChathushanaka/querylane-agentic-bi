@@ -14,8 +14,9 @@ export function PredictionEvidence({ prediction, reportId, reportVersion, artifa
   const label = forecastMethodLabel(prediction.method);
   return (
     <div className="report-note">
-      <strong>{prediction.kind === "scenario" ? "Conditional scenario comparison" : "Observed history and predictions"}</strong>
+      <strong>{prediction.kind === "adjusted_plan" ? "User planning assumptions — not statistical predictions" : prediction.kind === "scenario" ? "Conditional scenario comparison" : "Observed history and predictions"}</strong>
       <p>Observed through {prediction.cutoff} · {label} · {prediction.horizon} future periods. Dashed series are predictions, not observations.</p>
+      {prediction.status === "allocated" && <p>Allocated estimate; this node was not independently modeled.</p>}
       {prediction.scenario_name && <p>Scenario: {prediction.scenario_name}. Baseline and alternative use the same method and history. Historical associations do not establish causal impact.</p>}
       {prediction.selection_reason && <p>{prediction.selection_reason}</p>}
       {comparison && <p>TimesFM comparison: {comparison.status}. {comparison.reason}</p>}

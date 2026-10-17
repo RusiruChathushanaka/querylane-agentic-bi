@@ -70,6 +70,9 @@ async def reset_history(store, *, timeout=660):
     async for artifact_id, ref in store.iter_documents("report_artifact_refs"):
         if ref.get("count", 0) > 0:
             kept.add(artifact_id)
+    async for _, ref in store.iter_documents("planning_retention_refs"):
+        if ref.get("expires_at", 0) > time.time():
+            kept.add(ref["artifact_id"])
     removed = 0
     async for artifact_id, _ in store.iter_documents("artifacts"):
         if artifact_id not in kept:
@@ -135,6 +138,8 @@ async def purge_reports(store, exports, *, timeout=660, now=None):
     await wait_for_idle(store, timeout)
     stamp, removed = time.time() if now is None else now, 0
     async for report_id, report in store.iter_documents("reports"):
+        if report.get("kind"):
+            continue  # Planning envelopes are purged by their own reference-aware maintenance.
         if not report.get("deleted") or report.get("recover_until", float("inf")) > stamp:
             continue
         if report.get("active_run"):
@@ -167,6 +172,75 @@ async def purge_reports(store, exports, *, timeout=660, now=None):
             await store.delete("report_outbox", run["id"])
             await store.delete_tree(f"report_runs/{run['id']}")
         await store.delete_tree(f"reports/{report_id}")
+        await store.delete("plan_report_refs", report_id)
         removed += 1
     await clear_maintenance(store, owner)
     return {"purged_reports": removed}
+
+
+async def purge_planning(store, exports, *, timeout=660, now=None):
+    """Operator-only expiry; keep whole plan families referenced by saved public evidence."""
+    owner = await enter_maintenance(store, "purge-planning")
+    await wait_for_idle(store, timeout)
+    stamp = time.time() if now is None else now
+    retained_plans = set()
+    async for _, ref in store.iter_documents("plan_report_refs"):
+        retained_plans.add(ref["plan_id"])
+    async for artifact_id, ref in store.iter_documents("dashboard_artifact_refs"):
+        if ref.get("count", 0) > 0:
+            artifact = await store.get("artifacts", artifact_id)
+            if artifact and artifact.get("forecast_plan_id"):
+                retained_plans.add(artifact["forecast_plan_id"])
+    removed = {"dashboard_builds": 0, "forecast_plans": 0}
+    for collection in removed:
+        async for root_id, root in store.iter_documents(collection):
+            expired = (
+                root.get("deleted") and (root.get("recover_until") or float("inf")) <= stamp
+                if collection == "forecast_plans"
+                else root.get("status") != "published" and root.get("expires_at", float("inf")) <= stamp
+            )
+            if not expired or root_id in retained_plans:
+                continue
+            runs = await store.list("report_runs", where=("root_id", root_id), limit=1000)
+            if any(r["status"] == "running" and r.get("lease_until", 0) > time.time() for r in runs):
+                raise AppError("Planning work has not drained; maintenance remains fenced.", 409)
+            async for _, revision in store.iter_documents(f"{collection}/{root_id}/revisions"):
+                for metadata in revision.get("exports", {}).values():
+                    await exports.delete(metadata)
+            for run in runs:
+                async for ref_id, ref in store.iter_documents("planning_retention_refs"):
+                    if ref.get("run_id") == run["id"]:
+                        await store.delete("planning_retention_refs", ref_id)
+                refs = await store.list("report_artifact_refs", where=("run_id", run["id"]), limit=1000)
+                for ref in refs:
+                    aid = ref["id"]
+                    dashboard = await store.get("dashboard_artifact_refs", aid)
+                    other = await store.list(
+                        "planning_retention_refs", where=("artifact_id", aid), limit=1000
+                    )
+                    await store.delete("report_artifact_refs", aid)
+                    if not (dashboard and dashboard.get("count", 0) > 0) and not any(
+                        r.get("expires_at", 0) > stamp for r in other
+                    ):
+                        await store.delete_tree(f"artifacts/{aid}")
+                await store.delete("report_outbox", run["id"])
+                await store.delete("report_conversations", run["id"])
+                await store.delete_tree(f"reports/{run['id']}")
+                await store.delete_tree(f"report_runs/{run['id']}")
+            key, capacity = (collection, root_id), ("system", collection + "_capacity")
+
+            def release(docs):
+                if not docs[MAINTENANCE] or docs[MAINTENANCE].get("owner") != owner:
+                    raise AppError("Maintenance ownership changed.", 409)
+                if not docs[key]:
+                    return {}, None
+                return {
+                    key: None,
+                    capacity: {"count": max(0, (docs[capacity] or {}).get("count", 0) - 1)},
+                }, None
+
+            await store.atomic([key, capacity, MAINTENANCE], release)
+            await store.delete_tree(f"{collection}/{root_id}")
+            removed[collection] += 1
+    await clear_maintenance(store, owner)
+    return removed

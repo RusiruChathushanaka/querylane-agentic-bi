@@ -20,6 +20,15 @@ flowchart LR
     Analysis --> Skills[Skill metadata selection + immutable snapshots]
     Skills --> Store
     ADK --> Store
+    API --> Metrics[Public metric catalog / immutable revisions]
+    Metrics --> Compiler[Closed measure compiler / forecast-value guard]
+    Compiler --> Guard
+    API --> Planning[Reviewed dashboard builds / Forecast Plans]
+    Planning --> Dispatch
+    Planning --> Store
+    Planning --> Coherent[Aggregate candidate comparison / coherent allocation]
+    Coherent --> TimesFM
+    Coherent --> Saved
     API --> Saved[Saved-result charts and dashboards]
     Saved -->|Read immutable pages and checked revisions| Store
     Saved --> Export[Isolated dashboard renderer / full CSV and JSON]

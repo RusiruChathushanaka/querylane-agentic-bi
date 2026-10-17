@@ -17,6 +17,8 @@ class ReportCreate(StrictModel):
     idempotency_key: str = Field(min_length=8, max_length=100, pattern=r"^[A-Za-z0-9_-]+$")
     model: str | None = Field(default=None, max_length=100)
     style: ReportStyle = "business"
+    forecast_plan_id: str | None = Field(default=None, pattern=r"^[a-f0-9]{32}$")
+    forecast_plan_version: int | None = Field(default=None, ge=1)
 
     @field_validator("question")
     @classmethod

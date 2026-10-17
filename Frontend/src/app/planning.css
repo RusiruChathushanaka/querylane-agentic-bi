@@ -1,0 +1,239 @@
+.bi-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem clamp(1rem, 3vw, 2.5rem) 5rem;
+  color: var(--foreground);
+  overflow-wrap: anywhere;
+}
+.bi-hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+.bi-hero h1 {
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  letter-spacing: -0.055em;
+  line-height: 1.1;
+  margin: 0.5rem 0 1rem;
+  font-weight: 700;
+}
+.bi-hero p {
+  color: var(--muted-foreground);
+  max-width: 65ch;
+}
+.bi-kicker {
+  color: var(--primary);
+  font:
+    600 0.7rem var(--font-ibm-plex-mono),
+    monospace;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.bi-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+  margin: 1rem 0;
+}
+.bi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: 1rem;
+}
+.bi-card {
+  padding: 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: var(--card);
+}
+.bi-card h2 {
+  font-size: 1.1rem;
+  font-weight: 650;
+  margin: 0.5rem 0;
+}
+.bi-card p {
+  color: var(--muted-foreground);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+.bi-card a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.bi-editor {
+  margin: 1.5rem 0;
+  padding: clamp(1rem, 3vw, 2rem);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: var(--card);
+}
+.bi-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+.bi-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 0.875rem;
+}
+.bi-field > span,
+.bi-field > label {
+  font-weight: 600;
+}
+.bi-field input,
+.bi-field select,
+.bi-field textarea,
+.bi-select {
+  min-height: 2.6rem;
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  padding: 0.55rem 0.7rem;
+  background: var(--background);
+  color: var(--foreground);
+}
+.bi-field textarea {
+  min-height: 6rem;
+  resize: vertical;
+}
+.bi-wide {
+  grid-column: 1/-1;
+}
+.bi-note {
+  font-size: 0.83rem;
+  color: var(--muted-foreground);
+  line-height: 1.6;
+  margin: 0.75rem 0;
+}
+.bi-error {
+  padding: 1rem;
+  border: 1px solid var(--destructive);
+  border-radius: 0.65rem;
+  color: var(--destructive);
+  margin: 1rem 0;
+  overflow-wrap: anywhere;
+}
+.bi-code {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  max-height: 32rem;
+  overflow: auto;
+  font-size: 0.75rem;
+  padding: 1rem;
+  background: var(--muted);
+  border-radius: 0.65rem;
+  margin: 0.5rem 0;
+}
+.bi-table-wrap {
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+.bi-table {
+  width: 100%;
+  font-size: 0.85rem;
+  border-collapse: collapse;
+}
+.bi-table caption {
+  text-align: left;
+  color: var(--muted-foreground);
+  padding: 0.75rem 0;
+}
+.bi-table th,
+.bi-table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  white-space: nowrap;
+}
+.bi-table th {
+  font-weight: 600;
+}
+.bi-layout {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  gap: 1.5rem;
+}
+.bi-layout > * {
+  min-width: 0;
+}
+.bi-tree {
+  max-height: 34rem;
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  padding: 0.5rem;
+}
+.bi-tree ul {
+  list-style: none;
+  padding-left: 0.65rem;
+}
+.bi-tree > ul {
+  padding: 0;
+}
+.bi-tree summary {
+  cursor: pointer;
+  padding: 0.4rem 0;
+}
+.bi-tree button {
+  width: 100%;
+  text-align: left;
+  padding: 0.45rem;
+  border-radius: 0.35rem;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+.bi-tree button[aria-pressed="true"] {
+  background: var(--secondary);
+  color: var(--primary);
+  font-weight: 650;
+}
+.bi-progress {
+  border-left: 3px solid var(--primary);
+  padding: 0.8rem 1rem;
+  background: var(--muted);
+  border-radius: 0.4rem;
+}
+.bi-empty {
+  padding: 3rem 1rem;
+  text-align: center;
+  color: var(--muted-foreground);
+  border: 1px dashed var(--border);
+  border-radius: 1rem;
+}
+.bi-card-actions {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+.bi-main :is(button, a, input, select, textarea, summary, pre, [role="region"]):focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+}
+.dash-header nav {
+  flex-wrap: wrap;
+}
+@media (max-width: 700px) {
+  .bi-fields,
+  .bi-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .bi-tree {
+    max-height: 18rem;
+  }
+  .bi-main {
+    padding-top: 1.25rem;
+  }
+}
+@media (pointer: coarse) {
+  .bi-main button,
+  .bi-main summary {
+    min-height: 44px;
+  }
+}

@@ -1,0 +1,189 @@
+{
+  "verified_at": "2026-10-17T18:46:32.681938+00:00",
+  "user_facing_date": "2026-10-18",
+  "timezone": "Asia/Colombo",
+  "status": "partial: fresh report generation blocked by existing workspace quota",
+  "all_requested_end_to_end_paths_verified": false,
+  "source_commit": "e4af083aaebf6a4e4f4dda93194c6e5597f7cd20",
+  "backend": "https://agentic-bi-backend-wekihucn7q-as.a.run.app",
+  "frontend": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app",
+  "suites": {
+    "analytics": {
+      "file": "docs/evaluation/final-e2e-20261018-analytics.json",
+      "passed": true,
+      "checks": 39
+    },
+    "voice": {
+      "file": "docs/evaluation/final-e2e-20261018-voice.json",
+      "passed": true,
+      "checks": 4
+    },
+    "voice-recovery": {
+      "file": "docs/evaluation/final-e2e-20261018-voice-recovery.json",
+      "passed": true,
+      "checks": 7
+    },
+    "timesfm-saved": {
+      "file": "docs/evaluation/final-e2e-20261018-timesfm-saved.json",
+      "passed": true,
+      "checks": 29
+    },
+    "dashboards": {
+      "file": "docs/evaluation/final-e2e-20261018-dashboards.json",
+      "passed": true,
+      "checks": 10
+    },
+    "dashboard-exports": {
+      "file": "docs/evaluation/final-e2e-20261018-dashboard-exports.json",
+      "passed": true,
+      "checks": 13
+    },
+    "browser-voice": {
+      "file": "docs/evaluation/final-e2e-20261018-browser-voice.json",
+      "passed": true,
+      "checks": 9
+    },
+    "timesfm-worker": {
+      "file": "docs/evaluation/final-e2e-20261018-timesfm-worker.json",
+      "passed": true,
+      "checks": 4
+    },
+    "daily-reconciliation": {
+      "file": "docs/evaluation/final-e2e-20261018-daily-reconciliation.json",
+      "passed": true,
+      "checks": 4
+    }
+  },
+  "passed_suite_checks": 119,
+  "fresh_report_generation": {
+    "status": "blocked",
+    "http_status": 429,
+    "code": "report_usage_limit",
+    "workspace_count": 12,
+    "workspace_daily_limit": 12,
+    "quota_day_utc": "20261017",
+    "reset_at_local": "2026-10-18T05:30:00+05:30",
+    "quota_reset_or_increase": false,
+    "ui_error_visible_and_draft_preserved": {
+      "message": true,
+      "composerEnabled": true,
+      "activeRequest": false,
+      "draft": "Final E2E verification: create a technical report of monthly merchandise revenue and the next three months forecast, comparing TimesFM and statistical methods on the full larger retail dataset."
+    },
+    "new_timesfm_forecast_or_scenario_reports_created": false
+  },
+  "timesfm_provider": {
+    "identity": "agentic-bi-report-worker@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
+    "credential_source": "Cloud Run workload ADC",
+    "four_live_parameterized_checks": true,
+    "temporary_job": "agentic-bi-timesfm-check-85a5a626",
+    "temporary_job_removed": true,
+    "scope": "Separate operator compatibility check with synthetic inline series. Does not establish fresh application report workflow completion."
+  },
+  "preservation": {
+    "data_profile": "timeseries",
+    "source_row_limit": 30000,
+    "timesfm_enabled": true,
+    "timesfm_verified": true,
+    "all_service_specs_revisions_and_traffic_unchanged": true,
+    "all_five_bigquery_counts_and_fingerprints_unchanged": true,
+    "table_counts": {
+      "sales_orders": 573348,
+      "sales_order_items": 1317941,
+      "sales_returns": 97122,
+      "sales_products": 200,
+      "calendar": 1369
+    },
+    "postgres_profiles_retrieved": 25000,
+    "source_data_writes_upload_seed_reset_iam_changes": false
+  },
+  "services": {
+    "agentic-bi-frontend": {
+      "revision": "agentic-bi-frontend-00016-tw2",
+      "traffic": [
+        {
+          "percent": 100,
+          "revisionName": "agentic-bi-frontend-00016-tw2"
+        }
+      ],
+      "flags": {}
+    },
+    "agentic-bi-backend": {
+      "revision": "agentic-bi-backend-00021-6rd",
+      "traffic": [
+        {
+          "percent": 100,
+          "revisionName": "agentic-bi-backend-00021-6rd"
+        }
+      ],
+      "flags": {
+        "DATA_PROFILE": "timeseries",
+        "SOURCE_ROW_LIMIT": "30000",
+        "REPORT_TIMESFM_ENABLED": "true",
+        "REPORT_TIMESFM_VERIFIED": "true"
+      }
+    },
+    "agentic-bi-report-worker": {
+      "revision": "agentic-bi-report-worker-00010-wnw",
+      "traffic": [
+        {
+          "percent": 100,
+          "revisionName": "agentic-bi-report-worker-00010-wnw"
+        }
+      ],
+      "flags": {
+        "DATA_PROFILE": "timeseries",
+        "SOURCE_ROW_LIMIT": "30000",
+        "REPORT_TIMESFM_ENABLED": "true",
+        "REPORT_TIMESFM_VERIFIED": "true"
+      }
+    }
+  },
+  "browser": {
+    "landing": "final-e2e-20261018-landing-browser.json",
+    "libraries": "final-e2e-20261018-libraries-browser.json",
+    "voice": "final-e2e-20261018-browser-voice.json",
+    "axe": {
+      "landing": {
+        "inapplicable": 39,
+        "incomplete": 1,
+        "passes": 50,
+        "violations": 0
+      },
+      "report": {
+        "inapplicable": 46,
+        "incomplete": 1,
+        "passes": 43,
+        "violations": 0
+      },
+      "dashboard": {
+        "inapplicable": 47,
+        "incomplete": 1,
+        "passes": 42,
+        "violations": 0
+      }
+    },
+    "uncaught_errors": ""
+  },
+  "observations": [
+    {
+      "severity": "coverage-gap",
+      "description": "Fresh report admission was correctly denied at the existing 12/day workspace cap. Saved report/scenario/revision/download evidence was revalidated, and actual worker provider access was tested separately; neither substitutes for a newly completed report."
+    },
+    {
+      "severity": "transient",
+      "description": "Initial frontend /api/health returned 503 once. Immediate follow-up and final frontend/backend readiness checks passed. Its backend probe has a five-second timeout; startup delay is plausible but not proven. Runtime logs contain one matching frontend 503 and no application error traces."
+    },
+    {
+      "severity": "manual-review",
+      "description": "Each axe scan had zero violations and one incomplete SVG contrast rule. Physical microphone/speaker quality, full screen-reader and Safari/Firefox checks were not performed."
+    }
+  ],
+  "test_records": {
+    "dashboard": "91ba0cccdd954464bd295558c008133c",
+    "voice_conversation": "f3ae8d52c2d443f7851ca4d56418e712",
+    "dashboard_crud_cleanup": "Only newly created verification dashboards soft-deleted; the saved prediction/UI-pin dashboard is retained as evidence.",
+    "voice_recovery_cleanup": "Only the newly created probe skill was soft-deleted."
+  },
+  "deployment_or_github_publication": false
+}

@@ -1,6 +1,6 @@
 # Architecture
 
-This describes the implemented application. [deployment.json](deployment.json) and [validation.md](validation.md) record the last verified release on **17 October 2026**; they are dated evidence rather than live service discovery. The public frontend/API and private report worker are deployed. The recorded profile is `timeseries`, and optional Search research is disabled.
+This describes the implemented application. [deployment.json](deployment.json) and [validation.md](validation.md) record the **18 October 2026** deployment and its quota-limited acceptance; they are dated evidence rather than live service discovery. The public frontend/API and private report worker are deployed. The recorded profile is `timeseries`, and optional Search research is disabled.
 
 Standalone Mermaid copies live in [graphify/](graphify/README.md). Refresh them from the fenced blocks below when changing a flow.
 
@@ -29,6 +29,15 @@ flowchart LR
     Analysis --> Skills[Skill metadata selection + immutable snapshots]
     Skills --> Store
     ADK --> Store
+    API --> Metrics[Public metric catalog / immutable revisions]
+    Metrics --> Compiler[Closed measure compiler / forecast-value guard]
+    Compiler --> Guard
+    API --> Planning[Reviewed dashboard builds / Forecast Plans]
+    Planning --> Dispatch
+    Planning --> Store
+    Planning --> Coherent[Aggregate candidate comparison / coherent allocation]
+    Coherent --> TimesFM
+    Coherent --> Saved
     API --> Saved[Saved-result charts and dashboards]
     Saved -->|Read immutable pages and checked revisions| Store
     Saved --> Export[Isolated dashboard renderer / full CSV and JSON]
@@ -61,6 +70,9 @@ The voice bridge and skill author are handlers within the public backend, not ad
 | SQL and cross-source fusion | `Backend/app/connectors.py`, `sql_guard.py`, `fusion.py` | [Retail schema](retail-timeseries-schema.md), [ADR 0003](adr/0003-bounded-cross-source-fusion.md) |
 | Saved-result chart preparation | `Backend/app/chart_presentation.py`, `Frontend/src/components/charts/insightful-chart.tsx` | [Charts](charts.md) |
 | Shared dashboards and downloads | `Backend/app/dashboards.py`, `dashboard_exports.py`, `Frontend/src/components/dashboard-workspace.tsx`, `dashboard-actions.tsx` | `Backend/app/dashboard_models.py`, [dashboards](dashboards.md) |
+| Public metric catalog and compiler | `Backend/app/metrics.py`, `metric_targets.py`, `metric_forecasts.py`, `Frontend/src/components/metrics-workspace.tsx` | [Metrics](business-metrics.md), [ADR 0010](adr/0010-public-metric-contracts.md) |
+| Reviewed AI dashboard building | `Backend/app/planning.py`, `planning_engine.py`, `Frontend/src/components/dashboard-builder.tsx` | [Dashboard Builder](ai-dashboard-builder.md), [ADR 0011](adr/0011-reviewed-dashboard-builds.md) |
+| Coherent hierarchical planning | `Backend/app/hierarchy.py`, `planning_engine.py`, `Frontend/src/components/forecast-plans.tsx` | [Forecast Plans](forecast-plans.md), [ADR 0012](adr/0012-adaptive-hierarchy-planning.md) |
 | Skills and author interviews | `Backend/app/skills.py`, `skill_author.py`, `skill_author_voice.py`, `Frontend/src/components/skills-workspace.tsx`, `skill-voice-author.tsx` | [Skills](skills.md), [voice author](voice-skill-author-plan.md) |
 | Analytics/prediction playbooks | `Backend/app/skill_library/`, `skill_examples.py` | [Playbook catalog](analytics-skills.md) |
 | Report orchestration and recovery | `Backend/app/report_harness.py`, `report_engine.py`, `report_repository.py`, `report_dispatch.py`, `report_worker.py` | `Backend/app/report_models.py`, [reports](reports.md) |
@@ -202,4 +214,14 @@ Both analytical runtimes retain `DATA_PROFILE=timeseries` and `SOURCE_ROW_LIMIT=
 
 These are recorded checks, not tests rerun by editing this document. Synthetic speech exercised the real browser AudioWorklet, hosted Live runtime and source queries; physical microphone/speaker quality, Safari/Firefox, full screen-reader use and production worker crash injection remain outside that verification. See the assessment for complete boundaries. Preserve the [original failed assessment](evaluation/e2e-deployed-20261017.md) and its artifacts as historical evidence. The refreshed [Graphify snapshot](../graphify-out/README.md) includes the resilience policy, managed TimesFM comparison and saved-evidence landing previews; the curated Mermaid diagrams are synchronized with this document. Per-file hashes in its validation record identify the indexed working-tree content. Its extraction has explicit limitations; it is not runtime or deployment evidence.
 
-The subsequent [TimesFM analytical assessment](evaluation/timesfm-deployed.md) records the actual worker-identity gate and 31 hosted forecast/scenario/reuse checks. Its local baseline passed 385 backend tests (one existing skip) and 47 frontend tests. The latest [landing-only release](evaluation/landing-timesfm-deployed.md) adds the four saved-evidence previews, with 49 frontend tests, lint/types/build and live keyboard/mobile/health checks; its staged image update preserved both analytical runtime specs, revisions, traffic and feature gates. That release performed no new inference or source recount. The [TimesFM source fingerprints](evaluation/timesfm-data-preservation.json) retain the separately dated numerical reconciliation. A documentation/Graphify refresh performs no deployment, model call or analytical-data operation.
+The subsequent [TimesFM analytical assessment](evaluation/timesfm-deployed.md) records the actual worker-identity gate and 31 hosted forecast/scenario/reuse checks. Its local baseline passed 385 backend tests (one existing skip) and 47 frontend tests. The 17 October [landing-only release](evaluation/landing-timesfm-deployed.md) adds the four saved-evidence previews, with 49 frontend tests, lint/types/build and live keyboard/mobile/health checks; its staged image update preserved both analytical runtime specs, revisions, traffic and feature gates. That release performed no new inference or source recount. The [TimesFM source fingerprints](evaluation/timesfm-data-preservation.json) retain the separately dated numerical reconciliation. A documentation/Graphify refresh performs no deployment, model call or analytical-data operation.
+
+## Metrics, AI dashboards and hierarchical planning
+
+The deployed [metric catalog](business-metrics.md), [dashboard builder](ai-dashboard-builder.md) and [Forecast Plans](forecast-plans.md) extend the existing API/private-worker image. The [18 October release](evaluation/planning-release-20261018.md) deployed the compatible worker, API and frontend in order. Metric and saved-result checks are recorded there; fresh builder/plan worker execution remains gated by the exhausted shared daily quota. Backend `metrics.py` owns typed definitions, revisions and compilation; `metric_forecasts.py` binds forecast aliases and checks feature-query targets against canonical saved values. Text/voice use the same catalog-aware planner. Metric-scope filter maps use JSON output and strict local validation, avoiding the incompatible SDK response-schema conversion without weakening query controls. Historical artifacts without metric fields remain readable.
+
+Backend `planning.py`, `planning_models.py`, `planning_engine.py` and `hierarchy.py` implement plan versions and guest-owned dashboard proposals. Explicit job kinds reuse report admission, events, outbox, worker leases and fencing. Internal envelopes are excluded from the Reports library. Ordinary chat remains independent. Publication is outside model tools and atomic against the dashboard revision; rebase/Undo and dashboard reads/exports use saved evidence.
+
+Both forecast views share one company total. Aggregate methods use common chronological folds; the complete recipe must pass its own level-balanced gate. Leaves use training-only shares and cent-exact allocation. A frozen profile admits up to 128 fits without changing 64-fit reports, TimesFM ceilings or shared daily/concurrency quotas. Adjustments retain original predictions in separate assumption versions. Complete source/calendar/mapping evidence precedes zero filling.
+
+New backend-only Firestore documents include `metrics`/revisions/counters, `dashboard_builds`, `forecast_plans`/revisions, idempotency and retention references. Rows remain in paginated artifacts. Baseline plan files use existing private storage; adjusted downloads render saved data within bounded processes. No source migration, new credentials, hosted model or GPU service is introduced. Follow the release ordering and preservation rules in the deployment guide.

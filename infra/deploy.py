@@ -7,6 +7,7 @@ import time
 from pathlib import Path
 
 from provision import PROJECT, REGION, gcloud
+from runtime_settings import preserve_analysis_settings
 
 
 def main():
@@ -133,9 +134,7 @@ def main():
             "LIVE_MODEL_LOCATION": "us-central1",
         }
         # Preserve enabled report dispatch across later routine releases. New foundation is opt-in.
-        values.update(
-            {k: v for k, v in existing_env.items() if k.startswith("REPORT_") or k == "REPORTS_ENABLED"}
-        )
+        preserve_analysis_settings(values, existing_env)
         values.setdefault("REPORTS_ENABLED", "false")
         if args.reports_worker_url:
             values.update(

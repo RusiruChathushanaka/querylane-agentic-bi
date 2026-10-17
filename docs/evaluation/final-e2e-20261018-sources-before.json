@@ -1,0 +1,31 @@
+{
+  "verified_at": "2026-10-17T18:32:03.039961+00:00",
+  "tables": {
+    "sales_orders": {
+      "job_id": "ce9e004a-1a2c-43bb-a9a2-2d46e619bd08",
+      "row_count": 573348,
+      "content_fingerprint": 8461696550229278906
+    },
+    "sales_order_items": {
+      "job_id": "931db358-b709-4540-861b-2f88ddb0f648",
+      "row_count": 1317941,
+      "content_fingerprint": 3891786981592765041
+    },
+    "sales_returns": {
+      "job_id": "3c811126-21e3-4274-b6d4-6b45a8d0c765",
+      "row_count": 97122,
+      "content_fingerprint": -6026212057547625422
+    },
+    "sales_products": {
+      "job_id": "5159b55a-646f-435e-9a70-b271f67e3f0d",
+      "row_count": 200,
+      "content_fingerprint": -1261794939939830265
+    },
+    "calendar": {
+      "job_id": "b436f350-87b5-40ed-ab14-3e3d301eb240",
+      "row_count": 1369,
+      "content_fingerprint": 3158133693401836819
+    }
+  },
+  "read_only": true
+}

@@ -652,6 +652,7 @@ export function DashboardWorkspace({
                 </p>
               </div>
               <div className="dash-card-actions">
+                {edit && !board.deleted && <Button asChild variant="outline"><Link href={`/dashboards/build?dashboard=${board.id}`}>Improve with AI</Link></Button>}
                 <DashboardShare dashboard={board} />
                 {!board.deleted && <DashboardDownload dashboard={board} />}
                 <Button variant="outline" onClick={reload}>

@@ -1,0 +1,73 @@
+{
+  "verified_at": "2026-10-17T21:24:06.686443+00:00",
+  "checks": {
+    "two_spoken_analyses_same_connection": true,
+    "counts_match_independent_large_dataset": true,
+    "query_jobs_distinct_under_one_parent_run": true,
+    "timeseries_only": true
+  },
+  "errors": [],
+  "turns": [
+    {
+      "artifact_id": "8bc70e24be3c4d93ac4c80dc6312c567",
+      "rows": [
+        {
+          "completed_orders_count": 573348
+        }
+      ],
+      "provenance": [
+        {
+          "job_id": "abi_ff7b0d463d8c3162e2260fc8d69483df_c70de50efaee4e2ba05b4080b5156ea2_0",
+          "sql": "SELECT COUNT(DISTINCT order_id) AS completed_orders_count FROM `project-e8b1593d-009a-4822-abf`.agentic_bi_demo.sales_orders WHERE status = 'completed'",
+          "elapsed_ms": 1112,
+          "source": "bigquery",
+          "complete": true,
+          "columns": [
+            {
+              "name": "completed_orders_count",
+              "type": "INTEGER"
+            }
+          ],
+          "bytes_processed": 0,
+          "executed_at": "2026-10-17T21:24:22.441231+00:00",
+          "row_count": 1
+        }
+      ],
+      "spoken": "The total count of completed sales orders is 573,348.",
+      "audio_frames": 22,
+      "data_profile": "timeseries"
+    },
+    {
+      "artifact_id": "506c69ab8580411a880bdfa7a664b84c",
+      "rows": [
+        {
+          "completed_orders": 152694
+        }
+      ],
+      "provenance": [
+        {
+          "job_id": "abi_ff7b0d463d8c3162e2260fc8d69483df_4f767eeb6edf41bbbbfd9bdb76471ed7_0",
+          "sql": "SELECT COUNT(DISTINCT order_id) AS completed_orders FROM `project-e8b1593d-009a-4822-abf`.agentic_bi_demo.sales_orders WHERE status = 'completed' AND order_date >= '2024-01-01' AND order_date <= '2024-12-31'",
+          "elapsed_ms": 579,
+          "source": "bigquery",
+          "complete": true,
+          "columns": [
+            {
+              "name": "completed_orders",
+              "type": "INTEGER"
+            }
+          ],
+          "bytes_processed": 0,
+          "executed_at": "2026-10-17T21:24:38.027804+00:00",
+          "row_count": 1
+        }
+      ],
+      "spoken": "In the calendar year 2024, there were 152,694 completed orders.",
+      "audio_frames": 24,
+      "data_profile": "timeseries"
+    }
+  ],
+  "conversation_id": "561cb8f2c49441e6b40557724b0e1b59",
+  "run_id": "ff7b0d463d8c3162e2260fc8d69483df",
+  "passed": true
+}

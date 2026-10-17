@@ -673,3 +673,22 @@ Preserve environment isolation. Verify region/model availability and the target 
 A useful release record includes project/region, source revision or change identifier, build/image references, serving revisions and traffic, runtime identities, non-secret configuration/secret version references, verification results, and a known-good rollback target. Update [deployment.json](deployment.json), [validation.md](validation.md), and applicable reports after actual authorized deployments. Historical reports are evidence for their recorded release, not a substitute for verifying a later one.
 
 Use [setup.md](setup.md) for local development, [architecture.md](architecture.md) for system boundaries, and [demo.md](demo.md) for the competition walkthrough.
+
+For a no-traffic candidate, Cloud Run may report a Ready but retired revision while the service's `latestReadyRevisionName` still names its serving revision. Inspect the candidate revision directly. Add a temporary `release-check` tag with `update-traffic --update-tags release-check=CANDIDATE`, verify the candidate URL (authenticated for the worker), compare its immutable image/configuration to the captured baseline, then promote the named revision. Remove only that temporary tag afterward. A successful image import alone does not prove application startup. Keep the previous revision as the rollback target.
+
+## Metrics, AI dashboard and Forecast Plans release
+
+Read [Metrics](business-metrics.md), [AI Dashboard Builder](ai-dashboard-builder.md), and [Forecast Plans](forecast-plans.md). The [18 October release assessment](evaluation/planning-release-20261018.md) and `deployment.json` record the worker/API/frontend release. Fresh builder/plan execution still needs verification after the normal UTC quota reset.
+
+1. Run backend Ruff/tests including `test_metrics_and_planning.py`, frontend tests/lint/types/build, and browser checks. Saved-only actions must perform no SQL/model calls.
+2. Deploy the compatible private worker image first. It must support planning workflow 3 alongside report workflows 1/2. The existing task endpoint dispatches by captured job kind; no new queue, identity, bucket or IAM grant is required.
+3. Deploy the API with the same backend image, then the frontend. Use `PLANNING_ENABLED=false` while worker compatibility is unverified; enable admission only after that gate. `FORECAST_PLAN_FIT_LIMIT` defaults to 128; daily/concurrency quotas are shared, not additive.
+4. Explicitly preserve `DATA_PROFILE=timeseries`, `SOURCE_ROW_LIMIT=30000`, both verified enabled TimesFM flags, source boundaries and original budgets. No generation/upload/reset/legacy seed belongs to this release.
+5. Optional metric examples require separate authorization: `cd Backend && uv run python -m scripts.seed_metrics --cloud`. This preserves existing IDs and public changes. Omitting `--cloud` demonstrates ephemeral seeding and does not populate a running backend.
+6. Verify metric publication/history/preview, dashboard proposal/publication/conflict, a complete hierarchy plan, adjustment, exact-version dashboard pin and matching downloads. Check real TimesFM provenance under the worker identity; fixtures do not establish that verification. Record serving revisions only after deployment. Never reset/raise quotas to make tests pass.
+
+The existing named Firestore database is Standard/Native. New collections use backend-only access and single-field queries, requiring no composite/vector index. Preserve planning/report retention through history reset; source data is unchanged.
+
+Planning retention cleanup is a separate, explicit operator operation: `uv run python -m app.admin purge-planning --confirm-demo-reset`. It preserves report/dashboard references and leaves maintenance fenced on failure; inspect before clearing a failed fence. Do not include cleanup or metric seeding in routine releases.
+
+Both release helpers preserve existing `REPORT_*` configuration, including TimesFM enabled/verified gates, plus planning admission/fitting limits. The worker helper inspects an existing service before replacing its environment and stops on an unexpected read error. Same-profile releases retain the configured source-row limit. On first configuration, public planning admission defaults off; explicitly enable it only after the compatible worker passes its release gate. The release used image-only updates and preserved the existing runtime environment, adding only `PLANNING_ENABLED=true`. Hosted packaged-example seeding was not performed.

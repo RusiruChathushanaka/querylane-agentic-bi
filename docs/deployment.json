@@ -16,34 +16,34 @@
     "months": 45,
     "merchandise_revenue": "354425112.20"
   },
-  "date": "2026-10-17",
-  "verified_at": "2026-10-17T17:49:17.836198+00:00",
-  "release": "TimesFM forecast and conditional-scenario landing previews (frontend only)",
+  "date": "2026-10-18",
+  "verified_at": "2026-10-17T21:48:04.449887+00:00",
+  "release": "Metrics, AI dashboards and Forecast Plans; verified metric-guided text/Live corrections",
   "services": {
     "agentic-bi-backend": {
       "url": "https://agentic-bi-backend-wekihucn7q-as.a.run.app",
-      "ready_revision": "agentic-bi-backend-00021-6rd",
+      "ready_revision": "agentic-bi-backend-00024-rnd",
       "service_account": "agentic-bi-backend@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
-      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:0b92a2168a0589d03ebf6a0e4b1f0ed542ea797a135658d496f3cd1186eb3d8b",
-      "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:0b92a2168a0589d03ebf6a0e4b1f0ed542ea797a135658d496f3cd1186eb3d8b",
-      "build_id": "76a0db4a-1187-4072-9b63-e83df05c2d02",
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:73e239ec3a76e390f271d71fbdad9d0c3e6fa167331990786871e9eae9dd9d94",
+      "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:73e239ec3a76e390f271d71fbdad9d0c3e6fa167331990786871e9eae9dd9d94",
+      "build_id": "1dbf40e4-1ad3-44cd-a0ad-c29c5347c9f8",
       "build_source": {
         "storageSource": {
           "bucket": "project-e8b1593d-009a-4822-abf-agentic-bi-build",
-          "generation": "1792254186369013",
-          "object": "source/1792254184.94185-c72d3b01d8ca43bea8f8da2320f3c0ce.tgz"
+          "generation": "1792273222851872",
+          "object": "source/1792273221.228143-4246425e4f0848f3b9d93d33265244ce.tgz"
         }
       },
-      "source_base_commit": "3e9c685d259b5acb3afb21d778d9016fa4cdd465",
+      "source_base_commit": "e4af083aaebf6a4e4f4dda93194c6e5597f7cd20",
       "source_is_working_tree": true,
       "ready": true,
       "traffic": [
         {
           "percent": 100,
-          "revisionName": "agentic-bi-backend-00021-6rd"
+          "revisionName": "agentic-bi-backend-00024-rnd"
         }
       ],
-      "previous_revision": "agentic-bi-backend-00019-kwg",
+      "previous_revision": "agentic-bi-backend-00021-6rd",
       "runtime_environment": [
         {
           "name": "ENVIRONMENT",
@@ -162,6 +162,10 @@
         {
           "name": "REPORT_TIMESFM_VERIFIED",
           "value": "true"
+        },
+        {
+          "name": "PLANNING_ENABLED",
+          "value": "true"
         }
       ],
       "resources": {
@@ -173,30 +177,69 @@
       "container_concurrency": 8,
       "timeout_seconds": 3600
     },
-    "agentic-bi-report-worker": {
-      "url": "https://agentic-bi-report-worker-wekihucn7q-as.a.run.app",
-      "ready_revision": "agentic-bi-report-worker-00010-wnw",
-      "service_account": "agentic-bi-report-worker@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
-      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:0b92a2168a0589d03ebf6a0e4b1f0ed542ea797a135658d496f3cd1186eb3d8b",
-      "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:0b92a2168a0589d03ebf6a0e4b1f0ed542ea797a135658d496f3cd1186eb3d8b",
-      "build_id": "76a0db4a-1187-4072-9b63-e83df05c2d02",
+    "agentic-bi-frontend": {
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app",
+      "ready_revision": "agentic-bi-frontend-00017-dxz",
+      "service_account": "agentic-bi-frontend@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:0d545a6b9a04758b481bf0d87041658982e40e61a6c60edf05b8a57bc3603f46",
+      "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:0d545a6b9a04758b481bf0d87041658982e40e61a6c60edf05b8a57bc3603f46",
+      "build_id": "a1a61253-ce91-4f58-afb1-8c887ebccc61",
       "build_source": {
         "storageSource": {
           "bucket": "project-e8b1593d-009a-4822-abf-agentic-bi-build",
-          "generation": "1792254186369013",
-          "object": "source/1792254184.94185-c72d3b01d8ca43bea8f8da2320f3c0ce.tgz"
+          "generation": "1792271811794136",
+          "object": "source/1792271810.047008-feaae01bd85c45479f9498f443efda3f.tgz"
         }
       },
-      "source_base_commit": "3e9c685d259b5acb3afb21d778d9016fa4cdd465",
+      "source_base_commit": "e4af083aaebf6a4e4f4dda93194c6e5597f7cd20",
       "source_is_working_tree": true,
       "ready": true,
       "traffic": [
         {
           "percent": 100,
-          "revisionName": "agentic-bi-report-worker-00010-wnw"
+          "revisionName": "agentic-bi-frontend-00017-dxz"
         }
       ],
-      "previous_revision": "agentic-bi-report-worker-00008-xwl",
+      "previous_revision": "agentic-bi-frontend-00016-tw2",
+      "runtime_environment": [
+        {
+          "name": "BACKEND_URL",
+          "value": "https://agentic-bi-backend-wekihucn7q-as.a.run.app"
+        }
+      ],
+      "resources": {
+        "limits": {
+          "cpu": "1000m",
+          "memory": "512Mi"
+        }
+      },
+      "container_concurrency": 40,
+      "timeout_seconds": 300
+    },
+    "agentic-bi-report-worker": {
+      "url": "https://agentic-bi-report-worker-wekihucn7q-as.a.run.app",
+      "ready_revision": "agentic-bi-report-worker-00013-sm4",
+      "service_account": "agentic-bi-report-worker@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:73e239ec3a76e390f271d71fbdad9d0c3e6fa167331990786871e9eae9dd9d94",
+      "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:73e239ec3a76e390f271d71fbdad9d0c3e6fa167331990786871e9eae9dd9d94",
+      "build_id": "1dbf40e4-1ad3-44cd-a0ad-c29c5347c9f8",
+      "build_source": {
+        "storageSource": {
+          "bucket": "project-e8b1593d-009a-4822-abf-agentic-bi-build",
+          "generation": "1792273222851872",
+          "object": "source/1792273221.228143-4246425e4f0848f3b9d93d33265244ce.tgz"
+        }
+      },
+      "source_base_commit": "e4af083aaebf6a4e4f4dda93194c6e5597f7cd20",
+      "source_is_working_tree": true,
+      "ready": true,
+      "traffic": [
+        {
+          "percent": 100,
+          "revisionName": "agentic-bi-report-worker-00013-sm4"
+        }
+      ],
+      "previous_revision": "agentic-bi-report-worker-00010-wnw",
       "runtime_environment": [
         {
           "name": "ENVIRONMENT",
@@ -315,6 +358,10 @@
         {
           "name": "REPORT_TIMESFM_VERIFIED",
           "value": "true"
+        },
+        {
+          "name": "PLANNING_ENABLED",
+          "value": "true"
         }
       ],
       "resources": {
@@ -325,58 +372,24 @@
       },
       "container_concurrency": 1,
       "timeout_seconds": 660
-    },
-    "agentic-bi-frontend": {
-      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app",
-      "ready_revision": "agentic-bi-frontend-00016-tw2",
-      "service_account": "agentic-bi-frontend@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
-      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:0b6f98bbd6b967fa6d8f99b73fecec7b870c088779fc9f764d4457954a1d3db5",
-      "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:0b6f98bbd6b967fa6d8f99b73fecec7b870c088779fc9f764d4457954a1d3db5",
-      "build_id": "45478798-8192-45c2-bedd-f44973e1366c",
-      "build_source": {
-        "storageSource": {
-          "bucket": "project-e8b1593d-009a-4822-abf-agentic-bi-build",
-          "generation": "1792258942820012",
-          "object": "source/1792258941.327523-f4b3a28fb2fb4da7b63d4e243f30a8d8.tgz"
-        }
-      },
-      "source_base_commit": "ca58fedf4623c02048e4da9f8f829b7bd01f7af3",
-      "source_is_working_tree": true,
-      "ready": true,
-      "traffic": [
-        {
-          "percent": 100,
-          "revisionName": "agentic-bi-frontend-00016-tw2"
-        }
-      ],
-      "previous_revision": "agentic-bi-frontend-00015-6ff",
-      "runtime_environment": [
-        {
-          "name": "BACKEND_URL",
-          "value": "https://agentic-bi-backend-wekihucn7q-as.a.run.app"
-        }
-      ],
-      "resources": {
-        "limits": {
-          "cpu": "1000m",
-          "memory": "512Mi"
-        }
-      },
-      "container_concurrency": 40,
-      "timeout_seconds": 300
     }
   },
   "data_profile": "timeseries",
   "postgres_schema": "retail_timeseries",
-  "runtime_configuration_preserved_except_timesfm_gates": true,
   "analytical_seed_or_history_reset": false,
   "configuration_changes": {
-    "frontend_image_only": true,
-    "backend_worker": "unchanged",
-    "timesfm_gates": "enabled/verified on API and worker, unchanged",
+    "backend_worker_image": true,
+    "frontend_image": true,
+    "planning_admission": "PLANNING_ENABLED=true on API and private worker",
+    "timesfm_gates": "enabled/verified, unchanged",
     "iam_changes": false,
     "source_row_limit": 30000,
-    "research_enabled": false
+    "data_profile": "timeseries",
+    "research_enabled": false,
+    "metric_agent_fixes": [
+      "Negated ad hoc wording retains catalog",
+      "MetricScope dictionary uses JSON mode with strict local validation"
+    ]
   },
   "verification_reports": [
     "evaluation/timesfm-backend-runtime.json",
@@ -394,14 +407,29 @@
     "evaluation/timesfm-worker-runtime.json",
     "evaluation/landing-timesfm-local.json",
     "evaluation/landing-timesfm-deployed.json",
-    "evaluation/landing-timesfm-deployed.md"
+    "evaluation/landing-timesfm-deployed.md",
+    "evaluation/planning-release-20261018-source.json",
+    "evaluation/planning-release-20261018-sources-before.json",
+    "evaluation/planning-release-20261018-sources-after.json",
+    "evaluation/planning-release-20261018-runtime.json",
+    "evaluation/planning-release-20261018-analytics.json",
+    "evaluation/planning-release-20261018-voice.json",
+    "evaluation/planning-release-20261018-api.json",
+    "evaluation/planning-release-20261018-browser.json",
+    "evaluation/planning-release-20261018.md",
+    "evaluation/planning-release-20261018-catalog-agent.json",
+    "evaluation/planning-release-20261018-voice-catalog.json",
+    "evaluation/planning-release-20261018-catalog-agent-initial.json",
+    "evaluation/planning-release-20261018-metric-scope-initial.json",
+    "evaluation/planning-release-20261018-voice-catalog-initial.json",
+    "evaluation/planning-release-20261018-metric-scope-compat.json"
   ],
-  "source_verification_manifest": "evaluation/timesfm-release-source.json",
+  "source_verification_manifest": "evaluation/planning-release-20261018-source.json",
   "github": {
     "repository": "https://github.com/RusiruChathushanaka/querylane-agentic-bi",
     "branch": "main",
-    "source_base_commit": "ca58fedf4623c02048e4da9f8f829b7bd01f7af3",
-    "publication_note": "Release source and evidence are committed together after the deployed checks; images were built from the matching runtime working tree."
+    "source_base_commit": "e4af083aaebf6a4e4f4dda93194c6e5597f7cd20",
+    "publication_note": "Runtime working-tree file hashes identify the source built into these images. Code and dated release evidence are published together after verification."
   },
   "latest_verified_sample": {
     "report_id": "2ed05089e9a86e1ef3046fa6c6728680",
@@ -415,8 +443,17 @@
     "id": "7d213e6c777244fb99c9bc363ff42f22",
     "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/dashboards/7d213e6c777244fb99c9bc363ff42f22"
   },
-  "temporary_runtime_jobs": "TimesFM worker probe and backend runtime check removed after completion",
+  "temporary_runtime_jobs": "Backend runtime check removed after completion",
   "unexpected_application_error_entries": 0,
-  "runtime_configuration_preserved": true,
-  "frontend_source_verification_manifest": "evaluation/landing-timesfm-deployed.json"
+  "runtime_configuration_preserved_except_planning_admission": true,
+  "fresh_planning_acceptance": "Pending normal UTC quota reset: existing shared advanced-analysis allowance was 12/12; no reset or increase.",
+  "final_revision_error_window": {
+    "from_utc": "2026-10-17T21:45:40Z",
+    "revisions": [
+      "agentic-bi-backend-00024-rnd",
+      "agentic-bi-report-worker-00013-sm4",
+      "agentic-bi-frontend-00017-dxz"
+    ],
+    "earlier_reproduced_schema_failure": "planning-release-20261018-metric-scope-initial.json"
+  }
 }

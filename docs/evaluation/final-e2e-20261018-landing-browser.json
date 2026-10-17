@@ -1,0 +1,75 @@
+{
+  "initial": {
+    "title": "Querylane \u2014 From questions to evidence-backed decisions",
+    "ctaPaths": [
+      "/app",
+      "/app",
+      "/app",
+      "/app"
+    ],
+    "tabs": [
+      "Reports",
+      "Forecasts",
+      "Scenarios",
+      "Voice BI"
+    ],
+    "noOverflow": true,
+    "backendRequests": [],
+    "microphone": 0
+  },
+  "forecast": {
+    "selected": "Forecasts",
+    "methodRows": [
+      {
+        "caption": "Saved example \u00b7 USD \u00b7 observation cutoff September 30, 2026",
+        "rows": 12
+      },
+      {
+        "caption": "Saved monthly revenue comparison \u00b7 three-month horizon",
+        "rows": 4
+      }
+    ],
+    "reportLinks": [
+      "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/reports/2ed05089e9a86e1ef3046fa6c6728680?version=1"
+    ],
+    "cutoff": true
+  },
+  "keyboard": "Scenarios",
+  "scenario": {
+    "rows": 14,
+    "noOverflow": true,
+    "baseline": "rgb(49, 93, 238)",
+    "alternative": "rgb(23, 111, 105)",
+    "baselinePattern": "8px, 4px",
+    "alternativePattern": "2px, 4px",
+    "text": "Baseline predicted total$4,571,971Alternative predicted total$4,828,573",
+    "links": [
+      "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/reports/f0853cca9462ee293ddaf45e6627e843?version=1"
+    ]
+  },
+  "mobile_320": {
+    "width": 320,
+    "noOverflow": true,
+    "columns": "139px 139px"
+  },
+  "mobile_390": {
+    "width": 390,
+    "noOverflow": true,
+    "columns": "174px 174px"
+  },
+  "preferences": {
+    "reduced": true,
+    "dark": true,
+    "noOverflow": true
+  },
+  "before_entry": {
+    "backendRequests": []
+  },
+  "workspace": {
+    "path": "/app",
+    "composer": true,
+    "timeseries": true,
+    "connected": 2
+  },
+  "uncaught_errors": ""
+}

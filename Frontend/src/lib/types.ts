@@ -115,10 +115,15 @@ export type Visualization = {
   measures?: ChartMeasure[];
 };
 export type Artifact = {
+  metric_resolution?: "catalog" | "ad_hoc";
+  metric_snapshots?: { id: string; version: number; definition: { name: string; description: string } }[];
+  forecast_plan_id?: string;
+  forecast_plan_version?: number;
   report_id?: string;
   report_version?: number;
   prediction?: {
-    kind?: "forecast" | "scenario";
+    kind?: "forecast" | "scenario" | "statistical_forecast" | "adjusted_plan";
+    status?: string;
     provider?: string;
     model?: string | null;
     preview?: boolean;

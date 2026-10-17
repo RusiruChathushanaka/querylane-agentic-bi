@@ -92,6 +92,14 @@ class ReportDispatcher:
             report_key = ("reports", snapshot["report_id"])
             slot = ("report_conversations", snapshot["conversation_id"])
             outkey = ("report_outbox", run_id)
+            job_key = (
+                (
+                    ("forecast_plans" if snapshot.get("kind") == "forecast" else "dashboard_builds"),
+                    snapshot.get("root_id", run_id),
+                )
+                if snapshot.get("kind")
+                else None
+            )
 
             def recover(docs):
                 run = docs[key]
@@ -119,7 +127,7 @@ class ReportDispatcher:
                     run["sequence"] += 1
                     report = docs[report_key]
                     report.update(active_run=None, status=run["status"], revision=report["revision"] + 1)
-                    return {
+                    updates = {
                         key: run,
                         report_key: report,
                         slot: {"run_id": None},
@@ -129,7 +137,12 @@ class ReportDispatcher:
                             "type": run["status"],
                             "data": {"error": run["error"], "report_id": run["report_id"]},
                         },
-                    }, None
+                    }
+                    if job_key:
+                        root = docs[job_key]
+                        root.update(active_run=None, status=run["status"], revision=root["revision"] + 1)
+                        updates[job_key] = root
+                    return updates, None
                 outbox = docs[outkey] or {}
                 stranded = (
                     run["status"] == "queued"
@@ -157,7 +170,9 @@ class ReportDispatcher:
                     }, None
                 return {}, None
 
-            await self.repo.store.atomic([key, report_key, slot, outkey, REGISTRY], recover)
+            await self.repo.store.atomic(
+                [key, report_key, slot, outkey, REGISTRY, *([job_key] if job_key else [])], recover
+            )
             await self.enqueue(run_id)
             count += 1
         return {"checked": count}

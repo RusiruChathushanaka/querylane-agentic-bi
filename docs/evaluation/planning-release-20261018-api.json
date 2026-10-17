@@ -1,0 +1,97 @@
+{
+  "verified_at": "2026-10-17T21:26:03.832780+00:00",
+  "checks": {
+    "backend_ready": true,
+    "timeseries_profile": true,
+    "timesfm_enabled_preview": true,
+    "library_metrics": true,
+    "library_plans": true,
+    "library_builds": true,
+    "metric_idempotent_create": true,
+    "controlled_query_preview": true,
+    "metric_published": true,
+    "stale_edit_conflict": true,
+    "unapproved_expression_rejected": true,
+    "full_45_months": true,
+    "independent_revenue": true,
+    "preview_saved_replay": true,
+    "published_revision_immutable": true,
+    "archive": true,
+    "restore": true,
+    "dashboard-builds_shared_limit_enforced": true,
+    "forecast-plans_shared_limit_enforced": true,
+    "forecast_saved_revision": true,
+    "forecast_download_pdf": true,
+    "forecast_download_docx": true,
+    "forecast_download_data": true,
+    "scenario_saved_revision": true,
+    "scenario_download_pdf": true,
+    "scenario_download_docx": true,
+    "scenario_download_data": true,
+    "saved_dashboard_cards": true,
+    "dashboard_download_pdf": true,
+    "dashboard_download_data": true,
+    "dashboard_download_png": true,
+    "dashboard_download_jpeg": true,
+    "dashboard_download_json": true,
+    "missing_export_revision_rejected": true,
+    "frontend_health": true,
+    "page_landing": true,
+    "page_app": true,
+    "page_metrics": true,
+    "page_dashboards/build": true,
+    "page_forecast-plans": true,
+    "page_reports": true,
+    "page_skills": true,
+    "page_settings": true,
+    "worker_anonymous_denied": true,
+    "legacy_307": true
+  },
+  "limitations": [
+    "dashboard-builds: fresh worker execution blocked by existing 12/12 workspace UTC daily quota; not reset or raised.",
+    "forecast-plans: fresh worker execution blocked by existing 12/12 workspace UTC daily quota; not reset or raised."
+  ],
+  "test_records": {
+    "metric_id": "1a533e8152c847688126f80587fc66a5",
+    "dashboard_id": "91ba0cccdd954464bd295558c008133c"
+  },
+  "source_writes": false,
+  "quota_reset": false,
+  "metric_preview": {
+    "months": 45,
+    "revenue": "354425112.20",
+    "job_id": "abi_metric_f1f5ca0b7f1ef172d3dcd452874dd78bb03dbf67588912edbd60d52aa13e06ba_0",
+    "complete": true
+  },
+  "dashboard_exports": {
+    "pdf": {
+      "bytes": 108329,
+      "sha256": "18d854429c90ea389de8db055e26e355d90668e5ce5be96944672c00d4af50f8",
+      "revision": 3
+    },
+    "data": {
+      "bytes": 6444,
+      "sha256": "c977df1ec0675547da14e8631f3a54b385fb76755d77dfbd20383feca519f676",
+      "revision": 3
+    },
+    "png": {
+      "bytes": 185534,
+      "sha256": "01feadbfd3c65189da4167f8c188ec54b00aebc2fd9c2c342489813f458626a4",
+      "revision": 3
+    },
+    "jpeg": {
+      "bytes": 374974,
+      "sha256": "9be7ad0429146960662b10c35c417d690ee102ec3634026b11d4692800d92c87",
+      "revision": 3
+    },
+    "json": {
+      "bytes": 21339,
+      "sha256": "d31ec5e7930d671802cd67896a0d72c6ce8d15540a3c00acf8be88cad109019d",
+      "revision": 3
+    }
+  },
+  "test_harness_note": "Initial dashboard export request omitted the required expected_revision and correctly received 422. Corrected requests with the captured revision passed.",
+  "completed_at": "2026-10-17T21:26:51.970696+00:00",
+  "passed_available_checks": true,
+  "complete_end_to_end_acceptance": false
+}

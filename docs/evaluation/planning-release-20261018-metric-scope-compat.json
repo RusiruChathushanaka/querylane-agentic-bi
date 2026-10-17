@@ -1,0 +1,23 @@
+{
+  "verified_at": "2026-10-17T21:39:56.278650+00:00",
+  "checks": {
+    "real_gemini_json_scope": true,
+    "monthly_scope": true,
+    "bounded_dates": true,
+    "empty_filters_supported": true
+  },
+  "scope": {
+    "metric_ids": [
+      "1a533e8152c847688126f80587fc66a5"
+    ],
+    "dimension": "region",
+    "grain": "month",
+    "start": "2023-01-01",
+    "end": "2026-09-30",
+    "clarification": null,
+    "compare_target": false,
+    "filters": {}
+  },
+  "identity": "operator; transport compatibility only, not deployed runtime identity",
+  "passed": true
+}

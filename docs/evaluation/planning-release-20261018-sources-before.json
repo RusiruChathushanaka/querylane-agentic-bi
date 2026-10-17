@@ -1,0 +1,29 @@
+{
+  "verified_at": "2026-10-17T21:18:48.104539+00:00",
+  "tables": {
+    "sales_products": {
+      "row_count": 200,
+      "content_fingerprint": -9029152636458148788
+    },
+    "sales_returns": {
+      "row_count": 97122,
+      "content_fingerprint": 7472474679519425235
+    },
+    "calendar": {
+      "row_count": 1369,
+      "content_fingerprint": -8488564705535212141
+    },
+    "sales_order_items": {
+      "row_count": 1317941,
+      "content_fingerprint": 8867289935368097720
+    },
+    "sales_orders": {
+      "row_count": 573348,
+      "content_fingerprint": 4292275408549019525
+    }
+  },
+  "job_id": "3d4d4b52-8554-46f0-a018-475c97b850d3",
+  "read_only": true,
+  "counts_match_previous_record": true,
+  "fingerprint_algorithm": "BIT_XOR(FARM_FINGERPRINT(TO_JSON_STRING(row)))"
+}

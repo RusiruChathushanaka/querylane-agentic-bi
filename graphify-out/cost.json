@@ -68,6 +68,36 @@
       "output_tokens": 0,
       "host_input_tokens": null,
       "host_output_tokens": null
+    },
+    {
+      "date": "2026-10-17T21:13:01.134241+00:00",
+      "files": 276,
+      "reextracted_documents": 14,
+      "cached_documents": 42,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "host_input_tokens": null,
+      "host_output_tokens": null
+    },
+    {
+      "date": "2026-10-17T21:35:17.412173+00:00",
+      "files": 276,
+      "reextracted_documents": 8,
+      "cached_documents": 48,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "host_input_tokens": null,
+      "host_output_tokens": null
+    },
+    {
+      "date": "2026-10-17T21:42:29.844506+00:00",
+      "files": 276,
+      "reextracted_documents": 4,
+      "cached_documents": 52,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "host_input_tokens": null,
+      "host_output_tokens": null
     }
   ],
   "total_input_tokens": 0,

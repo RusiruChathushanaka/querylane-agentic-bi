@@ -1,0 +1,60 @@
+{
+  "quota": {
+    "message": true,
+    "composerEnabled": true,
+    "activeRequest": false,
+    "draft": "Final E2E verification: create a technical report of monthly merchandise revenue and the next three months forecast, comparing TimesFM and statistical methods on the full larger retail dataset."
+  },
+  "report": {
+    "title": "Analysis report \u2014 Querylane",
+    "cutoff": true,
+    "hasTimesFM": true,
+    "tableRegions": [
+      "Forecast method comparison 47bca8c3fbc89b5e2f50c5b4e92e484d",
+      "Prediction reproducibility details 47bca8c3fbc89b5e2f50c5b4e92e484d"
+    ],
+    "downloadButtons": [
+      "PDF",
+      "Word"
+    ],
+    "noOverflow": true
+  },
+  "report_mobile": {
+    "noOverflow": true,
+    "charts": 1,
+    "cutoff": true,
+    "preview": true,
+    "tableLabels": [
+      "Forecast method comparison 47bca8c3fbc89b5e2f50c5b4e92e484d",
+      "Prediction reproducibility details 47bca8c3fbc89b5e2f50c5b4e92e484d"
+    ]
+  },
+  "scenario_report": {
+    "timesfm": true,
+    "scenario": true,
+    "noOverflow": true
+  },
+  "dashboard": {
+    "id": "91ba0cccdd954464bd295558c008133c",
+    "revision": 3,
+    "card_count": 2,
+    "browser_pin_artifact": "4944e107de164d00821511d7e9b51e84",
+    "view_edit_route_verified": true,
+    "public_share_url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/dashboards/91ba0cccdd954464bd295558c008133c",
+    "share_copy_toast_observed": true,
+    "download_format_options": [
+      "png",
+      "jpeg",
+      "pdf",
+      "data",
+      "json"
+    ],
+    "ui_png_downloaded": true,
+    "download_scope_notes_observed": true,
+    "mobile": {
+      "noOverflow": true,
+      "charts": 2
+    }
+  },
+  "uncaught_errors": ""
+}

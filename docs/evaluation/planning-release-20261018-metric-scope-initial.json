@@ -1,0 +1,12 @@
+{
+  "verified_at": "2026-10-17T21:40:20.088893+00:00",
+  "serving_api_revision": "agentic-bi-backend-00023-wqg",
+  "serving_worker_revision": "agentic-bi-report-worker-00012-djv",
+  "status": "additional text/Live metric-scope transport check failed before SQL execution",
+  "observed": "ADK output_schema converted MetricScope.filters dictionary through GenAI Schema and raised a local ValidationError; normal chat returned safe model_error.",
+  "diagnostic": "_GenerateContentParameters_to_vertex \u2192 t_schema \u2192 types.Schema.model_validate; dictionary schema unsupported by this response_schema path.",
+  "correction": "Use existing application/json JSON mode for metric_scope, retaining strict MetricScope.model_validate_json and controlled compiler.",
+  "local_regression_cases": 2,
+  "real_operator_transport_compatibility": "planning-release-20261018-metric-scope-compat.json",
+  "source_writes": false
+}

@@ -4,6 +4,21 @@ A shared workspace for asking business questions across retail data sources and 
 
 ## Language
 
+**Business Metric**: A shared business measure with a calculation, units, reporting dates and supported breakdowns.
+
+**Metric Revision**: An immutable published calculation and exact dependency references, captured when used.
+
+**Dashboard Build**: A bounded analysis preparing a reviewable proposal from saved and newly gathered evidence.
+
+**Dashboard Proposal**: Unpublished cards and presentation changes reviewed before applying them to a shared dashboard.
+
+**Forecast Plan**: Versioned revenue predictions whose aggregate and detailed values reconcile across geographic and product views.
+
+**Allocated Estimate**: A child estimate distributed using stated historical shares, without claiming independent model validation.
+
+**Planning Adjustment**: An explicit visitor assumption saved separately from statistical predictions and learned scenarios.
+
+
 **Landing Page**: The public introduction to Querylane’s capabilities and synthetic retail demo, with direct entry to the application.
 
 **Guided Preview**: An illustrative product walkthrough using saved examples and scripted interactions, without running a live analysis or recording audio.

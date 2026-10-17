@@ -226,8 +226,8 @@ async def dashboard_maintenance(operation):
         await store.close()
 
 
-async def report_maintenance():
-    from app.maintenance import purge_reports
+async def report_maintenance(*, planning=False):
+    from app.maintenance import purge_planning, purge_reports
     from app.report_exports import ExportStorage
     from app.storage import FirestoreStore
 
@@ -238,7 +238,9 @@ async def report_maintenance():
     store = FirestoreStore(PROJECT, "agentic-bi-demo", credentials=credentials)
     exports = ExportStorage(settings, credentials)
     try:
-        print(json.dumps(await purge_reports(store, exports)))
+        print(
+            json.dumps(await (purge_planning(store, exports) if planning else purge_reports(store, exports)))
+        )
     finally:
         await exports.close()
         await store.close()
@@ -351,13 +353,15 @@ def main():
             "reset-history",
             "purge-dashboards",
             "purge-reports",
+            "purge-planning",
             "clear-maintenance",
         ],
     )
     parser.add_argument("--confirm-demo-reset", action="store_true")
     args = parser.parse_args()
     if (
-        args.command in {"reset-history", "purge-dashboards", "purge-reports", "clear-maintenance"}
+        args.command
+        in {"reset-history", "purge-dashboards", "purge-reports", "purge-planning", "clear-maintenance"}
         and not args.confirm_demo_reset
     ):
         parser.error(
@@ -372,6 +376,7 @@ def main():
         "cleanup-skill-authors": cleanup_skill_authors,
         "reset-history": reset,
         "purge-reports": report_maintenance,
+        "purge-planning": lambda: report_maintenance(planning=True),
         "purge-dashboards": lambda: dashboard_maintenance("purge-dashboards"),
         "clear-maintenance": lambda: dashboard_maintenance("clear-maintenance"),
     }

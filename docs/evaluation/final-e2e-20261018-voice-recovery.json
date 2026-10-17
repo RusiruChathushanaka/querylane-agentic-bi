@@ -1,0 +1,49 @@
+{
+  "verified_at": "2026-10-17T18:34:31.539352+00:00",
+  "checks": {
+    "recoverable_tool_error_delivered": true,
+    "same_connection_continued": true,
+    "large_dataset_count": true,
+    "timeseries_query_evidence": true,
+    "spoken_recovery_answer": true,
+    "run_finalized_after_stop": true,
+    "only_probe_skill_soft_deleted": true
+  },
+  "fatal_errors": [],
+  "probe_skill_id": "9224ab1c2d3f48f48c466939c8106c26",
+  "conversation_id": "3ec7ebe06aa34cc49805f50911efebc2",
+  "run_id": "d98033b854853e43f459feb61e0616d8",
+  "recoverable_error": {
+    "code": "skill_unavailable",
+    "message": "An attached skill is deleted, disabled, or incompatible. Remove it from Attach skills before continuing."
+  },
+  "answer": {
+    "artifact_id": "04d5fcea2e8d41d099b535bbe1a93cdb",
+    "rows": [
+      {
+        "completed_orders": 573348
+      }
+    ],
+    "provenance": [
+      {
+        "executed_at": "2026-10-17T18:34:47.666959+00:00",
+        "complete": true,
+        "bytes_processed": 0,
+        "row_count": 1,
+        "job_id": "abi_d98033b854853e43f459feb61e0616d8_4b08bf8456c545cd90da5200d05880b5_0",
+        "columns": [
+          {
+            "type": "INTEGER",
+            "name": "completed_orders"
+          }
+        ],
+        "source": "bigquery",
+        "elapsed_ms": 915,
+        "sql": "SELECT COUNT(DISTINCT order_id) AS completed_orders FROM `project-e8b1593d-009a-4822-abf`.agentic_bi_demo.sales_orders WHERE status = 'completed'"
+      }
+    ],
+    "audio_frames": 20,
+    "spoken": "There are 573,348 348 completed sales orders historically."
+  },
+  "passed": true
+}

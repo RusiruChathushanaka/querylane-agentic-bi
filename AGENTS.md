@@ -16,7 +16,12 @@ Before deployment, cloud provisioning, IAM/secret changes, rollback, or cloud tr
 - When deployment behavior changes, update the guide alongside the implementation. After an actual deployment, record real serving revisions/configuration in `docs/deployment.json` and verification evidence in `docs/validation.md` and relevant evaluation reports.
 - Treat `docs/deployment.json` and historical evaluation reports as dated records. Inspect current cloud state when the task requires it.
 
+The Metrics/AI Dashboard/Forecast Plans release is recorded in [the 18 October assessment](docs/evaluation/planning-release-20261018.md). Distinguish deployed availability from fresh expensive-job acceptance: quota-denied admission is not proof of successful worker execution. Never reset shared usage counters to pass release tests.
+
 ## Current documentation
+
+For metric and planning changes, read [Business Metrics](docs/business-metrics.md), [AI Dashboard Builder](docs/ai-dashboard-builder.md), and [Forecast Plans](docs/forecast-plans.md). Preserve controlled metric compilation, immutable dependency evidence, canonical forecast-value reconciliation, reviewed atomic publication and exact-version pins. All expensive job kinds share report admission/concurrency/outbox/leases; planning workflow 3 must not alter report workflows 1/2. Forecast Plans alone permit up to 128 fits; reports remain at 64 and TimesFM limits stay unchanged. Never describe allocated leaves or user adjustments as independently validated predictions. Run `Backend/tests/test_metrics_and_planning.py` plus existing SQL/report/TimesFM/voice regressions. Metric seeding is an explicit operator command, never startup/deployment/reset behavior. Deploy a compatible private worker before API admission and frontend release.
+
 
 For retail source/schema or generated-data changes, read [docs/retail-timeseries.md](docs/retail-timeseries.md) and [the column dictionary](docs/retail-timeseries-schema.md). Preserve the original demo namespaces. Generation/validation are offline; cloud upload is a separate operator action from deployment. Use the insert-only, fenced uploader and `extend` workflow instead of the legacy destructive seed command. Preserve the active data profile explicitly on releases and retain row/byte/scan/fusion controls. The guide is not authorization for new data writes or IAM changes.
 

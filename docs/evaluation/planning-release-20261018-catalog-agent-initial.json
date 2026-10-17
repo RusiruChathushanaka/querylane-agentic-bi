@@ -1,0 +1,9 @@
+{
+  "verified_at": "2026-10-17T21:30:45.560964+00:00",
+  "conversation_id": "8f5728d76f454fdcaa6c43c983847bf5",
+  "run_id": "a7b8e24a1895fc555a765cf51a58cae6",
+  "status": "failed additional catalog-intent acceptance",
+  "question": "Use the published metric \"Release verification merchandise revenue\" version 1. Show monthly values for the full January 2023 through September 2026 history as a line chart. Use its catalog definition, not an ad hoc calculation.",
+  "observed": "No artifact; agent asked for the catalog definition because any occurrence of ad hoc bypassed catalog resolution, including negated wording.",
+  "fix": "Only affirmative ad hoc mentions bypass catalog routing; negated opt-outs retain immutable catalog resolution. Seven regression cases cover both directions."
+}

@@ -15,10 +15,10 @@ from app.errors import AppError
 from app.fusion import fuse
 from app.model_errors import PERMANENT_MODEL_CODES, TRANSIENT_MODEL_CODES
 from app.model_selection import active_text_model, model_evidence
-from app.models import AnalysisPlan, QueryResult
+from app.models import AnalysisPlan, QueryResult, SourceQuery
 from app.report_exports import FORMATS, render
 from app.report_harness import run_report_graph
-from app.report_models import ReportDraft, ReportPlan, ReportSection, ReviewResult
+from app.report_models import ForecastSpec, ReportDraft, ReportPlan, ReportSection, ReviewResult
 from app.report_repository import active_report_lease
 from app.report_statistics import factual_claims, forecast
 from app.repository import now_iso
@@ -72,6 +72,9 @@ class ReportEngine:
         await self.repo.event(lease, "progress", {"message": message})
 
     async def work(self, run_id, delivery=None):
+        snapshot = await self.repo.get("report_runs", run_id)
+        if snapshot.get("kind") and not getattr(self, "planning_worker", False):
+            return await self.services.planning_engine.work(run_id, delivery)
         if not await self.repo.received(run_id, delivery):
             return
         lease = await self.repo.claim(run_id, delivery)
@@ -155,6 +158,20 @@ class ReportEngine:
 
     async def prepare(self, run, lease):
         await self.stage(lease, "Preparing scope")
+        captured_plan = run["brief"].get("forecast_plan_snapshot")
+        if captured_plan:
+            from app.planning_engine import plan_report
+
+            base = plan_report(captured_plan)
+            base["assumptions"] = [
+                "Narrative from an immutable forecast plan; no fresh SQL or forecast inference."
+            ]
+            if not base["artifact_ids"]:
+                raise AppError(
+                    "Prepare the saved company chart before requesting a report.", 422, "planning_artifact"
+                )
+            await self.repo.checkpoint(lease, "base_document", base)
+            return
         if run.get("workflow_version") not in {1, 2}:
             raise AppError(
                 "This report requires its original workflow version. The operator must drain or restore compatible workers.",
@@ -391,6 +408,25 @@ class ReportEngine:
         return result
 
     async def gather(self, run, lease):
+        from app.metrics import Metrics, active_metric_catalog
+
+        snapshots = await self.repo.read_checkpoint(run["id"], "metric_context")
+        if snapshots is None:
+            plan = (
+                await self.repo.read_checkpoint(run["id"], f"final_plan_{len(run['clarifications'])}") or {}
+            )
+            text = run["brief"]["question"] + " " + " ".join(t["question"] for t in plan.get("tasks", []))
+            snapshots = await Metrics(self.repo.store, self.settings).resolve(text, run["brief"]["source"])
+            snapshots = await self.repo.checkpoint(lease, "metric_context", snapshots)
+        token = active_metric_catalog.set(snapshots)
+        try:
+            return await self._gather(run, lease)
+        finally:
+            active_metric_catalog.reset(token)
+
+    async def _gather(self, run, lease):
+        if run["brief"].get("forecast_plan_snapshot"):
+            return
         if run["brief"]["mode"] == "presentation":
             return
         await self.stage(lease, "Gathering evidence")
@@ -406,6 +442,10 @@ class ReportEngine:
                     run["id"], f"query_plan_{len(run['clarifications'])}_{task['id']}"
                 )
                 query_question = task["question"] + "\nPurpose: " + task["purpose"]
+                task_forecasts = [
+                    ForecastSpec.model_validate(s) for s in plan["forecasts"] if s["task_id"] == task["id"]
+                ]
+                forecast_spec = task_forecasts[0] if len(task_forecasts) == 1 else None
                 for spec in plan["forecasts"]:
                     if spec["task_id"] == task["id"]:
                         query_question += f"\nFor prediction return one row per complete {spec['grain']}, aliases {spec['date_column']}, {spec['target']}, {spec['drivers']}. Preserve genuine zero dates, exclude incomplete periods and immature cohorts."
@@ -418,6 +458,7 @@ class ReportEngine:
                         run["conversation_id"],
                         skills=skills["snapshots"],
                         analysis_id=f"report_{run['id']}_{len(run['clarifications'])}_{task['id']}",
+                        forecast_spec=forecast_spec,
                     )
                     cp = await self.repo.checkpoint(
                         lease,
@@ -450,7 +491,8 @@ class ReportEngine:
                             break
                         except AppError as exc:
                             if (
-                                exc.code not in {"invalid_sql", "unsafe_sql"}
+                                (analysis.metric_snapshots and not analysis.metric_guard)
+                                or exc.code not in {"invalid_sql", "unsafe_sql"}
                                 or attempt == 2
                                 or self.settings.ai_backend != "gemini"
                             ):
@@ -464,6 +506,7 @@ class ReportEngine:
                                 feedback=exc.message,
                                 skills=skills["snapshots"],
                                 analysis_id=f"report_{run['id']}_{len(run['clarifications'])}_{task['id']}_repair_{leg}_{attempt}",
+                                forecast_spec=forecast_spec,
                             )
                             if (
                                 len(replacement.queries) != len(analysis.queries)
@@ -496,6 +539,31 @@ class ReportEngine:
                     )
                 else:
                     rows, columns = results[0].rows, results[0].columns
+                guard_evidence = []
+                if analysis.metric_guard:
+                    from app.metric_forecasts import verify_forecast_values
+
+                    binding = analysis.metric_guard
+                    canonical = await self._query(
+                        run,
+                        lease,
+                        task,
+                        SourceQuery(
+                            source="bigquery",
+                            sql=binding["sql"],
+                            purpose="Independent frozen published-metric validation",
+                        ),
+                        9,
+                        0,
+                    )
+                    if not canonical.complete or not all(r.complete for r in results):
+                        raise AppError(
+                            "Incomplete inputs cannot validate a published forecast metric.",
+                            422,
+                            "metric_incomplete",
+                        )
+                    verify_forecast_values(rows, canonical.rows, binding["date_column"], binding["target"])
+                    guard_evidence = [canonical.model_dump(mode="json", exclude={"rows"})]
                 encoded = json_rows(rows)
                 spec = normalized_spec(analysis.visualization, columns, encoded)
                 artifact_id = hashlib.sha256(f"report:{run['id']}:{name}".encode()).hexdigest()[:32]
@@ -509,7 +577,8 @@ class ReportEngine:
                     "preview_count": min(len(rows), 1000),
                     "complete": all(r.complete for r in results),
                     "visualization": spec.model_dump(mode="json"),
-                    "provenance": [r.model_dump(mode="json", exclude={"rows"}) for r in results],
+                    "provenance": [r.model_dump(mode="json", exclude={"rows"}) for r in results]
+                    + guard_evidence,
                     "assumptions": analysis.assumptions
                     + ([analysis.fusion.relationship, diagnostics["snapshot"]] if diagnostics else []),
                     "join_diagnostics": diagnostics,
@@ -521,7 +590,19 @@ class ReportEngine:
                     "skills_used": [skill_reference(s, s["mode"]) for s in skills["snapshots"]],
                     "report_id": run["report_id"],
                     "report_version": run["version"],
+                    "metric_snapshots": analysis.metric_snapshots,
+                    "metric_scope": analysis.metric_scope,
+                    "metric_resolution": "catalog" if analysis.metric_snapshots else "ad_hoc",
                 }
+                from app.metrics import evidence_signature
+                from app.timesfm import digest
+
+                artifact["schema_hash"] = digest(
+                    [await self.ai.schema(s) for s in sorted({q.source for q in analysis.queries})]
+                )
+                artifact["evidence_signature"] = evidence_signature(
+                    analysis, run["brief"]["data_profile"], artifact["schema_hash"], self.connectors.coverage
+                )
                 await self.repo.save_artifact(lease, artifact, encoded, name)
 
         # TaskGroup cancels siblings and awaits cleanup before yielding clarification/failure.
@@ -537,6 +618,8 @@ class ReportEngine:
             raise unwrap(group)
 
     async def analyze(self, run, lease):
+        if run["brief"].get("forecast_plan_snapshot"):
+            return
         if run["brief"]["mode"] == "presentation":
             return
         if await self.repo.read_checkpoint(run["id"], "analysis"):

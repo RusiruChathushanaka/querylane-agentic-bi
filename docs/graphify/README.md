@@ -83,3 +83,9 @@ The latest map includes `TimesFM`, `compare`, `reserve_candidates`, shared serie
 The refreshed map includes `ProductTour`, `ScenarioIllustration`, the four preview views, fixed saved-version evidence links, packaged model-comparison/scenario values and `/app` entry boundaries. The [landing-only release](../evaluation/landing-timesfm-deployed.md) records frontend `00016-tw2` with backend `00021-6rd` and worker `00010-wnw` unchanged. The separate [TimesFM assessment](../evaluation/timesfm-deployed.md) records numerical forecasts and scenarios; graph generation does not repeat inference. Both analytical runtimes preserve the larger `timeseries` profile, 30,000-row limit and verified enabled TimesFM gates. Local/unverified environments still require the compatibility gate.
 
 The application diagram distinguishes static preview content from an explicit evidence-link navigation to a saved report. Historical evaluation JSON and `deployment.json` remain excluded from raw graph ingestion; the graph indexes their documented references without treating old observations as live discovery.
+
+## Metrics and planning implementation
+
+The source map includes the public metric compiler/revisions, reviewed AI dashboard jobs and adaptive hierarchical planning. See [Metrics](../business-metrics.md), [Dashboard Builder](../ai-dashboard-builder.md) and [Forecast Plans](../forecast-plans.md). These are local implementation changes, not a new serving-release record. Preserve shared worker quotas/fencing, old report workflows, exact-version evidence and modeled/allocated/adjusted distinctions in graph updates.
+
+The [18 October planning release](../evaluation/planning-release-20261018.md) adds deployed Metrics, reviewed AI dashboards and Forecast Plans. Its quota-limited hosted acceptance is distinct from the local 237-node numerical evidence; graph relationships are not proof of successful fresh worker execution.

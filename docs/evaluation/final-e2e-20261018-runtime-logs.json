@@ -1,0 +1,7 @@
+{
+  "entries": 1,
+  "by_service_status": {
+    "agentic-bi-frontend:503": 1
+  },
+  "application_errors": []
+}

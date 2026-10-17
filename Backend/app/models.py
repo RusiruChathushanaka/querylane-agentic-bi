@@ -67,7 +67,9 @@ class ChartMeasure(StrictModel):
     currency: str | None = Field(default=None, pattern=r"^[A-Z]{3}$")
     percent_scale: Literal["fraction", "whole"] | None = None
     additive: bool = False
-    role: Literal["primary", "measure", "target", "comparison", "observed", "forecast", "scenario"] = "measure"
+    role: Literal["primary", "measure", "target", "comparison", "observed", "forecast", "scenario"] = (
+        "measure"
+    )
     compares_to: str | None = Field(default=None, max_length=128)
     direction: Literal["higher", "lower", "neutral"] = "neutral"
 
@@ -92,6 +94,9 @@ class AnalysisPlan(StrictModel):
     visualization: VisualizationSpec
     assumptions: list[str] = Field(default_factory=list, max_length=10)
     clarification: str | None = Field(default=None, max_length=1000)
+    metric_snapshots: list[dict[str, Any]] = Field(default_factory=list, max_length=8)
+    metric_scope: dict[str, Any] | None = None
+    metric_guard: dict[str, Any] | None = None
 
 
 class Answer(StrictModel):

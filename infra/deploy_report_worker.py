@@ -9,10 +9,11 @@ import tempfile
 from pathlib import Path
 
 from provision import PROJECT, REGION, gcloud
+from runtime_settings import preserve_analysis_settings
 
 
-def configuration(profile, frontend_url):
-    return {
+def configuration(profile, frontend_url, existing=None):
+    return preserve_analysis_settings({
         "ENVIRONMENT": "production",
         "STORAGE_BACKEND": "firestore",
         "DATA_BACKEND": "cloud",
@@ -35,7 +36,7 @@ def configuration(profile, frontend_url):
         "REPORT_BUCKET": f"{PROJECT}-agentic-bi-reports",
         "REPORT_DISPATCH_SERVICE_ACCOUNT": f"agentic-bi-report-dispatch@{PROJECT}.iam.gserviceaccount.com",
         "REPORT_RESEARCH_ENABLED": "false",
-    }
+    }, existing or {})
 
 
 def main():
@@ -84,6 +85,15 @@ def main():
         f"{REGION}-docker.pkg.dev/{PROJECT}/agentic-bi-demo/backend@sha256:"
     ):
         parser.error("Use a verified backend image from the dedicated demo repository.")
+    current = gcloud("run", "services", "describe", "agentic-bi-report-worker",
+                     "--region", REGION, "--format", "json", check=False)
+    if current.returncode == 0:
+        existing = {entry["name"]: entry["value"] for entry in
+                    json.loads(current.stdout)["spec"]["template"]["spec"]["containers"][0].get("env", [])
+                    if "value" in entry}
+        env = configuration(args.data_profile, args.frontend_url, existing)
+    elif "NOT_FOUND" not in current.stderr.upper():
+        parser.error("Cannot inspect worker configuration. Resolve the read error before deployment.")
     # Bootstrap privately with reports disabled, discover its real URL, then enable dispatch.
     with tempfile.TemporaryDirectory(prefix="querylane-report-release-") as directory:
         config = Path(directory) / "worker.json"

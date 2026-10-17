@@ -46,3 +46,8 @@ test("historical artifacts need no new metadata and retain distinct detail regio
   assert.doesNotMatch(render(old), /TimesFM comparison/);
   assert.notEqual(render(base, "one"), render(base, "two"));
 });
+test("planning assumptions and allocated estimates cannot be mistaken for independent forecasts", () => {
+  const html = render({ ...base, kind: "adjusted_plan", status: "allocated" });
+  assert.match(html, /User planning assumptions/);
+  assert.match(html, /not independently modeled/);
+});

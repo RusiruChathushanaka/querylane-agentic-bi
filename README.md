@@ -6,9 +6,9 @@ Open the [landing page](https://agentic-bi-frontend-wekihucn7q-as.a.run.app), en
 
 Personalize the workspace in [Settings](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/settings). Appearance, chart, conversation, and voice preferences are saved per browser.
 
-Explore the public [Dashboards](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/dashboards), [Reports](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/reports), and [Skills](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/skills) libraries. Dashboards have View/Edit modes, public share links, and PNG, JPEG, PDF, full-data CSV ZIP, and JSON downloads. Reports provide immutable versions and PDF, Word, and data downloads. Questions, saved results, skills, dashboards and reports are public; guest tokens provide request attribution rather than private accounts.
+Explore the public [Metrics](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/metrics), [Forecast Plans](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/forecast-plans), [Dashboards](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/dashboards), [Reports](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/reports), and [Skills](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/skills) libraries. Dashboards have View/Edit modes, public share links, and PNG, JPEG, PDF, full-data CSV ZIP, and JSON downloads. Reports provide immutable versions and PDF, Word, and data downloads. Questions, saved results, skills, dashboards and reports are public; guest tokens provide request attribution rather than private accounts.
 
-The deployed [public landing page](docs/landing-page.md) is at `/`; the workspace is at `/app`. **Open Querylane** enters directly without authentication; legacy root conversation links remain compatible. The four-tab guided preview demonstrates Reports, Forecasts, Scenarios and Voice BI from packaged content. Forecast points, measured model comparisons and explicit conditional paths link to verified report versions; browsing the preview makes no backend, microphone or model calls. See [the latest landing acceptance](docs/evaluation/landing-timesfm-deployed.md) and [TimesFM analytical acceptance](docs/evaluation/timesfm-deployed.md) for their distinct verification scopes.
+The deployed [public landing page](docs/landing-page.md) is at `/`; the workspace is at `/app`. **Open Querylane** enters directly without authentication; legacy root conversation links remain compatible. The four-tab guided preview demonstrates Reports, Forecasts, Scenarios and Voice BI from packaged content. Forecast points, measured model comparisons and explicit conditional paths link to verified report versions; browsing the preview makes no backend, microphone or model calls. See [the landing-specific acceptance](docs/evaluation/landing-timesfm-deployed.md) and [TimesFM analytical acceptance](docs/evaluation/timesfm-deployed.md) for their distinct verification scopes.
 
 ## Repository map
 
@@ -64,6 +64,15 @@ This preview uses an operator access token only in memory. Restart it when that 
 
 ## Included behavior
 
+### Metrics, AI dashboards and Forecast Plans
+
+- [Business Metrics Catalog](docs/business-metrics.md): `/metrics` provides public versioned calculations, controlled compilation, numerical previews and saved-definition evidence.
+- [AI Dashboard Builder](docs/ai-dashboard-builder.md): `/dashboards/build` reuses matching evidence, analyzes missing questions, and supports reviewed creation/edits, atomic publication, rebase and conditional Undo.
+- [Hierarchical Forecast Plans](docs/forecast-plans.md): `/forecast-plans` reconciles company/region/store and category/product revenue, labels allocations, saves separate planning adjustments and supplies PDF/CSV ZIP/JSON downloads and versioned dashboard pins.
+
+These reuse the existing private worker and shared expensive-job quotas. Forecast Plans alone allow up to 128 fits; report and TimesFM ceilings are unchanged. No analytical migration/upload or IAM expansion is required. These features are deployed; see the [18 October release verification](docs/evaluation/planning-release-20261018.md). Fresh builder/plan execution remains unverified at the existing shared daily quota; the release does not reset or raise it.
+
+
 - [TimesFM forecasting](docs/timesfm.md): agent-proposed forecasts with measured comparison against statistical methods, explicit driver scenarios and saved model evidence. Enabled in the recorded Cloud Run release after worker-identity verification; [forecast/scenario acceptance](docs/evaluation/timesfm-deployed.md) retains numerical and data-preservation evidence. Local defaults remain disabled.
 - [Advanced Analysis reports](docs/reports.md): ADK specialist workflow, concurrent chat, public versioned Reports library, validated forecasts/scenarios, PDF/Word/CSV downloads, dashboard pins and optional requester-only research. Enable **Advanced Analysis** beside the composer to create a public report. Production uses the private Cloud Run report worker and Cloud Tasks; see the release and validation records.
 
@@ -116,7 +125,7 @@ For Firestore transaction and durability coverage, run the backend suite with `F
 
 ## Cloud status
 
-The latest verified release is dated **17 October 2026**: frontend **`agentic-bi-frontend-00016-tw2`**, public backend **`agentic-bi-backend-00021-6rd`**, and private report worker **`agentic-bi-report-worker-00010-wnw`**, each at 100% traffic. The frontend-only [TimesFM landing release](docs/evaluation/landing-timesfm-deployed.md) adds saved forecast/scenario previews and passed live browser/health checks; all backend/worker settings are unchanged. See [the TimesFM assessment](docs/evaluation/timesfm-deployed.md) and [deployment.json](docs/deployment.json) for images, configuration and rollback references. These are dated observations; inspect live state before another release.
+The latest deployment is dated **18 October 2026**: frontend, API and private worker each serve their verified release image at 100% traffic; exact revision/digest and rollback references are in `docs/deployment.json`. It adds Metrics, reviewed AI dashboards and Forecast Plans. [Release verification](docs/evaluation/planning-release-20261018.md) records **121 passing core hosted checks**, 442 backend tests (one existing skip), 53 frontend tests and lint/types/build. Fresh builder/plan execution remains unverified at the existing 12/12 shared daily allowance; no quota was reset or increased. See [deployment.json](docs/deployment.json) for digests, preserved configuration and rollback targets. These are dated observations; inspect live state before another release.
 
 **TimesFM 3.0 Preview is enabled** after actual worker-identity verification without IAM changes. Gemini/ADK proposes relevant forecasts and priorities; chronological backtests select the published method. Hosted acceptance passed **31 checks**, including a three-month forecast, an explicit fourteen-day promotion scenario, saved-score reconciliation, immutable downloads, presentation reuse and dashboard pinning. Both tested reports selected TimesFM on measured errors; future accuracy and causal promotion lift are not guaranteed. Unsupported uncertainty bands were omitted and disclosed.
 

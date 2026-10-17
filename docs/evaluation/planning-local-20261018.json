@@ -1,0 +1,131 @@
+{
+  "date": "2026-10-17T21:03:37.104700+00:00",
+  "scope": "Local implementation acceptance; no deployment or cloud writes",
+  "dataset": {
+    "profile": "timeseries",
+    "row_limit": 30000,
+    "orders": 573348,
+    "items": 1317941,
+    "days": 1369,
+    "months": 45,
+    "source_hashes": "all existing files match manifest",
+    "configuration_id": "fa172291135dfb0b00e9a020cf07ccd1b0e49b5e70e7f627682e9e3b01be3912",
+    "revenue": "354425112.20"
+  },
+  "larger_bundle_flow": {
+    "nodes": 237,
+    "forecast_months": [
+      "2026-10",
+      "2026-11",
+      "2026-12"
+    ],
+    "recipe": "adaptive",
+    "baseline_score": 0.11292275255251812,
+    "adaptive_score": 0.057745380461356154,
+    "exact_cent_reconciliation_checks": 84,
+    "statistical_version": 1,
+    "adjustment_version": 2,
+    "adjustment_percent": 5,
+    "original_predictions_and_history_preserved": true,
+    "dashboard_cards_after_pin": 5,
+    "saved_plan_report": "complete",
+    "local_metric_authoring": "draft, structural validation, published version 1"
+  },
+  "browser": {
+    "viewports": [
+      320,
+      390,
+      1440
+    ],
+    "theme_checks": [
+      {
+        "accent": "cobalt",
+        "dark": false,
+        "overflow": false,
+        "violations": [],
+        "incomplete": []
+      },
+      {
+        "accent": "cobalt",
+        "dark": true,
+        "overflow": false,
+        "violations": [],
+        "incomplete": []
+      },
+      {
+        "accent": "teal",
+        "dark": false,
+        "overflow": false,
+        "violations": [],
+        "incomplete": []
+      },
+      {
+        "accent": "teal",
+        "dark": true,
+        "overflow": false,
+        "violations": [],
+        "incomplete": []
+      },
+      {
+        "accent": "violet",
+        "dark": false,
+        "overflow": false,
+        "violations": [],
+        "incomplete": []
+      },
+      {
+        "accent": "violet",
+        "dark": true,
+        "overflow": false,
+        "violations": [],
+        "incomplete": []
+      },
+      {
+        "accent": "rose",
+        "dark": false,
+        "overflow": false,
+        "violations": [],
+        "incomplete": []
+      },
+      {
+        "accent": "rose",
+        "dark": true,
+        "overflow": false,
+        "violations": [],
+        "incomplete": []
+      }
+    ],
+    "keyboard": "Skip link, native controls, tabs, scroll regions and explicit publication inspected",
+    "reduced_motion": true,
+    "axe": {
+      "metric_library": 0,
+      "metric_editor_with_compiled_evidence": 0,
+      "dashboard_builder_form": 0,
+      "dashboard_published_state": 0,
+      "forecast_reader": 0,
+      "saved_plan_report": 0
+    }
+  },
+  "limitations": [
+    "Fixture planning and memory storage; no fresh Gemini, TimesFM, Cloud Tasks or hosted Firestore contention test.",
+    "Latest checksum, concurrency, replay, publication conflict and recovery behavior verified by local automated integration tests; browser uses isolated development preview.",
+    "Automated Chromium checks and manual keyboard sampling do not replace physical-device or screen-reader acceptance.",
+    "Hosted metric seeding, worker-first deployment and GitHub publication remain separate actions."
+  ],
+  "automated": {
+    "backend": {
+      "passed": 433,
+      "skipped": 1,
+      "skip_reason": "Opt-in Firestore emulator durability test",
+      "ruff": "passed"
+    },
+    "frontend": {
+      "passed": 53,
+      "lint": "passed",
+      "typescript": "passed",
+      "production_build": "passed"
+    },
+    "adjustment_exports": "Separate PDF/CSV ZIP downloads match JSON checksums; report document invariance fixed",
+    "release_configuration_preservation": "pure helper test passed; no cloud mutation"
+  }
+}

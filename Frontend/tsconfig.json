@@ -46,7 +46,9 @@
     ".next-landing-preview/types/**/*.ts",
     ".next-landing-preview/dev/types/**/*.ts",
     ".next-landing-build/types/**/*.ts",
-    ".next-landing-build/dev/types/**/*.ts"
+    ".next-landing-build/dev/types/**/*.ts",
+    ".next-release-check/types/**/*.ts",
+    ".next-release-check/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

@@ -90,3 +90,7 @@ QUERYLANE_NEXT_DIST_DIR=.next-dashboards BACKEND_URL=http://127.0.0.1:8006 npm r
 For local persistence tests, start a Firestore emulator using a demo project on a loopback address. With `FIRESTORE_EMULATOR_HOST=127.0.0.1:8088`, run `cd Backend && uv run pytest tests/test_dashboards.py -q`. The suite exercises MemoryStore and FirestoreStore in isolated test namespaces. It uses `(default)` only because the emulator does not support multiple named databases; hosted configuration remains `agentic-bi-demo`. Do not point these tests at a real project. Java is required by the emulator; no Java dependency is added to either application container.
 
 The opt-in `scripts.smoke_dashboards` check accepts an existing artifact and tests only saved-result operations; see the deployment guide for its public verification records and cleanup behavior. No test or preview starts automatically on app startup.
+
+## Metrics and planning development
+
+The [Metrics Catalog](business-metrics.md), [AI Dashboard Builder](ai-dashboard-builder.md) and [Forecast Plans](forecast-plans.md) use the existing backend/private worker. Local background execution requires `REPORT_DISPATCH=local`, `DATA_PROFILE=timeseries`, an existing generated retail bundle, and `SOURCE_ROW_LIMIT=30000`. Example metric seeding is a separate explicit command; the in-memory seed demonstration does not populate another running process. Follow the deployment runbook before any hosted release or seed action.

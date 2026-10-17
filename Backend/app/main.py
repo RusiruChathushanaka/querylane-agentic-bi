@@ -26,8 +26,11 @@ from app.connectors import Connectors
 from app.dashboards import Dashboards, dashboard_router
 from app.errors import AppError
 from app.fixtures import SOURCE_TABLES
+from app.metrics import Metrics, metric_router
 from app.model_selection import TEXT_MODELS, resolve_text_model
 from app.models import ConversationCreate, TurnCreate
+from app.planning import Planning, planning_router
+from app.planning_engine import PlanningEngine
 from app.report_dispatch import ReportDispatcher
 from app.report_engine import ReportEngine
 from app.report_exports import ExportStorage
@@ -75,12 +78,15 @@ def create_app(settings: Settings | None = None, store_override=None, credential
             analysis=analysis,
             credentials=credentials,
             dashboards=Dashboards(store, settings, chart_slots),
+            metrics=Metrics(store, settings),
         )
         services = app.state.services
         services.reports = ReportRepository(store, settings)
         services.report_sessions = FirestoreSessionService(store, collection="report_adk_sessions")
         services.report_exports = ExportStorage(settings, credentials)
         services.report_engine = ReportEngine(services, services.reports, services.report_exports)
+        services.planning_engine = PlanningEngine(services, services.reports, services.report_exports)
+        services.planning = Planning(services)
         services.report_dispatcher = ReportDispatcher(services.reports, services.report_engine, credentials)
         await services.report_dispatcher.start()
         try:
@@ -106,6 +112,8 @@ def create_app(settings: Settings | None = None, store_override=None, credential
     async def request_boundary(request: Request, call_next):
         try:
             body_limit = 65_536 if request.url.path.startswith("/api/v1/skills") else 32_768
+            if request.url.path.startswith(("/api/v1/dashboard-builds", "/api/v1/metrics")):
+                body_limit = 131_072
             if int(request.headers.get("content-length", "0")) > body_limit:
                 return JSONResponse(
                     {"error": {"code": "body_too_large", "message": "Request body exceeds the size limit."}},
@@ -163,6 +171,8 @@ def create_app(settings: Settings | None = None, store_override=None, credential
     app.include_router(skill_router(guest))
     app.include_router(dashboard_router(guest))
     app.include_router(report_router(guest))
+    app.include_router(metric_router(guest))
+    app.include_router(planning_router(guest))
 
     @app.get("/health/live")
     async def live():

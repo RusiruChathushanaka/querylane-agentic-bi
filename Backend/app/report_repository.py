@@ -51,8 +51,160 @@ class ReportRepository:
             raise AppError("Report or report run not found.", 404, "report_not_found")
         return value
 
+    async def create_job(self, kind, guest_id, body, captures):
+        """Same admission/lease/outbox as reports; no synthetic public conversation."""
+        payload = body.model_dump(mode="json")
+        run_id = digest([kind, guest_id, body.request_id])[:32]
+        fingerprint = digest(payload)
+        key, meta_key = ("report_runs", run_id), ("reports", run_id)
+        collection = "dashboard_builds" if kind == "dashboard" else "forecast_plans"
+        root_id = body.base_plan_id if kind == "forecast" and body.base_plan_id else run_id
+        rootkey = (collection, root_id)
+        capacity = ("system", collection + "_capacity")
+        day = datetime.now(UTC).strftime("%Y%m%d")
+        quotas = [("report_quotas", f"guest_{guest_id}_{day}"), ("report_quotas", f"workspace_{day}")]
+        stamp = now_iso()
+
+        def create(docs):
+            if docs[key]:
+                if docs[key]["fingerprint"] != fingerprint:
+                    raise AppError("Request ID already used.", 409, "idempotency_conflict")
+                return {}, docs[key]
+            check_maintenance(docs[MAINTENANCE])
+            root = docs[rootkey]
+            if body.base_plan_id and not root:
+                raise AppError("Forecast plan not found.", 404, "planning_not_found")
+            if root and (
+                root["revision"] != body.expected_revision or root.get("active_run") or root.get("deleted")
+            ):
+                raise AppError("Plan changed or already has active work.", 409, "planning_conflict")
+            updates = {}
+            if not root:
+                count = (docs[capacity] or {}).get("count", 0)
+                if count >= 100:
+                    raise AppError("This library reached its 100-entry capacity.", 409, "planning_capacity")
+                updates[capacity] = {"count": count + 1}
+            elif len(root["versions"]) >= 20:
+                raise AppError("Plan version limit reached. Create another plan.", 409, "planning_capacity")
+            for q, limit in zip(
+                quotas, (self.settings.report_guest_daily_limit, self.settings.report_workspace_daily_limit)
+            ):
+                n = (docs[q] or {}).get("count", 0)
+                if n >= limit:
+                    raise AppError(
+                        "Shared advanced-analysis daily limit reached. Try after the UTC daily reset.",
+                        429,
+                        "report_usage_limit",
+                    )
+                updates[q] = {"count": n + 1}
+            root = root or {
+                "id": root_id,
+                "kind": kind,
+                "name": body.objective[:80],
+                "expires_at": time.time() + 7 * 86400 if kind == "dashboard" else None,
+                "revision": 0,
+                "versions": [],
+                "next_version": 1,
+                "deleted": False,
+                "created_at": stamp,
+            }
+            version = root["next_version"]
+            root.update(
+                active_run=run_id,
+                status="queued",
+                updated_at=stamp,
+                revision=root["revision"] + 1,
+                next_version=version + 1,
+            )
+            run = {
+                "id": run_id,
+                "report_id": run_id,
+                "root_id": root_id,
+                "kind": kind,
+                "version": version,
+                "workflow_version": 3,
+                "conversation_id": run_id,
+                "guest_id": guest_id,
+                "fingerprint": fingerprint,
+                "status": "queued",
+                "stage": "Preparing scope",
+                "sequence": 0,
+                "revision": 1,
+                "generation": 0,
+                "delivery": 0,
+                "attempts": 0,
+                "lease_until": 0,
+                "owner": None,
+                "cancel_requested": False,
+                "created_at": stamp,
+                "updated_at": stamp,
+                "expires_at": time.time() + 21600,
+                "clarifications": [],
+                "clarification": None,
+                "budgets": {
+                    k: 0
+                    for k in (
+                        "model_calls",
+                        "output_tokens",
+                        "queries",
+                        "scan_bytes",
+                        "fits",
+                        "fit_seconds",
+                        "seconds",
+                    )
+                },
+                "brief": {
+                    **payload,
+                    **captures,
+                    "job_kind": kind,
+                    "planning_policy": {
+                        "version": 1,
+                        "fit_limit": self.settings.forecast_plan_fit_limit if kind == "forecast" else 0,
+                        "max_nodes": 500,
+                        "allocation_months": 12,
+                        "score_improvement": 0.05,
+                        "max_level_degradation": 0.10,
+                    },
+                    "question": body.objective,
+                    "text_model": resolve_text_model(self.settings, body.model),
+                    "data_profile": self.settings.data_profile,
+                    "history": [],
+                    "mode": "reanalyze",
+                    "forecast_policy": forecast_policy(self.settings),
+                },
+            }
+            meta = {
+                "id": run_id,
+                "kind": kind,
+                "name": body.objective[:80],
+                "active_run": run_id,
+                "status": "queued",
+                "conversation_id": run_id,
+                "revision": 1,
+                "versions": [],
+                "latest_version": None,
+                "deleted": False,
+                "created_at": stamp,
+                "updated_at": stamp,
+            }
+            updates.update(
+                {
+                    key: run,
+                    meta_key: meta,
+                    rootkey: root,
+                    ("report_outbox", run_id): {"id": run_id, "delivery": 0, "pending": True},
+                    ("report_conversations", run_id): {"run_id": run_id},
+                }
+            )
+            return updates, run
+
+        return await self.store.atomic([key, meta_key, rootkey, capacity, MAINTENANCE, *quotas], create)
+
     async def create(self, conversation_id, guest_id, body, report_id=None):
         payload = body.model_dump(mode="json")
+        for optional in ("forecast_plan_id", "forecast_plan_version"):
+            if payload.get(optional) is None:
+                payload.pop(optional, None)
         run_id = digest([conversation_id, guest_id, body.idempotency_key])[:32]
         request_key = ("report_runs", run_id)
         fingerprint = digest([report_id, payload])
@@ -79,6 +231,25 @@ class ReportRepository:
             for m in reversed(history)
             if m.get("status") == "complete"
         ]
+        captured_plan = None
+        if body.forecast_plan_id:
+            if not body.forecast_plan_version:
+                raise AppError("Select an immutable forecast plan version.", 422, "planning_version")
+            captured_plan = await self.get(
+                f"forecast_plans/{body.forecast_plan_id}/revisions", str(body.forecast_plan_version)
+            )
+            captured_plan = captured_plan["document"]
+            if not captured_plan.get("artifact_ids"):
+                from app.planning_engine import plan_artifact
+
+                company, _ = plan_artifact(captured_plan, "company")
+                if not await self.store.get("artifacts", company["id"]):
+                    raise AppError(
+                        "Prepare the saved company chart before requesting a report.",
+                        422,
+                        "planning_artifact",
+                    )
+                captured_plan.update(artifact_ids=[company["id"]], company_artifact_id=company["id"])
         from app.repository import Repository
         from app.skills import Skills
 
@@ -247,6 +418,7 @@ class ReportRepository:
                     "mode": getattr(body, "mode", "reanalyze"),
                     "base_version": getattr(body, "base_version", None),
                     "forecast_policy": forecast_policy(self.settings),
+                    "forecast_plan_snapshot": captured_plan,
                 },
             }
             updates.update(
@@ -262,6 +434,13 @@ class ReportRepository:
                     },
                 }
             )
+            if captured_plan:
+                updates[("plan_report_refs", report_id)] = {
+                    "id": report_id,
+                    "plan_id": captured_plan["id"],
+                    "version": captured_plan["version"],
+                    "artifact_ids": captured_plan["artifact_ids"],
+                }
             return updates, run
 
         return await self.store.atomic(keys, create)
@@ -389,6 +568,8 @@ class ReportRepository:
         }
 
         def spend(run, _):
+            if run.get("kind") == "forecast":
+                limits["fits"] = min(128, run["brief"].get("planning_policy", {}).get("fit_limit", 128))
             for name, amount in amounts.items():
                 count = max(0, run["budgets"].get(name, 0) + amount)
                 if amount > 0 and count > limits[name]:
@@ -408,7 +589,9 @@ class ReportRepository:
         return {
             "queries": self.settings.report_query_limit,
             "scan_bytes": self.settings.report_scan_bytes,
-            "fits": self.settings.report_fit_limit,
+            "fits": min(128, run["brief"].get("planning_policy", {}).get("fit_limit", 128))
+            if run.get("kind") == "forecast"
+            else self.settings.report_fit_limit,
             "fit_seconds": self.settings.report_fit_seconds,
             **{
                 "timesfm_" + k: policy.get(k, 0)
@@ -538,6 +721,14 @@ class ReportRepository:
         report_key = ("reports", run["report_id"])
         slot = ("report_conversations", run["conversation_id"])
         version_key = (f"reports/{run['report_id']}/revisions", str(run["version"]))
+        job_key = (
+            (
+                ("forecast_plans" if run.get("kind") == "forecast" else "dashboard_builds"),
+                run.get("root_id", run["id"]),
+            )
+            if run.get("kind")
+            else None
+        )
 
         def finish(run, docs):
             report = docs[report_key]
@@ -566,6 +757,12 @@ class ReportRepository:
             if status in TERMINAL:
                 report["active_run"] = None
                 updates[slot] = {"run_id": None}
+            if job_key and status != "complete":
+                root = docs[job_key]
+                root.update(status=status, updated_at=now_iso(), revision=root["revision"] + 1)
+                if status in TERMINAL:
+                    root["active_run"] = None
+                updates[job_key] = root
             slots = (docs[REGISTRY] or {}).get("slots", {})
             slots.pop(run["id"], None)
             updates.update({report_key: report, REGISTRY: {"slots": slots}})
@@ -601,8 +798,12 @@ class ReportRepository:
                 updates[key] = value
                 return updates, result
 
-            return await self.store.atomic([key, report_key, slot, version_key, REGISTRY], cancelled)
-        return await self.change(lease, finish, [report_key, slot, version_key, REGISTRY])
+            return await self.store.atomic(
+                [key, report_key, slot, version_key, REGISTRY, *([job_key] if job_key else [])], cancelled
+            )
+        return await self.change(
+            lease, finish, [report_key, slot, version_key, REGISTRY, *([job_key] if job_key else [])]
+        )
 
     async def owned(self, run_id, guest_id):
         run = await self.get("report_runs", run_id)

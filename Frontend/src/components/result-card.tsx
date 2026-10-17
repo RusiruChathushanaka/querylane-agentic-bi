@@ -1,6 +1,7 @@
 "use client";
 
 import { PredictionEvidence } from "@/components/prediction-evidence";
+import { MetricEvidence } from "@/components/metric-evidence";
 import { useEffect, useState } from "react";
 import {
   Braces,
@@ -242,9 +243,12 @@ export default function ResultCard({
           </Select>
         </div>
         {artifact.prediction && <PredictionEvidence prediction={artifact.prediction} artifactId={artifact.id} reportId={artifact.report_id} reportVersion={artifact.report_version} />}
+        <MetricEvidence metrics={artifact.metric_snapshots ?? []} />
+        {artifact.metric_resolution === "ad_hoc" && <p className="text-xs text-muted-foreground">Ad hoc analysis — no published metric definition was captured.</p>}
+        {artifact.forecast_plan_id && <a className="underline" href={`/forecast-plans/${artifact.forecast_plan_id}?version=${artifact.forecast_plan_version}`}>Forecast plan version {artifact.forecast_plan_version}</a>}
         <div className="result-meta">
-          {artifact.provenance.map((source) => (
-            <Badge key={source.source} variant="secondary">
+          {artifact.provenance.map((source, index) => (
+            <Badge key={`${source.source}-${index}`} variant="secondary">
               <Database data-icon="inline-start" />
               {source.source === "bigquery" ? "BigQuery" : "PostgreSQL"}
             </Badge>
@@ -425,8 +429,8 @@ export default function ResultCard({
             </span>
           </summary>
           <div className="evidence-content">
-            {artifact.provenance.map((source) => (
-              <div key={source.source}>
+            {artifact.provenance.map((source, index) => (
+              <div key={`${source.source}-${index}`}>
                 <div className="sql-label">
                   <strong>
                     {source.source === "bigquery" ? "BigQuery" : "PostgreSQL"}

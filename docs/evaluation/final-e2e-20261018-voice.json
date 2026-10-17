@@ -1,0 +1,73 @@
+{
+  "verified_at": "2026-10-17T18:33:26.841687+00:00",
+  "checks": {
+    "two_spoken_analyses_same_connection": true,
+    "counts_match_independent_large_dataset": true,
+    "query_jobs_distinct_under_one_parent_run": true,
+    "timeseries_only": true
+  },
+  "errors": [],
+  "turns": [
+    {
+      "artifact_id": "16d3e06801504f5dae29e714de2c4a64",
+      "rows": [
+        {
+          "completed_orders_count": 573348
+        }
+      ],
+      "provenance": [
+        {
+          "executed_at": "2026-10-17T18:33:39.275436+00:00",
+          "complete": true,
+          "bytes_processed": 0,
+          "row_count": 1,
+          "job_id": "abi_2bf589331f8996612275d1f55c2cbc4a_313464a8505d4cea9d9624b0d785a5a4_0",
+          "columns": [
+            {
+              "type": "INTEGER",
+              "name": "completed_orders_count"
+            }
+          ],
+          "source": "bigquery",
+          "elapsed_ms": 873,
+          "sql": "SELECT COUNT(DISTINCT order_id) AS completed_orders_count FROM `project-e8b1593d-009a-4822-abf`.agentic_bi_demo.sales_orders WHERE status = 'completed'"
+        }
+      ],
+      "spoken": "Across all history, there were 573,348 completed orders.",
+      "audio_frames": 21,
+      "data_profile": "timeseries"
+    },
+    {
+      "artifact_id": "4a148fa4b1b64d7bbb71edf5c8704c6a",
+      "rows": [
+        {
+          "completed_orders": 152694
+        }
+      ],
+      "provenance": [
+        {
+          "executed_at": "2026-10-17T18:33:54.646413+00:00",
+          "complete": true,
+          "bytes_processed": 5649678,
+          "row_count": 1,
+          "job_id": "abi_2bf589331f8996612275d1f55c2cbc4a_119ad27f5b6d4a2e8e0a0d4adb2f0d08_0",
+          "columns": [
+            {
+              "type": "INTEGER",
+              "name": "completed_orders"
+            }
+          ],
+          "source": "bigquery",
+          "elapsed_ms": 812,
+          "sql": "SELECT COUNT(DISTINCT order_id) AS completed_orders FROM `project-e8b1593d-009a-4822-abf`.agentic_bi_demo.sales_orders WHERE status = 'completed' AND order_date BETWEEN CAST('2024-01-01' AS DATE) AND CAST('2024-12-31' AS DATE)"
+        }
+      ],
+      "spoken": "In 2024, there were 152,694 completed orders.",
+      "audio_frames": 20,
+      "data_profile": "timeseries"
+    }
+  ],
+  "conversation_id": "2b4926f9f21a4435a9403acf702c09e7",
+  "run_id": "2bf589331f8996612275d1f55c2cbc4a",
+  "passed": true
+}

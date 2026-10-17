@@ -1,0 +1,14 @@
+{
+  "verified_at": "2026-10-17T21:37:12.777357+00:00",
+  "checks": {
+    "two_spoken_analyses_same_connection": false,
+    "immutable_metric_version_used_both_turns": false
+  },
+  "errors": [
+    "TimeoutError"
+  ],
+  "turns": [],
+  "conversation_id": "9b3c064f2a534481a7833d84e03530c3",
+  "run_id": "d9fb26e22a187536c02089c789a2e425",
+  "passed": false
+}

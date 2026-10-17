@@ -84,6 +84,8 @@ class Settings(BaseSettings):
     report_scan_bytes: int = Field(default=8589934592, ge=1)
     report_fit_limit: int = Field(default=64, ge=1, le=64)
     report_fit_seconds: int = Field(default=120, ge=1, le=120)
+    planning_enabled: bool = True
+    forecast_plan_fit_limit: int = Field(default=128, ge=1, le=128)
     report_research_enabled: bool = False
     report_timesfm_enabled: bool = False
     report_timesfm_verified: bool = False

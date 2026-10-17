@@ -190,7 +190,8 @@ class AnalysisService:
                     break
                 except AppError as exc:
                     if (
-                        exc.code not in ("invalid_sql", "unsafe_sql")
+                        plan.metric_snapshots
+                        or exc.code not in ("invalid_sql", "unsafe_sql")
                         or attempt == 2
                         or self.settings.ai_backend != "gemini"
                     ):
@@ -292,7 +293,19 @@ class AnalysisService:
             "retrieval": retrieval,
             "skills_used": skills_used,
             "skill_warnings": skill_warnings,
+            "metric_snapshots": plan.metric_snapshots,
+            "metric_scope": plan.metric_scope,
+            "metric_resolution": "catalog" if plan.metric_snapshots else "ad_hoc",
         }
+        from app.metrics import evidence_signature
+        from app.timesfm import digest
+
+        value["schema_hash"] = digest(
+            [await self.ai.schema(s) for s in sorted({q.source for q in plan.queries})]
+        )
+        value["evidence_signature"] = evidence_signature(
+            plan, self.settings.data_profile, value["schema_hash"], self.connectors.coverage
+        )
         await self.repo.write("artifacts", artifact_id, value)
         message_id = await self.save_message(
             conversation_id,

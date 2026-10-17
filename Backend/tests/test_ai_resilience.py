@@ -66,6 +66,57 @@ async def test_model_cancellation_and_programming_errors_are_not_retried():
         assert ai._structured_once.await_count == 1
 
 
+@pytest.mark.parametrize("invalid_filter", [False, True])
+async def test_metric_scope_avoids_sdk_map_schema_conversion_but_validates_locally(
+    monkeypatch, invalid_filter
+):
+    import json
+
+    from google.genai import types
+    from pydantic import ValidationError
+
+    from app.metrics import MetricScope
+
+    ai = ai_service()
+    ai.sessions = SimpleNamespace(get_session=AsyncMock(return_value=object()))
+    captured = {}
+
+    def agent(**kwargs):
+        captured.update(kwargs)
+        return SimpleNamespace(**kwargs)
+
+    class Runner:
+        def __init__(self, **kwargs):
+            pass
+
+        async def run_async(self, **kwargs):
+            payload = {"metric_ids": ["a" * 32], "grain": "month", "filters": {"region": ["North"]}}
+            if invalid_filter:
+                payload["filters"] = {"unapproved_column": ["North"]}
+            yield SimpleNamespace(
+                error_code=None,
+                is_final_response=lambda: True,
+                content=types.Content(parts=[types.Part(text=json.dumps(payload))]),
+            )
+
+    monkeypatch.setattr("app.ai.Gemini", lambda **kwargs: "fake")
+    monkeypatch.setattr("app.ai.LlmAgent", agent)
+    monkeypatch.setattr("app.ai.Runner", Runner)
+    if invalid_filter:
+        with pytest.raises(ValidationError):
+            await ai._structured_once(
+                "metric_scope", "Choose a metric scope.", "Monthly revenue", MetricScope, "probe"
+            )
+    else:
+        scope = await ai._structured_once(
+            "metric_scope", "Choose a metric scope.", "Monthly revenue", MetricScope, "probe"
+        )
+        assert scope.filters == {"region": ["North"]}
+    assert captured["output_schema"] is None
+    assert captured["generate_content_config"].response_mime_type == "application/json"
+    assert "JSON Schema" in captured["instruction"]
+
+
 async def live_harness(monkeypatch, *, tool_error=None, close_error=None):
     import app.voice as live
 

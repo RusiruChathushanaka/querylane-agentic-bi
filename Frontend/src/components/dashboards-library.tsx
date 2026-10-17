@@ -161,6 +161,7 @@ export function DashboardsLibrary() {
                 Public — anyone can view and edit
               </Badge>
             </div>
+            <Button asChild variant="outline"><Link href="/dashboards/build">Build with AI</Link></Button>
             <Button onClick={() => setEditor("new")}>
               <Plus data-icon="inline-start" />
               Create dashboard

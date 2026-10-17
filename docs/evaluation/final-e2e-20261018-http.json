@@ -1,0 +1,99 @@
+{
+  "landing": {
+    "status": 200
+  },
+  "frontend_health": {
+    "status": 200,
+    "body": {
+      "status": "ready",
+      "backend": 200
+    }
+  },
+  "runtime": {
+    "status": 200,
+    "body": {
+      "backend_url": "https://agentic-bi-backend-wekihucn7q-as.a.run.app"
+    }
+  },
+  "backend_live": {
+    "status": 200,
+    "body": {
+      "status": "ok",
+      "service": "agentic-bi-backend"
+    }
+  },
+  "backend_ready": {
+    "status": 200,
+    "body": {
+      "status": "ready",
+      "mode": "gemini",
+      "storage": "firestore",
+      "visibility": "public"
+    }
+  },
+  "report_config": {
+    "status": 200,
+    "body": {
+      "enabled": true,
+      "research_enabled": false,
+      "mode": "cloud_tasks",
+      "target_minutes": "3\u20138",
+      "timesfm": {
+        "enabled": true,
+        "model": "TimesFM 3.0",
+        "preview": true
+      }
+    }
+  },
+  "connections": {
+    "status": 200,
+    "body": {
+      "mode": "cloud",
+      "data_profile": "timeseries",
+      "period": "DAILY \u00b7 MULTI-YEAR",
+      "connections": [
+        {
+          "id": "bigquery",
+          "name": "Retail warehouse",
+          "engine": "BigQuery",
+          "tables": 5,
+          "connected": true,
+          "mode": "cloud"
+        },
+        {
+          "id": "postgres",
+          "name": "Business operations",
+          "engine": "PostgreSQL",
+          "tables": 6,
+          "connected": true,
+          "mode": "cloud"
+        }
+      ]
+    }
+  },
+  "forecast_evidence": {
+    "status": 200,
+    "sha256": "24c3e230f1d624d9d7dddb8c1b3eafae83f40874d5be52dd20160c5284ada475"
+  },
+  "forecast_page": {
+    "status": 200
+  },
+  "scenario_evidence": {
+    "status": 200,
+    "sha256": "34876351d96f2dc17dbd030296fef82ee33e05bc8d8503be1ff06d9f0e3d0ebe"
+  },
+  "scenario_page": {
+    "status": 200
+  },
+  "social": {
+    "status": 200,
+    "sha256": "ba740c6f2e2b18fc091179b0e285f07577b057788657c96ed7a3f62bb2a32090"
+  },
+  "legacy_redirect": {
+    "status": 307,
+    "location": "/app?chat=b13399e915de46d78f950d08345f0893&check=landing"
+  },
+  "private_worker": {
+    "status": 403
+  }
+}

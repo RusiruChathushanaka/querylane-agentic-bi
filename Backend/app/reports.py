@@ -78,7 +78,9 @@ def report_router(guest):
         values = [
             public(v)
             for v in values
-            if v["deleted"] == deleted and (not deleted or v.get("recover_until", 0) > time.time())
+            if not v.get("kind")
+            and v["deleted"] == deleted
+            and (not deleted or v.get("recover_until", 0) > time.time())
         ]
         return {"reports": sorted(values, key=lambda v: v["updated_at"], reverse=True)[:1000]}
 
@@ -86,6 +88,8 @@ def report_router(guest):
     async def detail(report_id: ReportId, request: Request):
         s = service(request)
         value = await s.reports.get("reports", report_id)
+        if value.get("kind"):
+            raise AppError("Open this job from its planning library.", 404, "report_not_found")
         current = await s.reports.get("report_runs", value["active_run"]) if value["active_run"] else None
         return public(value) | {
             "active_run_id": value["active_run"],

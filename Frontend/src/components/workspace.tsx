@@ -945,6 +945,8 @@ export default function Workspace() {
             <FileChartColumn data-icon="inline-start" /> Reports
           </Link>
         </Button>
+        <Button asChild variant="ghost" className="workspace-settings-link"><Link href="/metrics">Business metrics</Link></Button>
+        <Button asChild variant="ghost" className="workspace-settings-link"><Link href="/forecast-plans">Forecast plans</Link></Button>
         <Button asChild variant="ghost" className="workspace-settings-link">
           <Link href="/skills">
             <BookOpen data-icon="inline-start" /> Skills library

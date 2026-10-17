@@ -1,0 +1,44 @@
+{
+  "verified_at": "2026-10-17T18:36:20.010258+00:00",
+  "dashboard_id": "91ba0cccdd954464bd295558c008133c",
+  "checks": {
+    "png_headers": true,
+    "png_valid": true,
+    "jpeg_headers": true,
+    "jpeg_valid": true,
+    "pdf_headers": true,
+    "valid_pdf": true,
+    "data_headers": true,
+    "csv_checksums": true,
+    "saved_prediction_metadata": true,
+    "saved_full_rows": true,
+    "json_headers": true,
+    "metadata_not_row_backup": true,
+    "immutable_evidence_unchanged": true
+  },
+  "files": {
+    "png": {
+      "bytes": 139011,
+      "sha256": "998e1d96dc79932e6dcd6b33a5670ddeb1ab3cc1e0261629b75a361b8c34dc3e"
+    },
+    "jpeg": {
+      "bytes": 270549,
+      "sha256": "7fcb845f774eabcbe4b0a4c5613ff99b330bb99a7e551a2a279b777bd7383d30"
+    },
+    "pdf": {
+      "bytes": 57956,
+      "sha256": "50952f118887aad3c2e0bc1c3e891081268b1a558d5858c535b34215ab8f804b"
+    },
+    "data": {
+      "bytes": 5064,
+      "sha256": "c8ea7066707d1d22232e86aa1e7c2ba6f208d2cceb6bd483de84a18e069fa440"
+    },
+    "json": {
+      "bytes": 17110,
+      "sha256": "a38e73197070c8bb05cc2dce1deb841688395af4d630af2dd70b1cdf1aa7ce35"
+    }
+  },
+  "new_analysis_requested": false,
+  "passed": true,
+  "exported_dashboard_revision": 2
+}

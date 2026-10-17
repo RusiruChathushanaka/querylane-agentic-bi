@@ -51,6 +51,8 @@ export function DashboardHeader() {
             Reports
           </Link>
         </Button>
+        <Button asChild variant="ghost" size="sm"><Link href="/metrics">Metrics</Link></Button>
+        <Button asChild variant="ghost" size="sm"><Link href="/forecast-plans">Forecast Plans</Link></Button>
         <Button asChild variant="ghost" size="sm">
           <Link href="/skills">
             <BookOpen data-icon="inline-start" />

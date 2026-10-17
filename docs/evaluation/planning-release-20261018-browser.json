@@ -1,0 +1,353 @@
+{
+  "verified_at": "2026-10-17T21:25:24.145944+00:00",
+  "checks": {
+    "landing_no_backend_requests": true,
+    "entry_links_app": true,
+    "landing_timesfm": true,
+    "tour_keyboard_scenarios": true,
+    "no_overflow_/metrics": true,
+    "no_overflow_/dashboards/build": true,
+    "no_overflow_/forecast-plans": true,
+    "no_overflow_/app": true,
+    "no_overflow_/reports/2ed05089e9a86e1ef3046fa6c6728680?version=1": true,
+    "no_overflow_/dashboards/91ba0cccdd954464bd295558c008133c": true,
+    "builder_quota_feedback_preserves_draft": true,
+    "published_metric_revision_browser": true
+  },
+  "pages": {
+    "/metrics": {
+      "desktop": {
+        "title": "Business Metrics \u2014 Querylane",
+        "overflow": false,
+        "headings": [
+          "Business metrics."
+        ]
+      },
+      "mobile": {
+        "overflow": false
+      },
+      "a11y": {
+        "success": true,
+        "data": {
+          "axeVersion": "4.12.1",
+          "counts": {
+            "inapplicable": 51,
+            "incomplete": 0,
+            "passes": 38,
+            "violations": 0
+          },
+          "incomplete": [],
+          "lifecycle": {
+            "effectiveLaunch": {
+              "browserLaunched": true,
+              "engine": "chrome",
+              "launchHash": 11677035664275010974
+            },
+            "launched": false,
+            "relaunchedBrowser": false,
+            "restartedBackground": false,
+            "restoreStatus": "not_configured",
+            "reused": true,
+            "saveStatus": "not_attempted"
+          },
+          "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/metrics",
+          "violations": []
+        },
+        "error": null
+      }
+    },
+    "/dashboards/build": {
+      "desktop": {
+        "title": "AI Dashboard Builder \u2014 Querylane",
+        "overflow": false,
+        "headings": [
+          "Build with AI."
+        ]
+      },
+      "mobile": {
+        "overflow": false
+      },
+      "a11y": {
+        "success": true,
+        "data": {
+          "axeVersion": "4.12.1",
+          "counts": {
+            "inapplicable": 51,
+            "incomplete": 0,
+            "passes": 38,
+            "violations": 0
+          },
+          "incomplete": [],
+          "lifecycle": {
+            "effectiveLaunch": {
+              "browserLaunched": true,
+              "engine": "chrome",
+              "launchHash": 11677035664275010974
+            },
+            "launched": false,
+            "relaunchedBrowser": false,
+            "restartedBackground": false,
+            "restoreStatus": "not_configured",
+            "reused": true,
+            "saveStatus": "not_attempted"
+          },
+          "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/dashboards/build",
+          "violations": []
+        },
+        "error": null
+      }
+    },
+    "/forecast-plans": {
+      "desktop": {
+        "title": "Forecast Plans \u2014 Querylane",
+        "overflow": false,
+        "headings": [
+          "Forecast plans."
+        ]
+      },
+      "mobile": {
+        "overflow": false
+      },
+      "a11y": {
+        "success": true,
+        "data": {
+          "axeVersion": "4.12.1",
+          "counts": {
+            "inapplicable": 50,
+            "incomplete": 0,
+            "passes": 39,
+            "violations": 0
+          },
+          "incomplete": [],
+          "lifecycle": {
+            "effectiveLaunch": {
+              "browserLaunched": true,
+              "engine": "chrome",
+              "launchHash": 11677035664275010974
+            },
+            "launched": false,
+            "relaunchedBrowser": false,
+            "restartedBackground": false,
+            "restoreStatus": "not_configured",
+            "reused": true,
+            "saveStatus": "not_attempted"
+          },
+          "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/forecast-plans",
+          "violations": []
+        },
+        "error": null
+      }
+    },
+    "/app": {
+      "desktop": {
+        "title": "Workspace | Querylane",
+        "overflow": false,
+        "headings": [
+          "Your data has a story.Ask the next question."
+        ]
+      },
+      "mobile": {
+        "overflow": false
+      },
+      "a11y": {
+        "success": true,
+        "data": {
+          "axeVersion": "4.12.1",
+          "counts": {
+            "inapplicable": 48,
+            "incomplete": 1,
+            "passes": 41,
+            "violations": 0
+          },
+          "incomplete": [
+            {
+              "help": "Elements must meet minimum color contrast ratio thresholds",
+              "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=axeAPI",
+              "id": "color-contrast",
+              "impact": "serious",
+              "nodeCount": 1,
+              "nodes": [
+                {
+                  "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element",
+                  "html": "<small>Customers &amp; targets</small>",
+                  "target": [
+                    ".path-source:nth-child(5) > div > small"
+                  ]
+                }
+              ],
+              "tags": [
+                "cat.color",
+                "wcag2aa",
+                "wcag143",
+                "TTv5",
+                "TT13.c",
+                "EN-301-549",
+                "EN-9.1.4.3",
+                "ACT",
+                "RGAAv4",
+                "RGAA-3.2.1"
+              ]
+            }
+          ],
+          "lifecycle": {
+            "effectiveLaunch": {
+              "browserLaunched": true,
+              "engine": "chrome",
+              "launchHash": 11677035664275010974
+            },
+            "launched": false,
+            "relaunchedBrowser": false,
+            "restartedBackground": false,
+            "restoreStatus": "not_configured",
+            "reused": true,
+            "saveStatus": "not_attempted"
+          },
+          "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/app",
+          "violations": []
+        },
+        "error": null
+      }
+    },
+    "/reports/2ed05089e9a86e1ef3046fa6c6728680?version=1": {
+      "desktop": {
+        "title": "Analysis report \u2014 Querylane",
+        "overflow": false,
+        "headings": [
+          "Create a technical revenue forecast report. Use exactly one evidence task: complete monthly merchandise revenue (after d"
+        ]
+      },
+      "mobile": {
+        "overflow": false
+      },
+      "a11y": {
+        "success": true,
+        "data": {
+          "axeVersion": "4.12.1",
+          "counts": {
+            "inapplicable": 48,
+            "incomplete": 0,
+            "passes": 41,
+            "violations": 0
+          },
+          "incomplete": [],
+          "lifecycle": {
+            "effectiveLaunch": {
+              "browserLaunched": true,
+              "engine": "chrome",
+              "launchHash": 11677035664275010974
+            },
+            "launched": false,
+            "relaunchedBrowser": false,
+            "restartedBackground": false,
+            "restoreStatus": "not_configured",
+            "reused": true,
+            "saveStatus": "not_attempted"
+          },
+          "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/reports/2ed05089e9a86e1ef3046fa6c6728680?version=1",
+          "violations": []
+        },
+        "error": null
+      }
+    },
+    "/dashboards/91ba0cccdd954464bd295558c008133c": {
+      "desktop": {
+        "title": "Shared dashboard \u2014 Querylane",
+        "overflow": false,
+        "headings": [
+          "TimesFM verification \u2014 saved predictions"
+        ]
+      },
+      "mobile": {
+        "overflow": false
+      },
+      "a11y": {
+        "success": true,
+        "data": {
+          "axeVersion": "4.12.1",
+          "counts": {
+            "inapplicable": 53,
+            "incomplete": 0,
+            "passes": 36,
+            "violations": 0
+          },
+          "incomplete": [],
+          "lifecycle": {
+            "effectiveLaunch": {
+              "browserLaunched": true,
+              "engine": "chrome",
+              "launchHash": 11677035664275010974
+            },
+            "launched": false,
+            "relaunchedBrowser": false,
+            "restartedBackground": false,
+            "restoreStatus": "not_configured",
+            "reused": true,
+            "saveStatus": "not_attempted"
+          },
+          "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/dashboards/91ba0cccdd954464bd295558c008133c",
+          "violations": []
+        },
+        "error": null
+      }
+    }
+  },
+  "limitations": [
+    "Chromium automated checks; physical audio hardware and full screen-reader use not covered."
+  ],
+  "landing": {
+    "backendRequests": [],
+    "entryLinks": [
+      "/app",
+      "/app",
+      "/app",
+      "/app"
+    ],
+    "timesfm": true
+  },
+  "quota_feedback": {
+    "quota": true,
+    "draft": "Build a retail dashboard of monthly revenue, category performance and returns for the complete source history.",
+    "buttonEnabled": true
+  },
+  "metric_revision_a11y": {
+    "success": true,
+    "data": {
+      "axeVersion": "4.12.1",
+      "counts": {
+        "inapplicable": 57,
+        "incomplete": 0,
+        "passes": 32,
+        "violations": 0
+      },
+      "incomplete": [],
+      "lifecycle": {
+        "effectiveLaunch": {
+          "browserLaunched": true,
+          "engine": "chrome",
+          "launchHash": 11677035664275010974
+        },
+        "launched": false,
+        "relaunchedBrowser": false,
+        "restartedBackground": false,
+        "restoreStatus": "not_configured",
+        "reused": true,
+        "saveStatus": "not_attempted"
+      },
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/metrics/1a533e8152c847688126f80587fc66a5/revisions/1",
+      "violations": []
+    },
+    "error": null
+  },
+  "uncaught_browser_errors": [],
+  "additional_forecast_quota_feedback": {
+    "quota": true,
+    "draft": "Forecast monthly merchandise revenue for the next three months using both geographic and product views.",
+    "metric": "1a533e8152c847688126f80587fc66a5"
+  },
+  "final_metric_answer_view": {
+    "metricEvidence": true,
+    "savedMetricLink": true,
+    "overflow": false
+  },
+  "final_metric_conversation": "f06e2d3c328b4a2fb7b1e76ca7e045f3"
+}

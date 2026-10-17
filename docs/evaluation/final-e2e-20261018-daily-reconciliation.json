@@ -1,0 +1,53 @@
+{
+  "verified_at": "2026-10-17T18:43:50.778855+00:00",
+  "artifact_id": "4be21150061d4a41a5c08da7e79ad022",
+  "checks": {
+    "all_1369_daily_values_match_independent_parquet": true,
+    "unique_daily_dates": true,
+    "genuine_zero_sales_preserved": true,
+    "full_revenue": true
+  },
+  "passed": true,
+  "date_coverage": [
+    "2023-01-01",
+    "2026-09-30"
+  ],
+  "rows": 1369,
+  "revenue": "354425112.20",
+  "cross_source_diagnostics": {
+    "confidence": "inferred-high",
+    "cardinality": "one-to-one",
+    "right_rows": 25000,
+    "snapshot": "Sources were queried independently; no shared transactional snapshot.",
+    "unmatched_left": 0,
+    "keys": [
+      {
+        "right": "customer_id",
+        "left": "customer_id"
+      }
+    ],
+    "left_key_coverage": 1.0,
+    "unmatched_right": 8,
+    "left_rows": 24992,
+    "joined_rows": 24992,
+    "normalization": "Only explicit source-query transformations",
+    "relationship": "Inner join between customer-level aggregate merchandise revenue in BigQuery and customer profiles in PostgreSQL on customer_id.",
+    "null_semantics": "Null keys do not match"
+  },
+  "cross_source_query_statistics": [
+    {
+      "complete": true,
+      "bytes_processed": 0,
+      "row_count": 24992,
+      "job_id": "abi_1100591a23e9e2d566a7e3207966013f_e7343782890c435091bdb46fd6c5467a_0",
+      "source": "bigquery"
+    },
+    {
+      "complete": true,
+      "bytes_processed": null,
+      "row_count": 25000,
+      "job_id": null,
+      "source": "postgres"
+    }
+  ]
+}

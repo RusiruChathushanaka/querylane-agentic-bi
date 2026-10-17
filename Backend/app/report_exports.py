@@ -11,7 +11,6 @@ import tempfile
 import textwrap
 import time
 import zipfile
-from functools import partial
 from pathlib import Path
 from xml.sax.saxutils import escape
 
@@ -84,7 +83,7 @@ def chart_image(artifact, rows):
                 values,
                 label=label,
                 linewidth=1.8,
-                linestyle="--" if field in {"forecast", "scenario"} else "-",
+                linestyle="--" if field in {"forecast", "scenario", "planned"} else "-",
                 color=colors[index % 4],
             )
     if view not in {"pie", "scatter"}:
@@ -264,12 +263,15 @@ def _render(document, artifacts):
         title=document["title"],
         author="Querylane",
         subject=f"Report {document['report_id']} version {document['version']}",
+        # BaseDocTemplate forwards its invariant value to canvasmaker. Setting it
+        # only on partial(Canvas, invariant=1) is overridden by the document's None.
+        invariant=1,
         leftMargin=0.6 * inch,
         rightMargin=0.6 * inch,
         topMargin=0.6 * inch,
         bottomMargin=0.6 * inch,
     )
-    pdf.build(story, onFirstPage=footer, onLaterPages=footer, canvasmaker=partial(Canvas, invariant=1))
+    pdf.build(story, onFirstPage=footer, onLaterPages=footer, canvasmaker=Canvas)
     wb = io.BytesIO()
     word.save(wb)
     # DOCX is a ZIP: normalize entry timestamps for stable checksums on recovery.
