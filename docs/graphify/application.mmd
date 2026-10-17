@@ -1,0 +1,23 @@
+flowchart LR
+    Browser[Next.js / shadcn workspace and libraries] -->|HTTP and SSE| API[Public FastAPI on Cloud Run]
+    Browser <-->|PCM and transcripts| Voice[WebSocket handlers in public API]
+    API --> ADK[ADK planner + interpreter]
+    Voice --> Live[ADK run_live / Gemini Live]
+    Live -->|analyze_data tool| Analysis[Controlled analysis service]
+    ADK --> Analysis
+    Analysis --> Guard[SQL AST validation + budgets]
+    Guard --> BQ[Demo BigQuery dataset]
+    Guard --> PG[Demo PostgreSQL / SELECT-only role]
+    Analysis --> Fusion[Typed fusion compiler / isolated DuckDB]
+    API --> Store[Named Firestore database]
+    Analysis --> Store
+    Analysis --> Skills[Skill metadata selection + immutable snapshots]
+    Skills --> Store
+    ADK --> Store
+    API --> Saved[Saved-result charts and dashboards]
+    Saved -->|Read immutable pages and checked revisions| Store
+    Saved --> Export[Isolated dashboard renderer / full CSV and JSON]
+    API --> Reports[Report admission and versioned library]
+    Reports --> Store
+    Reports --> Dispatch[Cloud Tasks to private report worker]
+    API --> Secrets[Secret Manager / workload identity]

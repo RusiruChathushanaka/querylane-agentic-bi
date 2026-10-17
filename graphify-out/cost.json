@@ -1,0 +1,16 @@
+{
+  "accounting_scope": "Separate model API calls only; host-session semantic token counts are unavailable. Zero API counts are not total assistant usage.",
+  "runs": [
+    {
+      "date": "2026-10-17T10:46:22.495221+05:30",
+      "files": 214,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "host_input_tokens": null,
+      "host_output_tokens": null
+    }
+  ],
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "host_token_usage": "unknown"
+}

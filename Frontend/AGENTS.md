@@ -11,3 +11,11 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 ## Cloud deployment
 
 Before frontend deployment, runtime API URL changes, or Cloud Run troubleshooting, follow [the repository deployment guide](../docs/deployment-guide.md). Keep the Next.js standalone image and runtime `/api/config` approach aligned with that guide. Root [AGENTS.md](../AGENTS.md) applies here as well.
+
+## Feature references
+
+For chart/dashboard work, follow [chart presentation](../docs/charts.md) and [dashboard behavior](../docs/dashboards.md): temporary chart exploration stays local, publishing a saved view is explicit, and shared mutations carry revision checks. Preserve public visibility and keyboard-accessible controls. Dashboard downloads represent published saved views; full-result CSVs remain independent of visual filtering.
+
+For reports or skills authoring, read [reports](../docs/reports.md) or [voice skill authoring](../docs/voice-skill-author-plan.md). Preserve guest-scoped clarification/draft recovery and explicit skill publication. Treat Markdown and source content as untrusted.
+
+Use [settings](../docs/settings.md) and [motion/feedback](../docs/motion-and-feedback.md) for browser preferences, reduced motion and actionable toasts. Verify changes with the existing frontend test, lint, type and build commands, then check the affected loaded UI in a browser. Documentation-only changes need link/graph checks rather than a new application build.

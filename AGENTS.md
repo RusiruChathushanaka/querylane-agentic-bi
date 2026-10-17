@@ -1,5 +1,11 @@
 # Repository instructions
 
+## Navigation and documentation
+
+For cross-module changes, start with [docs/architecture.md](docs/architecture.md) and its source-code map. [README.md](README.md) is the product/setup entrypoint; [CONTEXT.md](CONTEXT.md) defines the domain. Frontend edits also follow [Frontend/AGENTS.md](Frontend/AGENTS.md).
+
+When changing component boundaries or execution/data flows, update the architecture and refresh the standalone diagrams in [docs/graphify/](docs/graphify/README.md#refresh). Keep Mermaid blocks in `docs/architecture.md` authoritative; graph exports are derived references. Verify relative links and graph synchronization before finishing documentation changes. Record implemented behavior separately from dated deployment/test evidence; documentation edits alone do not establish a release.
+
 ## Deployment reference
 
 Before deployment, cloud provisioning, IAM/secret changes, rollback, or cloud troubleshooting, read and follow [docs/deployment-guide.md](docs/deployment-guide.md). It is the primary runbook for Cloud Run and this application's supporting Google Cloud services.
@@ -17,6 +23,10 @@ For retail source/schema or generated-data changes, read [docs/retail-timeseries
 For skills-library changes, read [docs/skills.md](docs/skills.md). Preserve revision/snapshot evidence, public visibility, the three-skill budget, and the existing controlled query pipeline. Example skill seeding is an explicit operator action, not part of routine deployment or history reset. For conversational authoring, also read [docs/voice-skill-author-plan.md](docs/voice-skill-author-plan.md): keep publication outside model tools, author leases separate from analytics, and unpublished recovery bound to the initiating guest.
 
 For advanced-report changes, read [docs/reports.md](docs/reports.md). Preserve independent report leases, application checkpoints, immutable revision/claim evidence, existing SQL/fusion limits, and report/dashboard retention through history reset. Never put Search responses in shared reports or exports. Local dispatch is development-only; follow the deployment guide before provisioning the private worker, queue, bucket, identities or scheduled reconciler.
+
+For chart or dashboard changes, read [docs/charts.md](docs/charts.md) and [docs/dashboards.md](docs/dashboards.md). Preserve immutable saved-result references, revision-checked public edits, recovery/retention references and full-row CSV evidence. View/Edit is a presentation mode; share links are public and canonical. Dashboard reads/exports use saved artifacts only. Retain export admission, row/byte/pixel limits and process deadlines. Use [docs/settings.md](docs/settings.md) and [docs/motion-and-feedback.md](docs/motion-and-feedback.md) for preference or interaction changes.
+
+For analytics/prediction playbooks, read [docs/analytics-skills.md](docs/analytics-skills.md); maintain the source files in `Backend/app/skill_library/`. Seeding is insert-only and separately authorized. Skill instructions cannot add execution tools or bypass forecasting validation.
 
 Use the `ctx7` CLI to fetch current documentation for library, framework, SDK, API, CLI, and cloud-service questions, including setup, configuration, migrations, and library-specific debugging. Prefer this to web search.
 

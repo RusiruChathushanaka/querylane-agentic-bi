@@ -1,0 +1,17 @@
+flowchart LR
+    Composer[Advanced Analysis composer] --> API[Public FastAPI API]
+    API --> Outbox[Firestore run + transactional outbox]
+    Outbox --> Tasks[Cloud Tasks / OIDC]
+    Tasks --> Worker[Private Cloud Run report worker]
+    Scheduler[Cloud Scheduler / OIDC] --> Reconciler[Private worker reconciler]
+    Reconciler --> Outbox
+    Worker --> Checkpoints[Fenced run events and stage checkpoints]
+    Worker --> Graph[ADK graph + bounded policy]
+    Graph --> Sources[Existing guarded connectors + typed fusion]
+    Graph --> Math[Isolated statistical tools + chronological backtests]
+    Graph --> Claims[Validated claims / writer / reviewer]
+    Claims --> Versions[Immutable Firestore report revisions]
+    Claims --> Files[Private PDF / DOCX / CSV bundle bucket]
+    Versions --> Reader[Public Reports library + dashboard pins]
+    API -.->|Opt-in; disabled in recorded release| Research[Separate Search-only in-memory agent]
+    Research --> Panel[Requester-only research panel]

@@ -1,9 +1,15 @@
 # Architecture
 
+This describes the implemented application. [deployment.json](deployment.json) and [validation.md](validation.md) record the last verified release on **17 October 2026**; they are dated evidence rather than live service discovery. The public frontend/API and private report worker are deployed. The recorded profile is `timeseries`, and optional Search research is disabled.
+
+Standalone Mermaid copies live in [graphify/](graphify/README.md). Refresh them from the fenced blocks below when changing a flow.
+
+## Application boundaries
+
 ```mermaid
 flowchart LR
-    Browser[Next.js / shadcn workspace] -->|HTTP + SSE| API[FastAPI on Cloud Run]
-    Browser <-->|PCM / transcripts / charts| Voice[FastAPI WebSocket bridge]
+    Browser[Next.js / shadcn workspace and libraries] -->|HTTP and SSE| API[Public FastAPI on Cloud Run]
+    Browser <-->|PCM and transcripts| Voice[WebSocket handlers in public API]
     API --> ADK[ADK planner + interpreter]
     Voice --> Live[ADK run_live / Gemini Live]
     Live -->|analyze_data tool| Analysis[Controlled analysis service]
@@ -17,10 +23,36 @@ flowchart LR
     Analysis --> Skills[Skill metadata selection + immutable snapshots]
     Skills --> Store
     ADK --> Store
+    API --> Saved[Saved-result charts and dashboards]
+    Saved -->|Read immutable pages and checked revisions| Store
+    Saved --> Export[Isolated dashboard renderer / full CSV and JSON]
+    API --> Reports[Report admission and versioned library]
+    Reports --> Store
+    Reports --> Dispatch[Cloud Tasks to private report worker]
     API --> Secrets[Secret Manager / workload identity]
 ```
 
 The frontend contains no database credentials or Google model keys. `/api/config` supplies only the public backend URL at runtime. Direct browser requests use explicit CORS origins; the WebSocket validates Origin and its first authentication frame. Guest tokens identify requests and cancellation ownership without providing account privacy.
+
+The voice bridge and skill author are handlers within the public backend, not additional deployed services. Browser pages use the API for every persistent read/write. The separate report worker accepts authenticated task/scheduler invocation; its internal endpoints are not mounted on the public API. Database/model credentials stay in workload identity and backend secret references.
+
+## Source-code map
+
+| Capability | Main implementation | Contract / guide |
+| --- | --- | --- |
+| Workspace and runtime API configuration | `Frontend/src/components/workspace.tsx`, `Frontend/src/lib/api.ts`, `Frontend/src/app/api/config/route.ts` | [Setup](setup.md), [settings](settings.md) |
+| Public routing and ordinary analysis | `Backend/app/main.py`, `analysis.py`, `ai.py`, `repository.py` | `Backend/app/models.py`, [ADRs](adr/) |
+| SQL and cross-source fusion | `Backend/app/connectors.py`, `sql_guard.py`, `fusion.py` | [Retail schema](retail-timeseries-schema.md), [ADR 0003](adr/0003-bounded-cross-source-fusion.md) |
+| Saved-result chart preparation | `Backend/app/chart_presentation.py`, `Frontend/src/components/charts/insightful-chart.tsx` | [Charts](charts.md) |
+| Shared dashboards and downloads | `Backend/app/dashboards.py`, `dashboard_exports.py`, `Frontend/src/components/dashboard-workspace.tsx`, `dashboard-actions.tsx` | `Backend/app/dashboard_models.py`, [dashboards](dashboards.md) |
+| Skills and author interviews | `Backend/app/skills.py`, `skill_author.py`, `skill_author_voice.py`, `Frontend/src/components/skills-workspace.tsx`, `skill-voice-author.tsx` | [Skills](skills.md), [voice author](voice-skill-author-plan.md) |
+| Analytics/prediction playbooks | `Backend/app/skill_library/`, `skill_examples.py` | [Playbook catalog](analytics-skills.md) |
+| Report orchestration and recovery | `Backend/app/report_harness.py`, `report_engine.py`, `report_repository.py`, `report_dispatch.py`, `report_worker.py` | `Backend/app/report_models.py`, [reports](reports.md) |
+| Statistics, files and isolated research | `Backend/app/report_statistics.py`, `report_exports.py`, `report_research.py` | [Reports](reports.md), [ADR 0007](adr/0007-public-report-evidence.md) |
+| Report library/reader | `Frontend/src/components/reports-library.tsx`, `report-workspace.tsx`, `report-run-card.tsx` | `Frontend/src/lib/report-types.ts` |
+| Persistence, maintenance and data publication | `Backend/app/storage.py`, `adk_sessions.py`, `maintenance.py`, `retail_generator.py`, `retail_upload.py` | [Data workflow](retail-timeseries.md), [deployment runbook](deployment-guide.md) |
+
+Paths shortened after the first entry in a cell use that entry's directory. Source files define behavior; feature guides explain its invariants. The graph references provide navigation, not an exhaustive dependency graph.
 
 ## Analysis lifecycle
 
@@ -49,6 +81,8 @@ Large results are stored in pages below 180 KiB. ADK events are separate documen
 
 Only one active analysis or live voice session owns a conversation. Another visitor can wait or fork. Completed history is public. A disconnected text browser can reconnect to persisted SSE events without starting another query. A stopped worker is reported as interrupted after its lease expires; a new request is required rather than silently rerunning jobs.
 
+This ordinary-chat recovery rule differs from durable reports: reports have independent leases and committed checkpoints, and task redelivery can resume their remaining work. Skills, report revisions and retained dashboard/report artifacts survive a shared-history reset. Guest-private author recovery and requester-only research are exceptions to shared content; anonymous credentials are not verified identities.
+
 ## Voice
 
 An AudioWorklet produces 16 kHz signed PCM samples; the browser queues 24 kHz PCM playback. Audio streams through FastAPI to ADK `Runner.run_live()`. The `analyze_data` tool calls the same bounded analysis service as text. Audio is streamed rather than recorded. Durable transcripts and public result references are distinct from the private, short-lived Live resumption handle.
@@ -74,13 +108,15 @@ Author sessions logically expire after six hours. An operator cleanup command re
 
 ## Saved-result chart presentation
 
-The [chart presentation service](charts.md) reads immutable artifact pages without executing source SQL or invoking models. It validates optional measure metadata, computes deterministic comparisons on the full selected saved result, and bounds plotted output to 2,000 observations. The chart-data and CSV endpoints retain existing query/fusion resource limits and public visibility. Presentation preferences and exploration controls remain local; historical artifact documents remain unchanged. PNG export runs in the browser with native SVG/canvas APIs.
+The [chart presentation service](charts.md) reads immutable artifact pages without executing source SQL or invoking models. It validates optional measure metadata, computes deterministic comparisons on the full selected saved result, and bounds plotted output to 2,000 observations. The chart-data and CSV endpoints retain existing query/fusion resource limits and public visibility. Presentation preferences and exploration controls remain local; historical artifact documents remain unchanged. Individual interactive-chart PNG export runs in the browser with native SVG/canvas APIs; whole-dashboard downloads use the backend renderer described below.
 
 ## Shared saved-result dashboards
 
 The Dashboards module accepts validated presentation state and immutable artifact references, with no connector or AI dependency. Parent dashboard revisions serialize public edits; stable request IDs make lost-response retries idempotent. Child items own card metadata/view/width, while the parent owns order. Active/recoverable cards retain their artifacts through reference records. Source evidence and saved pages are never duplicated or rewritten. See [dashboard usage](dashboards.md) and [ADR 0005](adr/0005-saved-result-dashboards.md).
 
 Dashboard view/edit mode is URL-driven presentation state, not authorization; sharing always emits the canonical public view URL. Whole-dashboard downloads capture a checked dashboard revision and immutable saved artifact pages, independently of viewport lazy loading. A bounded read-only snapshot feeds the existing Matplotlib/ReportLab stack in an isolated process, or formula-protected full CSVs and a provenance manifest. Per-instance admission, combined row/byte limits, renderer deadlines and image pixel limits bound public export work. Files are returned directly without new storage, model calls, source SQL or durable background work. Downloading does not create a dashboard revision.
+
+`GET /api/v1/dashboards/{id}/downloads/{png,jpeg,pdf,data,json}?expected_revision=N` rejects stale or incomplete captures. One export prepares per backend instance, with 200,000 distinct input rows, 32 MiB combined input, 60 seconds for evidence, 45 seconds for rendering and 24 megapixels for images. PNG/JPEG/PDF represent all published saved cards and their scopes; CSV ZIP retains full saved rows regardless of visual filters. JSON is a metadata snapshot without rows or an import/restore operation. See [the export contract](dashboards.md#view-edit-share-and-whole-dashboard-downloads).
 
 Firestore adds `dashboards` with `items`, `dashboard_artifact_refs` and `dashboard_requests`, plus capacity/maintenance records in `system` and counters in `quotas`. Reads remain backend-only. Recently deleted queries use the `recover_until` single-field range/order index; active summaries use the `deleted` equality index.
 
@@ -91,7 +127,7 @@ Conversation and dashboard cards share the chart renderer and versioned view con
 
 ## Advanced analysis reports
 
-[Reports](reports.md) use a separate ADK graph and run lease so ordinary chat can continue. Planner/query-planner/writer/reviewer roles operate within a shared policy; deterministic functions own statistics, SQL/fusion, claim validation and exports. All source and skill text remains untrusted. Report bodies reference verified claim IDs; predicted series carry distinct metadata and cannot inherit observed-peak chart insights.
+[Reports](reports.md) use a separate ADK graph and run lease so ordinary chat can continue. The installed ADK `App`, `Runner`, `Workflow` and policy plugin orchestrate prepare → gather → analyze → compose/review → publish stages. The graph's stage chain is sequential; independent evidence tasks inside gathering run with a two-branch bound. Planner/query-planner/writer/reviewer roles operate within that policy, while deterministic functions own statistics, guarded SQL/fusion, claim validation and exports. All source and skill text remains untrusted. Report bodies reference verified claim IDs; predicted series carry distinct metadata and cannot inherit observed-peak chart insights.
 
 ```mermaid
 flowchart LR
@@ -99,7 +135,9 @@ flowchart LR
     API --> Outbox[Firestore run + transactional outbox]
     Outbox --> Tasks[Cloud Tasks / OIDC]
     Tasks --> Worker[Private Cloud Run report worker]
-    Reconciler[Private scheduled reconciliation] --> Outbox
+    Scheduler[Cloud Scheduler / OIDC] --> Reconciler[Private worker reconciler]
+    Reconciler --> Outbox
+    Worker --> Checkpoints[Fenced run events and stage checkpoints]
     Worker --> Graph[ADK graph + bounded policy]
     Graph --> Sources[Existing guarded connectors + typed fusion]
     Graph --> Math[Isolated statistical tools + chronological backtests]
@@ -107,7 +145,7 @@ flowchart LR
     Claims --> Versions[Immutable Firestore report revisions]
     Claims --> Files[Private PDF / DOCX / CSV bundle bucket]
     Versions --> Reader[Public Reports library + dashboard pins]
-    API --> Research[Separate Search-only in-memory agent]
+    API -.->|Opt-in; disabled in recorded release| Research[Separate Search-only in-memory agent]
     Research --> Panel[Requester-only research panel]
 ```
 
@@ -115,4 +153,12 @@ Cloud Task delivery is at least once. Application checkpoints, stable BigQuery I
 
 PDF, Word and CSV ZIP are produced from the same immutable document/evidence. Presentation revisions reuse saved artifacts; reanalysis is explicit. Report references retain source and derived artifact pages; dashboard references remain independent. Administrative purge requires an expired recovery window and a maintenance fence.
 
-This implementation adds a private worker/queue/bucket/scheduler path **for a later authorized deployment**. Current recorded cloud revisions are unchanged. The ordinary 180-second chat path remains independent of the report's 600-second computation budget. See ADRs [0006](adr/0006-durable-versioned-reports.md) and [0007](adr/0007-public-report-evidence.md).
+Reports persist `reports/{id}/revisions`, `report_runs/{id}/{events,checkpoints}`, `report_outbox`, `report_conversations`, `report_artifact_refs`, `report_quotas` and `report_adk_sessions` in the named Firestore database. The application atomically admits work and creates an outbox, attempts immediate enqueue, and relies on the private scheduled reconciler for recovery. Completed stages reuse checkpoints; task delivery is at least once and uncheckpointed external calls can repeat. Predictions use chronological backtests and publish either a supported candidate/baseline or a clear withholding reason. Invalid or unapproved prose falls back explicitly to verified evidence summaries after bounded repair.
+
+The private worker, queue, export bucket and scheduled reconciler are **deployed**, as recorded in [report release validation](validation.md#advanced-reports-cloud-release--2026-10-17). The latest dashboard release preserves them. The ordinary 180-second chat path remains independent of the report's 600-second computation budget and 660-second worker request deadline. Search remains an optional isolated in-memory path: responses never enter shared reports, history or downloads. See ADRs [0006](adr/0006-durable-versioned-reports.md) and [0007](adr/0007-public-report-evidence.md).
+
+## Release and documentation evidence
+
+Follow [deployment-guide.md](deployment-guide.md) for routine releases, rollback and runtime verification. A frontend/backend dashboard release does not automatically require a report-worker release; check changed workflow code and compatibility before selecting services. Explicitly preserve `timeseries` on backend releases and retain report dispatch configuration. Analytical uploads, skill seeding, shared-history reset and application deployment are separate operations.
+
+The latest recorded dashboard release has 400 backend tests passed/one skipped, 28 frontend tests, 26 hosted API checks and 21 runtime-identity checks. Its [API evidence](evaluation/dashboard-actions-deployed-api.json) reconciles 45 saved CSV months to USD 354,425,112.20 while the published chart selects 12 months. [Browser evidence](evaluation/dashboard-actions-deployed-browser.json) covers View/Edit, public sharing, downloads, stale recovery and mobile accessibility with stated limitations. These are historical verification results, not checks rerun by editing this document.

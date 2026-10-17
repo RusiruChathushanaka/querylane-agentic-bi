@@ -2,6 +2,8 @@
 
 Next.js App Router, TypeScript, shadcn/ui, and Recharts. Application code is under `src/`; the backend runs separately in `Backend/`.
 
+Routes include the conversation workspace (`/`), shared dashboard library (`/dashboards`), report library (`/reports`), skills library (`/skills`) and browser-local settings (`/settings`). Dashboard View/Edit is URL-driven presentation state; all shared dashboards remain publicly editable. Charts and downloads preserve saved evidence. See [architecture](../docs/architecture.md) and [graph references](../docs/graphify/README.md).
+
 From this directory:
 
 ```bash
@@ -13,9 +15,12 @@ Open [localhost:3000](http://localhost:3000). The default API URL is `http://loc
 
 ```bash
 npm run lint
+npm test
 npx tsc --noEmit
 npm run build
 ```
+
+Verify affected loaded screens in a browser after application changes, including narrow layouts, keyboard controls, light/dark themes and reduced motion. [Validation notes](../docs/validation.md) distinguish local checks from dated hosted results. Documentation-only updates need local-link and graph-synchronization checks.
 
 ## Deployment
 

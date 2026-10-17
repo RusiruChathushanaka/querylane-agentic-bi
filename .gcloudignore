@@ -19,3 +19,8 @@ data
 
 # Report exports stay in their private bucket or local-only directory.
 **/.reports
+
+# Developer knowledge-graph artifacts are not application runtime assets.
+graphify-out
+docs/graphify
+.graphifyignore

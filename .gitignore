@@ -23,3 +23,7 @@ service-account*.json
 
 # Local report exports (never upload saved visitor data with source)
 **/.reports/
+
+# Graphify local extraction caches and machine-specific session paths.
+graphify-out/.*
+graphify-out/cache/
