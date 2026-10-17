@@ -2,13 +2,13 @@
 
 Public retail analytics using Next.js + shadcn/ui, FastAPI, Google ADK, Gemini, Firestore, BigQuery, and PostgreSQL. No registration or sign-in. All conversations are public.
 
-Open the [deployed application](https://agentic-bi-frontend-wekihucn7q-as.a.run.app), [full daily chart](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/app?chat=b13399e915de46d78f950d08345f0893), or [validated cross-source example](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/app?chat=92b4d70a61414b8e9e77a2bcd5c97d45).
+Open the [landing page](https://agentic-bi-frontend-wekihucn7q-as.a.run.app), enter the [workspace](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/app), or inspect the latest verified [daily chart](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/app?chat=3cec5989c73d4cbab583d52d09e7e452) and [cross-source example](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/app?chat=acec63b2f1ef461bbbba797b3d123a7b).
 
 Personalize the workspace in [Settings](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/settings). Appearance, chart, conversation, and voice preferences are saved per browser.
 
 Explore the public [Dashboards](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/dashboards), [Reports](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/reports), and [Skills](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/skills) libraries. Dashboards have View/Edit modes, public share links, and PNG, JPEG, PDF, full-data CSV ZIP, and JSON downloads. Reports provide immutable versions and PDF, Word, and data downloads. Questions, saved results, skills, dashboards and reports are public; guest tokens provide request attribution rather than private accounts.
 
-The current source adds a [public landing page](docs/landing-page.md) at `/` and moves the workspace to `/app`. Open Querylane enters directly without authentication; legacy root conversation links remain compatible. The landing page is deployed on Cloud Run; [release evidence](docs/evaluation/landing-deployed-api.json) verifies routing, saved results and the unchanged larger data profile.
+The deployed [public landing page](docs/landing-page.md) is at `/`; the workspace is at `/app`. **Open Querylane** enters directly without authentication; legacy root conversation links remain compatible. The [latest deployed assessment](docs/evaluation/e2e-fixes-deployed.md) verifies the landing page, corrected analytics, multi-turn voice, reports, predictions and dashboards against the unchanged larger data profile.
 
 ## Repository map
 
@@ -19,7 +19,8 @@ The current source adds a [public landing page](docs/landing-page.md) at `/` and
 | [`Backend/app/skill_library/`](Backend/app/skill_library/) | Source-controlled analytics and prediction playbooks; publication is a separate operator action |
 | [`infra/`](infra/) | Scoped cloud provisioning, release and runtime-verification helpers |
 | [`docs/architecture.md`](docs/architecture.md) | Component boundaries, data flows, persistence and source-code map |
-| [`docs/graphify/`](docs/graphify/README.md) | Standalone Mermaid graph references exported from the architecture document |
+| [`graphify-out/`](graphify-out/README.md) | Generated code/documentation graph, interactive viewer, analysis and source-hash validation |
+| [`docs/graphify/`](docs/graphify/README.md) | Curated Mermaid graph references exported from the architecture document |
 | [`docs/evaluation/`](docs/evaluation/) | Dated numerical, reliability, browser and deployed verification evidence |
 | `data/` | Ignored generated analytical bundles; uploaded independently from application releases |
 
@@ -67,17 +68,17 @@ This preview uses an operator access token only in memory. Restart it when that 
 
 - Public [dashboard library](docs/dashboards.md): create shared dashboards, pin saved chart/KPI/table views, arrange cards, and recover removed items. View/Edit modes, sharing, and whole-dashboard PNG/JPEG/PDF/CSV ZIP/JSON downloads are deployed. Pinning/viewing/downloading runs no new analysis. Images/PDF use published card scopes; CSVs retain full saved results. JSON contains metadata, not a restorable data backup.
 
-- [Expanded retail history](docs/retail-timeseries.md): 573,348 orders across 2023–2026, 1.3 million line items, dated refunds, stores, promotions, and a daily calendar. Reproducible Parquet generation, validation, insert-only cloud upload, and date-range extension scripts preserve the original demo tables.
+- [Expanded retail history](docs/retail-timeseries.md): 573,348 orders from January 2023 through September 2026, 1,317,941 line items, dated refunds, stores, promotions, and a daily calendar. Reproducible Parquet generation, validation, insert-only cloud upload, and date-range extension scripts preserve the original demo tables.
 
 - Shared conversations, follow-ups, immutable result references, forks, and share links.
 - Conversational [voice skill author](docs/voice-skill-author-plan.md): interview, requirements checklist, recoverable draft, review, and explicit publication. See [implementation validation](docs/validation.md#conversational-voice-skill-author--2026-10-16) and the current deployment record for verification scope.
 - Public [skills library](docs/skills.md): versioned Markdown playbooks, import/export, automatic discovery, chat attachments, and recoverable deletion. Open the [deployed skills library](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/skills).
 - [Analytics and prediction playbooks](docs/analytics-skills.md): twelve skills for quality checks, weighted KPIs, change diagnostics, cohorts, margin, campaigns, stores, seasonality, validated forecasts and conditional scenarios, with sample questions and reproducible insert-only seeding.
 - ADK planning and interpretation with Gemini; schema embeddings and Firestore vector retrieval.
-- Guarded BigQuery/PostgreSQL connectors, independent query evidence, bounded result pages.
+- Guarded BigQuery/PostgreSQL connectors, explicit-key SQL join validation (including nested queries), independent per-analysis query evidence, and bounded result pages. The guard rejects unsupported joins; it does not establish business-grain correctness by itself.
 - Automatically inferred, type-checked cross-source relationships; duplicate-key and incomplete-input rejection.
 - Bar, line, area, pie, scatter, table, and KPI views with accessible table alternatives.
-- Gemini Live voice bridge, PCM microphone streaming, transcripts, interruption, mute, and resumption.
+- Gemini Live voice bridge, PCM microphone streaming, replace-aware transcripts, interruption, mute, and resumption. Repeated analyses in one connection have distinct query/job identities; intentional repeated questions remain separate turns.
 - [Interactive charts](docs/charts.md): full saved-result coverage, factual highlights, per-measure tooltips, range and series controls, chart-to-chat drafts, and PNG/CSV exports.
 - Browser-local [settings](docs/settings.md): Gemini Flash/Flash-Lite analysis model selection, light/dark/system themes, accent colors, density, chart defaults, chat shortcuts, and voice preferences.
 - [Motion and feedback](docs/motion-and-feedback.md) using Framer Motion, beUI, and Sonner, with shared reduced-motion support and reader-aware result scrolling.
@@ -90,11 +91,8 @@ This preview uses an operator access token only in memory. Restart it when that 
 cd Backend
 uv run pytest -q
 uv run ruff check app tests scripts
+# The fixture evaluator targets the original legacy seed, not hosted timeseries data:
 uv run python -m app.evaluate --mode fixture --output ../docs/evaluation/fixture.json
-# Opt-in real model calls, using the current gcloud account:
-uv run python -m app.admin check-models
-uv run python -m app.evaluate --mode gemini --output ../docs/evaluation/gemini.json
-uv run python -m scripts.smoke_voice
 ```
 
 ```bash
@@ -107,16 +105,20 @@ npm run build
 
 See [local setup](docs/setup.md), [deployment guide](docs/deployment-guide.md), [architecture](docs/architecture.md), [database schema guide](docs/database-schema.md), [demo script](docs/demo.md), [validation notes](docs/validation.md), and [domain glossary](CONTEXT.md).
 
+Run Ruff from `Backend/` so it uses the configured first-party import classification. For explicitly requested hosted verification, follow the [deployment runbook](docs/deployment-guide.md), including the profile-aware `scripts.smoke_timeseries` and repeated-tool `scripts.smoke_voice_turns` checks. These invoke real models/queries, consume quotas, and create public test evidence; they are not part of a documentation refresh.
+
 For Firestore transaction and durability coverage, run the backend suite with `FIRESTORE_EMULATOR_HOST` pointing to a running local emulator, as described in the deployment guide. Plain local tests use memory storage. Real model calls, hosted smoke tests and example-skill seeding are separate, opt-in operations. For documentation-only changes, check local links and regenerate the [graph references](docs/graphify/README.md#refresh) instead of rerunning application or billable cloud checks.
 
 ## Cloud status
 
-The last verified release is dated **17 October 2026**. The latest [landing-page release](docs/validation.md#landing-page-cloud-release--2026-10-17) serves frontend **00012-mv5** with `/` as the introduction and `/app` as the workspace. It passed 33 frontend tests, lint/types, a clean local and Cloud Build production build, 28 hosted API checks and four hosted accessibility scans with zero reported violations. Backend **00017-cnf** and private worker **00006-sk6** remain unchanged; production dependency audit reports zero vulnerabilities. The public frontend and backend, plus a separate **private report worker**, are deployed in `asia-southeast1` in project `project-e8b1593d-009a-4822-abf`, using dedicated service accounts. Reports dispatch through Cloud Tasks; a scheduled reconciler recovers pending work and report files stay in a private bucket. The named Firestore database, vector index, BigQuery dataset, Cloud SQL database, secrets, build bucket, and image repository are configured. Search research remains disabled in the recorded production configuration.
+The latest verified release is dated **17 October 2026**: frontend **`agentic-bi-frontend-00013-hrz`**, public backend **`agentic-bi-backend-00018-ctv`**, and private report worker **`agentic-bi-report-worker-00007-pfq`**, each at 100% traffic. See [the deployed fix assessment](docs/evaluation/e2e-fixes-deployed.md) and [deployment.json](docs/deployment.json) for digests, configuration and rollback references. These are dated observations; inspect live state before a new release. This documentation refresh does not deploy the application.
 
-The deployed application uses the **larger generated dataset**: 573,348 orders and 25,000 customers from January 2023 through September 2026. Its 45-month and 1,369-day charts reconcile to **$354,425,112.20** in merchandise revenue. Keep `--data-profile timeseries` on future backend releases; generated files are excluded from Git and Cloud Build uploads.
+The release fixes unsafe SQL join shapes, query/job collisions between Live analyses, duplicated finalized transcripts, and duplicated table landmark names. Local verification passed **317 backend tests with one existing skip**, **35 frontend tests**, lint, TypeScript and production build. Hosted checks passed **40/40 analytics**, **4/4 repeated Live-tool**, **9/9 synthetic spoken-browser**, **26/26 report**, and **10/10 dashboard** checks. Four browser accessibility scans found zero automated violations. [Saved-evidence reconciliation](docs/evaluation/e2e-fixes-saved-evidence.json) and [document checks](docs/evaluation/e2e-fixes-document-content.json) verify forecast gates, exported values, version identifiers and checksums.
 
-The [latest dashboard-actions release](docs/validation.md#dashboard-actions-cloud-release--2026-10-17) records **400 backend tests passed / 1 skipped**, **28 frontend tests**, **26 hosted API checks**, and **21 runtime-identity checks**. Lint, types, production build and desktop/mobile browser checks passed. Seven accessibility scans found zero automated violations, with manual-review limitations recorded. All five dashboard formats were checked; browser PNG/PDF/CSV downloads and stale-revision recovery were exercised. [deployment.json](docs/deployment.json) records backend `00017-cnf`, frontend `00011-vr4`, and private worker `00006-sk6`, with digests and rollback references. These are dated observations; inspect live state for a new release.
+The deployed application continues to use the **larger synthetic dataset**: **573,348 orders**, **1,317,941 line items**, **25,000 customers**, **45 months** and **1,369 calendar days** from January 2023 through September 2026. Daily and monthly revenue reconcile independently to **USD 354,425,112.20**. Source counts and modification timestamps were unchanged by the fix release. Preserve **`DATA_PROFILE=timeseries`** and **`SOURCE_ROW_LIMIT=30000`** on both analytical runtimes; use the runbook's `--data-profile timeseries` release path. Generated bundles stay outside Git and Cloud Build.
 
-Earlier [chart acceptance](docs/evaluation/charts-deployed.json) covers 40 time-series/voice checks. [Report-release evidence](docs/evaluation/reports-deployed.json) covers the durable report workflow; the latest recorded sample explicitly uses verified evidence summaries when its AI narrative fails review. Forecasts can be withheld when data or backtests are insufficient. Historical evaluation files retain their original scope and are not rerun claims for the latest release. Cloud SQL, Cloud Run, models and supporting services are billable; configured limits and billing alerts are not a hard spending cap.
+Inspect the verified [Business report](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/reports/8a9a241d23d4c83384af22896ace71fd?version=1), its [Technical revision](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/reports/8a9a241d23d4c83384af22896ace71fd?version=2), and [saved forecast dashboard](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/dashboards/f068828374df446fb968264e9c4288d8). The new report has a reviewed narrative and validated ETS prediction; unsupported narratives can still fall back to verified summaries, and forecasts can be withheld when history or backtests are insufficient.
 
-The existing Firestore databases and `enterprise_*` BigQuery datasets are outside this application's scope.
+The public frontend/backend and separate private worker use dedicated identities in `asia-southeast1`, project `project-e8b1593d-009a-4822-abf`. Reports dispatch through Cloud Tasks with a scheduled reconciler and private file bucket. Firestore is backend-only. Search research remains disabled. No source-data upload, seed, IAM change or history/usage reset was part of the fix release.
+
+The [assessment's boundaries](docs/evaluation/e2e-fixes-deployed.md#inspectable-output-and-boundaries) distinguish real browser/runtime verification with synthetic speech from untested physical microphone/speaker quality, Safari/Firefox, full screen-reader use and other manual checks. The existing emulator-dependent durability case was not rerun against Firestore. Historical failed assessments remain preserved rather than rewritten as successes. Cloud services and models are billable; limits and alerts are not hard spending caps. Existing Firestore databases and `enterprise_*` BigQuery datasets remain outside this application's scope.

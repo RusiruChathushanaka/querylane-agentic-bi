@@ -61,6 +61,12 @@ PY
 
 Review each graph diff against its source modules and feature contracts. Verify both files match the corresponding fenced blocks byte-for-byte (after trailing-newline normalization), and check relative documentation links. Mermaid-capable Markdown viewers can render the source document; Mermaid tooling can consume the standalone files. Refreshing these files does not inspect cloud state or rerun application acceptance tests.
 
+## Latest fix coverage
+
+The refreshed graph includes nested SQL equality-key validation, per-invocation query/job identities, partial/final voice transcript handling, and shared table accessibility. Start at `validate_joins`, `linked_predicate`, `AnalysisService`, `voice_session` or `Table` in the viewer, then inspect the referenced source. The curated application diagram identifies the distinct analysis-ID boundary on the Live tool path.
+
+The [deployed fix assessment](../evaluation/e2e-fixes-deployed.md) records the numerical, voice, report, dashboard and accessibility rechecks and their physical-device limitations. Its excluded historical evidence files are linked from documentation rather than ingested as raw result rows. The larger `timeseries` dataset is unchanged; this graph refresh performs no cloud reads, source writes or application deployment.
+
 ## Evidence and maintenance
 
 - Use [deployment.json](../deployment.json) for the last recorded revisions, digests and active data profile; inspect live state for a deployment task.

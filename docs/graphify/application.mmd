@@ -6,7 +6,7 @@ flowchart LR
     Browser <-->|PCM and transcripts| Voice[WebSocket handlers in public API]
     API --> ADK[ADK planner + interpreter]
     Voice --> Live[ADK run_live / Gemini Live]
-    Live -->|analyze_data tool| Analysis[Controlled analysis service]
+    Live -->|analyze_data / distinct analysis ID| Analysis[Controlled analysis service]
     ADK --> Analysis
     Analysis --> Guard[SQL AST + explicit key joins + budgets]
     Guard --> BQ[Demo BigQuery dataset]

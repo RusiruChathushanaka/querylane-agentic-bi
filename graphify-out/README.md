@@ -1,31 +1,33 @@
 # Querylane knowledge graph
 
-Generated using the official project-local [Graphify skill](../.agents/skills/graphify/SKILL.md) and installed Graphify 0.9.51 package on 17 October 2026.
+Generated with the project-local [Graphify skill](../.agents/skills/graphify/SKILL.md) and Graphify 0.9.51 on 17 October 2026, after the analytics/voice fix release.
 
-- [graph.html](graph.html): interactive code/documentation graph. Open locally; search for `LandingPage`, `workspacePath`, `ReportEngine`, `Dashboards` or `Skills` and click a result to inspect source/neighbor details. The viewer loads its pinned vis-network library from a CDN.
-- [graph.json](graph.json): native Graphify graph, with **1,786 nodes**, **4,681 edges** and **121 named communities**.
-- [GRAPH_REPORT.md](GRAPH_REPORT.md): central concepts, communities/cohesion, cross-community links, questions and integrity notes.
+- [graph.html](graph.html): interactive code/documentation graph. Search for `validate_joins`, `linked_predicate`, `AnalysisService`, `voice_session`, `Table` or `ReportEngine`, then inspect the source/neighbor details. The viewer loads its pinned vis-network library from a CDN.
+- [graph.json](graph.json): native graph with **1,797 nodes**, **4,772 edges** and **129 named communities**.
+- [GRAPH_REPORT.md](GRAPH_REPORT.md): central concepts, community cohesion, cross-community links, questions and integrity notes.
 - [VALIDATION.json](VALIDATION.json): source hashes, generation scope, diagnostics, verification and limitations.
-- [cost.json](cost.json): separate model-API token accounting; host-session semantic usage is explicitly unknown.
+- [cost.json](cost.json): separate model-API accounting; host-session semantic usage is unknown.
 
-The corpus contains **178 code files and 46 documents**. Code extraction is local AST analysis; the existing cache retained 41 document extractions and one host-session agent refreshed 5 changed documents. No separate model API, cloud database, provisioning or deployment was invoked. Generated/secret inputs are excluded by [`.graphifyignore`](../.graphifyignore).
+The corpus contains **181 code files and 46 documents** (~161,087 words). Local AST extraction covers code; 41 document extractions were reused and one host-session agent refreshed 5 changed documents. No separate model API, cloud database, provisioning or deployment was invoked. [`.graphifyignore`](../.graphifyignore) excludes credentials/environments, generated data, historical evaluation files and graph outputs. Machine-specific paths and extraction caches remain ignored.
+
+## Latest fix coverage
+
+The graph now maps nested explicit-key SQL join validation, invocation-scoped query/job identities, partial/final transcript replacement with turn-scoped deduplication, and shared table accessibility. It also includes the new deterministic SQL/voice/table regressions and repeated-tool Live smoke harness. The [deployed assessment](../docs/evaluation/e2e-fixes-deployed.md) remains the source for hosted results and test boundaries; the graph itself does not verify runtime behavior.
 
 ## Use
 
 From the repository root:
 
 ```bash
-graphify query "dashboard downloads saved artifact revision" --budget 1500
-graphify explain "ReportEngine"
+graphify query "voice analysis query identity cancellation" --budget 1500
+graphify explain "validate_joins"
 graphify path "ReportEngine" "ExportStorage" --undirected
 ```
 
-For a full code/document refresh, invoke **`$graphify .`** in Codex. Code-only maintenance uses `graphify update .`; documentation changes still need semantic re-extraction. Keep the installed project skill aligned with the CLI when upgrading. Some CLI invocations may warn about an older global skill; this generation used the repository-local 0.9.51 skill, without modifying global installations.
+Invoke **`$graphify .`** in Codex for a full code/document refresh. `graphify update .` covers code-only maintenance; document changes still need semantic extraction. Keep the local skill aligned with the installed CLI. This refresh used the repository-local 0.9.51 skill without modifying older global skill installations.
 
-## Interpretation
+## Interpretation and limits
 
-`AppError`, `Settings` and `MemoryStore` are the highest-degree abstractions. Centrality reflects this indexed source/test corpus, not production traffic or architectural quality. An undirected path through shared error handling is not proof that its endpoints call each other.
+Centrality reflects indexed code, tests and documentation, not production traffic or architectural quality. An undirected path through shared error handling does not establish a call between its endpoints. The graph retains the default undirected projection for compatibility; diagnostics record **750 unresolved endpoint references** and **438 collapsed same-endpoint relationships**, with zero missing endpoint fields and zero self-loops. Many unresolved references are external imports. Graphify reports a potentially partial parse of `Frontend/src/components/workspace.tsx` at line 1075 (13 extracted symbols). The AST extractor automatically completed sequentially after its initial multiprocessing attempt from stdin failed.
 
-The default graph projection combines some same-endpoint relationships. Raw diagnostics record **704 dangling-endpoint references**, **432 collapsed same-endpoint relationships**, zero missing endpoint fields and zero self-loops. Many dangling references are external imports such as standard-library or Google SDK modules. Graphify also reports a potentially partial parse of `Frontend/src/components/workspace.tsx` at line 1064. Consult the report and validation record before treating the graph as complete.
-
-This is a working-tree source snapshot. Dated release plans/evidence can coexist in its documents; use [the deployment record](../docs/deployment.json) and inspect live state for deployment decisions. The curated Mermaid architecture views remain under [docs/graphify/](../docs/graphify/README.md).
+This is a working-tree snapshot over base commit `97315c59`; per-file SHA-256 hashes establish the indexed content. Host-agent token counts are unavailable, not zero. Read the report/validation before assuming exhaustive coverage. The curated Mermaid views remain in [docs/graphify/](../docs/graphify/README.md); [deployment.json](../docs/deployment.json) records the last verified release. The larger `timeseries` dataset and serving application were unchanged by this refresh.
