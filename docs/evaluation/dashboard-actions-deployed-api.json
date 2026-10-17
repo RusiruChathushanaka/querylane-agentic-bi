@@ -1,0 +1,154 @@
+{
+  "verified_at": "2026-10-16T22:13:22.953134+00:00",
+  "backend": "https://agentic-bi-backend-wekihucn7q-as.a.run.app",
+  "dashboard_id": "2256ab45585e458184dd3efd39a800b6",
+  "revision": 4,
+  "checks": [
+    {
+      "name": "live_health",
+      "passed": true
+    },
+    {
+      "name": "ready_health",
+      "passed": true
+    },
+    {
+      "name": "larger_profile_and_sources",
+      "passed": true
+    },
+    {
+      "name": "historical_artifact_unchanged",
+      "passed": true,
+      "sha256": "f45e1f3dab7de29ba7e72355e18351e23c5f980fcdc9c6a524b6a80180d960a3"
+    },
+    {
+      "name": "two_saved_cards_public",
+      "passed": true
+    },
+    {
+      "name": "saved_chart_narrows_to_twelve_months",
+      "passed": true
+    },
+    {
+      "name": "png_download_headers",
+      "passed": true
+    },
+    {
+      "name": "png_valid_image",
+      "passed": true,
+      "size": [
+        1800,
+        806
+      ]
+    },
+    {
+      "name": "jpeg_download_headers",
+      "passed": true
+    },
+    {
+      "name": "jpeg_valid_image",
+      "passed": true,
+      "size": [
+        1800,
+        806
+      ]
+    },
+    {
+      "name": "pdf_download_headers",
+      "passed": true
+    },
+    {
+      "name": "valid_pdf",
+      "passed": true
+    },
+    {
+      "name": "data_download_headers",
+      "passed": true
+    },
+    {
+      "name": "csv_checksum_e2baad89590f4d059f6eb77fc976b2d0",
+      "passed": true
+    },
+    {
+      "name": "csv_checksum_34f28c9f764747e287dbae7a5662c8fd",
+      "passed": true
+    },
+    {
+      "name": "csv_has_full_45_months_not_scoped_twelve",
+      "passed": true,
+      "rows": 45
+    },
+    {
+      "name": "csv_revenue_reconciles_larger_dataset",
+      "passed": true,
+      "revenue": "354425112.20"
+    },
+    {
+      "name": "csv_snapshot_revision",
+      "passed": true
+    },
+    {
+      "name": "json_download_headers",
+      "passed": true
+    },
+    {
+      "name": "json_preserves_scope_and_evidence",
+      "passed": true
+    },
+    {
+      "name": "stale_export_rejected",
+      "passed": true
+    },
+    {
+      "name": "stale_edit_rejected",
+      "passed": true
+    },
+    {
+      "name": "reloaded_revision_download_succeeds",
+      "passed": true
+    },
+    {
+      "name": "public_read_and_download",
+      "passed": true
+    },
+    {
+      "name": "anonymous_mutation_blocked",
+      "passed": true
+    },
+    {
+      "name": "downloads_do_not_modify_evidence",
+      "passed": true
+    }
+  ],
+  "passed": true,
+  "files": {
+    "png": {
+      "bytes": 115172,
+      "sha256": "749aee6b272ffe6ff33c565b232539b7dd3c8b89e89f219181f71729ce0b0d9f",
+      "path": "/tmp/querylane-dashboard-deployed.png"
+    },
+    "jpeg": {
+      "bytes": 239156,
+      "sha256": "7fad96b940ca3fc7f77156d5098ee90a1c2ab1830c71c6b78c379e1f04cddec4",
+      "path": "/tmp/querylane-dashboard-deployed.jpg"
+    },
+    "pdf": {
+      "bytes": 43561,
+      "sha256": "d88f4f5fe2709b8548e9d6179f506dd2364f1182251b7b0e453247889165d838",
+      "path": "/tmp/querylane-dashboard-deployed.pdf"
+    },
+    "data": {
+      "bytes": 3260,
+      "sha256": "79a6cfbeecaeaefd2eb0bc3e893e5c7e7956060f0e20fe5ff10e8f65ba53b1b7",
+      "path": "/tmp/querylane-dashboard-deployed.zip"
+    },
+    "json": {
+      "bytes": 8273,
+      "sha256": "fcb7572a0f3850e08a834d02887be6ba4aad44fdc453dd1556e5c62367273c11",
+      "path": "/tmp/querylane-dashboard-deployed.json"
+    }
+  },
+  "sql_or_model_requests": 0,
+  "data_profile": "timeseries",
+  "browser_url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/dashboards/2256ab45585e458184dd3efd39a800b6"
+}

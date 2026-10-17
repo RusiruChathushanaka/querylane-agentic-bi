@@ -1,0 +1,20 @@
+{
+  "checks": {
+    "atomic_pending_outbox": true,
+    "independent_client_exclusion": true,
+    "expired_lease_replaced": true,
+    "checkpoint_survives_fresh_client": true,
+    "stale_worker_write_rejected": true,
+    "terminal_duplicate_delivery_no_work": true,
+    "outbox_enqueue_recovered": true,
+    "oidc_delivery_on_another_cloud_run_instance": true,
+    "waiting_cancellation_confirmed": true
+  },
+  "passed": true,
+  "data_profile": "timeseries",
+  "source_queries_or_models": false,
+  "probe_reports_soft_deleted": [
+    "f07b2ad21357ec78816f5db8d5cb05f7",
+    "9e379a08c884b4fc7308eb25dcccb710"
+  ]
+}

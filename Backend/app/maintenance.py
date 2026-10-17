@@ -37,13 +37,15 @@ async def clear_maintenance(store, owner=None):
     await store.atomic([MAINTENANCE], release)
 
 
-async def wait_for_idle(store, timeout=240):
+async def wait_for_idle(store, timeout=660):
     deadline = time.monotonic() + timeout
     while True:
         active = False
-        for collection in ("conversations", "skill_author_sessions"):
+        for collection in ("conversations", "skill_author_sessions", "report_runs"):
             async for _, value in store.iter_documents(collection):
-                if value.get("active_run") and value.get("lease_until", 0) > time.time():
+                if (value.get("active_run") or value.get("status") == "running") and value.get(
+                    "lease_until", 0
+                ) > time.time():
                     active = True
                     break
         if not active:
@@ -57,12 +59,15 @@ async def wait_for_idle(store, timeout=240):
         await asyncio.sleep(min(1, max(0, deadline - time.monotonic())))
 
 
-async def reset_history(store, *, timeout=240):
+async def reset_history(store, *, timeout=660):
     owner = await enter_maintenance(store, "reset-history")
     # Do not clear the fence on failure: an operator must inspect an interrupted reset.
     await wait_for_idle(store, timeout)
     kept = set()
     async for artifact_id, ref in store.iter_documents("dashboard_artifact_refs"):
+        if ref.get("count", 0) > 0:
+            kept.add(artifact_id)
+    async for artifact_id, ref in store.iter_documents("report_artifact_refs"):
         if ref.get("count", 0) > 0:
             kept.add(artifact_id)
     removed = 0
@@ -83,7 +88,7 @@ async def reset_history(store, *, timeout=240):
     return {"preserved_artifacts": len(kept), "removed_artifacts": removed}
 
 
-async def purge_dashboards(store, *, timeout=240, now=None):
+async def purge_dashboards(store, *, timeout=660, now=None):
     owner = await enter_maintenance(store, "purge-dashboards")
     await wait_for_idle(store, timeout)
     stamp = time.time() if now is None else now
@@ -122,3 +127,46 @@ async def purge_dashboards(store, *, timeout=240, now=None):
             await store.delete("dashboard_requests", request_id)
     await clear_maintenance(store, owner)
     return {"purged_items": removed}
+
+
+async def purge_reports(store, exports, *, timeout=660, now=None):
+    """Explicit operator purge after recovery expires; preserve dashboard references."""
+    owner = await enter_maintenance(store, "purge-reports")
+    await wait_for_idle(store, timeout)
+    stamp, removed = time.time() if now is None else now, 0
+    async for report_id, report in store.iter_documents("reports"):
+        if not report.get("deleted") or report.get("recover_until", float("inf")) > stamp:
+            continue
+        if report.get("active_run"):
+            raise AppError("Deleted report has active work. Inspect before purging.", 409)
+        async for _, revision in store.iter_documents(f"reports/{report_id}/revisions"):
+            for metadata in revision.get("exports", {}).values():
+                await exports.delete(metadata)
+        runs = await store.list("report_runs", where=("report_id", report_id), limit=1000)
+        for run in runs:
+            references = await store.list("report_artifact_refs", where=("run_id", run["id"]), limit=1000)
+            for reference in references:
+                artifact_id = reference["id"]
+                ref_key = ("report_artifact_refs", artifact_id)
+
+                def release(docs):
+                    if not docs[MAINTENANCE] or docs[MAINTENANCE].get("owner") != owner:
+                        raise AppError("Maintenance ownership changed.", 409)
+                    current = docs[ref_key]
+                    if current and current.get("run_id") != run["id"]:
+                        raise AppError("Report evidence ownership is inconsistent.", 409)
+                    return {ref_key: None}, None
+
+                await store.atomic([MAINTENANCE, ref_key], release)
+                dashboard_ref = await store.get("dashboard_artifact_refs", artifact_id)
+                if not dashboard_ref or dashboard_ref.get("count", 0) < 1:
+                    await store.delete_tree(f"artifacts/{artifact_id}")
+            async for key, session in store.iter_documents("report_adk_sessions"):
+                if session.get("id", "").startswith(f"report_{run['id']}_"):
+                    await store.delete_tree(f"report_adk_sessions/{key}")
+            await store.delete("report_outbox", run["id"])
+            await store.delete_tree(f"report_runs/{run['id']}")
+        await store.delete_tree(f"reports/{report_id}")
+        removed += 1
+    await clear_maintenance(store, owner)
+    return {"purged_reports": removed}

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   ArrowDown,
@@ -13,7 +14,7 @@ import {
   RefreshCw,
   RotateCcw,
   Save,
-  Share2,
+  Eye,
 } from "lucide-react";
 import { toast } from "sonner";
 import { motion } from "motion/react";
@@ -21,6 +22,7 @@ import { useAppMotion } from "@/hooks/use-app-motion";
 import { SPRING_LAYOUT } from "@/lib/ease";
 import { api } from "@/lib/api";
 import { savedResult } from "@/lib/saved-result-loader";
+import { dashboardPath } from "@/lib/dashboard-links";
 import type { Artifact } from "@/lib/types";
 import type {
   ChartCapture,
@@ -30,9 +32,12 @@ import type {
 import {
   DashboardEditor,
   DashboardHeader,
-  copyDashboard,
   useDashboardMutation,
 } from "@/components/dashboard-shared";
+import {
+  DashboardDownload,
+  DashboardShare,
+} from "@/components/dashboard-actions";
 import { SkillEvidence } from "@/components/skill-evidence";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -413,11 +418,19 @@ function DashboardWidget({
   );
 }
 
-export function DashboardWorkspace({ id }: { id: string }) {
+export function DashboardWorkspace({
+  id,
+  initialEdit = false,
+}: {
+  id: string;
+  initialEdit?: boolean;
+}) {
+  const router = useRouter();
+  const query = useSearchParams();
   const [board, setBoard] = useState<Dashboard | null>(null);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
-  const [edit, setEdit] = useState(false);
+  const edit = query ? query.get("mode") === "edit" : initialEdit;
   const [details, setDetails] = useState(false);
   const [busy, setBusy] = useState(false);
   const [announcement, setAnnouncement] = useState("");
@@ -471,6 +484,11 @@ export function DashboardWorkspace({ id }: { id: string }) {
     )
       return;
     setLoadTick((t) => t + 1);
+  }
+  function setMode(editing: boolean) {
+    router.replace(dashboardPath(id, editing ? "edit" : "view"), {
+      scroll: false,
+    });
   }
   async function refreshRemoved(append = false) {
     try {
@@ -623,6 +641,9 @@ export function DashboardWorkspace({ id }: { id: string }) {
                 <Badge variant="secondary">
                   Public — anyone can view and edit
                 </Badge>
+                <Badge variant="outline">
+                  {edit ? "Edit mode" : "View mode"}
+                </Badge>
                 <p className="dash-footnote">
                   Saved results — no automatic refresh. {board.card_count}{" "}
                   {board.card_count === 1 ? "card" : "cards"} · Version{" "}
@@ -630,29 +651,45 @@ export function DashboardWorkspace({ id }: { id: string }) {
                 </p>
               </div>
               <div className="dash-card-actions">
-                <Button
-                  variant="outline"
-                  onClick={() => void copyDashboard(id)}
-                >
-                  <Share2 data-icon="inline-start" />
-                  Share
-                </Button>
+                <DashboardShare dashboard={board} />
+                {!board.deleted && <DashboardDownload dashboard={board} />}
                 <Button variant="outline" onClick={reload}>
                   <RefreshCw data-icon="inline-start" />
                   Reload latest
                 </Button>
                 {!board.deleted && (
                   <>
-                    <Button variant="outline" onClick={() => setDetails(true)}>
-                      <Pencil data-icon="inline-start" />
-                      Edit details
-                    </Button>
-                    <Button
-                      variant={edit ? "default" : "outline"}
-                      onClick={() => setEdit(!edit)}
+                    {edit && (
+                      <Button
+                        variant="outline"
+                        onClick={() => setDetails(true)}
+                      >
+                        <Pencil data-icon="inline-start" />
+                        Edit details
+                      </Button>
+                    )}
+                    <div
+                      role="group"
+                      aria-label="Dashboard mode"
+                      className="dash-card-actions"
                     >
-                      {edit ? "Done editing" : "Edit layout & cards"}
-                    </Button>
+                      <Button
+                        variant={!edit ? "default" : "outline"}
+                        aria-pressed={!edit}
+                        onClick={() => setMode(false)}
+                      >
+                        <Eye data-icon="inline-start" />
+                        View dashboard
+                      </Button>
+                      <Button
+                        variant={edit ? "default" : "outline"}
+                        aria-pressed={edit}
+                        onClick={() => setMode(true)}
+                      >
+                        <Pencil data-icon="inline-start" />
+                        Edit dashboard
+                      </Button>
+                    </div>
                   </>
                 )}
               </div>
@@ -748,55 +785,57 @@ export function DashboardWorkspace({ id }: { id: string }) {
                     ))}
                   </div>
                 )}
-                <div className="dash-removed">
-                  <Button
-                    variant="ghost"
-                    onClick={() => {
-                      setShowRemoved(!showRemoved);
-                      if (!showRemoved) void refreshRemoved();
-                    }}
-                  >
-                    <RotateCcw data-icon="inline-start" />
-                    {showRemoved
-                      ? "Hide removed cards"
-                      : "Recently removed cards"}
-                  </Button>
-                  {showRemoved && (
-                    <section aria-label="Recently removed cards">
-                      <h2>Recently removed</h2>
-                      {removed === null ? (
-                        <p role="status">Loading removed cards…</p>
-                      ) : !removed.length ? (
-                        <p>
-                          No recoverable cards. Removed cards can be restored
-                          for 30 days.
-                        </p>
-                      ) : (
-                        removed.map((item) => (
-                          <div className="dash-removed-item" key={item.id}>
-                            <span>{item.title}</span>
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              disabled={busy}
-                              onClick={() => void restoreItem(item)}
-                            >
-                              Restore card
-                            </Button>
-                          </div>
-                        ))
-                      )}
-                      {offset !== null && removed !== null && (
-                        <Button
-                          variant="outline"
-                          onClick={() => void refreshRemoved(true)}
-                        >
-                          Load more removed cards
-                        </Button>
-                      )}
-                    </section>
-                  )}
-                </div>
+                {edit && (
+                  <div className="dash-removed">
+                    <Button
+                      variant="ghost"
+                      onClick={() => {
+                        setShowRemoved(!showRemoved);
+                        if (!showRemoved) void refreshRemoved();
+                      }}
+                    >
+                      <RotateCcw data-icon="inline-start" />
+                      {showRemoved
+                        ? "Hide removed cards"
+                        : "Recently removed cards"}
+                    </Button>
+                    {showRemoved && (
+                      <section aria-label="Recently removed cards">
+                        <h2>Recently removed</h2>
+                        {removed === null ? (
+                          <p role="status">Loading removed cards…</p>
+                        ) : !removed.length ? (
+                          <p>
+                            No recoverable cards. Removed cards can be restored
+                            for 30 days.
+                          </p>
+                        ) : (
+                          removed.map((item) => (
+                            <div className="dash-removed-item" key={item.id}>
+                              <span>{item.title}</span>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                disabled={busy}
+                                onClick={() => void restoreItem(item)}
+                              >
+                                Restore card
+                              </Button>
+                            </div>
+                          ))
+                        )}
+                        {offset !== null && removed !== null && (
+                          <Button
+                            variant="outline"
+                            onClick={() => void refreshRemoved(true)}
+                          >
+                            Load more removed cards
+                          </Button>
+                        )}
+                      </section>
+                    )}
+                  </div>
+                )}
               </>
             )}
           </>

@@ -467,6 +467,7 @@ def present(artifact, rows, *, start=None, end=None, primary=None, order="value_
         + ([x] if x else [])
         + ([identity] if identity else [])
         + ["_gap", "_detail", "_key"]
+        + (["interval_lower", "interval_upper"] if artifact.get("prediction", {}).get("interval") else [])
     )
     plotted = [
         {
@@ -487,8 +488,20 @@ def present(artifact, rows, *, start=None, end=None, primary=None, order="value_
             [],
             "Chart labels exceed the presentation budget. Use the table or narrow the analysis.",
         )
+    if artifact.get("prediction"):
+        # Saved projected series cannot inherit observed-peak, change or composition claims.
+        insights, annotations = [], []
+        for row in plotted:
+            row["_detail"] = {}
+            if artifact["prediction"].get("interval"):
+                row["_interval"] = (
+                    [row["interval_lower"], row["interval_upper"]]
+                    if row.get("interval_lower") is not None and row.get("interval_upper") is not None
+                    else None
+                )
     return {
         "version": 2,
+        "prediction": artifact.get("prediction"),
         "visualization": spec,
         "primary": primary,
         "rows": plotted,

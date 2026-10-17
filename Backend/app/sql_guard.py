@@ -113,6 +113,12 @@ def validate_sql(
         # children still pass through this walk and the function allowlist.
         if isinstance(node, exp.Func) and not isinstance(node, (exp.And, exp.Or)):
             name = node.name.upper() if isinstance(node, exp.Anonymous) else node.sql_name().upper()
+            # SQLGlot normalizes approved FORMAT_DATE / TO_CHAR to TimeToStr.
+            # Match its typed node, never an anonymous UDF of the same name.
+            if isinstance(node, exp.TimeToStr):
+                name = "FORMAT_DATE"
+            elif isinstance(node, exp.TsOrDsToDate):
+                name = "DATE"
             if name not in SAFE_FUNCTIONS:
                 raise AppError(f"Function {name} is not approved for demo queries.", code="unsafe_sql")
         if isinstance(node, exp.Table):

@@ -1,0 +1,258 @@
+{
+  "verified_at": "2026-10-16T21:04:08.290228+00:00",
+  "project": "project-e8b1593d-009a-4822-abf",
+  "database": "agentic-bi-demo",
+  "database_edition": "STANDARD",
+  "mode": "Insert-only operator seed; two runs",
+  "new_skills": {
+    "analytics-change-contributions": {
+      "name": "Sales change and segment contributions",
+      "revision": 1,
+      "source": "bigquery",
+      "enabled": true,
+      "instructions_sha256": "5101d05e9c1a1c6baaccccc42fe2a9776e1ea59391c1c0be23bc3f523ff2a98e"
+    },
+    "analytics-comparable-stores": {
+      "name": "Comparable-store and target performance",
+      "revision": 1,
+      "source": "all",
+      "enabled": true,
+      "instructions_sha256": "58d1afdf25aa2a3f217e566db8c31180db47ee835bc14a861424d2756ebf0467"
+    },
+    "analytics-customer-cohorts": {
+      "name": "Customer cohorts and repeat purchasing",
+      "revision": 1,
+      "source": "all",
+      "enabled": true,
+      "instructions_sha256": "8d9bff94e8b61ef026f91f997f19e25d4ce1a532f6cd73a88e3350b0471d0f1d"
+    },
+    "analytics-data-quality": {
+      "name": "Data quality and analysis readiness",
+      "revision": 1,
+      "source": "all",
+      "enabled": true,
+      "instructions_sha256": "a68ebb09f1b44e381766b2c09cd276bee9878b9551db16f7bb0c3170aa6a8dda"
+    },
+    "analytics-kpi-definitions": {
+      "name": "Retail KPI definitions and weighted ratios",
+      "revision": 1,
+      "source": "bigquery",
+      "enabled": true,
+      "instructions_sha256": "cc4840a057c58a42b64748257e8b331cc80eefa6f292149d81452bb32b609934"
+    },
+    "analytics-marketing-associations": {
+      "name": "Campaign and promotion performance",
+      "revision": 1,
+      "source": "all",
+      "enabled": true,
+      "instructions_sha256": "e7c15aa299c860b5afbc933fe789467acd322fa92b7bcd7318f60295283fe9bb"
+    },
+    "analytics-merchandise-margin": {
+      "name": "Merchandise margin and returns-adjusted performance",
+      "revision": 1,
+      "source": "bigquery",
+      "enabled": true,
+      "instructions_sha256": "81937164abf5934519db0e27aec941e5c3fd2ce7708939279c42c2f7a54f3eaa"
+    },
+    "analytics-seasonality": {
+      "name": "Calendar trends and retail seasonality",
+      "revision": 1,
+      "source": "bigquery",
+      "enabled": true,
+      "instructions_sha256": "0bc54c85b4bbf95b71e4da398d4d566bd2424f04271fd332fc55c436a3eb26d9"
+    },
+    "prediction-backtesting": {
+      "name": "Forecast validation and uncertainty",
+      "revision": 1,
+      "source": "all",
+      "enabled": true,
+      "instructions_sha256": "968932c09561eed6422d4f9bc7f26d336b067adfea71699d6dfa856264e24faf"
+    },
+    "prediction-driver-scenarios": {
+      "name": "Conditional driver and promotion scenarios",
+      "revision": 1,
+      "source": "all",
+      "enabled": true,
+      "instructions_sha256": "34d7225bd88b0808d266ae5c4f2bf55f9c80f67757036c3b29def0a906ea69a7"
+    },
+    "prediction-rates-returns": {
+      "name": "Returns and rate prediction readiness",
+      "revision": 1,
+      "source": "bigquery",
+      "enabled": true,
+      "instructions_sha256": "51843a63508ac1ea472b8b6a41e12819389aaf9c8275dcc39731af7abd2f5c45"
+    },
+    "prediction-sales-forecast": {
+      "name": "Revenue and demand forecasting",
+      "revision": 1,
+      "source": "bigquery",
+      "enabled": true,
+      "instructions_sha256": "0264a6e19599fb66cf95764570c2df5f0ed456d5f5e41328697a1a3685a8d867"
+    }
+  },
+  "previous_active_skills": 5,
+  "previous_deleted_skills": 1,
+  "active_after": 17,
+  "checks": {
+    "existing_skills_unchanged": true,
+    "all_twelve_active": true,
+    "content_and_revision_verified": true,
+    "reseed_did_not_create_revision_two": true,
+    "library_total": true
+  },
+  "tests": {
+    "backend_skill_pack_and_library": 29,
+    "ruff": "passed",
+    "git_diff_check": "passed"
+  },
+  "analytical_data_changed": false,
+  "application_redeployment": false,
+  "github_publication": false,
+  "selection_verification": {
+    "mode": "Real Vertex model calls through existing AI/Skills service, live public catalog, ephemeral local ADK sessions. No source SQL or report fitting requested.",
+    "probes": [
+      {
+        "model": "gemini-3.8-flash",
+        "question": "Calculate overall AOV using total merchandise revenue divided by completed orders, not a mean of monthly AOV values. Explain numerator and denominator.",
+        "source": "bigquery",
+        "manual_ids": [],
+        "expected_relevant_skill": "analytics-kpi-definitions",
+        "selected": [
+          {
+            "id": "analytics-kpi-definitions",
+            "revision": 1,
+            "mode": "automatic"
+          },
+          {
+            "id": "dcb3aca2792c41af9f7f3357336394bd",
+            "revision": 1,
+            "mode": "automatic"
+          }
+        ],
+        "warnings": [],
+        "passed": true
+      },
+      {
+        "model": "gemini-3.8-flash",
+        "question": "Create an Advanced Analysis forecast of monthly merchandise revenue for the next three months, comparing seasonal-naive baselines with rolling backtests and uncertainty.",
+        "source": "bigquery",
+        "manual_ids": [],
+        "expected_relevant_skill": "prediction-sales-forecast",
+        "selected": [
+          {
+            "id": "prediction-sales-forecast",
+            "revision": 1,
+            "mode": "automatic"
+          },
+          {
+            "id": "prediction-backtesting",
+            "revision": 1,
+            "mode": "automatic"
+          },
+          {
+            "id": "analytics-seasonality",
+            "revision": 1,
+            "mode": "automatic"
+          }
+        ],
+        "warnings": [],
+        "passed": true
+      },
+      {
+        "model": "gemini-3.8-flash",
+        "question": "Create an Advanced Analysis conditional promotion-driver revenue scenario. Ask me for all future baseline and alternative driver paths; do not estimate causal uplift.",
+        "source": "all",
+        "manual_ids": [],
+        "expected_relevant_skill": "prediction-driver-scenarios",
+        "selected": [
+          {
+            "id": "prediction-driver-scenarios",
+            "revision": 1,
+            "mode": "automatic"
+          },
+          {
+            "id": "prediction-sales-forecast",
+            "revision": 1,
+            "mode": "automatic"
+          }
+        ],
+        "warnings": [],
+        "passed": true
+      },
+      {
+        "model": "gemini-3.8-flash",
+        "question": "Compare three-month customer repeat purchasing by signup cohort using equally mature observation windows.",
+        "source": "all",
+        "manual_ids": [],
+        "expected_relevant_skill": "analytics-customer-cohorts",
+        "selected": [
+          {
+            "id": "analytics-customer-cohorts",
+            "revision": 1,
+            "mode": "automatic"
+          }
+        ],
+        "warnings": [],
+        "passed": true
+      },
+      {
+        "model": "gemini-3.5-flash-lite",
+        "question": "Assess whether mature purchase cohorts and valid denominators support a return-rate forecast. Withhold immature-cohort predictions.",
+        "source": "bigquery",
+        "manual_ids": [],
+        "expected_relevant_skill": "prediction-rates-returns",
+        "selected": [
+          {
+            "id": "prediction-rates-returns",
+            "revision": 1,
+            "mode": "automatic"
+          },
+          {
+            "id": "9b554fe92c0649b38a534ab5abda8acf",
+            "revision": 1,
+            "mode": "automatic"
+          }
+        ],
+        "warnings": [],
+        "passed": true
+      },
+      {
+        "model": "gemini-3.5-flash-lite",
+        "question": "Forecast monthly revenue for the next three months using Advanced Analysis.",
+        "source": "bigquery",
+        "manual_ids": [
+          "prediction-backtesting",
+          "analytics-seasonality"
+        ],
+        "expected_relevant_skill": "prediction-sales-forecast",
+        "selected": [
+          {
+            "id": "prediction-backtesting",
+            "revision": 1,
+            "mode": "manual"
+          },
+          {
+            "id": "analytics-seasonality",
+            "revision": 1,
+            "mode": "manual"
+          },
+          {
+            "id": "prediction-sales-forecast",
+            "revision": 1,
+            "mode": "automatic"
+          }
+        ],
+        "warnings": [],
+        "passed": true
+      }
+    ],
+    "passed": 6,
+    "total": 6
+  },
+  "browser_verification": {
+    "live_library_cards_visible": true,
+    "scenario_skill_search": true,
+    "standard_management_controls_visible": true,
+    "frontend_code_changed": false
+  }
+}

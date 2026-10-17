@@ -12,7 +12,6 @@ import {
   CartesianGrid,
   Cell,
   Line,
-  LineChart,
   Pie,
   PieChart,
   ReferenceDot,
@@ -303,8 +302,11 @@ function Plot({
     name: m.label ?? m.field,
     stroke: colors[m.field],
     strokeWidth: 2.3,
-    strokeDasharray:
-      m.role === "target" || m.role === "comparison" ? "6 4" : undefined,
+    strokeDasharray: ["target", "comparison", "forecast", "scenario"].includes(
+      m.role,
+    )
+      ? "6 4"
+      : undefined,
     connectNulls: false,
     isAnimationActive: false,
   });
@@ -358,13 +360,26 @@ function Plot({
         </ComposedChart>
       ) : view === "line" || view === "area" ? (
         view === "line" ? (
-          <LineChart
+          <ComposedChart
             accessibilityLayer
             data={data.rows}
             margin={{ top: 28, right: 32, bottom: 8, left: 0 }}
             onClick={pointClick}
           >
             {axes}
+            {data.prediction?.interval && (
+              <Area
+                dataKey="_interval"
+                name="Prediction interval"
+                fill="var(--primary)"
+                fillOpacity={0.12}
+                stroke="none"
+                legendType="none"
+                tooltipType="none"
+                isAnimationActive={false}
+                connectNulls={false}
+              />
+            )}
             {measures.map((m) => (
               <Line
                 key={m.field}
@@ -374,7 +389,7 @@ function Plot({
               />
             ))}
             {references}
-          </LineChart>
+          </ComposedChart>
         ) : (
           <AreaChart
             accessibilityLayer
@@ -556,8 +571,10 @@ export default function InsightfulChart({
     (m) =>
       !(
         hidden[m.field] ??
-        (initialState ? !initialState.visible_measures.includes(m.field) :
-          !preferences.chartComparisons && ["target", "comparison"].includes(m.role))
+        (initialState
+          ? !initialState.visible_measures.includes(m.field)
+          : !preferences.chartComparisons &&
+            ["target", "comparison"].includes(m.role))
       ),
   );
   const colors = Object.fromEntries(
@@ -673,7 +690,7 @@ export default function InsightfulChart({
             : shown.map((m) => ({
                 label: `${m.label} (${m.unit === "currency" ? m.currency : m.unit})`,
                 color: colors[m.field],
-                dashed: ["target", "comparison"].includes(m.role),
+                dashed: ["target", "comparison", "forecast", "scenario"].includes(m.role),
               })),
         );
       }

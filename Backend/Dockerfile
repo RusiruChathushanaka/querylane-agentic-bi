@@ -10,7 +10,7 @@ RUN useradd --create-home --uid 10001 appuser
 WORKDIR /app
 COPY --from=build --chown=appuser:appuser /app/.venv /app/.venv
 COPY --chown=appuser:appuser app ./app
-ENV PATH="/app/.venv/bin:$PATH" PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1
+ENV PATH="/app/.venv/bin:$PATH" PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1 MPLCONFIGDIR=/tmp/querylane-matplotlib
 USER appuser
 EXPOSE 8080
 CMD ["python", "-m", "app.serve"]

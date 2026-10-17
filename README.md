@@ -44,13 +44,16 @@ This preview uses an operator access token only in memory. Restart it when that 
 
 ## Included behavior
 
-- Public [dashboard library](docs/dashboards.md): create shared dashboards, pin saved chart/KPI/table views, arrange cards, and recover removed items. Pinning/viewing runs no new analysis. Available on the deployed application's `/dashboards` page.
+- [Advanced Analysis reports](docs/reports.md): ADK specialist workflow, concurrent chat, public versioned Reports library, validated forecasts/scenarios, PDF/Word/CSV downloads, dashboard pins and optional requester-only research. Enable **Advanced Analysis** beside the composer to create a public report. Production uses the private Cloud Run report worker and Cloud Tasks; see the release and validation records.
+
+- Public [dashboard library](docs/dashboards.md): create shared dashboards, pin saved chart/KPI/table views, arrange cards, and recover removed items. Explicit view/edit modes, sharing, and whole-dashboard PNG/JPEG/PDF/CSV ZIP/JSON downloads are implemented; see validation for release status. Pinning/viewing/downloading runs no new analysis.
 
 - [Expanded retail history](docs/retail-timeseries.md): 573,348 orders across 2023–2026, 1.3 million line items, dated refunds, stores, promotions, and a daily calendar. Reproducible Parquet generation, validation, insert-only cloud upload, and date-range extension scripts preserve the original demo tables.
 
 - Shared conversations, follow-ups, immutable result references, forks, and share links.
 - Conversational [voice skill author](docs/voice-skill-author-plan.md): interview, requirements checklist, recoverable draft, review, and explicit publication. See [implementation validation](docs/validation.md#conversational-voice-skill-author--2026-10-16) and the current deployment record for verification scope.
 - Public [skills library](docs/skills.md): versioned Markdown playbooks, import/export, automatic discovery, chat attachments, and recoverable deletion. Open the [deployed skills library](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/skills).
+- [Analytics and prediction playbooks](docs/analytics-skills.md): twelve skills for quality checks, weighted KPIs, change diagnostics, cohorts, margin, campaigns, stores, seasonality, validated forecasts and conditional scenarios, with sample questions and reproducible insert-only seeding.
 - ADK planning and interpretation with Gemini; schema embeddings and Firestore vector retrieval.
 - Guarded BigQuery/PostgreSQL connectors, independent query evidence, bounded result pages.
 - Automatically inferred, type-checked cross-source relationships; duplicate-key and incomplete-input rejection.

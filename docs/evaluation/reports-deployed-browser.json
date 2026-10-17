@@ -1,0 +1,89 @@
+{
+  "verified_at": "2026-10-17T02:28:21.808057+05:30",
+  "frontend_revision": "agentic-bi-frontend-00010-z4h",
+  "report_id": "b900baa4adb461dec439d869b7c8e20a",
+  "version": 4,
+  "accessibility": {
+    "composer": {
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/",
+      "counts": {
+        "inapplicable": 37,
+        "incomplete": 0,
+        "passes": 23,
+        "violations": 0
+      },
+      "violation_ids": []
+    },
+    "report_desktop": {
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/reports/b900baa4adb461dec439d869b7c8e20a?version=4",
+      "counts": {
+        "inapplicable": 30,
+        "incomplete": 1,
+        "passes": 30,
+        "violations": 0
+      },
+      "violation_ids": []
+    },
+    "report_mobile": {
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/reports/b900baa4adb461dec439d869b7c8e20a?version=4",
+      "counts": {
+        "inapplicable": 30,
+        "incomplete": 1,
+        "passes": 29,
+        "violations": 0
+      },
+      "violation_ids": []
+    },
+    "library_mobile": {
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/reports",
+      "counts": {
+        "inapplicable": 38,
+        "incomplete": 0,
+        "passes": 22,
+        "violations": 0
+      },
+      "violation_ids": []
+    }
+  },
+  "downloads": {
+    "pdf": {
+      "size": 555394,
+      "sha256": "4460852530bad3b410fce143175a7724e753bb99d852e6946adee7c4d5cea3df",
+      "matches_immutable_version": true
+    },
+    "docx": {
+      "size": 549140,
+      "sha256": "77c2bd381f2843a9de9b18a76c218e2a4e1d4229ce9243b3350b172bc783233b",
+      "matches_immutable_version": true
+    },
+    "data": {
+      "size": 11142,
+      "sha256": "034218d3547f7b71922c9e70631ba2ba6c00222f565b8f007c147c1b3ee1a174",
+      "matches_immutable_version": true
+    }
+  },
+  "checks": {
+    "composer_mode_and_style": true,
+    "public_library": true,
+    "completed_version_reader": true,
+    "historical_version_switch_and_loading_state": true,
+    "presentation_revision_from_browser": true,
+    "deletion_and_recently_deleted_restore": true,
+    "actual_pdf_word_zip_downloads": true,
+    "mobile_390px_no_page_overflow": true,
+    "light_dark_and_reduced_motion": true,
+    "pdf_first_two_pages_visually_inspected": true
+  },
+  "initial_defects": {
+    "composer_contrast": "Corrected foreground contrast on dark source/style selectors.",
+    "saved_version_loading": "Corrected transient unavailable message while fetching a known saved version.",
+    "mobile_scrollable_tables": "Initial axe scan found two inaccessible inner horizontal scrollers; final wrapper gives keyboard focus and visible outline."
+  },
+  "limitations": [
+    "Screen-reader and Safari/Firefox testing not performed.",
+    "Chart SVG contrast retains automated manual-review item; screenshots inspected.",
+    "Physical microphone hardware not retested.",
+    "PDF/UA conformance not certified.",
+    "Latest report uses disclosed deterministic evidence summaries after bounded narrative validation failed."
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "verified_at": "2026-10-16T19:53:59.249192+00:00",
+  "status": "complete",
+  "stage": "Preparing downloads",
+  "error": null,
+  "clarification": null,
+  "budgets": {
+    "model_calls": 8,
+    "output_tokens": 4136,
+    "queries": 5,
+    "scan_bytes": 2147483648,
+    "fits": 12,
+    "fit_seconds": 30,
+    "seconds": 15.004213333129883
+  },
+  "data_profile": "timeseries",
+  "model": "gemini-3.5-flash-lite",
+  "cloud_data_writes": false,
+  "production_dispatch_verified": false,
+  "reviewed": true,
+  "artifact_count": 3,
+  "claims": 35,
+  "downloads": {
+    "pdf": {
+      "size": 222930,
+      "sha256": "b21d2389cf2b4133a4f618da30c68ab9c3f8844e724555c9b77533a75d0d7eac"
+    },
+    "docx": {
+      "size": 219832,
+      "sha256": "570a56a5789ec4fe451c12a45248c8cb043882e6f3a029f2ae3bbc54c0f8d27c"
+    },
+    "data": {
+      "size": 6976,
+      "sha256": "92548e913d1a01ff8bf3ad8a2d20feb1efb91eedd8c3c0673dfca32041d19641"
+    }
+  },
+  "independent_reconciliation": [
+    {
+      "field": "merchandise_revenue",
+      "rows": 45,
+      "actual": "354425112.20",
+      "independent_ledger": "354425112.2",
+      "matches": true
+    }
+  ],
+  "passed": true
+}

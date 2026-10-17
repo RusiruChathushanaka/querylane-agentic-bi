@@ -1,0 +1,90 @@
+{
+  "verified_local_date": "2026-10-17",
+  "scope": "Local implementation, memory storage and isolated Firestore emulator namespaces. No cloud release.",
+  "backend": {
+    "passed": 385,
+    "skipped": 1,
+    "skip_reason": "Memory variant of the fresh-client Firestore durability test; the emulator variant passes.",
+    "ruff": "passed",
+    "report_adapter_tests": 152,
+    "logical_report_cases": 76,
+    "independent_retail_calculation_cases": 30,
+    "warning": "Existing Starlette TestClient/httpx deprecation."
+  },
+  "frontend": {
+    "tests_passed": 28,
+    "eslint": "passed",
+    "typescript": "passed",
+    "production_build": "passed",
+    "routes": [
+      "/reports",
+      "/reports/[id]"
+    ]
+  },
+  "browser": {
+    "urls": [
+      "http://127.0.0.1:3006/",
+      "http://127.0.0.1:3006/reports",
+      "http://127.0.0.1:3006/reports/184ba567d8e4360da5f6aa30d9bcfd21"
+    ],
+    "source_mode": "Deterministic local fixtures; in-memory scratch history.",
+    "verified": [
+      "Composer activation and report style",
+      "Normal composer available during report run",
+      "Progress and completion notification",
+      "Report reader, version selector, chart and pin control",
+      "Actual PDF download via browser",
+      "Presentation revision completes as version 2",
+      "Library search/status/Recently deleted controls",
+      "Soft deletion and Recently deleted restoration",
+      "Labeled future-assumption form and optional scenario fields",
+      "390px light/reduced-motion layout without horizontal overflow"
+    ],
+    "mock_scope": "Only the waiting-input form display used a temporary page-local fetch mock; discarded on navigation. Typed assumption persistence and validation use real memory/emulator tests.",
+    "axe": {
+      "workspace_violations": 0,
+      "reader_violations": 0,
+      "library_violations": 0,
+      "assumption_form_violations": 0,
+      "manual_review": "SVG chart label contrast: axe cannot determine background."
+    },
+    "next_diagnostics": {
+      "compilation_issues": [],
+      "config_errors": [],
+      "session_errors": []
+    },
+    "limits": [
+      "Full screen-reader and Safari/Firefox testing not performed.",
+      "Physical microphone input not retested; reports are initiated by text composer.",
+      "All theme accents not separately re-audited in this feature."
+    ]
+  },
+  "model_checks": [
+    "reports-gemini-local.json",
+    "reports-flash-lite-local.json",
+    "reports-search-local.json"
+  ],
+  "offline_smoke": "reports-fixture-local.json",
+  "durability_checks": [
+    "Atomic admission/idempotency and quotas",
+    "Outbox and genuine queue backlog distinction",
+    "Expired lease fencing and stale worker/session writes",
+    "Completed query and SQL-repair checkpoint recovery",
+    "Cancellation ownership and exhausted/expired recovery",
+    "Immutable artifact pages and exclusive export checksums",
+    "Revision conflict checks",
+    "Report/dashboard retention across reset and expired report purge"
+  ],
+  "production_checks_remaining": [
+    "Cloud Tasks OIDC and IAM denial/allow behavior",
+    "Private worker, scheduler and bucket integration",
+    "Runtime service-account model/source access",
+    "Real process crash and repeated task deliveries against hosted infrastructure",
+    "Search attribution/display verification before enabling optional research"
+  ],
+  "cloud_deployed": false,
+  "github_pushed": false,
+  "analytical_data_uploaded": false,
+  "iam_changed": false,
+  "active_larger_dataset_unchanged": true
+}

@@ -43,3 +43,26 @@ See [the implementation plan](dashboard-plan.md) for the full route table and [A
 New artifacts record the actual question, run and analysis IDs. Historical artifacts remain readable without these fields. No public connection/credential management, automatic refresh, arbitrary chart expressions, agent write tools, or source-data mutation is added.
 
 This feature is deployed to Cloud Run; see [hosted validation](validation.md#dashboard-library-cloud-release--2026-10-16) and [the release record](deployment.json). Preserve the larger `timeseries` profile on future releases. Local emulator tests use a demo project and `(default)` because the emulator does not support multiple named databases; hosted verification also exercises the existing named `agentic-bi-demo` database under its restricted backend identity. Deployment does not seed dashboards, reset history, or upload analytical data.
+
+## View, edit, share and whole-dashboard downloads
+
+Each active library card has **View**, **Edit**, **Share**, and **Download** actions. View opens an exploration-focused dashboard; Edit opens `?mode=edit`, exposing dashboard details, card titles/notes, saved views, ordering, widths, unpinning and recovery. **View dashboard** returns to view mode. Mode is a local interface choice, not an access restriction: dashboards remain public and everyone can enter edit mode. Existing transactional revision checks continue to protect shared edits.
+
+Share opens a dialog with the canonical public dashboard link, Copy link, and native device sharing where supported. A denied/unavailable clipboard selects the visible link for manual copying. Links omit edit mode, open the latest published dashboard, and do not freeze a revision or create private access.
+
+Download is available in both the library and the open dashboard:
+
+| Format | Contents |
+| --- | --- |
+| PNG / JPEG | Print-friendly light overview of all saved cards, in published order and widths, with scope/completeness notes |
+| PDF | Paginated saved cards, chart legends/units, table previews, source timestamps and caveats |
+| CSV data ZIP | All original saved rows/columns per artifact, plus a dashboard/provenance/checksum manifest |
+| JSON snapshot | Dashboard layout, saved views, revision and evidence metadata; no data rows or import/restore operation |
+
+Exports use **published saved views**, including cards not yet scrolled into view. Unsaved edits and temporary chart exploration are excluded. The dialog captures the current dashboard revision and rejects a stale download rather than combining revisions. Source artifacts are immutable; no SQL or model calls run. CSVs include the complete saved result regardless of image date filters, Top N or downsampling. Partial source results remain labeled partial. Spreadsheet formulas in textual cells are escaped.
+
+Static charts use the existing headless Matplotlib/report export stack and conservative light styling, rather than a screen capture. Mixed units are separated, comparator/prediction lines use dashes, date scopes and visible series are retained, and prediction caveats include cutoffs and available interval coverage. PDF/image tables preview up to 20 rows and 8 columns; long cells may be shortened. CSV ZIP retains all saved data. PNG/JPEG is an image; PDF titles, notes, KPI values and table previews are selectable; charts are rasterized. PDF/UA conformance is not claimed.
+
+`GET /api/v1/dashboards/{id}/downloads/{png,jpeg,pdf,data,json}?expected_revision=N` reads only saved backend evidence. It requires no new storage, IAM or dependencies. Each backend instance prepares one dashboard export at a time, rejecting competing preparations with a retryable busy error. Input is bounded to 200,000 distinct saved rows / 32 MiB combined, with a 60-second evidence-load deadline and an isolated renderer capped at 45 seconds. PNG/JPEG is bounded to 24 megapixels; overly large images should use PDF or individual card downloads. Missing pages, deleted dashboards and concurrent snapshot edits fail explicitly; the service never returns a successful truncated export. No export files or dashboard revisions are persisted by downloading.
+
+This addition is deployed to Cloud Run. See [hosted validation](validation.md#dashboard-actions-cloud-release--2026-10-17), [API evidence](evaluation/dashboard-actions-deployed-api.json), and [the release record](deployment.json). Future releases must follow the deployment guide, deploy the backend before the frontend download controls, and preserve the larger `timeseries` data profile.

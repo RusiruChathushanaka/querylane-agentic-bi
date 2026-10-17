@@ -1,6 +1,8 @@
 """Stable seed IDs let operators add examples without replacing public edits."""
 
-from app.skills import SkillContent, Skills
+from pathlib import Path
+
+from app.skills import SkillContent, Skills, import_skill
 
 EXAMPLES = [
     (
@@ -33,3 +35,21 @@ async def seed_examples(repo, settings):
     for skill_id, value in EXAMPLES:
         await skills.mutate("administrator", skill_id=skill_id, content=SkillContent(**value), seed=True)
     return len(EXAMPLES)
+
+
+def analytics_examples():
+    """Import the reviewable, source-controlled pack before any cloud writes."""
+    return [
+        (path.stem, import_skill(path.read_text(encoding="utf-8")))
+        for path in sorted(Path(__file__).with_name("skill_library").glob("*.md"))
+    ]
+
+
+async def seed_analytics(repo, settings):
+    skills = Skills(repo, settings)
+    examples = analytics_examples()
+    if not examples:
+        raise ValueError("The analytics skills pack is missing; no skills were written.")
+    for skill_id, content in examples:
+        await skills.mutate("administrator", skill_id=skill_id, content=content, seed=True)
+    return len(examples)

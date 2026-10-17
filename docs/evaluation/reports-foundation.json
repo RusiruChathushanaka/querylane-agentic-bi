@@ -1,0 +1,67 @@
+{
+  "existing_project_bindings_preserved": true,
+  "new_project_grants": [
+    {
+      "role": "projects/project-e8b1593d-009a-4822-abf/roles/agenticBiModelInvoker",
+      "condition": {},
+      "member": "serviceAccount:agentic-bi-report-worker@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com"
+    },
+    {
+      "role": "roles/bigquery.jobUser",
+      "condition": {},
+      "member": "serviceAccount:agentic-bi-report-worker@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com"
+    },
+    {
+      "role": "roles/cloudsql.client",
+      "condition": {
+        "expression": "resource.name==\"projects/project-e8b1593d-009a-4822-abf/instances/agentic-bi-demo-pg\"&&resource.service==\"sqladmin.googleapis.com\"",
+        "title": "agentic-bi-demo-sql"
+      },
+      "member": "serviceAccount:agentic-bi-report-worker@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com"
+    },
+    {
+      "role": "roles/datastore.user",
+      "condition": {
+        "expression": "resource.name==\"projects/project-e8b1593d-009a-4822-abf/databases/agentic-bi-demo\"",
+        "title": "agentic-bi-demo-firestore"
+      },
+      "member": "serviceAccount:agentic-bi-report-worker@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com"
+    }
+  ],
+  "bucket": {
+    "creation_time": "2026-10-16T20:05:50+0000",
+    "default_storage_class": "STANDARD",
+    "generation": 1792181150008232887,
+    "location": "ASIA-SOUTHEAST1",
+    "location_type": "region",
+    "metageneration": 4,
+    "name": "project-e8b1593d-009a-4822-abf-agentic-bi-reports",
+    "public_access_prevention": "enforced",
+    "satisfies_pzs": true,
+    "soft_delete_policy": {
+      "effectiveTime": "2026-10-16T20:05:50.919000+00:00",
+      "retentionDurationSeconds": "604800"
+    },
+    "storage_url": "gs://project-e8b1593d-009a-4822-abf-agentic-bi-reports/",
+    "uniform_bucket_level_access": true,
+    "update_time": "2026-10-16T20:05:55+0000"
+  },
+  "queue": {
+    "name": "projects/project-e8b1593d-009a-4822-abf/locations/asia-southeast1/queues/agentic-bi-reports",
+    "rateLimits": {
+      "maxBurstSize": 10,
+      "maxConcurrentDispatches": 2,
+      "maxDispatchesPerSecond": 2.0
+    },
+    "retryConfig": {
+      "maxAttempts": 3,
+      "maxBackoff": "60s",
+      "maxDoublings": 16,
+      "minBackoff": "30s"
+    },
+    "state": "RUNNING"
+  },
+  "service_agents_preexisting": true,
+  "new_account_keys_created": false,
+  "analytical_data_changed": false
+}

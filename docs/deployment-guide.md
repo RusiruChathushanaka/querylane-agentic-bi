@@ -2,7 +2,7 @@
 
 This is the primary deployment runbook for Querylane. Read it before deploying, changing cloud configuration, provisioning resources, updating secrets, or troubleshooting a release. Use the existing scripts and keep this guide synchronized with changes to them.
 
-Last reviewed: **2026-10-16**. [deployment.json](deployment.json) is the last recorded deployment, not live cloud state. [validation.md](validation.md) explains what has been verified and which manual checks remain.
+Last reviewed: **2026-10-17**. [deployment.json](deployment.json) is the last recorded deployment, not live cloud state. [validation.md](validation.md) explains what has been verified and which manual checks remain.
 
 | Task | Start here |
 | --- | --- |
@@ -56,6 +56,8 @@ New collections are `skills` with immutable `revisions`, run-scoped `skill_snaps
 
 After an authorized deployment, check create/edit/delete/restore, CORS preflight for `PATCH` and `DELETE`, skill attachments, one automatic selection, an answer's revision link, and history after restarting/scaling the backend. Test against the named database rather than accepting local memory mode as persistence evidence. For optional non-destructive example seeding, run `cd Backend` then `uv run python -m app.admin seed-skills` using operator credentials. It preserves existing examples, including public edits/deletions; routine deploy scripts do not run it.
 
+The separately authorized [analytics/prediction pack](analytics-skills.md) uses `uv run python -m app.admin seed-analysis-skills` from the current `Backend/` checkout. It adds twelve stable IDs, validates imports before writing, and preserves existing edited/disabled/deleted entries. Published library documents are immediately visible to chat and report selection; seeding requires no service redeployment or analytical data upload.
+
 Rollback uses the previous frontend/backend revisions through the routine runbook. Keep the additive skills collections and revision documents; older application versions ignore these fields. `reset-history` explicitly preserves skills and their capacity counter. Update deployment records only after actually deploying and verifying serving revisions.
 
 ### Voice skill author release
@@ -82,7 +84,7 @@ Follow [the retail data workflow](retail-timeseries.md) and [column dictionary](
 
 Use `python -m scripts.retail_data upload --bundle PATH` to review a local-only plan; `--apply` performs the explicitly authorized data load. Never use the legacy destructive `app.admin seed` command to extend this history. Keep the same generation settings/start date and use `extend` to move the as-of end forward, including delayed refunds. An import failure marks the new source profile unavailable until a repeat of the same bundle completes. Quiesce this profile's traffic before importing; there is no cross-service distributed snapshot for queries already running.
 
-After upload and verification, an authorized backend release opts in with `python3 infra/deploy.py --service backend --frontend-url "$BI_FRONTEND_URL" --data-profile timeseries`. That flag sets `DATA_PROFILE=timeseries` and `SOURCE_ROW_LIMIT=30000` for the 25,000-customer dimension. It derives SQL schema `retail_timeseries`; SQL allowlists, byte/scan budgets, 50,000-row fusion output bound, and incomplete-input rejection remain active. The helper defaults to `legacy`, so retain the explicit profile flag on later releases. Deploy the frontend label change as part of the normal release.
+After upload and verification, an authorized backend release opts in with `python3 infra/deploy.py --service backend --frontend-url "$BI_FRONTEND_URL" --data-profile timeseries`. That flag sets `DATA_PROFILE=timeseries` and `SOURCE_ROW_LIMIT=30000` for the 25,000-customer dimension. It derives SQL schema `retail_timeseries`; SQL allowlists, byte/scan budgets, 50,000-row fusion output bound, and incomplete-input rejection remain active. The helper now inspects and retains the active profile when omitted; an explicit profile is still recommended for reviewed release commands. A first deployment requires an explicit profile if the service does not exist. Cloud inspection errors stop the release. Deploy the frontend label change as part of the normal release.
 
 `DATA_PROFILE=timeseries uv run python -m app.admin index-schema` from `Backend/` optionally refreshes profile-tagged schema embeddings in the existing named Firestore database. It is a separate billable operator action; existing legacy chunks are retained and full-schema retrieval remains available. Verify live queries, readiness/import failure behavior, date coverage, month/year boundaries, YoY/rolling calculations, reader permissions, and source counts. Existing fixed nine-month evaluation fixtures remain valid for the legacy profile; use the new independent reconciliation report for time-series acceptance. Rollback selects `legacy` and leaves the additional data intact.
 
@@ -95,6 +97,121 @@ For the time-series release use `--data-profile timeseries` explicitly. The old 
 Add `--voice` to include a real Gemini Live tool invocation, spoken audio and transcripts. This injects text over the live transport and does not test microphone hardware. A successful simple model probe does not establish full planner compatibility: verify a representative end-to-end plan and a filtered follow-up. The complex analysis contract uses JSON response mode with strict local validation because Vertex rejects its full nested response schema; smaller contracts retain native structured output. Keep those validations and the SQL AST checks active when updating SDKs.
 
 Confirm the source readiness fence, five BigQuery/six PostgreSQL tables, 573,348 orders and 25,000 profiles under the actual runtime identity. Verify the new chart controls/downloads in the deployed browser. Record serving revisions, image digests, profile, source limits, previous revisions and verification reports. Keep the previous images/revisions for rollback; rolling back to legacy does not remove the additional tables.
+
+## Dashboard view/edit, share and download release
+
+See [dashboard downloads](dashboards.md#view-edit-share-and-whole-dashboard-downloads). Release the backend before the frontend: the download dialog needs `GET /api/v1/dashboards/{id}/downloads/{kind}?expected_revision=N`. It uses existing saved artifact pages and installed Matplotlib/ReportLab/Pillow dependencies; no new database, index, IAM, bucket, secret or data upload is required. Keep `DATA_PROFILE=timeseries` and existing execution limits. Exports are ephemeral responses, not stored report files.
+
+Verify View/Edit entry points and reload behavior, canonical public links and clipboard-denial fallback, PNG/JPEG/PDF/CSV ZIP/JSON downloads, full-row CSV checksums versus scoped charts, partial/prediction caveats, stale-revision recovery, missing-page failure, mobile dialog scrolling, and keyboard/reduced-motion behavior. The new limits are one export preparation per backend instance, 200,000 rows / 32 MiB combined saved input, a 60-second input deadline, 45-second child renderer and 24-megapixel image bound. Deploying these controls never reseeds analytics or resets history.
+
+## Advanced reports release
+
+See [reports.md](reports.md), ADRs 0006/0007, and the dated deployment/validation records for the actual release status. The private report foundation is separate from routine application releases.
+
+Use a staged foundation/release when deployment is explicitly requested. Routine application releases do not create these new resources or reset data. Keep the `timeseries` profile and 30,000-row source cap. `infra/deploy.py` now reads the active backend configuration, preserves its profile and `REPORT_*` settings, and stops on inspection errors. An initial release without report infrastructure sets `REPORTS_ENABLED=false` so ordinary chat can operate safely.
+
+### Dedicated resources and permissions
+
+Create only these additional demo resources in `asia-southeast1`:
+
+| Resource | Name / boundary |
+| --- | --- |
+| Private worker | `agentic-bi-report-worker`, no unauthenticated invoker |
+| Runtime identity | `agentic-bi-report-worker@PROJECT.iam.gserviceaccount.com` |
+| Dispatch/scheduler identity | `agentic-bi-report-dispatch@PROJECT.iam.gserviceaccount.com` |
+| Task queue | `agentic-bi-reports` |
+| Export bucket | `PROJECT-agentic-bi-reports`, uniform access and public-access prevention |
+| Scheduler | `agentic-bi-report-reconcile`, private OIDC POST every minute |
+
+The worker requires the existing prediction-only custom role, BigQuery job submission, **reader access only on `agentic_bi_demo`**, conditional Firestore access only on `agentic-bi-demo`, conditional Cloud SQL client access only on `agentic-bi-demo-pg`, and access only to the guest-signing/PostgreSQL-reader secrets mounted by the shared service factory. Preserve all existing bindings/ACLs. Do not rerun the destructive seed to grant dataset access, grant project-wide BigQuery dataViewer, or broaden access to unrelated workloads.
+
+Grant the worker objectCreator + objectViewer on the dedicated export bucket and the public backend objectViewer on that bucket. An authorized purge operator separately needs object deletion there; the worker does not. Give backend and worker queue-scoped `roles/cloudtasks.enqueuer` for outbox delivery/reconciliation, and `roles/iam.serviceAccountUser` only on the dispatch identity. Give the dispatch identity `roles/run.invoker` only on the private worker. Verify Cloud Tasks/Scheduler service agents retain their documented token-minting service-agent roles; do not give blanket tokenCreator to runtime accounts.
+
+These new identities/grants require their own authorized foundation operation. The old demo IAM approval does not itself approve unrelated new grants. No browser Firestore access, analytical schema migration, new SQL role, source upload or skill seeding is needed.
+
+### Foundation and worker preparation
+
+For an authorized deployment that needs the foundation, inspect existing resources and enabled APIs first. `infra/provision_reports.py` prints a local-only plan by default; `--apply` creates only missing named resources and appends the scoped grants. It does not seed/upload/reset data. Existing-resource inspection errors stop the script; the BigQuery ACL update preserves existing entries with an etag check.
+
+```bash
+Backend/.venv/bin/python infra/provision_reports.py
+Backend/.venv/bin/python infra/provision_reports.py --stage foundation --apply
+```
+
+Cloud Tasks, Scheduler and Storage APIs must already be enabled (enable them separately if inspection establishes they are missing). The equivalent queue/bucket commands are:
+
+```bash
+gcloud tasks queues create agentic-bi-reports \
+  --project "$BI_PROJECT_ID" --location "$BI_REGION" \
+  --max-concurrent-dispatches 2 --max-dispatches-per-second 2 \
+  --max-attempts 3 --min-backoff 30s --max-backoff 60s
+
+gcloud storage buckets create "gs://$BI_PROJECT_ID-agentic-bi-reports" \
+  --project "$BI_PROJECT_ID" --location "$BI_REGION" \
+  --uniform-bucket-level-access --public-access-prevention
+
+gcloud tasks queues add-iam-policy-binding agentic-bi-reports \
+  --project "$BI_PROJECT_ID" --location "$BI_REGION" \
+  --member="serviceAccount:agentic-bi-backend@$BI_PROJECT_ID.iam.gserviceaccount.com" \
+  --role=roles/cloudtasks.enqueuer
+```
+
+Inspect existing resources before create; use the corresponding update command for an existing queue. Repeat the queue-specific binding for the worker identity. Grant service-account actAs on the dispatch account using its own IAM policy, not a project-wide accountUser grant. Preserve current bindings.
+
+Build the reviewed backend code using the existing Cloud Build process; it can first serve ordinary chat with reports disabled. Reuse that verified backend image for the private worker. Review its plan without any cloud operation:
+
+```bash
+python3 infra/deploy_report_worker.py \
+  --image "$BI_BACKEND_IMAGE" --frontend-url "$BI_FRONTEND_URL" \
+  --data-profile timeseries
+```
+
+Only the explicitly authorized release adds `--apply`. This helper deploys the private worker with reports disabled, discovers its **actual** URL, then enables its self-dispatch configuration. It does not provision IAM, queue, bucket or scheduler. The image must come from this project's dedicated backend repository. Set `BI_REPORT_WORKER_URL` to the returned URL.
+
+Worker settings: `APP_MODULE=app.report_worker:app`, Cloud Run timeout 660 seconds, concurrency one, max instances two, two CPUs and 2 GiB memory. Application computation remains capped at 600 seconds; task dispatch deadline is 665 seconds. The worker holds the request until a committed terminal outcome or a retryable failure. Never expose its internal handlers on the public backend or grant `allUsers` invoker access.
+
+Grant the dispatch identity invoker on only the new worker using `Backend/.venv/bin/python infra/provision_reports.py --stage invoker --worker-url "$BI_REPORT_WORKER_URL" --apply`. Verify an OIDC task reaches its private health endpoint and anonymous invocation is rejected. Then create the schedule with the helper's `--stage scheduler --worker-url "$BI_REPORT_WORKER_URL" --apply`, or equivalently:
+
+New IAM bindings may take time to propagate. A first task can return 403 before a retry succeeds. Inspect the attached dispatch identity, worker-base audience and service-scoped invoker binding, then allow the bounded retry before changing permissions. Do not make the worker public to resolve propagation delays.
+
+```bash
+gcloud scheduler jobs create http agentic-bi-report-reconcile \
+  --project "$BI_PROJECT_ID" --location "$BI_REGION" \
+  --schedule '* * * * *' --time-zone Etc/UTC --http-method POST \
+  --uri "$BI_REPORT_WORKER_URL/internal/reports/reconcile" \
+  --oidc-service-account-email "agentic-bi-report-dispatch@$BI_PROJECT_ID.iam.gserviceaccount.com" \
+  --oidc-token-audience "$BI_REPORT_WORKER_URL" \
+  --headers 'Content-Type=application/json' --message-body '{}' \
+  --attempt-deadline 60s
+```
+
+### Enable the public API, verify, then release the frontend
+
+After worker/queue/bucket checks, configure the public backend through the routine helper:
+
+```bash
+python3 infra/deploy.py --service backend \
+  --frontend-url "$BI_FRONTEND_URL" --data-profile timeseries \
+  --reports-worker-url "$BI_REPORT_WORKER_URL" \
+  --reports-bucket "$BI_PROJECT_ID-agentic-bi-reports" \
+  --reports-dispatch-service-account "agentic-bi-report-dispatch@$BI_PROJECT_ID.iam.gserviceaccount.com"
+```
+
+This sets Cloud Tasks dispatch and enables reports; subsequent routine releases preserve the configuration. Add `--image "$BI_BACKEND_IMAGE"` to reuse the already verified backend image instead of building it again; the helper accepts only the matching service image in this demo repository. Production rejects local dispatch. Keep Search disabled until the runtime identity/model/location and required requester-only attribution display are verified; optional `REPORT_RESEARCH_ENABLED=true` does not authorize public storage/export of grounded responses.
+
+Before releasing the frontend, verify a real queued report, named-Firestore checkpoints, private object downloads, a source result against the independent larger-data ledger, normal chat during report work, task replay without repeated completed SQL, cancellation, expired-worker fencing, an outbox recovery, and a second Cloud Run instance. Verify unauthenticated worker access fails, the dispatch audience is the actual worker base URL, no bucket object is public, and report/skill evidence is immutable. Existing local/emulator reports are not proof of hosted IAM or queue delivery.
+
+Run `python3 infra/verify_runtime.py --service report-worker --output docs/evaluation/reports-worker-runtime.json` to verify the new attached identity. The optional `--report-recovery` mode creates labeled control-only runs, tests actual outbox dispatch/fenced recovery with the private worker, and soft-deletes its cancelled probes; it makes no model/source calls. `Backend/scripts/smoke_reports_deployed.py` performs the opt-in public report workflow with real models/queries, matching downloads, concurrent chat, revisions, dashboard references and owner-only cancellation.
+
+Then deploy the frontend with the routine helper. Check composer activation, clarification, library navigation, versioning, PDF/DOCX/CSV, dashboard pins, mobile/reduced motion and browser errors. Inspect source profile/counts under runtime identities. Record real revisions, image digests, source profile and verification in `deployment.json`/`validation.md` **after actual deployment**.
+
+Rollback disables report admission or restores the previous frontend/backend and a compatible worker. Pause the dedicated queue/schedule if necessary; drain or inspect active report leases before incompatible worker changes. Existing report revisions, files, references and source data are retained. Workflow version one does not promise compatibility with arbitrary future graph changes.
+
+### Explicit maintenance
+
+History reset preserves Reports, their checkpoints/ADK events, export objects and retained artifacts; it now allows up to 660 seconds for active reports to drain. Queued workers cannot acquire a lease during maintenance. Report quota records are separate and survive reset. No report cleanup runs implicitly on startup or deployment.
+
+To permanently remove only expired, deleted reports, an authorized operator sets `REPORT_BUCKET` and runs `cd Backend` then `uv run python -m app.admin purge-reports`. It drains active work, deletes that report's files/checkpoints, releases its references and preserves dashboard-owned artifacts. Run it only as a separate approved data operation. Interrupted maintenance remains fenced; inspect it before the existing explicit `clear-maintenance` recovery command.
 
 ## Prerequisites
 
@@ -178,7 +295,7 @@ python3 infra/deploy.py --service frontend --backend-url "$BI_BACKEND_URL"
 
 If both change, deploy the backward-compatible backend first, verify it, then deploy the frontend. Avoid changing revisions while acceptance tests are running.
 
-The helper uploads the repository with `.gcloudignore`, builds the chosen directory using `infra/cloudbuild.yaml`, pushes a timestamp-tagged image to the dedicated repository, and deploys it using the operator's existing permissions. It prints the service URL and image. It does not use a default Cloud Build identity or deploy from source using a broad project-wide builder role. Build logs go to the dedicated GCS bucket. See Google's [user-specified build identity guide](https://docs.cloud.google.com/build/docs/securing-builds/configure-user-specified-service-accounts).
+The helper uploads the repository with `.gcloudignore`, builds the chosen directory using `infra/cloudbuild.yaml`, pushes a timestamp-tagged image to the dedicated repository, and deploys it using the operator's existing permissions. `--build-only` prepares an image without changing Cloud Run; `--image` then reuses a verified image from the matching demo service repository. It prints the service URL and image. It does not use a default Cloud Build identity or deploy from source using a broad project-wide builder role. Build logs go to the dedicated GCS bucket. See Google's [user-specified build identity guide](https://docs.cloud.google.com/build/docs/securing-builds/configure-user-specified-service-accounts).
 
 **Configuration behavior:** the helper applies the environment and secret references declared in `infra/deploy.py`. It is not a patch that preserves every custom setting: `--env-vars-file` and `--set-secrets` can replace existing configuration in those categories. Review and incorporate intentional overrides before using the helper. Backend model/dataset/limit overrides that exist only in the console can otherwise be lost on a later release.
 
@@ -306,7 +423,7 @@ The current indexing command uses the deterministic seed's schema descriptions. 
 For the first deployment only, use a temporary local frontend origin while obtaining the backend URL:
 
 ```bash
-python3 infra/deploy.py --service backend --frontend-url http://localhost:3000
+python3 infra/deploy.py --service backend --frontend-url http://localhost:3000 --data-profile legacy
 ```
 
 Set `BI_BACKEND_URL` to the URL actually printed by that deployment. Then:

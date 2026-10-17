@@ -68,5 +68,33 @@ _Avoid_: New query, copied dataset
 **Saved Chart View**: A versioned presentation choice over an immutable artifact: chart family, range, measures, order, axes, highlights, and precision. Temporary exploration becomes shared only after an explicit save.
 _Avoid_: SQL filter, current database snapshot
 
-**Retained Artifact**: A result protected from history cleanup while an active or recoverable dashboard item references it. Its saved pages, query evidence, assumptions, and skill references remain inspectable after the original chat is removed.
+**Retained Artifact**: A result protected from history cleanup while an active or recoverable dashboard item or report references it. Its saved pages, query evidence, assumptions, and skill references remain inspectable after the original chat is removed.
 _Avoid_: Refreshed result, duplicated rows
+
+
+**Analysis Brief**: The captured question, business scope, definitions, sources, context and skills governing one advanced report request.
+_Avoid_: Hidden reasoning, mutable chat state
+
+**Report**: A named public family of detailed analytical documents and their saved versions.
+_Avoid_: Dashboard, one query result
+
+**Report Revision**: One immutable report document with its findings, evidence, assumptions and downloads. A revision never changes an earlier answer.
+_Avoid_: Library rename, current database snapshot
+
+**Report Run**: One bounded attempt to produce a report revision, independent of ordinary conversation analysis.
+_Avoid_: Chat lease, completed document
+
+**Evidence Claim**: A factual statement or computed value linked to identifiable saved analytical evidence.
+_Avoid_: Unverified model assertion
+
+**Forecast**: An estimate of a metric beyond its last observed period, qualified by its validation and uncertainty.
+_Avoid_: Observed result, guaranteed future outcome
+
+**Scenario**: A prediction conditional on explicitly stated future driver assumptions.
+_Avoid_: Causal impact, guaranteed promotion lift
+
+**Backtest**: Evaluation against later historical observations using only information available at each earlier forecast origin.
+_Avoid_: Random time-series split, training accuracy
+
+**Research Panel**: A transient requester-only display of externally grounded context, separate from public report evidence.
+_Avoid_: Saved report section, shared Search archive

@@ -16,3 +16,6 @@ artifacts
 
 # Synthetic source data is uploaded separately, never packaged with the application.
 data
+
+# Report exports stay in their private bucket or local-only directory.
+**/.reports

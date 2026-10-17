@@ -2,9 +2,11 @@
 
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
+  FileChartColumn,
   ArrowDown,
   ArrowRight,
   ArrowUp,
@@ -88,6 +90,8 @@ import { useAppMotion } from "@/hooks/use-app-motion";
 import { Reveal } from "@/components/motion/reveal";
 import { AnalysisProgress } from "@/components/motion/analysis-progress";
 import { SkillAttachments } from "@/components/skill-attachments";
+import { ConversationReports } from "@/components/report-run-card";
+import type { ReportRun } from "@/lib/report-types";
 import { SkillEvidence } from "@/components/skill-evidence";
 import { SPRING_PRESS, EASE_OUT } from "@/lib/ease";
 
@@ -153,6 +157,7 @@ function Mark({ small = false }: { small?: boolean }) {
 }
 
 export default function Workspace() {
+  const router = useRouter();
   const { preferences } = usePreferences();
   const { reduced, hydrated } = useAppMotion();
   const [connections, setConnections] = useState<Connection[]>([]);
@@ -161,6 +166,24 @@ export default function Workspace() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [artifacts, setArtifacts] = useState<Record<string, Artifact>>({});
   const [question, setQuestion] = useState("");
+  const [advanced, setAdvanced] = useState(false);
+  const [reportStyle, setReportStyle] = useState<"business" | "technical">(
+    "business",
+  );
+  const [reportsEnabled, setReportsEnabled] = useState(false);
+  const [reportRefresh, setReportRefresh] = useState(0);
+  const reportRequest = useRef<{ signature: string; key: string } | null>(null);
+  useEffect(() => {
+    let cancelled = false;
+    void api<{ enabled: boolean }>("/reports/config")
+      .then((v) => {
+        if (!cancelled) setReportsEnabled(v.enabled);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, []);
   const [sourceOverride, setSource] = useState<string | null>(null);
   const source = sourceOverride ?? preferences.defaultSource;
   const [runId, setRunId] = useState<string | null>(null);
@@ -352,6 +375,7 @@ export default function Workspace() {
 
   const selectConversation = useCallback(
     async (id: string) => {
+      setAdvanced(false);
       followLatest.current = true;
       controller.current?.abort();
       if (analysisToast.current) toast.dismiss(analysisToast.current);
@@ -385,13 +409,15 @@ export default function Workspace() {
         });
       }
     },
-    [followRun, loadMessages],
+    [followRun, loadMessages, setSource, setVoiceState],
   );
 
   useEffect(() => {
     let cancelled = false;
     Promise.all([
-      api<{ mode: string; period?: string; connections: Connection[] }>("/connections"),
+      api<{ mode: string; period?: string; connections: Connection[] }>(
+        "/connections",
+      ),
       api<{ conversations: Conversation[] }>("/conversations"),
     ])
       .then(([sources, chats]) => {
@@ -445,6 +471,7 @@ export default function Workspace() {
   }, [messages.length, progress, draftArtifact, preferences.autoScroll]);
 
   function newConversation() {
+    setAdvanced(false);
     followLatest.current = true;
     controller.current?.abort();
     if (analysisToast.current) toast.dismiss(analysisToast.current);
@@ -481,15 +508,28 @@ export default function Workspace() {
   function draftChartQuestion(text: string) {
     if (question.trim()) {
       toast.info("Your existing draft is still in the composer", {
-        description: "Copy this chart question or clear your draft before trying again.",
-        action: { label: "Copy chart question", onClick: () => { void navigator.clipboard.writeText(text).then(() => toast.success("Chart question copied")).catch(() => toast.error("Clipboard is unavailable.")); } },
+        description:
+          "Copy this chart question or clear your draft before trying again.",
+        action: {
+          label: "Copy chart question",
+          onClick: () => {
+            void navigator.clipboard
+              .writeText(text)
+              .then(() => toast.success("Chart question copied"))
+              .catch(() => toast.error("Clipboard is unavailable."));
+          },
+        },
         duration: 8000,
       });
       return;
     }
     setQuestion(text.slice(0, 4000));
-    window.requestAnimationFrame(() => document.getElementById("question")?.focus());
-    toast.info("Follow-up drafted", { description: "Review the question, then send when ready." });
+    window.requestAnimationFrame(() =>
+      document.getElementById("question")?.focus(),
+    );
+    toast.info("Follow-up drafted", {
+      description: "Review the question, then send when ready.",
+    });
   }
 
   async function ask(text = question) {
@@ -509,6 +549,41 @@ export default function Workspace() {
     setDraftArtifact(null);
     try {
       const chat = await ensureConversation();
+      if (advanced) {
+        const signature = JSON.stringify([
+          chat.id,
+          text.trim(),
+          reportStyle,
+          preferences.textModel,
+        ]);
+        if (reportRequest.current?.signature !== signature)
+          reportRequest.current = { signature, key: crypto.randomUUID() };
+        await api<ReportRun>(`/conversations/${chat.id}/reports`, {
+          method: "POST",
+          body: JSON.stringify({
+            question: text.trim(),
+            style: reportStyle,
+            model:
+              preferences.textModel === "default"
+                ? undefined
+                : preferences.textModel,
+            idempotency_key: reportRequest.current.key,
+          }),
+        });
+        reportRequest.current = null;
+        setReportRefresh((v) => v + 1);
+        toast.success("Advanced report requested", {
+          description: "You can continue chatting while it works.",
+          action: {
+            label: "Reports",
+            onClick: () => {
+              router.push("/reports");
+            },
+          },
+        });
+        setAdvanced(false);
+        return;
+      }
       const response = await api<{ run_id: string }>(
         `/conversations/${chat.id}/turns`,
         {
@@ -703,10 +778,10 @@ export default function Workspace() {
 
   const busy = Boolean(
     updatingSkills ||
-      runId ||
-      starting ||
-      voiceState === "live" ||
-      voiceState === "connecting",
+    runId ||
+    starting ||
+    voiceState === "live" ||
+    voiceState === "connecting",
   );
   const sidebar = (
     <>
@@ -852,6 +927,11 @@ export default function Workspace() {
         <Button asChild variant="ghost" className="workspace-settings-link">
           <Link href="/dashboards">
             <PanelsTopLeft data-icon="inline-start" /> Dashboards
+          </Link>
+        </Button>
+        <Button asChild variant="ghost" className="workspace-settings-link">
+          <Link href="/reports">
+            <FileChartColumn data-icon="inline-start" /> Reports
           </Link>
         </Button>
         <Button asChild variant="ghost" className="workspace-settings-link">
@@ -1228,7 +1308,12 @@ export default function Workspace() {
                     artifacts[draftArtifact] &&
                     !messages.some(
                       (message) => message.artifact_id === draftArtifact,
-                    ) && <ResultCard artifact={artifacts[draftArtifact]} onExplore={draftChartQuestion} />}
+                    ) && (
+                      <ResultCard
+                        artifact={artifacts[draftArtifact]}
+                        onExplore={draftChartQuestion}
+                      />
+                    )}
                   <AnimatePresence initial={false}>
                     {runId && (
                       <Reveal key="progress">
@@ -1243,6 +1328,13 @@ export default function Workspace() {
                       </Reveal>
                     )}
                   </AnimatePresence>
+                  {conversation && (
+                    <ConversationReports
+                      key={conversation.id}
+                      conversationId={conversation.id}
+                      refreshKey={reportRefresh}
+                    />
+                  )}
                   <div ref={registerBottom} />
                 </Reveal>
               )}
@@ -1404,6 +1496,41 @@ export default function Workspace() {
                     </SelectContent>
                   </Select>
                   <span className="composer-spacer" />
+                  {reportsEnabled && (
+                    <InputGroupButton
+                      size="sm"
+                      aria-pressed={advanced}
+                      disabled={busy || loading}
+                      onClick={() => setAdvanced((v) => !v)}
+                      className={advanced ? "advanced-active" : undefined}
+                    >
+                      <FileChartColumn aria-hidden />
+                      <span>Advanced Analysis</span>
+                    </InputGroupButton>
+                  )}
+                  {advanced && (
+                    <Select
+                      value={reportStyle}
+                      onValueChange={(v) =>
+                        setReportStyle(v as "business" | "technical")
+                      }
+                    >
+                      <SelectTrigger aria-label="Report style">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectItem value="business">
+                            Business report
+                          </SelectItem>
+                          <SelectItem value="technical">
+                            Technical report
+                          </SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  )}
+
                   <InputGroupButton
                     size="sm"
                     aria-label="Start live voice conversation"
@@ -1428,10 +1555,10 @@ export default function Workspace() {
                     </InputGroupButton>
                   ) : (
                     <InputGroupButton
-                      size="icon-sm"
+                      size={advanced ? "sm" : "icon-sm"}
                       variant="default"
                       type="submit"
-                      aria-label="Send question"
+                      aria-label={advanced ? "Create report" : "Send question"}
                       disabled={busy || !question.trim() || loading}
                     >
                       {starting ? (
@@ -1439,12 +1566,19 @@ export default function Workspace() {
                       ) : (
                         <ArrowUp />
                       )}
+                      {advanced && <span>Create report</span>}
                     </InputGroupButton>
                   )}
                 </InputGroupAddon>
               </InputGroup>
             </Field>
           </form>
+          {advanced && (
+            <p className="advanced-hint">
+              Public detailed report · typically 3–8 minutes · clarifies only
+              essential details. Chat stays available.
+            </p>
+          )}
           <div className="composer-hint" id="public-chat-hint">
             <span>
               <Globe2 aria-hidden />

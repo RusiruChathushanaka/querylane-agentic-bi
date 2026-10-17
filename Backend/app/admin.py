@@ -226,15 +226,34 @@ async def dashboard_maintenance(operation):
         await store.close()
 
 
-async def seed_skills():
+async def report_maintenance():
+    from app.maintenance import purge_reports
+    from app.report_exports import ExportStorage
+    from app.storage import FirestoreStore
+
+    settings = Settings()
+    if not settings.report_bucket:
+        raise ValueError("Set REPORT_BUCKET to the dedicated export bucket before report purge.")
+    credentials = operator_credentials()
+    store = FirestoreStore(PROJECT, "agentic-bi-demo", credentials=credentials)
+    exports = ExportStorage(settings, credentials)
+    try:
+        print(json.dumps(await purge_reports(store, exports)))
+    finally:
+        await exports.close()
+        await store.close()
+
+
+async def seed_skills(*, analytics=False):
     from app.repository import Repository
-    from app.skill_examples import seed_examples
+    from app.skill_examples import seed_analytics, seed_examples
     from app.storage import FirestoreStore
 
     settings = Settings()
     store = FirestoreStore(PROJECT, "agentic-bi-demo", credentials=operator_credentials())
     try:
-        count = await seed_examples(Repository(store, settings), settings)
+        seed_pack = seed_analytics if analytics else seed_examples
+        count = await seed_pack(Repository(store, settings), settings)
         print(f"Checked {count} example skills; existing skills and revisions preserved.")
     finally:
         await store.close()
@@ -325,18 +344,20 @@ def main():
         choices=[
             "seed",
             "seed-skills",
+            "seed-analysis-skills",
             "index-schema",
             "check-models",
             "cleanup-skill-authors",
             "reset-history",
             "purge-dashboards",
+            "purge-reports",
             "clear-maintenance",
         ],
     )
     parser.add_argument("--confirm-demo-reset", action="store_true")
     args = parser.parse_args()
     if (
-        args.command in {"reset-history", "purge-dashboards", "clear-maintenance"}
+        args.command in {"reset-history", "purge-dashboards", "purge-reports", "clear-maintenance"}
         and not args.confirm_demo_reset
     ):
         parser.error(
@@ -345,10 +366,12 @@ def main():
     operations = {
         "seed": seed,
         "seed-skills": seed_skills,
+        "seed-analysis-skills": lambda: seed_skills(analytics=True),
         "index-schema": index_schema,
         "check-models": check_models,
         "cleanup-skill-authors": cleanup_skill_authors,
         "reset-history": reset,
+        "purge-reports": report_maintenance,
         "purge-dashboards": lambda: dashboard_maintenance("purge-dashboards"),
         "clear-maintenance": lambda: dashboard_maintenance("clear-maintenance"),
     }

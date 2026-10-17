@@ -28,6 +28,11 @@ from app.errors import AppError
 from app.fixtures import SOURCE_TABLES
 from app.model_selection import TEXT_MODELS, resolve_text_model
 from app.models import ConversationCreate, TurnCreate
+from app.report_dispatch import ReportDispatcher
+from app.report_engine import ReportEngine
+from app.report_exports import ExportStorage
+from app.report_repository import ReportRepository
+from app.reports import report_router
 from app.repository import Repository
 from app.skill_author import author_router
 from app.skill_author_voice import skill_author_voice
@@ -71,9 +76,18 @@ def create_app(settings: Settings | None = None, store_override=None, credential
             credentials=credentials,
             dashboards=Dashboards(store, settings, chart_slots),
         )
+        services = app.state.services
+        services.reports = ReportRepository(store, settings)
+        services.report_sessions = FirestoreSessionService(store, collection="report_adk_sessions")
+        services.report_exports = ExportStorage(settings, credentials)
+        services.report_engine = ReportEngine(services, services.reports, services.report_exports)
+        services.report_dispatcher = ReportDispatcher(services.reports, services.report_engine, credentials)
+        await services.report_dispatcher.start()
         try:
             yield
         finally:
+            await services.report_dispatcher.close()
+            await services.report_exports.close()
             await analysis.close()
             await ai.close()
             await connectors.close()
@@ -148,6 +162,7 @@ def create_app(settings: Settings | None = None, store_override=None, credential
     app.include_router(author_router(guest))
     app.include_router(skill_router(guest))
     app.include_router(dashboard_router(guest))
+    app.include_router(report_router(guest))
 
     @app.get("/health/live")
     async def live():

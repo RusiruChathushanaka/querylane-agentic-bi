@@ -1,0 +1,43 @@
+{
+  "checks": {
+    "revenue": true,
+    "orders": true,
+    "weighted_overall_aov": true
+  },
+  "passed": true,
+  "conversation_id": "4ef6f4113eaf40fe99654149b278d07d",
+  "run_id": "7e21656a158e7470611e4be71c0a4b5d",
+  "artifact_id": "34f28c9f764747e287dbae7a5662c8fd",
+  "row": {
+    "orders": 573348,
+    "revenue": "354425112.2",
+    "overall_aov": "618.17"
+  },
+  "provenance": [
+    {
+      "executed_at": "2026-10-16T20:34:09.499142+00:00",
+      "source": "bigquery",
+      "elapsed_ms": 1779,
+      "row_count": 1,
+      "sql": "SELECT ROUND(SUM(revenue), 2) AS revenue, COUNT(DISTINCT order_id) AS orders, ROUND(SUM(revenue) / NULLIF(COUNT(DISTINCT order_id), 0), 2) AS overall_aov FROM `project-e8b1593d-009a-4822-abf`.agentic_bi_demo.sales_orders WHERE status = 'completed' AND order_date BETWEEN CAST('2023-01-01' AS DATE) AND CAST('2026-09-30' AS DATE)",
+      "bytes_processed": 30387444,
+      "job_id": "abi_7e21656a158e7470611e4be71c0a4b5d_0",
+      "complete": true,
+      "columns": [
+        {
+          "type": "NUMERIC",
+          "name": "revenue"
+        },
+        {
+          "type": "INTEGER",
+          "name": "orders"
+        },
+        {
+          "type": "NUMERIC",
+          "name": "overall_aov"
+        }
+      ]
+    }
+  ],
+  "definition": "354425112.20 / 573348, rounded to two decimals; not the mean of monthly AOVs."
+}

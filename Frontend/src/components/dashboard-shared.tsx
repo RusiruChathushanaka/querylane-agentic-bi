@@ -1,7 +1,13 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { ArrowLeft, BookOpen, LayoutDashboard, Settings2 } from "lucide-react";
+import {
+  ArrowLeft,
+  FileChartColumn,
+  BookOpen,
+  LayoutDashboard,
+  Settings2,
+} from "lucide-react";
 import { api } from "@/lib/api";
 import type { Dashboard, DashboardMutation } from "@/lib/dashboard-types";
 import { Button } from "@/components/ui/button";
@@ -36,6 +42,12 @@ export function DashboardHeader() {
           <Link href="/dashboards">
             <LayoutDashboard data-icon="inline-start" />
             Dashboards
+          </Link>
+        </Button>
+        <Button asChild variant="ghost" size="sm">
+          <Link href="/reports">
+            <FileChartColumn data-icon="inline-start" />
+            Reports
           </Link>
         </Button>
         <Button asChild variant="ghost" size="sm">
@@ -79,16 +91,6 @@ export function useDashboardMutation() {
     requests.current.delete(key);
     return result;
   };
-}
-export async function copyDashboard(id: string) {
-  try {
-    await navigator.clipboard.writeText(`${location.origin}/dashboards/${id}`);
-    toast.success("Dashboard link copied");
-  } catch {
-    toast.error(
-      "Clipboard is unavailable. Copy the dashboard address from your browser.",
-    );
-  }
 }
 export function DashboardEditor({
   dashboard,

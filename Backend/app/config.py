@@ -65,6 +65,26 @@ class Settings(BaseSettings):
     author_tool_limit: int = 48
     author_update_limit: int = 24
     author_transcript_bytes: int = 65536
+    report_catalog_limit: int = Field(default=100, ge=1, le=1000)
+    reports_enabled: bool = True
+    report_dispatch: Literal["local", "cloud_tasks", "disabled"] = "local"
+    report_worker_url: str = ""
+    report_queue: str = "agentic-bi-reports"
+    report_region: str = "asia-southeast1"
+    report_dispatch_service_account: str = ""
+    report_bucket: str = ""
+    report_local_directory: str = ".reports"
+    report_guest_daily_limit: int = Field(default=3, ge=1)
+    report_workspace_daily_limit: int = Field(default=12, ge=1)
+    report_concurrency: int = Field(default=2, ge=1, le=2)
+    report_timeout_seconds: int = Field(default=600, ge=10, le=600)
+    report_model_calls: int = Field(default=24, ge=1, le=24)
+    report_output_tokens: int = Field(default=32000, ge=1000, le=32000)
+    report_query_limit: int = Field(default=12, ge=1, le=12)
+    report_scan_bytes: int = Field(default=8589934592, ge=1)
+    report_fit_limit: int = Field(default=64, ge=1, le=64)
+    report_fit_seconds: int = Field(default=120, ge=1, le=120)
+    report_research_enabled: bool = False
 
     @property
     def origins(self) -> list[str]:
@@ -84,6 +104,16 @@ class Settings(BaseSettings):
                 raise ValueError("Production requires GUEST_SIGNING_KEY with at least 32 characters.")
             if not self.cloud_sql_instance and not self.postgres_dsn:
                 raise ValueError("Configure CLOUD_SQL_INSTANCE or POSTGRES_DSN.")
+            if self.reports_enabled and self.report_dispatch == "local":
+                raise ValueError("Production reports require cloud_tasks dispatch or must be disabled.")
+            if (
+                self.reports_enabled
+                and self.report_dispatch == "cloud_tasks"
+                and not all(
+                    (self.report_worker_url, self.report_dispatch_service_account, self.report_bucket)
+                )
+            ):
+                raise ValueError("Reports require worker URL, dispatch identity, and private export bucket.")
         if not self.guest_signing_key:
             self.guest_signing_key = secrets.token_urlsafe(48)
 

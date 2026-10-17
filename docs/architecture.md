@@ -80,8 +80,39 @@ The [chart presentation service](charts.md) reads immutable artifact pages witho
 
 The Dashboards module accepts validated presentation state and immutable artifact references, with no connector or AI dependency. Parent dashboard revisions serialize public edits; stable request IDs make lost-response retries idempotent. Child items own card metadata/view/width, while the parent owns order. Active/recoverable cards retain their artifacts through reference records. Source evidence and saved pages are never duplicated or rewritten. See [dashboard usage](dashboards.md) and [ADR 0005](adr/0005-saved-result-dashboards.md).
 
+Dashboard view/edit mode is URL-driven presentation state, not authorization; sharing always emits the canonical public view URL. Whole-dashboard downloads capture a checked dashboard revision and immutable saved artifact pages, independently of viewport lazy loading. A bounded read-only snapshot feeds the existing Matplotlib/ReportLab stack in an isolated process, or formula-protected full CSVs and a provenance manifest. Per-instance admission, combined row/byte limits, renderer deadlines and image pixel limits bound public export work. Files are returned directly without new storage, model calls, source SQL or durable background work. Downloading does not create a dashboard revision.
+
 Firestore adds `dashboards` with `items`, `dashboard_artifact_refs` and `dashboard_requests`, plus capacity/maintenance records in `system` and counters in `quotas`. Reads remain backend-only. Recently deleted queries use the `recover_until` single-field range/order index; active summaries use the `deleted` equality index.
 
 An operator-only maintenance fence is read transactionally by new analysis/conversation/author leases and dashboard mutations. Reset drains bounded active work, then removes only unreferenced artifacts and history. Retained result pages, dashboards and Skills survive. Failed maintenance stays fenced for explicit inspection/recovery. Expired card/dashboard purge releases references without deleting source data or implicitly refreshing results.
 
 Conversation and dashboard cards share the chart renderer and versioned view contract. Saved dashboard scope/series/precision/highlights override browser analytical defaults, while themes and motion remain personal. Metadata-only artifact reads, IntersectionObserver visibility and a shared two-request queue avoid bulk preview downloads. Expanded charts retain all controls and per-card exports.
+
+
+## Advanced analysis reports
+
+[Reports](reports.md) use a separate ADK graph and run lease so ordinary chat can continue. Planner/query-planner/writer/reviewer roles operate within a shared policy; deterministic functions own statistics, SQL/fusion, claim validation and exports. All source and skill text remains untrusted. Report bodies reference verified claim IDs; predicted series carry distinct metadata and cannot inherit observed-peak chart insights.
+
+```mermaid
+flowchart LR
+    Composer[Advanced Analysis composer] --> API[Public FastAPI API]
+    API --> Outbox[Firestore run + transactional outbox]
+    Outbox --> Tasks[Cloud Tasks / OIDC]
+    Tasks --> Worker[Private Cloud Run report worker]
+    Reconciler[Private scheduled reconciliation] --> Outbox
+    Worker --> Graph[ADK graph + bounded policy]
+    Graph --> Sources[Existing guarded connectors + typed fusion]
+    Graph --> Math[Isolated statistical tools + chronological backtests]
+    Graph --> Claims[Validated claims / writer / reviewer]
+    Claims --> Versions[Immutable Firestore report revisions]
+    Claims --> Files[Private PDF / DOCX / CSV bundle bucket]
+    Versions --> Reader[Public Reports library + dashboard pins]
+    API --> Research[Separate Search-only in-memory agent]
+    Research --> Panel[Requester-only research panel]
+```
+
+Cloud Task delivery is at least once. Application checkpoints, stable BigQuery IDs, fenced writes and immutable exports make completed stages reusable; uncheckpointed external work can repeat. The worker holds its request open, and the application caps computation independently of Cloud Run/task deadlines. Recovery checks workflow version, source profile and captured schema. Report ADK records use a separately fenced collection preserved by history reset. No experimental ADK invocation resumption is required.
+
+PDF, Word and CSV ZIP are produced from the same immutable document/evidence. Presentation revisions reuse saved artifacts; reanalysis is explicit. Report references retain source and derived artifact pages; dashboard references remain independent. Administrative purge requires an expired recovery window and a maintenance fence.
+
+This implementation adds a private worker/queue/bucket/scheduler path **for a later authorized deployment**. Current recorded cloud revisions are unchanged. The ordinary 180-second chat path remains independent of the report's 600-second computation budget. See ADRs [0006](adr/0006-durable-versioned-reports.md) and [0007](adr/0007-public-report-evidence.md).

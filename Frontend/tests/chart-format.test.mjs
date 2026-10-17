@@ -112,3 +112,18 @@ test("older browser preferences acquire chart defaults and reject malformed flag
     true,
   );
 });
+
+test("prediction chart exports preserve cutoff, conditional meaning, and uncertainty", () => {
+  const data = {
+    coverage: { selected_rows: 48, plotted_rows: 48, sampled: false, complete: true, omitted_categories: 0 },
+    scope: { start: "2023-01", end: "2026-12" },
+    visualization: { partial_periods: [] },
+    prediction: { cutoff: "2026-09-01", method: "seasonal_naive" },
+  };
+  const notes = chartNotes(data);
+  assert.match(notes, /Observed through 2026-09-01/);
+  assert.match(notes, /conditional predictions/);
+  assert.match(notes, /uncertainty is not quantified/);
+  const calibrated = chartNotes({ ...data, prediction: { ...data.prediction, interval: { level: .95, coverage: .92 } } });
+  assert.match(calibrated, /future coverage is not guaranteed/);
+});

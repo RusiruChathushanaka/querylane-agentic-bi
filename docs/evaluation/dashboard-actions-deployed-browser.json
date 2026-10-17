@@ -1,0 +1,154 @@
+{
+  "verified_at": "2026-10-16T22:22:10.453905+00:00",
+  "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/dashboards/2256ab45585e458184dd3efd39a800b6",
+  "dashboard_id": "2256ab45585e458184dd3efd39a800b6",
+  "final_revision": 6,
+  "passed": true,
+  "checks": [
+    "Loaded 12-month line chart and USD 618.17 AOV from saved larger-dataset artifacts",
+    "Library provides explicit View, Edit, Share and Download actions",
+    "Edit URL and controls persist through reload",
+    "Dashboard description saved successfully; View mode hides management controls and survives reload",
+    "Canonical share URL excludes mode query",
+    "Clipboard copy success feedback",
+    "Simulated clipboard permission denial selects full public URL for manual copy",
+    "Actual PNG/PDF/CSV ZIP browser downloads; 45 CSV months total USD 354425112.20 and manifest checksums match",
+    "Second guest edit makes revision-five export fail visibly; reload captures revision six and JSON download succeeds",
+    "390px mobile width equals scroll width; dark mode and reduced motion enabled",
+    "Escape dismisses dialogs; mobile download footer remains available",
+    "Public workspace/reports/skills/settings/dashboard routes and runtime configuration respond successfully"
+  ],
+  "axe": {
+    "desktop": {
+      "counts": {
+        "inapplicable": 36,
+        "incomplete": 1,
+        "passes": 24,
+        "violations": 0
+      },
+      "manual_review": [
+        {
+          "id": "color-contrast",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "node_count": 11
+        }
+      ]
+    },
+    "edit": {
+      "counts": {
+        "inapplicable": 36,
+        "incomplete": 1,
+        "passes": 24,
+        "violations": 0
+      },
+      "manual_review": [
+        {
+          "id": "color-contrast",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "node_count": 11
+        }
+      ]
+    },
+    "mobile": {
+      "counts": {
+        "inapplicable": 36,
+        "incomplete": 1,
+        "passes": 24,
+        "violations": 0
+      },
+      "manual_review": [
+        {
+          "id": "color-contrast",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "node_count": 10
+        }
+      ]
+    },
+    "edit-mobile": {
+      "counts": {
+        "inapplicable": 36,
+        "incomplete": 1,
+        "passes": 24,
+        "violations": 0
+      },
+      "manual_review": [
+        {
+          "id": "color-contrast",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "node_count": 16
+        }
+      ]
+    },
+    "download-mobile": {
+      "counts": {
+        "inapplicable": 36,
+        "incomplete": 2,
+        "passes": 24,
+        "violations": 0
+      },
+      "manual_review": [
+        {
+          "id": "aria-hidden-focus",
+          "help": "ARIA hidden element must not be focusable or contain focusable elements",
+          "node_count": 7
+        },
+        {
+          "id": "color-contrast",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "node_count": 12
+        }
+      ]
+    },
+    "share-mobile": {
+      "counts": {
+        "inapplicable": 39,
+        "incomplete": 2,
+        "passes": 21,
+        "violations": 0
+      },
+      "manual_review": [
+        {
+          "id": "aria-hidden-focus",
+          "help": "ARIA hidden element must not be focusable or contain focusable elements",
+          "node_count": 8
+        },
+        {
+          "id": "color-contrast",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "node_count": 11
+        }
+      ]
+    },
+    "library-mobile": {
+      "counts": {
+        "inapplicable": 38,
+        "incomplete": 0,
+        "passes": 22,
+        "violations": 0
+      },
+      "manual_review": []
+    }
+  },
+  "browser_download_files": {
+    "png": {
+      "bytes": 117960,
+      "sha256": "0e4876459e0e9eb99dde110a40fbde4e1b60774ea9b3de68f146647e04c2926d"
+    },
+    "pdf": {
+      "bytes": 43598,
+      "sha256": "839e452aa053002e63c15ee4328271ead85e74419a33eadbcd39cdb0afa62f77"
+    },
+    "zip": {
+      "bytes": 3293,
+      "sha256": "e465f4bf3b1697b21b6644403d105333218ec0a6ce688509e907f98d00edf54a"
+    }
+  },
+  "recovered_download_revision": 6,
+  "limitations": [
+    "Native OS share-sheet sending not exercised",
+    "Safari/Firefox and full screen-reader testing not performed",
+    "SVG contrast and modal-overlay contrast remain manual review items",
+    "PDF/UA conformance not certified"
+  ],
+  "initial_test_locator_correction": "Wait for USD 618.17 timed out because the UI correctly formats it as $618.17; loaded chart/value text subsequently verified."
+}

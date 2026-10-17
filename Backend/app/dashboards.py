@@ -9,6 +9,7 @@ from datetime import UTC, datetime
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, Path, Query, Request
+from fastapi.responses import Response
 
 from app.chart_presentation import NUMERIC, metadata, present, saved_rows
 from app.dashboard_models import (
@@ -126,6 +127,7 @@ class Dashboards:
     def __init__(self, store, settings, slots=None):
         self.store, self.settings = store, settings
         self.slots = slots or asyncio.Semaphore(2)
+        self.export_slot = asyncio.Semaphore(1)
 
     async def get(self, board_id):
         value = await self.store.get("dashboards", board_id)
@@ -452,6 +454,26 @@ def dashboard_router(guest):
     @router.patch("/{board_id}")
     async def patch(board_id: DashboardId, body: DashboardPatch, request: Request, guest_id=Depends(guest)):
         return await service(request).mutate(guest_id, "patch", body, board_id)
+
+    @router.get("/{board_id}/downloads/{kind}")
+    async def export_dashboard(
+        board_id: DashboardId, kind: str, request: Request, expected_revision: int = Query(ge=1)
+    ):
+        from app.dashboard_exports import FORMATS, download
+
+        if kind not in FORMATS:
+            raise AppError("Choose PNG, JPEG, PDF, CSV ZIP or JSON.", 422, "dashboard_export_format")
+        content = await download(service(request), board_id, expected_revision, kind)
+        mime, extension = FORMATS[kind]
+        return Response(
+            content,
+            media_type=mime,
+            headers={
+                "Content-Disposition": f'attachment; filename="querylane-dashboard-{board_id}-r{expected_revision}.{extension}"',
+                "Cache-Control": "no-store",
+                "X-Content-Type-Options": "nosniff",
+            },
+        )
 
     @router.delete("/{board_id}")
     async def delete(

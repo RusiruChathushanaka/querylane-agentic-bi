@@ -13,6 +13,7 @@ from google.adk.runners import Runner
 from google.adk.sessions.base_session_service import GetSessionConfig
 from google.genai import Client, types
 from google.genai.errors import APIError
+from pydantic import ValidationError
 
 from app.errors import AppError
 from app.model_selection import active_text_model
@@ -165,6 +166,15 @@ class AI:
         for attempt in range(2):
             try:
                 return await self._structured_once(name, instruction, prompt, output_type, conversation_id)
+            except ValidationError as exc:
+                from app.report_harness import active_report_policy
+
+                if active_report_policy.get() is None or attempt:
+                    raise
+                prompt += (
+                    "\nRepair the structured response without changing safeguards. Validation errors:\n"
+                    + str(exc)[:2500]
+                )
             except (AppError, APIError) as exc:
                 if isinstance(exc, APIError) and exc.code in {403, 404}:
                     selected = active_text_model.get() or self.settings.text_model
@@ -186,11 +196,14 @@ class AI:
     async def _structured_once(
         self, name: str, instruction: str, prompt: str, output_type, conversation_id: str
     ):
+        from app.report_harness import active_report_policy
+
+        report_policy = active_report_policy.get()
         model = Gemini(model=active_text_model.get() or self.settings.text_model, client=self.client)
         # The nested fusion + visualization schema exceeds Vertex's structured
         # output complexity limit. JSON mode keeps planning available without
         # weakening local Pydantic validation or any execution safeguards.
-        json_plan = output_type is AnalysisPlan
+        json_plan = output_type is AnalysisPlan or report_policy is not None
         if json_plan:
             instruction += "\nReturn one JSON object matching this JSON Schema (no Markdown):\n" + json.dumps(
                 output_type.model_json_schema(), separators=(",", ":")
@@ -203,17 +216,28 @@ class AI:
             generate_content_config=types.GenerateContentConfig(
                 response_mime_type="application/json" if json_plan else None,
                 thinking_config=types.ThinkingConfig(thinking_level=types.ThinkingLevel.LOW),
-                max_output_tokens=4096 if name == "query_planner" else 1536,
+                max_output_tokens=4096
+                if name in {"query_planner", "report_planner", "report_writer"}
+                else 1536,
                 http_options=types.HttpOptions(
                     timeout=45000, retry_options=types.HttpRetryOptions(attempts=1)
                 ),
             ),
         )
+        sessions = report_policy.sessions if report_policy and report_policy.sessions else self.sessions
         app_name, user_id, session_id = "agentic_bi", "public-demo", f"{conversation_id}_{name}"
-        session = await self.sessions.get_session(app_name=app_name, user_id=user_id, session_id=session_id)
+        session = await sessions.get_session(app_name=app_name, user_id=user_id, session_id=session_id)
         if not session:
-            await self.sessions.create_session(app_name=app_name, user_id=user_id, session_id=session_id)
-        runner = Runner(agent=agent, app_name=app_name, session_service=self.sessions)
+            await sessions.create_session(app_name=app_name, user_id=user_id, session_id=session_id)
+        if report_policy:
+            from google.adk.apps import App
+
+            runner = Runner(
+                app=App(name=app_name, root_agent=agent, plugins=[report_policy]),
+                session_service=sessions,
+            )
+        else:
+            runner = Runner(agent=agent, app_name=app_name, session_service=sessions)
         text = ""
         events = runner.run_async(
             user_id=user_id,

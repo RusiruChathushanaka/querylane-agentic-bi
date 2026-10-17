@@ -2,6 +2,7 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "./skills.css";
+@import "./reports.css";
 @custom-variant dark (&:is(.dark *));
 @theme inline {
   --color-background: var(--background);
@@ -658,6 +659,7 @@
   gap: 8px;
 }
 .composer [data-slot="select-trigger"] {
+  color: var(--foreground);
   font-size: 10px;
   height: 28px;
   border-color: var(--border);

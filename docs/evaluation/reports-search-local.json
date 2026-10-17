@@ -1,0 +1,12 @@
+{
+  "status": "passed",
+  "model": "gemini-3.8-flash",
+  "text_characters": 3255,
+  "grounding_chunks": 4,
+  "grounding_supports": 24,
+  "search_suggestions_present": true,
+  "persistent": false,
+  "verified_local_date": "2026-10-17",
+  "scope": "Standalone operator-credential compatibility check; no source rows or schema sent.",
+  "production_display_verified": false
+}

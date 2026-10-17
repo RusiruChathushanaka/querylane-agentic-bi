@@ -1,19 +1,31 @@
 """Run fixed checks with the attached backend identity; remove the check job afterward."""
 
+import argparse
 import base64
 import json
 import tempfile
 import time
 from pathlib import Path
 
-from provision import PROJECT, REGION, gcloud
+from provision import REGION, gcloud
 
 
 def main():
-    job = "agentic-bi-demo-check"
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--service", choices=["backend", "report-worker"], default="backend")
+    parser.add_argument("--output", type=Path, default=Path("docs/evaluation/cloud-runtime.json"))
+    parser.add_argument(
+        "--report-recovery",
+        action="store_true",
+        help="Run labeled report-control probes without source queries/models.",
+    )
+    args = parser.parse_args()
+    job = "agentic-bi-demo-check" if args.service == "backend" else "agentic-bi-report-check"
+    if args.report_recovery:
+        job = "agentic-bi-report-recovery-check"
     service = json.loads(
         gcloud(
-            "run", "services", "describe", "agentic-bi-backend", "--region", REGION, "--format=json"
+            "run", "services", "describe", f"agentic-bi-{args.service}", "--region", REGION, "--format=json"
         ).stdout
     )
     container = service["spec"]["template"]["spec"]["containers"][0]
@@ -22,7 +34,8 @@ def main():
         mode="w", prefix="agentic-bi-runtime-env-", suffix=".json", delete=False
     ) as config:
         json.dump({item["name"]: item["value"] for item in container["env"] if "value" in item}, config)
-    encoded = base64.b64encode(Path(__file__).with_name("runtime_check.py").read_bytes()).decode()
+    script = "report_recovery_check.py" if args.report_recovery else "runtime_check.py"
+    encoded = base64.b64encode(Path(__file__).with_name(script).read_bytes()).decode()
     code = f"exec(__import__('base64').b64decode('{encoded}'))"
     started = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     try:
@@ -36,14 +49,14 @@ def main():
             "--image",
             image,
             "--service-account",
-            f"agentic-bi-backend@{PROJECT}.iam.gserviceaccount.com",
+            service["spec"]["template"]["spec"]["serviceAccountName"],
             "--command",
             "python",
             f"--args=^~^-c~{code}",
             "--env-vars-file",
             config.name,
             "--set-secrets",
-            "POSTGRES_PASSWORD=agentic-bi-postgres-reader:latest",
+            "POSTGRES_PASSWORD=agentic-bi-postgres-reader:latest,GUEST_SIGNING_KEY=agentic-bi-guest-signing:latest",
             "--memory",
             "2Gi",
             "--cpu",
@@ -82,7 +95,7 @@ def main():
             print(execution.stderr)
             print(json.dumps([item.get("textPayload", "") for item in logs], indent=2))
             raise RuntimeError("Runtime check produced no completion report.")
-        Path("docs/evaluation/cloud-runtime.json").write_text(json.dumps(result, indent=2) + "\n")
+        args.output.write_text(json.dumps(result, indent=2) + "\n")
         print(json.dumps(result, indent=2))
         if execution.returncode or not result["passed"]:
             raise RuntimeError("Runtime checks failed; inspect the report.")

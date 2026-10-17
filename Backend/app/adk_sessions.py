@@ -9,12 +9,13 @@ from google.adk.sessions import BaseSessionService, Session
 from google.adk.sessions.base_session_service import GetSessionConfig, ListSessionsResponse
 
 from app.errors import StaleLease
+from app.report_repository import active_report_lease
 from app.repository import active_lease, check_lease
 
 
 class FirestoreSessionService(BaseSessionService):
-    def __init__(self, store):
-        self.store = store
+    def __init__(self, store, collection="adk_sessions"):
+        self.store, self.collection = store, collection
 
     @staticmethod
     def key(app_name, user_id, session_id):
@@ -37,14 +38,26 @@ class FirestoreSessionService(BaseSessionService):
             last_update_time=time.time(),
         )
         key = self.key(app_name, user_id, session.id)
-        keys = [("adk_sessions", key)]
+        keys = [(self.collection, key)]
         lease = active_lease.get()
+        report_lease = active_report_lease.get()
         if lease:
             keys.append((lease.get("collection", "conversations"), lease["conversation_id"]))
+        if report_lease:
+            keys.append(("report_runs", report_lease["run_id"]))
 
         def mutate(docs):
             if lease:
                 check_lease(docs[keys[1]], lease)
+            if report_lease:
+                current = docs[("report_runs", report_lease["run_id"])]
+                if (
+                    not current
+                    or current["owner"] != report_lease["owner"]
+                    or current["generation"] != report_lease["generation"]
+                    or (current["status"] == "running" and current["lease_until"] <= time.time())
+                ):
+                    raise StaleLease()
             existing = docs[keys[0]]
             if existing:
                 return {}, existing
@@ -60,12 +73,12 @@ class FirestoreSessionService(BaseSessionService):
         self, *, app_name: str, user_id: str, session_id: str, config: GetSessionConfig | None = None
     ):
         key = self.key(app_name, user_id, session_id)
-        value = await self.store.get("adk_sessions", key)
+        value = await self.store.get(self.collection, key)
         if not value:
             return None
         events = sorted(
             await self.store.list(
-                f"adk_sessions/{key}/events",
+                f"{self.collection}/{key}/events",
                 limit=config.num_recent_events if config and config.num_recent_events else 1000,
                 order_by="sequence",
                 descending=True,
@@ -84,7 +97,7 @@ class FirestoreSessionService(BaseSessionService):
         return loaded
 
     async def list_sessions(self, *, app_name: str, user_id: str, **kwargs):
-        values = await self.store.list("adk_sessions")
+        values = await self.store.list(self.collection)
         sessions = [
             Session.model_validate({k: v for k, v in value.items() if k != "sequence"})
             for value in values
@@ -95,9 +108,9 @@ class FirestoreSessionService(BaseSessionService):
     async def delete_session(self, *, app_name: str, user_id: str, session_id: str):
         key = self.key(app_name, user_id, session_id)
         # Called only by the credentialed administrative reset command.
-        for item in await self.store.list(f"adk_sessions/{key}/events"):
-            await self.store.delete(f"adk_sessions/{key}/events", f"{item['sequence']:08d}")
-        await self.store.delete("adk_sessions", key)
+        for item in await self.store.list(f"{self.collection}/{key}/events"):
+            await self.store.delete(f"{self.collection}/{key}/events", f"{item['sequence']:08d}")
+        await self.store.delete(self.collection, key)
 
     async def append_event(self, session: Session, event: Event):
         if event.partial:
@@ -130,20 +143,35 @@ class FirestoreSessionService(BaseSessionService):
             key: value for key, value in metadata["state"].items() if not key.startswith("temp:")
         }
         lease = active_lease.get()
-        keys = [("adk_sessions", key)]
+        report_lease = active_report_lease.get()
+        keys = [(self.collection, key)]
         if lease:
             keys.append((lease.get("collection", "conversations"), lease["conversation_id"]))
+        if report_lease:
+            keys.append(("report_runs", report_lease["run_id"]))
 
         def mutate(docs):
             if lease:
                 check_lease(docs[keys[1]], lease)
+            if report_lease:
+                current = docs[("report_runs", report_lease["run_id"])]
+                if (
+                    not current
+                    or current["owner"] != report_lease["owner"]
+                    or current["generation"] != report_lease["generation"]
+                    or (current["status"] == "running" and current["lease_until"] <= time.time())
+                ):
+                    raise StaleLease()
             stored = docs[keys[0]]
             if not stored or stored["sequence"] != expected:
                 raise StaleLease()
             sequence = expected + 1
             return {
                 keys[0]: metadata | {"sequence": sequence},
-                (f"adk_sessions/{key}/events", f"{sequence:08d}"): {"sequence": sequence, "event": payload},
+                (f"{self.collection}/{key}/events", f"{sequence:08d}"): {
+                    "sequence": sequence,
+                    "event": payload,
+                },
             }, sequence
 
         revision = await self.store.atomic(keys, mutate)

@@ -211,6 +211,45 @@ class Connectors:
         return tables
 
     async def query(self, source: str, sql: str, run_id: str, leg: int = 0) -> QueryResult:
+        try:
+            return await self._query(source, sql, run_id, leg)
+        except AppError:
+            raise
+        except Exception as exc:
+            import duckdb
+            from google.api_core.exceptions import BadRequest, DeadlineExceeded, ServiceUnavailable
+
+            invalid = isinstance(
+                exc, (duckdb.BinderException, duckdb.CatalogException, duckdb.ParserException)
+            )
+            invalid = invalid or getattr(exc, "sqlstate", None) in {
+                "42601",
+                "42703",
+                "42P01",
+                "42883",
+                "42804",
+                "42803",
+                "42P10",
+                "22012",
+            }
+            invalid = (
+                invalid
+                or isinstance(exc, BadRequest)
+                and any(e.get("reason") == "invalidQuery" for e in (exc.errors or []))
+            )
+            if invalid:
+                raise AppError(
+                    f"Database rejected the generated SELECT: {str(exc)[:1000]}", 422, "invalid_sql"
+                ) from exc
+            if isinstance(exc, (TimeoutError, DeadlineExceeded, ServiceUnavailable)):
+                raise AppError(
+                    "The data source is temporarily unavailable or timed out. Saved report evidence is preserved.",
+                    503,
+                    "source_transient",
+                ) from exc
+            raise
+
+    async def _query(self, source: str, sql: str, run_id: str, leg: int = 0) -> QueryResult:
         await self.ensure_data_ready()
         if run_id in self.cancelled:
             raise asyncio.CancelledError()
@@ -315,6 +354,10 @@ class Connectors:
             if not isinstance(exc, Conflict):
                 raise
             job = self.bq.get_job(job_id)
+            if job.query != bounded:
+                raise AppError(
+                    "A recovered query job belongs to different SQL.", 409, "query_identity_conflict"
+                )
         self.jobs.setdefault(run_id, []).append(job)
         if run_id in self.cancelled:
             job.cancel()

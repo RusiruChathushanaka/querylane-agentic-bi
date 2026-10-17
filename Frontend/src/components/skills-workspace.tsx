@@ -385,6 +385,9 @@ export function SkillsWorkspace() {
           <Button variant="ghost" asChild>
             <Link href="/dashboards">Dashboards</Link>
           </Button>
+          <Button asChild variant="ghost" size="sm">
+            <Link href="/reports">Reports</Link>
+          </Button>
           <Button asChild variant="outline" size="sm">
             <Link href="/settings">
               <Settings2 aria-hidden /> Settings

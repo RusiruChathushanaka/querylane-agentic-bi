@@ -61,6 +61,11 @@ export function changeLabel(
 export function chartNotes(data: ChartData): string {
   const c = data.coverage;
   return [
+    ...(data.prediction
+      ? [
+          `Observed through ${data.prediction.cutoff}; dashed series are conditional predictions. ${data.prediction.interval ? `Nominal ${data.prediction.interval.level * 100}% historical residual band; backtest coverage ${(data.prediction.interval.coverage * 100).toFixed(1)}%; future coverage is not guaranteed.` : "Validated intervals unavailable; uncertainty is not quantified."}`,
+        ]
+      : []),
     data.scope.start
       ? `${dateLabel(data.scope.start)} – ${dateLabel(data.scope.end)}`
       : `${c.selected_rows.toLocaleString()} saved observations`,

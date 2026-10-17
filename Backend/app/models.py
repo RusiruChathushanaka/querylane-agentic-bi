@@ -67,7 +67,7 @@ class ChartMeasure(StrictModel):
     currency: str | None = Field(default=None, pattern=r"^[A-Z]{3}$")
     percent_scale: Literal["fraction", "whole"] | None = None
     additive: bool = False
-    role: Literal["primary", "measure", "target", "comparison"] = "measure"
+    role: Literal["primary", "measure", "target", "comparison", "observed", "forecast", "scenario"] = "measure"
     compares_to: str | None = Field(default=None, max_length=128)
     direction: Literal["higher", "lower", "neutral"] = "neutral"
 

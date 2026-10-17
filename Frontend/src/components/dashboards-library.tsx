@@ -6,7 +6,6 @@ import {
   Plus,
   RefreshCw,
   Trash2,
-  Share2,
   Pencil,
   RotateCcw,
 } from "lucide-react";
@@ -16,9 +15,13 @@ import type { Dashboard } from "@/lib/dashboard-types";
 import {
   DashboardHeader,
   DashboardEditor,
-  copyDashboard,
   useDashboardMutation,
 } from "@/components/dashboard-shared";
+import {
+  DashboardDownload,
+  DashboardShare,
+} from "@/components/dashboard-actions";
+import { dashboardPath } from "@/lib/dashboard-links";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -105,7 +108,7 @@ export function DashboardsLibrary() {
         restore ? "POST" : "DELETE",
         { expected_revision: board.revision },
       );
-      setTick(t => t + 1);
+      setTick((t) => t + 1);
       toast.success(
         restore ? "Dashboard restored" : "Dashboard deleted",
         !restore
@@ -296,28 +299,23 @@ export function DashboardsLibrary() {
                     <>
                       <Button asChild>
                         <Link
-                          aria-label={`Open ${board.name}`}
-                          href={`/dashboards/${board.id}`}
+                          aria-label={`View ${board.name}`}
+                          href={dashboardPath(board.id)}
                         >
-                          Open dashboard
+                          View
                         </Link>
                       </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        aria-label={`Edit ${board.name}`}
-                        onClick={() => setEditor(board)}
-                      >
-                        <Pencil />
+                      <Button variant="outline" size="sm" asChild>
+                        <Link
+                          aria-label={`Edit ${board.name}`}
+                          href={dashboardPath(board.id, "edit")}
+                        >
+                          <Pencil data-icon="inline-start" />
+                          Edit
+                        </Link>
                       </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        aria-label={`Share ${board.name}`}
-                        onClick={() => void copyDashboard(board.id)}
-                      >
-                        <Share2 />
-                      </Button>
+                      <DashboardShare dashboard={board} compact />
+                      <DashboardDownload dashboard={board} compact />
                       <Button
                         variant="ghost"
                         size="icon"

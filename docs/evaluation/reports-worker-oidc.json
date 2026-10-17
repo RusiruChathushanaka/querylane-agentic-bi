@@ -1,0 +1,30 @@
+{
+  "verified_at": "2026-10-16T20:11:08.429985+00:00",
+  "worker_url": "https://agentic-bi-report-worker-wekihucn7q-as.a.run.app",
+  "anonymous_status": 403,
+  "task_name": "health-bf1ba405b0a3416e8c61037f64809aeb",
+  "task": {
+    "createTime": "2026-10-16T20:11:08Z",
+    "dispatchDeadline": "600s",
+    "httpRequest": {
+      "headers": {
+        "User-Agent": "Google-Cloud-Tasks"
+      },
+      "httpMethod": "GET",
+      "oidcToken": {
+        "audience": "https://agentic-bi-report-worker-wekihucn7q-as.a.run.app",
+        "serviceAccountEmail": "agentic-bi-report-dispatch@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com"
+      },
+      "url": "https://agentic-bi-report-worker-wekihucn7q-as.a.run.app/health/live"
+    },
+    "name": "projects/project-e8b1593d-009a-4822-abf/locations/asia-southeast1/queues/agentic-bi-reports/tasks/health-bf1ba405b0a3416e8c61037f64809aeb",
+    "scheduleTime": "2026-10-16T20:11:08.230368Z",
+    "view": "BASIC"
+  },
+  "oidc_task_http_status": 200,
+  "initial_attempts_http_status": [
+    403,
+    403
+  ],
+  "note": "The same health task succeeded on its third delivery after the new invoker binding propagated; no permission broadening."
+}

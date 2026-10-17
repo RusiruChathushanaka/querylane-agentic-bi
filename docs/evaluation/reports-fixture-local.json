@@ -1,0 +1,47 @@
+{
+  "verified_at": "2026-10-16T19:57:18.032584+00:00",
+  "status": "complete",
+  "stage": "Preparing downloads",
+  "error": null,
+  "clarification": null,
+  "budgets": {
+    "model_calls": 0,
+    "output_tokens": 0,
+    "queries": 1,
+    "scan_bytes": 0,
+    "fits": 0,
+    "fit_seconds": 0,
+    "seconds": 0
+  },
+  "data_profile": "timeseries",
+  "model": "deterministic fixture",
+  "cloud_data_writes": false,
+  "production_dispatch_verified": false,
+  "reviewed": false,
+  "artifact_count": 1,
+  "claims": 10,
+  "downloads": {
+    "pdf": {
+      "size": 81483,
+      "sha256": "59684c8a8983efda54ed6bb64320f59e9468a94af5ed6525696d31952d013e2c"
+    },
+    "docx": {
+      "size": 103772,
+      "sha256": "c728e6168b10ced154b2e356747bb3a0449cac18eabcd85e0645ab1be2f331de"
+    },
+    "data": {
+      "size": 1899,
+      "sha256": "ed0d889d06474cdbfd63a3effb20f46973fb3b186c01c0a03965b69e9fb2c49e"
+    }
+  },
+  "independent_reconciliation": [
+    {
+      "field": "revenue",
+      "rows": 45,
+      "actual": "354425112.20",
+      "independent_ledger": "354425112.2",
+      "matches": true
+    }
+  ],
+  "passed": true
+}

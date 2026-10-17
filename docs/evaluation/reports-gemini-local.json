@@ -1,0 +1,54 @@
+{
+  "verified_at": "2026-10-16T19:53:28.501926+00:00",
+  "status": "complete",
+  "stage": "Preparing downloads",
+  "error": null,
+  "clarification": null,
+  "budgets": {
+    "model_calls": 6,
+    "output_tokens": 4747,
+    "queries": 3,
+    "scan_bytes": 0,
+    "fits": 7,
+    "fit_seconds": 0.10889045899966732,
+    "seconds": 45.01061391830444
+  },
+  "data_profile": "timeseries",
+  "model": "gemini-3.8-flash",
+  "cloud_data_writes": false,
+  "production_dispatch_verified": false,
+  "reviewed": true,
+  "artifact_count": 4,
+  "claims": 46,
+  "downloads": {
+    "pdf": {
+      "size": 371559,
+      "sha256": "f20c6edb26d498adb77925ed21a00f604694bc78b3c30f0a8f806cb9d46ce51b"
+    },
+    "docx": {
+      "size": 347759,
+      "sha256": "b8f5016f4529891e6b9f27a928267462afbce9bbf70b8421d2f806b04ddcc074"
+    },
+    "data": {
+      "size": 11997,
+      "sha256": "cdffffba27212b6f68523dd63ab22cfcdc8a6852a53c254a39bcf5c6d109ad66"
+    }
+  },
+  "independent_reconciliation": [
+    {
+      "field": "total_revenue",
+      "rows": 45,
+      "actual": "354425112.20",
+      "independent_ledger": "354425112.2",
+      "matches": true
+    },
+    {
+      "field": "total_revenue",
+      "rows": 45,
+      "actual": "354425112.20",
+      "independent_ledger": "354425112.2",
+      "matches": true
+    }
+  ],
+  "passed": true
+}

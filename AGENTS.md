@@ -16,6 +16,8 @@ For retail source/schema or generated-data changes, read [docs/retail-timeseries
 
 For skills-library changes, read [docs/skills.md](docs/skills.md). Preserve revision/snapshot evidence, public visibility, the three-skill budget, and the existing controlled query pipeline. Example skill seeding is an explicit operator action, not part of routine deployment or history reset. For conversational authoring, also read [docs/voice-skill-author-plan.md](docs/voice-skill-author-plan.md): keep publication outside model tools, author leases separate from analytics, and unpublished recovery bound to the initiating guest.
 
+For advanced-report changes, read [docs/reports.md](docs/reports.md). Preserve independent report leases, application checkpoints, immutable revision/claim evidence, existing SQL/fusion limits, and report/dashboard retention through history reset. Never put Search responses in shared reports or exports. Local dispatch is development-only; follow the deployment guide before provisioning the private worker, queue, bucket, identities or scheduled reconciler.
+
 Use the `ctx7` CLI to fetch current documentation for library, framework, SDK, API, CLI, and cloud-service questions, including setup, configuration, migrations, and library-specific debugging. Prefer this to web search.
 
 1. Resolve the official library name with `npx ctx7@latest library <name> "<specific question>"` before using an ID, unless the user supplied the ID.

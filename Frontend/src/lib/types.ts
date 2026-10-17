@@ -37,7 +37,14 @@ export type ChartMeasure = {
   currency: string | null;
   percent_scale: "fraction" | "whole" | null;
   additive: boolean;
-  role: "primary" | "measure" | "target" | "comparison";
+  role:
+    | "primary"
+    | "measure"
+    | "target"
+    | "comparison"
+    | "observed"
+    | "forecast"
+    | "scenario";
   compares_to: string | null;
   direction: "higher" | "lower" | "neutral";
 };
@@ -56,6 +63,7 @@ export type ChartRow = Record<string, unknown> & {
   _detail?: Record<string, ChartChange>;
 };
 export type ChartData = {
+  prediction?: Artifact["prediction"] | null;
   version: 2;
   visualization: Visualization & { measures: ChartMeasure[] };
   primary: string | null;
@@ -107,6 +115,25 @@ export type Visualization = {
   measures?: ChartMeasure[];
 };
 export type Artifact = {
+  report_id?: string;
+  report_version?: number;
+  prediction?: {
+    method: string;
+    cutoff: string;
+    horizon: number;
+    grain: string;
+    target: string;
+    limitations: string[];
+    scenario_name?: string | null;
+    scores?: Record<string, { mae: number; rmse: number; folds: { train_end: string; test_start: string; test_end: string; mae: number }[] }>;
+    drivers?: string[];
+    assumptions?: string[];
+    future_drivers?: Record<string, number>[];
+    scenario_drivers?: Record<string, number>[];
+    libraries?: Record<string, string>;
+    data_hash?: string;
+    interval?: { level: number; coverage: number } | null;
+  };
   ai?: {
     backend: "fixture" | "gemini";
     text_model: string | null;

@@ -1,0 +1,175 @@
+{
+  "verified_at": "2026-10-16T22:00:26.772658+00:00",
+  "scope": "Local deterministic fixture preview and isolated Firestore emulator; no cloud changes",
+  "backend_tests": {
+    "passed": 400,
+    "skipped": 1,
+    "export_cases": 11,
+    "ruff": "passed"
+  },
+  "frontend_tests": {
+    "passed": 28,
+    "lint": "passed",
+    "types": "passed",
+    "build": "passed"
+  },
+  "checks": {
+    "library_view_edit_share_download": true,
+    "edit_details_save": true,
+    "view_hides_edit_controls": true,
+    "mode_url_and_reload": true,
+    "stable_view_edit_labels": true,
+    "canonical_share_link": true,
+    "clipboard_denial_selectable_link": true,
+    "all_five_browser_downloads": true,
+    "stale_export_error_and_reload_recovery": true,
+    "mobile_390px_no_page_overflow": true,
+    "light_dark_reduced_motion": true,
+    "fresh_dialog_keyboard_close": true,
+    "png_pdf_visual_inspection": true,
+    "offscreen_cards_in_export": true,
+    "csv_checksums_and_full_rows": true
+  },
+  "exports": {
+    "dashboard_revision": 5,
+    "cards": 3,
+    "png_dimensions": [
+      1800,
+      1045
+    ],
+    "pdf_pages": 2,
+    "files": {
+      "png": {
+        "bytes": 132706,
+        "sha256": "93296f8d6f8cd083745f2736ed032b127380fc49caf25274be1810150d86486e"
+      },
+      "jpg": {
+        "bytes": 312810,
+        "sha256": "5aa77c03637f89cb89e72a21576be0a12bd896941ed06bf5c92d2e333b79b89e"
+      },
+      "pdf": {
+        "bytes": 74663,
+        "sha256": "958728042e950f462ecebf1dfa086639a165ad6a7bc8884c7912b6881d147cb3"
+      },
+      "zip": {
+        "bytes": 2948,
+        "sha256": "b99ba7e48644f2c14cd466fcc22ca3a69ff269d3bf103de1d18e081668f815a2"
+      },
+      "json": {
+        "bytes": 9752,
+        "sha256": "cf5429a9d2810c0b0e9f5483eff06a82181834e62e6645469242001d61f9ef76"
+      }
+    },
+    "datasets": [
+      {
+        "artifact_id": "645dbd953daf4dc3b9d0302280dcb744",
+        "rows": 9,
+        "declared_rows": 9,
+        "sha256_verified": true,
+        "complete": true
+      },
+      {
+        "artifact_id": "19aec21cf2bf4e91ae892b50d92f1904",
+        "rows": 4,
+        "declared_rows": 4,
+        "sha256_verified": true,
+        "complete": true
+      },
+      {
+        "artifact_id": "8229ad7f874849f4880be7a5a74b746b",
+        "rows": 1,
+        "declared_rows": 1,
+        "sha256_verified": true,
+        "complete": true
+      }
+    ]
+  },
+  "accessibility": {
+    "view-desktop": {
+      "counts": {
+        "inapplicable": 36,
+        "incomplete": 1,
+        "passes": 24,
+        "violations": 0
+      },
+      "violations": []
+    },
+    "view-mobile": {
+      "counts": {
+        "inapplicable": 36,
+        "incomplete": 1,
+        "passes": 24,
+        "violations": 0
+      },
+      "violations": []
+    },
+    "edit-desktop": {
+      "counts": {
+        "inapplicable": 36,
+        "incomplete": 1,
+        "passes": 24,
+        "violations": 0
+      },
+      "violations": []
+    },
+    "edit-mobile": {
+      "counts": {
+        "inapplicable": 36,
+        "incomplete": 1,
+        "passes": 24,
+        "violations": 0
+      },
+      "violations": []
+    },
+    "download": {
+      "counts": {
+        "inapplicable": 38,
+        "incomplete": 2,
+        "passes": 22,
+        "violations": 0
+      },
+      "violations": []
+    },
+    "download-mobile": {
+      "counts": {
+        "inapplicable": 38,
+        "incomplete": 2,
+        "passes": 22,
+        "violations": 0
+      },
+      "violations": []
+    },
+    "share": {
+      "counts": {
+        "inapplicable": 39,
+        "incomplete": 2,
+        "passes": 21,
+        "violations": 0
+      },
+      "violations": []
+    }
+  },
+  "next_runtime": {
+    "compilation_issues": [],
+    "configuration_errors": [],
+    "session_errors": []
+  },
+  "limits": {
+    "concurrent_preparations_per_instance": 1,
+    "combined_rows": 200000,
+    "combined_bytes": 33554432,
+    "input_deadline_seconds": 60,
+    "renderer_deadline_seconds": 45,
+    "image_pixels": 24000000
+  },
+  "limitations": [
+    "Automated chart SVG contrast requires manual review; PNG/PDF pages visually inspected.",
+    "PDF/UA certification and full screen-reader testing not performed.",
+    "Safari/Firefox and native OS share-sheet sending not tested.",
+    "JSON exports metadata, not an importable backup or full data rows.",
+    "A hot-reload interruption left a closed Radix dialog mounted during development; a fresh page confirmed normal dismissal with reduced motion enabled."
+  ],
+  "cloud_deployment": false,
+  "github_publication": false,
+  "source_data_changed": false
+}

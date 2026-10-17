@@ -4,9 +4,18 @@ import "@/app/dashboards.css";
 export const metadata: Metadata = { title: "Shared dashboard — Querylane" };
 export default async function Page({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ mode?: string }>;
 }) {
   const { id } = await params;
-  return <DashboardWorkspace key={id} id={id} />;
+  const { mode } = await searchParams;
+  return (
+    <DashboardWorkspace
+      key={id}
+      id={id}
+      initialEdit={mode === "edit"}
+    />
+  );
 }

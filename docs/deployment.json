@@ -1,24 +1,58 @@
 {
   "project": "project-e8b1593d-009a-4822-abf",
   "region": "asia-southeast1",
-  "date": "2026-10-16",
+  "date": "2026-10-17",
+  "firestore": "agentic-bi-demo",
+  "bigquery_dataset": "agentic_bi_demo",
+  "cloud_sql_instance": "agentic-bi-demo-pg",
+  "vector_dimensions": 768,
+  "verified_at": "2026-10-16T22:23:19.043155+00:00",
+  "release": "Dashboard View/Edit, public sharing and saved-result downloads",
+  "runtime_configuration_preserved": true,
+  "analytical_seed_or_history_reset": false,
+  "data_profile": "timeseries",
+  "postgres_schema": "retail_timeseries",
+  "data_coverage": {
+    "start": "2023-01-01",
+    "end": "2026-09-30",
+    "orders": 573348,
+    "order_items": 1317941,
+    "returns": 97122,
+    "customers": 25000,
+    "calendar_days": 1369,
+    "months": 45,
+    "merchandise_revenue": "354425112.20"
+  },
+  "rollback_record": "evaluation/deployment-before-dashboard-actions.json",
+  "traffic_note": "Both services retained earlier explicit traffic pins after image deployment. Exact verified candidate revisions were explicitly routed to 100%; prior revisions remain available for rollback.",
+  "temporary_runtime_job_removed": true,
+  "source_base_commit": "ea9e5c3706a87ba5fa53ce58940c608e14546b43",
+  "deployed_uncommitted_application_changes": true,
   "services": {
     "agentic-bi-backend": {
       "url": "https://agentic-bi-backend-wekihucn7q-as.a.run.app",
-      "ready_revision": "agentic-bi-backend-00012-pfm",
+      "ready_revision": "agentic-bi-backend-00017-cnf",
       "service_account": "agentic-bi-backend@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
-      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend:1792168485",
-      "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:6a46d95cfb5a88a6c275eedf370cc77b2ed6af19fc929fba93c0431f180e8d4c",
-      "source_commit": "8873e8dd478ed4c76a9728cdb3099e8c476323e8",
-      "build_id": "05980568-8add-43ae-8763-988bea5ad5ba",
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend:1792188441",
+      "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:bf1656197f2e12a77a3b5f8f479755117c59d19336c7df6b393c3a4075ecaf9c",
+      "build_id": "faed258c-4f95-4d75-91ee-209005d5bc74",
+      "build_source": {
+        "storageSource": {
+          "bucket": "project-e8b1593d-009a-4822-abf-agentic-bi-build",
+          "generation": "1792188444361190",
+          "object": "source/1792188441.998613-0a675f5b84334b2bb60328c9bc20b332.tgz"
+        }
+      },
+      "source_base_commit": "ea9e5c3706a87ba5fa53ce58940c608e14546b43",
+      "source_is_working_tree": true,
       "ready": true,
       "traffic": [
         {
           "percent": 100,
-          "revisionName": "agentic-bi-backend-00012-pfm"
+          "revisionName": "agentic-bi-backend-00017-cnf"
         }
       ],
-      "previous_revision": "agentic-bi-backend-00011-tzb",
+      "previous_revision": "agentic-bi-backend-00016-4xt",
       "runtime_environment": [
         {
           "name": "ENVIRONMENT",
@@ -85,6 +119,34 @@
           "value": "us-central1"
         },
         {
+          "name": "REPORTS_ENABLED",
+          "value": "true"
+        },
+        {
+          "name": "REPORT_DISPATCH",
+          "value": "cloud_tasks"
+        },
+        {
+          "name": "REPORT_WORKER_URL",
+          "value": "https://agentic-bi-report-worker-wekihucn7q-as.a.run.app"
+        },
+        {
+          "name": "REPORT_BUCKET",
+          "value": "project-e8b1593d-009a-4822-abf-agentic-bi-reports"
+        },
+        {
+          "name": "REPORT_DISPATCH_SERVICE_ACCOUNT",
+          "value": "agentic-bi-report-dispatch@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com"
+        },
+        {
+          "name": "REPORT_REGION",
+          "value": "asia-southeast1"
+        },
+        {
+          "name": "REPORT_QUEUE",
+          "value": "agentic-bi-reports"
+        },
+        {
           "name": "GUEST_SIGNING_KEY",
           "valueFrom": {
             "secretKeyRef": {
@@ -114,20 +176,28 @@
     },
     "agentic-bi-frontend": {
       "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app",
-      "ready_revision": "agentic-bi-frontend-00006-2p5",
+      "ready_revision": "agentic-bi-frontend-00011-vr4",
       "service_account": "agentic-bi-frontend@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
-      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend:1792168821",
-      "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:31db11ff2ed72d65ea270e66af980a1bb68d6aec8efcb4be5c26f710c6db1d70",
-      "source_commit": "8873e8dd478ed4c76a9728cdb3099e8c476323e8",
-      "build_id": "0028822a-725c-4793-8951-ff84d64facdb",
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend:1792188442",
+      "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:598703873c046a3d009137632bb83b638c275b16c5040d21d2c8cd43771f3291",
+      "build_id": "3a0143f7-9586-4256-a5fc-0f04c5ee12bb",
+      "build_source": {
+        "storageSource": {
+          "bucket": "project-e8b1593d-009a-4822-abf-agentic-bi-build",
+          "generation": "1792188445145733",
+          "object": "source/1792188442.304874-c326394372714e329ee80d98caddd310.tgz"
+        }
+      },
+      "source_base_commit": "ea9e5c3706a87ba5fa53ce58940c608e14546b43",
+      "source_is_working_tree": true,
       "ready": true,
       "traffic": [
         {
           "percent": 100,
-          "revisionName": "agentic-bi-frontend-00006-2p5"
+          "revisionName": "agentic-bi-frontend-00011-vr4"
         }
       ],
-      "previous_revision": "agentic-bi-frontend-00005-d6f",
+      "previous_revision": "agentic-bi-frontend-00010-z4h",
       "runtime_environment": [
         {
           "name": "BACKEND_URL",
@@ -142,46 +212,194 @@
       },
       "container_concurrency": 40,
       "timeout_seconds": 300
+    },
+    "agentic-bi-report-worker": {
+      "url": "https://agentic-bi-report-worker-wekihucn7q-as.a.run.app",
+      "ready_revision": "agentic-bi-report-worker-00006-sk6",
+      "service_account": "agentic-bi-report-worker@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend:1792182639",
+      "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:bcb725a3cf6f960b7d2f433c61b9f5f4aab4ee0ec564cad2364ecdb5b20b2c2a",
+      "build_id": "4174f7aa-4b7d-452b-a57e-d7eadbc17da6",
+      "build_source": {
+        "storageSource": {
+          "bucket": "project-e8b1593d-009a-4822-abf-agentic-bi-build",
+          "generation": "1792182643974972",
+          "object": "source/1792182640.140715-6a05d202eae0450fbbbf3e1fc35e8065.tgz"
+        }
+      },
+      "source_base_commit": "ea9e5c3706a87ba5fa53ce58940c608e14546b43",
+      "source_is_working_tree": true,
+      "ready": true,
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100,
+          "revisionName": "agentic-bi-report-worker-00006-sk6"
+        }
+      ],
+      "previous_revision": null,
+      "runtime_environment": [
+        {
+          "name": "ENVIRONMENT",
+          "value": "production"
+        },
+        {
+          "name": "STORAGE_BACKEND",
+          "value": "firestore"
+        },
+        {
+          "name": "DATA_BACKEND",
+          "value": "cloud"
+        },
+        {
+          "name": "AI_BACKEND",
+          "value": "gemini"
+        },
+        {
+          "name": "DATA_PROFILE",
+          "value": "timeseries"
+        },
+        {
+          "name": "SOURCE_ROW_LIMIT",
+          "value": "30000"
+        },
+        {
+          "name": "GOOGLE_CLOUD_PROJECT",
+          "value": "project-e8b1593d-009a-4822-abf"
+        },
+        {
+          "name": "FIRESTORE_DATABASE",
+          "value": "agentic-bi-demo"
+        },
+        {
+          "name": "BIGQUERY_DATASET",
+          "value": "agentic_bi_demo"
+        },
+        {
+          "name": "BIGQUERY_LOCATION",
+          "value": "asia-southeast1"
+        },
+        {
+          "name": "CLOUD_SQL_INSTANCE",
+          "value": "project-e8b1593d-009a-4822-abf:asia-southeast1:agentic-bi-demo-pg"
+        },
+        {
+          "name": "ALLOWED_ORIGINS",
+          "value": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app"
+        },
+        {
+          "name": "TEXT_MODEL",
+          "value": "gemini-3.8-flash"
+        },
+        {
+          "name": "TEXT_MODEL_LOCATION",
+          "value": "global"
+        },
+        {
+          "name": "APP_MODULE",
+          "value": "app.report_worker:app"
+        },
+        {
+          "name": "REPORTS_ENABLED",
+          "value": "true"
+        },
+        {
+          "name": "REPORT_DISPATCH",
+          "value": "cloud_tasks"
+        },
+        {
+          "name": "REPORT_REGION",
+          "value": "asia-southeast1"
+        },
+        {
+          "name": "REPORT_QUEUE",
+          "value": "agentic-bi-reports"
+        },
+        {
+          "name": "REPORT_BUCKET",
+          "value": "project-e8b1593d-009a-4822-abf-agentic-bi-reports"
+        },
+        {
+          "name": "REPORT_DISPATCH_SERVICE_ACCOUNT",
+          "value": "agentic-bi-report-dispatch@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com"
+        },
+        {
+          "name": "REPORT_RESEARCH_ENABLED",
+          "value": "false"
+        },
+        {
+          "name": "GUEST_SIGNING_KEY",
+          "valueFrom": {
+            "secretKeyRef": {
+              "key": "latest",
+              "name": "agentic-bi-guest-signing"
+            }
+          }
+        },
+        {
+          "name": "POSTGRES_PASSWORD",
+          "valueFrom": {
+            "secretKeyRef": {
+              "key": "latest",
+              "name": "agentic-bi-postgres-reader"
+            }
+          }
+        },
+        {
+          "name": "REPORT_WORKER_URL",
+          "value": "https://agentic-bi-report-worker-wekihucn7q-as.a.run.app"
+        }
+      ],
+      "resources": {
+        "limits": {
+          "cpu": "2",
+          "memory": "2Gi"
+        }
+      },
+      "container_concurrency": 1,
+      "timeout_seconds": 660
     }
   },
-  "firestore": "agentic-bi-demo",
-  "bigquery_dataset": "agentic_bi_demo",
-  "cloud_sql_instance": "agentic-bi-demo-pg",
-  "vector_dimensions": 768,
-  "verified_at": "2026-10-16T22:27:22.392771+05:30",
-  "release": "Shared saved-result dashboard library",
-  "runtime_configuration_preserved": true,
-  "analytical_seed_or_history_reset": false,
-  "verification": [
-    "evaluation/dashboards-release-preflight.json",
-    "evaluation/dashboards-deployed-api.json",
-    "evaluation/dashboards-runtime.json",
-    "evaluation/dashboards-deployed-timeseries.json",
-    "evaluation/dashboards-deployed-configuration.json",
-    "evaluation/dashboards-deployed-browser.json",
-    "evaluation/dashboards-reset.json"
-  ],
-  "configuration_changes": {},
-  "data_profile": "timeseries",
-  "postgres_schema": "retail_timeseries",
-  "data_coverage": {
-    "start": "2023-01-01",
-    "end": "2026-09-30",
-    "orders": 573348,
-    "order_items": 1317941,
-    "returns": 97122,
-    "customers": 25000,
-    "calendar_days": 1369,
-    "months": 45,
-    "merchandise_revenue": "354425112.20"
+  "configuration_changes": {
+    "application": "Dashboard presentation actions and bounded saved-result downloads",
+    "infrastructure_changes": false,
+    "runtime_configuration_preserved": true,
+    "report_worker_unchanged": "agentic-bi-report-worker-00006-sk6",
+    "reports_enabled": true,
+    "report_dispatch": "cloud_tasks",
+    "search_enabled": false,
+    "data_profile_preserved": "timeseries",
+    "source_row_limit_preserved": 30000
   },
-  "rollback_record": "evaluation/deployment-before-dashboards.json",
   "github": {
     "repository": "https://github.com/RusiruChathushanaka/querylane-agentic-bi",
     "branch": "main",
-    "application_commit": "8873e8dd478ed4c76a9728cdb3099e8c476323e8"
+    "publication_performed": false,
+    "last_recorded_published_application_commit": "8873e8dd478ed4c76a9728cdb3099e8c476323e8",
+    "source_base_commit": "ea9e5c3706a87ba5fa53ce58940c608e14546b43"
   },
-  "traffic_note": "Both services retained earlier explicit traffic pins after image deployment. Exact verified candidate revisions were explicitly routed to 100%; prior revisions remain available for rollback.",
-  "temporary_runtime_job_removed": true,
-  "new_revision_error_entries": 0
+  "new_revision_error_entries": 0,
+  "verification": [
+    "evaluation/dashboard-actions.json",
+    "evaluation/dashboard-actions-release-source.json",
+    "evaluation/dashboard-actions-backend-runtime.json",
+    "evaluation/dashboard-actions-deployed-api.json",
+    "evaluation/dashboard-actions-deployed-browser.json",
+    "evaluation/dashboard-actions-deployed-configuration.json"
+  ],
+  "source_verification_manifest": "evaluation/dashboard-actions-release-source.json",
+  "latest_verified_sample": {
+    "report_id": "b900baa4adb461dec439d869b7c8e20a",
+    "version": 4,
+    "claim_policy_version": 2,
+    "reviewed_narrative": false,
+    "fallback": "Deterministic evidence summaries explicitly disclosed; saved numerical evidence and downloads verified."
+  },
+  "latest_verified_dashboard": {
+    "id": "2256ab45585e458184dd3efd39a800b6",
+    "revision": 6,
+    "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/dashboards/2256ab45585e458184dd3efd39a800b6",
+    "csv_months": 45,
+    "csv_merchandise_revenue": "354425112.20"
+  }
 }
