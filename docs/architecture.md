@@ -1,6 +1,6 @@
 # Architecture
 
-This describes the implemented application. [deployment.json](deployment.json) and [validation.md](validation.md) record the **18 October 2026** deployment and its quota-limited acceptance; they are dated evidence rather than live service discovery. The public frontend/API and private report worker are deployed. The recorded profile is `timeseries`, and optional Search research is disabled.
+This describes the implemented application. [deployment.json](deployment.json) and [validation.md](validation.md) record the **18 October 2026** releases and verification; they are dated evidence rather than live service discovery. Fresh TimesFM forecast/scenario reports passed after the normal quota reset; fresh AI Dashboard Builder and Forecast Plans worker acceptance remains unverified. The public frontend/API and private report worker are deployed. The recorded profile is `timeseries`, and optional Search research is disabled.
 
 Standalone Mermaid copies live in [graphify/](graphify/README.md). Refresh them from the fenced blocks below when changing a flow.
 
@@ -14,6 +14,8 @@ flowchart LR
     Preview -->|Explicit evidence link / no prefetch| Version[Saved report version / no inference]
     Legacy[Legacy root chat links] -->|307 /app with query preserved| Browser
     Browser -->|HTTP and SSE| API[Public FastAPI on Cloud Run]
+    Browser --> Sources[Header Sources sheet / schema inspection]
+    Sources -->|Existing connection and schema reads| API
     Browser <-->|PCM and transcripts| Voice[WebSocket handlers in public API]
     API --> ADK[ADK planner + interpreter]
     Voice --> Live[ADK run_live / Gemini Live]
@@ -27,6 +29,7 @@ flowchart LR
     API --> Store[Named Firestore database]
     Analysis --> Store
     Analysis --> Skills[Skill metadata selection + immutable snapshots]
+    Pack[24 packaged analytics / prediction playbooks] -->|Explicit insert-only admin seed| Skills
     Skills --> Store
     ADK --> Store
     API --> Metrics[Public metric catalog / immutable revisions]
@@ -65,7 +68,8 @@ The voice bridge and skill author are handlers within the public backend, not ad
 | --- | --- | --- |
 | Public landing and guided preview | `Frontend/src/app/page.tsx`, `Frontend/src/components/landing/`, `Frontend/src/lib/landing-preview-data.json` | [Landing page](landing-page.md), [ADR 0008](adr/0008-landing-workspace-routes.md) |
 | Workspace route compatibility | `Frontend/src/app/app/page.tsx`, `Frontend/next.config.ts`, `Frontend/src/lib/workspace-links.ts` | [Landing page](landing-page.md) |
-| Workspace and runtime API configuration | `Frontend/src/components/workspace.tsx`, `Frontend/src/lib/api.ts`, `Frontend/src/app/api/config/route.ts` | [Setup](setup.md), [settings](settings.md) |
+| Workspace, history and source inspection | `Frontend/src/components/workspace.tsx`, `Frontend/src/app/globals.css` | [Workspace navigation](#workspace-navigation-and-source-inspection), [setup](setup.md) |
+| Runtime API configuration | `Frontend/src/lib/api.ts`, `Frontend/src/app/api/config/route.ts` | [Setup](setup.md), [settings](settings.md) |
 | Public routing and ordinary analysis | `Backend/app/main.py`, `analysis.py`, `ai.py`, `repository.py` | `Backend/app/models.py`, [ADRs](adr/) |
 | Model failure policy and browser recovery | `Backend/app/model_errors.py`, `ai.py`, `voice.py`; `Frontend/src/lib/api.ts`, `voice.ts` | [Error handling](error-handling.md) |
 | SQL and cross-source fusion | `Backend/app/connectors.py`, `sql_guard.py`, `fusion.py` | [Retail schema](retail-timeseries-schema.md), [ADR 0003](adr/0003-bounded-cross-source-fusion.md) |
@@ -75,7 +79,7 @@ The voice bridge and skill author are handlers within the public backend, not ad
 | Reviewed AI dashboard building | `Backend/app/planning.py`, `planning_engine.py`, `Frontend/src/components/dashboard-builder.tsx` | [Dashboard Builder](ai-dashboard-builder.md), [ADR 0011](adr/0011-reviewed-dashboard-builds.md) |
 | Coherent hierarchical planning | `Backend/app/hierarchy.py`, `planning_engine.py`, `Frontend/src/components/forecast-plans.tsx` | [Forecast Plans](forecast-plans.md), [ADR 0012](adr/0012-adaptive-hierarchy-planning.md) |
 | Skills and author interviews | `Backend/app/skills.py`, `skill_author.py`, `skill_author_voice.py`, `Frontend/src/components/skills-workspace.tsx`, `skill-voice-author.tsx` | [Skills](skills.md), [voice author](voice-skill-author-plan.md) |
-| Analytics/prediction playbooks | `Backend/app/skill_library/`, `skill_examples.py` | [Playbook catalog](analytics-skills.md) |
+| Analytics/prediction playbooks | `Backend/app/skill_library/`, `skill_examples.py`, `admin.py`, `Backend/tests/test_analytics_skill_pack.py` | [24-playbook catalog](analytics-skills.md) |
 | Report orchestration and recovery | `Backend/app/report_harness.py`, `report_engine.py`, `report_repository.py`, `report_dispatch.py`, `report_worker.py` | `Backend/app/report_models.py`, [reports](reports.md) |
 | Forecast selection and managed inference | `Backend/app/report_forecasting.py`, `timesfm.py` | [TimesFM](timesfm.md), [ADR 0009](adr/0009-managed-timesfm-comparison.md) |
 | Statistics, files and isolated research | `Backend/app/report_statistics.py`, `report_exports.py`, `report_research.py` | [Reports](reports.md), [ADR 0007](adr/0007-public-report-evidence.md) |
@@ -83,6 +87,22 @@ The voice bridge and skill author are handlers within the public backend, not ad
 | Persistence, maintenance and data publication | `Backend/app/storage.py`, `adk_sessions.py`, `maintenance.py`, `retail_generator.py`, `retail_upload.py` | [Data workflow](retail-timeseries.md), [deployment runbook](deployment-guide.md) |
 
 Paths shortened after the first entry in a cell use that entry's directory. Source files define behavior; feature guides explain its invariants. The graph references provide navigation, not an exhaustive dependency graph.
+
+## Workspace navigation and source inspection
+
+The desktop and mobile sidebars prioritize public conversation history and library navigation. **New exploration** is the single reset action and returns to `/app`; the duplicate **Ask your data** row and workspace heading were removed. Search, conversation selection and shared links retain their existing behavior.
+
+The header **Sources** button opens an accessible sheet containing BigQuery/PostgreSQL connection status and schema inspection. It uses the existing connection/schema API, with loading, empty and recoverable error states. A request-generation guard ignores late schema responses after a visitor switches sources. Selection is conveyed with `aria-pressed`; Escape closes the sheet and restores trigger focus. Narrow headers hide the active-chat breadcrumb to retain room for actions. The composer's source selector still determines sources for analysis; inspecting a schema does not change that choice or execute analytical SQL.
+
+The [sidebar release](evaluation/sidebar-release-20261018.md) records frontend `00018-kd4`, with API `00024-rnd` and worker `00013-sm4` unchanged. Its browser checks measured 221px of history space at 1009×904 and verified mobile layout, schema switching, search and reset. Those observations describe that release rather than an ongoing layout guarantee.
+
+## Curated analytics and prediction skills
+
+The [packaged catalog](analytics-skills.md) contains 24 Markdown playbooks: 16 analytics and eight prediction guides. Twelve additions cover published metric consistency, executive reviews, dashboard briefs/evidence audits, basket affinity, customer concentration, cross-source grain, voice briefings, TimesFM comparisons, coherent hierarchy planning, separate management adjustments and forecast outturn reviews. These are instruction content consumed by existing workflows; they introduce no tools or service boundary.
+
+The operator-only `seed-analysis-skills` command validates all packaged files, creates missing stable IDs through the versioned skill service, and preserves edited, disabled and soft-deleted entries on replay. Deployment and history reset do not seed skills. Published content is available to the running API and worker immediately. Manual attachments have priority, one bounded metadata selection call fills remaining slots, and each analytical invocation freezes at most three exact revisions. Historical answers retain their snapshots after later library edits.
+
+The [18 October publication evidence](evaluation/advanced-feature-skills-20261018.json) records 12 additions, 29 active hosted skills and three deleted entries, unchanged prior documents, immutable revision/export checks and four real Gemini discovery probes. Selection probes performed no analytical queries or fits. Skills cannot publish dashboards, enable TimesFM, bypass metric/query controls or label allocations and management assumptions as independently modeled predictions. The recorded Skills-library header overflow at 390px remains a separate interface limitation.
 
 ## Analysis lifecycle
 
@@ -227,7 +247,7 @@ Both forecast views share one company total. Aggregate methods use common chrono
 
 New backend-only Firestore documents include `metrics`/revisions/counters, `dashboard_builds`, `forecast_plans`/revisions, idempotency and retention references. Rows remain in paginated artifacts. Baseline plan files use existing private storage; adjusted downloads render saved data within bounded processes. No source migration, new credentials, hosted model or GPU service is introduced. Follow the release ordering and preservation rules in the deployment guide.
 
-## Final 18 October release boundary
+## Planning release boundary — 18 October
 
 The [final release assessment](evaluation/planning-release-20261018.md) records frontend `00017-dxz`, API `00024-rnd` and private worker `00013-sm4` at full traffic. API and worker share backend digest `73e239ec3a76e390f271d71fbdad9d0c3e6fa167331990786871e9eae9dd9d94`; [deployment.json](deployment.json) owns the full image, identity, configuration and compatible rollback references. These are recorded observations; documentation refreshes do not inspect or change live services.
 
@@ -236,3 +256,9 @@ Verification totals are **129 hosted checks** (121 core plus three final catalog
 `metrics.requests_ad_hoc` distinguishes affirmative opt-outs from negated mentions before resolution. `AI._structured_once` uses JSON mode for `metric_scope`, then parses through the strict local contract; unsupported filters fail before controlled SQL compilation. This addresses SDK schema conversion without adding tools, database permissions or arbitrary expressions. Reports retain their existing JSON-mode harness and frozen evidence.
 
 The larger source profile and verified enabled TimesFM gates remain unchanged, as do the private worker's IAM and resource limits. Fresh dashboard-build and 237-node forecast-plan execution still need a new hosted acceptance run: admission correctly returned 429 at the shared 12/day cap during verification. Local coherent-plan evidence, saved TimesFM reports and successful metric-guided text/voice do not replace those missing worker runs. No quota was reset or raised.
+
+## Subsequent verification — 18 October
+
+After the normal quota reset, [fresh TimesFM acceptance](evaluation/final-e2e-20261018-fresh.md) passed 31 checks covering newly dispatched forecast and explicit conditional-scenario reports, numerical comparison, immutable presentation reuse, downloads, event replay and dashboard pins. The [aggregate final assessment](evaluation/final-e2e-20261018.md) retains the earlier 119 successful checks and quota-denied attempt alongside this later result. The selected monthly and daily conditional methods were TimesFM based on measured backtests, rather than agent preference. This closes the ordinary advanced-report generation gap; it does not establish fresh execution of the separate dashboard-build or hierarchical-plan workflows.
+
+The fresh test recorded frontend `00018-kd4`, API `00024-rnd` and worker `00013-sm4` without deployment or configuration changes. Before/after BigQuery counts and content fingerprints matched. The larger data profile, 30,000-row limit and enabled/verified TimesFM gates were preserved. Browser verification covered the new saved readers and dashboard at mobile width; physical microphone/speaker quality, full screen-reader use and cross-browser coverage were not repeated, and SVG contrast checks retained manual-review limits. A documentation/Graphify refresh adds no new runtime acceptance.

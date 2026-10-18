@@ -5,6 +5,8 @@ flowchart LR
     Preview -->|Explicit evidence link / no prefetch| Version[Saved report version / no inference]
     Legacy[Legacy root chat links] -->|307 /app with query preserved| Browser
     Browser -->|HTTP and SSE| API[Public FastAPI on Cloud Run]
+    Browser --> Sources[Header Sources sheet / schema inspection]
+    Sources -->|Existing connection and schema reads| API
     Browser <-->|PCM and transcripts| Voice[WebSocket handlers in public API]
     API --> ADK[ADK planner + interpreter]
     Voice --> Live[ADK run_live / Gemini Live]
@@ -18,6 +20,7 @@ flowchart LR
     API --> Store[Named Firestore database]
     Analysis --> Store
     Analysis --> Skills[Skill metadata selection + immutable snapshots]
+    Pack[24 packaged analytics / prediction playbooks] -->|Explicit insert-only admin seed| Skills
     Skills --> Store
     ADK --> Store
     API --> Metrics[Public metric catalog / immutable revisions]

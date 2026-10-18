@@ -33,7 +33,7 @@ To regenerate code **and document semantics**, invoke the installed skill in Cod
 
 | File | Scope | Source |
 | --- | --- | --- |
-| [application.mmd](application.mmd) | Public landing, `/app` workspace/API, text/live analysis, guarded sources, saved charts/dashboards and report dispatch | [Application boundaries](../architecture.md#application-boundaries) |
+| [application.mmd](application.mmd) | Public landing, history-focused `/app` workspace, Sources sheet, versioned playbooks, text/live analysis, guarded sources and saved evidence | [Application boundaries](../architecture.md#application-boundaries) |
 | [reports.mmd](reports.mmd) | Report outbox, task dispatch, private worker, checkpoints, evidence, exports and isolated research | [Advanced analysis reports](../architecture.md#advanced-analysis-reports) |
 
 The fenced Mermaid blocks in [architecture.md](../architecture.md) are authoritative for these two curated views. They are distinct from the generated Graphify graph. The architecture's source-code map identifies implementation owners. [Root agent instructions](../../AGENTS.md) describe when to update them.
@@ -90,4 +90,12 @@ The source map includes the public metric compiler/revisions, reviewed AI dashbo
 
 The [18 October planning release](../evaluation/planning-release-20261018.md) records deployed Metrics, reviewed AI dashboards and Forecast Plans, 129 hosted checks, and both final metric-intent/SDK corrections. Its quota-limited hosted acceptance is distinct from the local 237-node numerical evidence; graph relationships are not proof of successful fresh worker execution.
 
-The final metric-agent map includes `requests_ad_hoc` and `AI._structured_once`: affirmative ad hoc requests, negated opt-outs, JSON metric scope, strict filter validation, frozen definitions and controlled compilation. Serving references are frontend `00017-dxz`, API `00024-rnd` and worker `00013-sm4` in the dated release record. Regenerating this graph runs no model-backed analytics or live deployment checks.
+The final metric-agent map includes `requests_ad_hoc` and `AI._structured_once`: affirmative ad hoc requests, negated opt-outs, JSON metric scope, strict filter validation, frozen definitions and controlled compilation. That planning release recorded frontend `00017-dxz`, API `00024-rnd` and worker `00013-sm4`; the later sidebar release advances only the frontend. Regenerating this graph runs no model-backed analytics or live deployment checks.
+
+## Sidebar and expanded skills coverage
+
+The application diagram now places source/schema inspection in the header **Sources** sheet, leaving the sidebar for history and navigation with one **New exploration** action. Query source selection stays in the composer. Inspect `Workspace` and [the architecture contract](../architecture.md#workspace-navigation-and-source-inspection) for schema loading, stale-response protection and focus behavior. [Sidebar release evidence](../evaluation/sidebar-release-20261018.md) records frontend `00018-kd4` and the unchanged API/worker.
+
+The semantic graph includes all 24 packaged [analytics/prediction playbooks](../analytics-skills.md), including metric definitions, dashboard design/evidence, TimesFM comparison, hierarchy planning, management adjustments and outturn review. [Publication evidence](../evaluation/advanced-feature-skills-20261018.json) records 12 insert-only additions and 29 active hosted entries; these dated counts are not a live catalog query. Metadata discovery, manual priority and immutable three-skill snapshots remain the execution boundary. Playbooks add no tools or permissions.
+
+The [post-reset TimesFM assessment](../evaluation/final-e2e-20261018-fresh.md) closes the earlier ordinary-report quota gap with 31 fresh checks; it leaves separate AI Dashboard Builder/Forecast Plans worker acceptance outstanding. Historical evidence remains excluded from graph ingestion, while its documented references retain these distinctions. Existing mobile-library overflow, physical-device and contrast-review limits are not resolved by graph regeneration.

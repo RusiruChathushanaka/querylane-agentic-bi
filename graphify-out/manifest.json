@@ -330,10 +330,10 @@
     "semantic_hash": "f921bbb7955808e7d5de7cf7c639f078"
   },
   "Backend/tests/test_analytics_skill_pack.py": {
-    "mtime": 1792184543.201919,
-    "seen": 1792214114.5734148,
-    "ast_hash": "74b30f63fb54e472e63ae951cca67c98",
-    "semantic_hash": "74b30f63fb54e472e63ae951cca67c98"
+    "mtime": 1792275298.379997,
+    "seen": 1792304056.048364,
+    "ast_hash": "fe2f28641accd0d9cd06b54076efc25c",
+    "semantic_hash": "fe2f28641accd0d9cd06b54076efc25c"
   },
   "Backend/tests/test_api.py": {
     "mtime": 1792223388.3535993,
@@ -828,10 +828,10 @@
     "semantic_hash": "9ff870893d5a3776f60e9464f58edc17"
   },
   "Frontend/src/components/workspace.tsx": {
-    "mtime": 1792267815.8447316,
-    "seen": 1792271248.993269,
-    "ast_hash": "a5cf16a8fe96e60210ad62b3b246581f",
-    "semantic_hash": "a5cf16a8fe96e60210ad62b3b246581f"
+    "mtime": 1792274628.2203646,
+    "seen": 1792304056.048458,
+    "ast_hash": "fc6dab700b8aadd432f3d9ef44bde50e",
+    "semantic_hash": "fc6dab700b8aadd432f3d9ef44bde50e"
   },
   "Frontend/src/hooks/use-app-motion.ts": {
     "mtime": 1792088715.2666326,
@@ -972,8 +972,8 @@
     "semantic_hash": "2bfa86decba7cb37117b4cfc4f5b4fb6"
   },
   "Frontend/tsconfig.json": {
-    "mtime": 1792271989.4453063,
-    "seen": 1792272917.3477309,
+    "mtime": 1792274667.9594634,
+    "seen": 1792304056.04849,
     "ast_hash": "f488cf7181b93259985af64ccde63f14",
     "semantic_hash": "f488cf7181b93259985af64ccde63f14"
   },
@@ -1020,10 +1020,10 @@
     "semantic_hash": "ca25fe234f223d659813d5932b9de159"
   },
   "AGENTS.md": {
-    "mtime": 1792273820.3905296,
-    "seen": 1792273982.8295062,
-    "ast_hash": "d67c89f1a4d77f7fcc3e0ecfd62ce421",
-    "semantic_hash": "d67c89f1a4d77f7fcc3e0ecfd62ce421"
+    "mtime": 1792303593.6838923,
+    "seen": 1792304056.0485,
+    "ast_hash": "4ea116d179117d1e62fab08457cecc67",
+    "semantic_hash": "4ea116d179117d1e62fab08457cecc67"
   },
   "Backend/README.md": {
     "mtime": 1792255047.9951062,
@@ -1128,10 +1128,10 @@
     "semantic_hash": "807599428ed630912bd0e16742c84918"
   },
   "README.md": {
-    "mtime": 1792273820.3897462,
-    "seen": 1792273982.829524,
-    "ast_hash": "0fa2c883ad3f4c2ad472b57836a0b1fd",
-    "semantic_hash": "0fa2c883ad3f4c2ad472b57836a0b1fd"
+    "mtime": 1792282499.0506902,
+    "seen": 1792304056.048529,
+    "ast_hash": "90f7495838d1f562760bc8735c4ebb67",
+    "semantic_hash": "90f7495838d1f562760bc8735c4ebb67"
   },
   "docs/adr/0001-public-workspace-without-accounts.md": {
     "mtime": 1792073376.6843567,
@@ -1176,16 +1176,16 @@
     "semantic_hash": "153205c4eacbc10c59618fe8131a918e"
   },
   "docs/analytics-skills.md": {
-    "mtime": 1792250793.9019332,
-    "seen": 1792251111.866346,
-    "ast_hash": "bbdc9e2b6756c399254cd3e4e5526ea8",
-    "semantic_hash": "bbdc9e2b6756c399254cd3e4e5526ea8"
+    "mtime": 1792275520.3576076,
+    "seen": 1792304056.048542,
+    "ast_hash": "b3cfa8ad839c0b3e2e2db33db48dae73",
+    "semantic_hash": "b3cfa8ad839c0b3e2e2db33db48dae73"
   },
   "docs/architecture.md": {
-    "mtime": 1792273820.3911808,
-    "seen": 1792273982.829538,
-    "ast_hash": "a240f2c9110ec44fadd5eff6fa01d894",
-    "semantic_hash": "a240f2c9110ec44fadd5eff6fa01d894"
+    "mtime": 1792303615.2565215,
+    "seen": 1792304056.048543,
+    "ast_hash": "7c98adfbcbaefaf4ea294487dde69810",
+    "semantic_hash": "7c98adfbcbaefaf4ea294487dde69810"
   },
   "docs/charts.md": {
     "mtime": 1792155999.748274,
@@ -1218,10 +1218,10 @@
     "semantic_hash": "816a307ffd1a81eebd66eaab8816b724"
   },
   "docs/deployment-guide.md": {
-    "mtime": 1792272352.1423473,
-    "seen": 1792272917.347778,
-    "ast_hash": "b8664def0f0d030361af78c658105743",
-    "semantic_hash": "b8664def0f0d030361af78c658105743"
+    "mtime": 1792275369.015115,
+    "seen": 1792304056.0485492,
+    "ast_hash": "9336bbf812d122bc48272ea7e92b7b25",
+    "semantic_hash": "9336bbf812d122bc48272ea7e92b7b25"
   },
   "docs/motion-and-feedback.md": {
     "mtime": 1792090798.409208,
@@ -1254,22 +1254,22 @@
     "semantic_hash": "ff72c46f8521533f0a76b482cdc7d8b8"
   },
   "docs/setup.md": {
-    "mtime": 1792270343.870944,
-    "seen": 1792271248.993361,
-    "ast_hash": "0a1ce9a8c0be8bb1fcd889bb1138f730",
-    "semantic_hash": "0a1ce9a8c0be8bb1fcd889bb1138f730"
+    "mtime": 1792274628.4317603,
+    "seen": 1792304056.048557,
+    "ast_hash": "44ae21f1efb3823c671f2aadcfe85a25",
+    "semantic_hash": "44ae21f1efb3823c671f2aadcfe85a25"
   },
   "docs/skills.md": {
-    "mtime": 1792184621.9405494,
-    "seen": 1792214114.573476,
-    "ast_hash": "b88b626cb4857735010c43c28355fa38",
-    "semantic_hash": "b88b626cb4857735010c43c28355fa38"
+    "mtime": 1792275325.8893886,
+    "seen": 1792304056.048558,
+    "ast_hash": "4f445ad1b79698f5d00e0015ce304153",
+    "semantic_hash": "4f445ad1b79698f5d00e0015ce304153"
   },
   "docs/validation.md": {
-    "mtime": 1792273853.7661858,
-    "seen": 1792273982.829555,
-    "ast_hash": "3b2267745d9e35569c306e0ef2703fe9",
-    "semantic_hash": "3b2267745d9e35569c306e0ef2703fe9"
+    "mtime": 1792302987.3382657,
+    "seen": 1792304056.0485601,
+    "ast_hash": "d8a007511796c8dfd98b2556c4706226",
+    "semantic_hash": "d8a007511796c8dfd98b2556c4706226"
   },
   "docs/voice-skill-author-plan.md": {
     "mtime": 1792095850.629606,
@@ -1654,5 +1654,77 @@
     "seen": 1792272917.347779,
     "ast_hash": "6758c771219476ad9f5693a3a3176af1",
     "semantic_hash": "6758c771219476ad9f5693a3a3176af1"
+  },
+  "Backend/app/skill_library/analytics-ai-dashboard-brief.md": {
+    "mtime": 1792275298.3349934,
+    "seen": 1792304056.048503,
+    "ast_hash": "22549d984e8c5319daeec1fdb14e38c7",
+    "semantic_hash": "22549d984e8c5319daeec1fdb14e38c7"
+  },
+  "Backend/app/skill_library/analytics-basket-affinity.md": {
+    "mtime": 1792275298.335951,
+    "seen": 1792304056.048504,
+    "ast_hash": "6ed156f1db933f4d3a25fba6a9128031",
+    "semantic_hash": "6ed156f1db933f4d3a25fba6a9128031"
+  },
+  "Backend/app/skill_library/analytics-cross-source-reconciliation.md": {
+    "mtime": 1792275298.3368862,
+    "seen": 1792304056.048507,
+    "ast_hash": "cf2118930573cf19b03383a707b8dd2f",
+    "semantic_hash": "cf2118930573cf19b03383a707b8dd2f"
+  },
+  "Backend/app/skill_library/analytics-customer-concentration.md": {
+    "mtime": 1792275298.336424,
+    "seen": 1792304056.048509,
+    "ast_hash": "4539735faed518cdd732d17d66d6b27a",
+    "semantic_hash": "4539735faed518cdd732d17d66d6b27a"
+  },
+  "Backend/app/skill_library/analytics-dashboard-evidence-audit.md": {
+    "mtime": 1792275298.3354836,
+    "seen": 1792304056.0485098,
+    "ast_hash": "e3f67ec675a91436959a81c6bad1849e",
+    "semantic_hash": "e3f67ec675a91436959a81c6bad1849e"
+  },
+  "Backend/app/skill_library/analytics-executive-business-review.md": {
+    "mtime": 1792275298.3345046,
+    "seen": 1792304056.048512,
+    "ast_hash": "858ccfa2e0bc5a7ad25c34d54872c514",
+    "semantic_hash": "858ccfa2e0bc5a7ad25c34d54872c514"
+  },
+  "Backend/app/skill_library/analytics-published-metrics.md": {
+    "mtime": 1792275298.333962,
+    "seen": 1792304056.048516,
+    "ast_hash": "200ce4a2946a25657d60cc28df26f7e4",
+    "semantic_hash": "200ce4a2946a25657d60cc28df26f7e4"
+  },
+  "Backend/app/skill_library/analytics-voice-decision-brief.md": {
+    "mtime": 1792275298.3373485,
+    "seen": 1792304056.048518,
+    "ast_hash": "f0334f4f9b9ac021b55b6d99b9e85c0d",
+    "semantic_hash": "f0334f4f9b9ac021b55b6d99b9e85c0d"
+  },
+  "Backend/app/skill_library/prediction-forecast-outturn-review.md": {
+    "mtime": 1792275298.3392286,
+    "seen": 1792304056.0485198,
+    "ast_hash": "2a6e96f47b0a3e5668017fd9e5c215ae",
+    "semantic_hash": "2a6e96f47b0a3e5668017fd9e5c215ae"
+  },
+  "Backend/app/skill_library/prediction-hierarchical-planning.md": {
+    "mtime": 1792275298.3382854,
+    "seen": 1792304056.048521,
+    "ast_hash": "d1cde3d0d0e87610cd8a913cfd9677b6",
+    "semantic_hash": "d1cde3d0d0e87610cd8a913cfd9677b6"
+  },
+  "Backend/app/skill_library/prediction-planning-adjustments.md": {
+    "mtime": 1792275298.3387647,
+    "seen": 1792304056.048522,
+    "ast_hash": "9f8850accf104b5c44dbf79c4f553526",
+    "semantic_hash": "9f8850accf104b5c44dbf79c4f553526"
+  },
+  "Backend/app/skill_library/prediction-timesfm-comparison.md": {
+    "mtime": 1792275298.3378217,
+    "seen": 1792304056.0485241,
+    "ast_hash": "bdae87b1cfe0a72d4cff3cf9aef8ef2f",
+    "semantic_hash": "bdae87b1cfe0a72d4cff3cf9aef8ef2f"
   }
 }
