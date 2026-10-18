@@ -1,0 +1,14 @@
+{
+  "candidate": "agentic-bi-frontend-00019-gvr",
+  "candidate_url": "https://release-check---agentic-bi-frontend-wekihucn7q-as.a.run.app",
+  "ready": true,
+  "runtime_spec_unchanged": true,
+  "runtime_annotations_unchanged": true,
+  "traffic_preserved_before_testing": true,
+  "http_checks": {
+    "/": true,
+    "/app": true,
+    "/api/config": true,
+    "/api/health": true
+  }
+}

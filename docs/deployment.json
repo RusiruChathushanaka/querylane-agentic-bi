@@ -17,8 +17,8 @@
     "merchandise_revenue": "354425112.20"
   },
   "date": "2026-10-18",
-  "verified_at": "2026-10-17T22:11:21.842149+00:00",
-  "release": "Frontend sidebar: header Sources panel and single New exploration action",
+  "verified_at": "2026-10-18T06:30:42.936838+00:00",
+  "release": "Frontend navigation icons: Business metrics and Forecast plans",
   "services": {
     "agentic-bi-backend": {
       "url": "https://agentic-bi-backend-wekihucn7q-as.a.run.app",
@@ -179,28 +179,28 @@
     },
     "agentic-bi-frontend": {
       "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app",
-      "ready_revision": "agentic-bi-frontend-00018-kd4",
+      "ready_revision": "agentic-bi-frontend-00019-gvr",
       "service_account": "agentic-bi-frontend@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
-      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:cd256d3b15d406f3fe6c907ce45d4bb42866c79becc6e011838fa7c6533245bf",
-      "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:cd256d3b15d406f3fe6c907ce45d4bb42866c79becc6e011838fa7c6533245bf",
-      "build_id": "2196c5f3-f35f-456a-aab3-b063d361024a",
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:03adba9fb62c77c858e6d9b49cc0aa8a77302e53268cb169d4b603ef175a65a5",
+      "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:03adba9fb62c77c858e6d9b49cc0aa8a77302e53268cb169d4b603ef175a65a5",
+      "build_id": "2f560c13-5d84-4336-8ed3-08c3b64de878",
       "build_source": {
         "storageSource": {
           "bucket": "project-e8b1593d-009a-4822-abf-agentic-bi-build",
-          "generation": "1792274715061836",
-          "object": "source/1792274713.167997-5171356e50d240f281d1c8311b1a0d00.tgz"
+          "generation": "1792304535212957",
+          "object": "source/1792304533.758926-48254a603570494e86533bacbeb11ed5.tgz"
         }
       },
-      "source_base_commit": "06c79be14bf9ef6e676ca93bb98724eda7c9a9b9",
+      "source_base_commit": "22625a68d64aebcaa7e8e3dcdb2c604475132652",
       "source_is_working_tree": true,
       "ready": true,
       "traffic": [
         {
           "percent": 100,
-          "revisionName": "agentic-bi-frontend-00018-kd4"
+          "revisionName": "agentic-bi-frontend-00019-gvr"
         }
       ],
-      "previous_revision": "agentic-bi-frontend-00017-dxz",
+      "previous_revision": "agentic-bi-frontend-00018-kd4",
       "runtime_environment": [
         {
           "name": "BACKEND_URL",
@@ -215,7 +215,7 @@
       },
       "container_concurrency": 40,
       "timeout_seconds": 300,
-      "source_verification_manifest": "evaluation/sidebar-release-20261018-source.json"
+      "source_verification_manifest": "evaluation/navigation-icons-release-20261018-source.json"
     },
     "agentic-bi-report-worker": {
       "url": "https://agentic-bi-report-worker-wekihucn7q-as.a.run.app",
@@ -427,15 +427,22 @@
     "evaluation/sidebar-release-20261018-routes.json",
     "evaluation/sidebar-release-20261018-configuration.json",
     "evaluation/sidebar-release-20261018-browser.json",
-    "evaluation/sidebar-release-20261018.md"
+    "evaluation/sidebar-release-20261018.md",
+    "evaluation/navigation-icons-release-20261018-source.json",
+    "evaluation/navigation-icons-release-20261018-candidate.json",
+    "evaluation/navigation-icons-release-20261018-preservation.json",
+    "evaluation/navigation-icons-release-20261018-http.json",
+    "evaluation/navigation-icons-release-20261018-routes.json",
+    "evaluation/navigation-icons-release-20261018-browser.json",
+    "evaluation/navigation-icons-release-20261018.md"
   ],
-  "source_verification_manifest": "evaluation/sidebar-release-20261018-source.json",
+  "source_verification_manifest": "evaluation/navigation-icons-release-20261018-source.json",
   "github": {
     "repository": "https://github.com/RusiruChathushanaka/querylane-agentic-bi",
     "branch": "main",
-    "source_base_commit": "06c79be14bf9ef6e676ca93bb98724eda7c9a9b9",
-    "publication_note": "Sidebar source, packaged skill additions and dated verification documentation are published together after the separate deployment and library-publication operations. The frontend build is identified by evaluation/sidebar-release-20261018-source.json; no new deployment is implied by Git publication.",
-    "publication_base_commit": "627c300961ef95bd468279bb9f6545e276a775e0"
+    "source_base_commit": "22625a68d64aebcaa7e8e3dcdb2c604475132652",
+    "publication_note": "Navigation icon code and dated release evidence are published after verified frontend-only deployment. The source manifest hashes identify the exact runtime files built from the working tree; publication does not change analytical runtimes or data.",
+    "publication_base_commit": "22625a68d64aebcaa7e8e3dcdb2c604475132652"
   },
   "latest_verified_sample": {
     "report_id": "2ed05089e9a86e1ef3046fa6c6728680",
@@ -451,11 +458,11 @@
   },
   "temporary_runtime_jobs": "Backend runtime check removed after completion",
   "unexpected_application_error_entries": 0,
-  "fresh_planning_acceptance": "Pending normal UTC quota reset: existing shared advanced-analysis allowance was 12/12; no reset or increase.",
+  "fresh_planning_acceptance": "Fresh AI Dashboard Builder and 237-node Forecast Plans worker acceptance remains unverified; this frontend-only release starts no expensive jobs. See planning-release-20261018.md and final-e2e-20261018-fresh.md for dated boundaries.",
   "final_revision_error_window": {
-    "from_utc": "2026-10-17T22:08:34.465363Z",
+    "from_utc": "2026-10-18T06:25:25.603964Z",
     "revisions": [
-      "agentic-bi-frontend-00018-kd4"
+      "agentic-bi-frontend-00019-gvr"
     ],
     "unexpected_frontend_error_entries": 0
   },

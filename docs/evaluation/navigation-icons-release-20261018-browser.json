@@ -1,0 +1,223 @@
+{
+  "verified_at": "2026-10-18T06:30:42.936838+00:00",
+  "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/app",
+  "revision": "agentic-bi-frontend-00019-gvr",
+  "checks": {
+    "desktop_icons_visible_and_aligned": true,
+    "mobile_557_icons_visible_and_aligned": true,
+    "narrow_390_all_six_icons_visible": true,
+    "decorative_icons_hidden_from_accessible_names": true,
+    "no_horizontal_page_overflow": true,
+    "keyboard_metrics_visible_focus_and_activation": true,
+    "keyboard_forecast_plans_visible_focus_and_activation": true,
+    "escape_restores_menu_focus_after_transition": true,
+    "settled_sidebar_axe_zero_violations": true,
+    "settled_navigation_axe_zero_violations": true,
+    "browser_errors_empty": true,
+    "new_frontend_revision_error_logs_empty": true,
+    "no_new_analysis_or_expensive_job_requests": true
+  },
+  "desktop": {
+    "links": [
+      {
+        "hidden": "true",
+        "href": "/dashboards",
+        "icon": "lucide lucide-panels-top-left lucide-layout",
+        "iconWidth": 16,
+        "iconX": 27,
+        "text": "Dashboards"
+      },
+      {
+        "hidden": "true",
+        "href": "/reports",
+        "icon": "lucide lucide-file-chart-column lucide-file-bar-chart-2",
+        "iconWidth": 16,
+        "iconX": 27,
+        "text": "Reports"
+      },
+      {
+        "hidden": "true",
+        "href": "/metrics",
+        "icon": "lucide lucide-target",
+        "iconWidth": 16,
+        "iconX": 27,
+        "text": "Business metrics"
+      },
+      {
+        "hidden": "true",
+        "href": "/forecast-plans",
+        "icon": "lucide lucide-trending-up",
+        "iconWidth": 16,
+        "iconX": 27,
+        "text": "Forecast plans"
+      },
+      {
+        "hidden": "true",
+        "href": "/skills",
+        "icon": "lucide lucide-book-open",
+        "iconWidth": 16,
+        "iconX": 27,
+        "text": "Skills library"
+      },
+      {
+        "hidden": "true",
+        "href": "/settings",
+        "icon": "lucide lucide-settings-2",
+        "iconWidth": 16,
+        "iconX": 27,
+        "text": "Settings"
+      }
+    ],
+    "pageOverflow": false,
+    "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/app",
+    "viewport": [
+      1280,
+      960
+    ]
+  },
+  "mobile": {
+    "links": [
+      {
+        "hidden": "true",
+        "href": "/dashboards",
+        "icon": "lucide lucide-panels-top-left lucide-layout",
+        "iconWidth": 16,
+        "iconX": 27,
+        "text": "Dashboards"
+      },
+      {
+        "hidden": "true",
+        "href": "/reports",
+        "icon": "lucide lucide-file-chart-column lucide-file-bar-chart-2",
+        "iconWidth": 16,
+        "iconX": 27,
+        "text": "Reports"
+      },
+      {
+        "hidden": "true",
+        "href": "/metrics",
+        "icon": "lucide lucide-target",
+        "iconWidth": 16,
+        "iconX": 27,
+        "text": "Business metrics"
+      },
+      {
+        "hidden": "true",
+        "href": "/forecast-plans",
+        "icon": "lucide lucide-trending-up",
+        "iconWidth": 16,
+        "iconX": 27,
+        "text": "Forecast plans"
+      },
+      {
+        "hidden": "true",
+        "href": "/skills",
+        "icon": "lucide lucide-book-open",
+        "iconWidth": 16,
+        "iconX": 27,
+        "text": "Skills library"
+      },
+      {
+        "hidden": "true",
+        "href": "/settings",
+        "icon": "lucide lucide-settings-2",
+        "iconWidth": 16,
+        "iconX": 27,
+        "text": "Settings"
+      }
+    ],
+    "opacity": "1",
+    "pageOverflow": false,
+    "viewport": [
+      557,
+      904
+    ]
+  },
+  "narrow": {
+    "links": [
+      {
+        "hasIcon": true,
+        "href": "/dashboards",
+        "iconWidth": 16,
+        "text": "Dashboards"
+      },
+      {
+        "hasIcon": true,
+        "href": "/reports",
+        "iconWidth": 16,
+        "text": "Reports"
+      },
+      {
+        "hasIcon": true,
+        "href": "/metrics",
+        "iconWidth": 16,
+        "text": "Business metrics"
+      },
+      {
+        "hasIcon": true,
+        "href": "/forecast-plans",
+        "iconWidth": 16,
+        "text": "Forecast plans"
+      },
+      {
+        "hasIcon": true,
+        "href": "/skills",
+        "iconWidth": 16,
+        "text": "Skills library"
+      },
+      {
+        "hasIcon": true,
+        "href": "/settings",
+        "iconWidth": 16,
+        "text": "Settings"
+      }
+    ],
+    "pageOverflow": false,
+    "viewport": [
+      390,
+      844
+    ]
+  },
+  "keyboard": {
+    "metrics": {
+      "focusVisible": true,
+      "href": "/metrics",
+      "text": "Business metrics"
+    },
+    "forecast_plans": {
+      "focusVisible": true,
+      "href": "/forecast-plans",
+      "text": "Forecast plans"
+    },
+    "destination_urls": [
+      "/metrics",
+      "/forecast-plans"
+    ]
+  },
+  "dismissal": {
+    "dialogClosed": true,
+    "focus": "Open workspace navigation"
+  },
+  "accessibility": {
+    "initial_opening_transition": {
+      "inapplicable": 63,
+      "incomplete": 1,
+      "passes": 24,
+      "violations": 1
+    },
+    "settled_sidebar": {
+      "inapplicable": 63,
+      "incomplete": 0,
+      "passes": 25,
+      "violations": 0
+    },
+    "settled_navigation": {
+      "inapplicable": 81,
+      "incomplete": 0,
+      "passes": 7,
+      "violations": 0
+    },
+    "note": "Initial scan caught the opening opacity transition and flagged contrast. Settled full-sheet and footer scans both passed; initial observation retained. Immediate Escape inspection likewise preceded unmount; settled focus restoration passed."
+  },
+  "limits": "Scoped Chrome navigation release test; not a full screen-reader, physical-device or cross-browser audit. No fresh analytics, voice session, report, forecast, scenario or hierarchy job."
+}

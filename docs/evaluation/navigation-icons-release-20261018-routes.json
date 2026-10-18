@@ -1,0 +1,13 @@
+{
+  "verified_at": "2026-10-18T06:29:58.552678+00:00",
+  "route_statuses": {
+    "/": 200,
+    "/app": 200,
+    "/metrics": 200,
+    "/forecast-plans": 200,
+    "/reports": 200,
+    "/dashboards": 200,
+    "/skills": 200,
+    "/settings": 200
+  }
+}

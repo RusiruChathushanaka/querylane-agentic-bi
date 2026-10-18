@@ -861,10 +861,14 @@ export default function Workspace() {
           </Link>
         </Button>
         <Button asChild variant="ghost" className="workspace-settings-link">
-          <Link href="/metrics">Business metrics</Link>
+          <Link href="/metrics">
+            <Target aria-hidden="true" data-icon="inline-start" /> Business metrics
+          </Link>
         </Button>
         <Button asChild variant="ghost" className="workspace-settings-link">
-          <Link href="/forecast-plans">Forecast plans</Link>
+          <Link href="/forecast-plans">
+            <TrendingUp aria-hidden="true" data-icon="inline-start" /> Forecast plans
+          </Link>
         </Button>
         <Button asChild variant="ghost" className="workspace-settings-link">
           <Link href="/skills">
