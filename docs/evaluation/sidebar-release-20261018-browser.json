@@ -1,0 +1,53 @@
+{
+  "verified_at": "2026-10-17T22:11:21.842149+00:00",
+  "frontend": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app",
+  "revision": "agentic-bi-frontend-00018-kd4",
+  "checks": {
+    "landing_ctas_target_app": true,
+    "landing_backend_requests_zero": true,
+    "cta_opens_workspace": true,
+    "desktop_one_new_exploration": true,
+    "duplicate_ask_your_data_removed": true,
+    "sidebar_source_cards_removed": true,
+    "history_search_and_saved_selection": true,
+    "existing_daily_saved_chart_reopens": true,
+    "saved_view_new_analysis_calls_zero": true,
+    "new_exploration_clears_chat_url": true,
+    "both_source_statuses_connected": true,
+    "bigquery_schema_five_tables": true,
+    "postgres_schema_six_tables": true,
+    "source_panel_escape_focus_restored": true,
+    "mobile_one_new_exploration": true,
+    "mobile_no_sidebar_source_cards": true,
+    "source_panel_fits_320px": true,
+    "active_chat_header_no_overlap_320px": true,
+    "no_horizontal_page_overflow": true,
+    "browser_errors_empty": true
+  },
+  "measurements": {
+    "desktop_viewport": [
+      1009,
+      904
+    ],
+    "desktop_history_height_px": 221,
+    "public_history_count": 100,
+    "mobile_viewport": [
+      390,
+      844
+    ],
+    "mobile_history_height_px": 163.2265625,
+    "narrow_viewport": [
+      320,
+      740
+    ],
+    "source_panel_width_px": 320
+  },
+  "saved_conversation": "253d009d6d1d4677ac1ef7b9a10e6c1e",
+  "axe": {
+    "inapplicable": 68,
+    "incomplete": 1,
+    "passes": 20,
+    "violations": 0
+  },
+  "limits": "Scoped UI release acceptance. No fresh analysis, voice session, report or forecast generated. One read-only source summary query; no public mutations, source writes, seed, history reset, quota reset or IAM change. Axe has one incomplete contrast check; this is not a screen-reader certification."
+}

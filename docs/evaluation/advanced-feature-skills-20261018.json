@@ -1,0 +1,219 @@
+{
+  "verified_at": "2026-10-17T22:18:09.553380+00:00",
+  "project": "project-e8b1593d-009a-4822-abf",
+  "database": "agentic-bi-demo",
+  "edition": "STANDARD",
+  "operation": "Insert-only operator seed, two runs; no deployment",
+  "new_skills": {
+    "analytics-ai-dashboard-brief": {
+      "name": "AI dashboard objectives and card design",
+      "revision": 1,
+      "source": "all",
+      "enabled": true,
+      "instructions_sha256": "78d7574b447c3119f048f848bda946df959e510b7235b5f817624ab0d89d2ee3"
+    },
+    "analytics-basket-affinity": {
+      "name": "Basket composition and product affinity",
+      "revision": 1,
+      "source": "bigquery",
+      "enabled": true,
+      "instructions_sha256": "48ec8820716363e5ba787b680a5163800a72e27d9e0eab646e9fa542bf982984"
+    },
+    "analytics-cross-source-reconciliation": {
+      "name": "Cross-source grain and join reconciliation",
+      "revision": 1,
+      "source": "all",
+      "enabled": true,
+      "instructions_sha256": "69e3d8ef71c11e53737cd183b0a866107507542a75c625e942df9d0e610c2806"
+    },
+    "analytics-customer-concentration": {
+      "name": "Customer revenue concentration and dependency",
+      "revision": 1,
+      "source": "all",
+      "enabled": true,
+      "instructions_sha256": "dce580c1c7951fb5c1048cb777b573e3fb86b5a026d9297dfd117b43625f95a8"
+    },
+    "analytics-dashboard-evidence-audit": {
+      "name": "Dashboard evidence and comparability audit",
+      "revision": 1,
+      "source": "all",
+      "enabled": true,
+      "instructions_sha256": "a2a104ffee4864ff38f96f269315632ff1de30a85ecaf10f36dcbd451a29c808"
+    },
+    "analytics-executive-business-review": {
+      "name": "Executive retail performance review",
+      "revision": 1,
+      "source": "all",
+      "enabled": true,
+      "instructions_sha256": "100dc21d5e310dece018518fc4c8ee2fb27feb96dc947e46b521ef64d957d759"
+    },
+    "analytics-published-metrics": {
+      "name": "Published metrics and definition consistency",
+      "revision": 1,
+      "source": "all",
+      "enabled": true,
+      "instructions_sha256": "b6577dd452f7788c74e6be19bc6df639c413a51ce784b809e2ecbc1a5c9693c0"
+    },
+    "analytics-voice-decision-brief": {
+      "name": "Conversational business decision briefing",
+      "revision": 1,
+      "source": "all",
+      "enabled": true,
+      "instructions_sha256": "dce4e74b68da6ca5c825f6ac434746e09b93164dbf3964811d35d20af439a18d"
+    },
+    "prediction-forecast-outturn-review": {
+      "name": "Forecast versus actual outturn review",
+      "revision": 1,
+      "source": "all",
+      "enabled": true,
+      "instructions_sha256": "bd338c47895b71d9cc3e2ed6c840dfd350c6148e7d9862e7b35e79af98cb2627"
+    },
+    "prediction-hierarchical-planning": {
+      "name": "Coherent geographic and product forecast planning",
+      "revision": 1,
+      "source": "all",
+      "enabled": true,
+      "instructions_sha256": "edabdb7dc791c764a2261bef80e3ebb1b614a502bb9b042085e514d292a76476"
+    },
+    "prediction-planning-adjustments": {
+      "name": "Forecast plan adjustments and assumption disclosure",
+      "revision": 1,
+      "source": "all",
+      "enabled": true,
+      "instructions_sha256": "1ff94dfa45b1d9d81edf013b790c752bf0e03a619512e7be24c5a032ddbcd44d"
+    },
+    "prediction-timesfm-comparison": {
+      "name": "TimesFM candidate comparison and evidence",
+      "revision": 1,
+      "source": "all",
+      "enabled": true,
+      "instructions_sha256": "e8e8cf345fc748b3c2366453a7ad197002b9014676cdd5b859e3e30da22e36db"
+    }
+  },
+  "previous_active": 17,
+  "active_after": 29,
+  "deleted_after": 3,
+  "previous_documents_unchanged": 20,
+  "checks": {
+    "all_existing_documents_preserved": true,
+    "seed_replay_no_changes": true,
+    "all_new_content_matches_pack": true,
+    "immutable_revision_reads_match": true,
+    "hosted_exports_round_trip": true,
+    "capacity_within_100": true
+  },
+  "local_tests": {
+    "targeted_backend_passed": 29,
+    "ruff": "passed"
+  },
+  "real_selector": {
+    "verified_at": "2026-10-17T22:17:12.350955+00:00",
+    "model": "gemini-3.8-flash",
+    "environment": "Real Vertex Gemini through the existing ADK selector, copied published catalog, in-memory sessions; operator credentials; no analytical SQL or inference fitting. This is not a new runtime-identity access check.",
+    "cases": [
+      {
+        "question": "Which categories are frequently bought together in completed orders? Show basket support, directional confidence and lift.",
+        "source": "bigquery",
+        "manual": [],
+        "expected_relevant_skill": "analytics-basket-affinity",
+        "selected": [
+          {
+            "id": "analytics-basket-affinity",
+            "revision": 1,
+            "mode": "automatic"
+          }
+        ],
+        "warnings": [],
+        "passed": true
+      },
+      {
+        "question": "Propose a four-card retail leadership dashboard for the last complete quarter, reusing compatible saved results and preparing a proposal for review.",
+        "source": "all",
+        "manual": [],
+        "expected_relevant_skill": "analytics-ai-dashboard-brief",
+        "selected": [
+          {
+            "id": "analytics-ai-dashboard-brief",
+            "revision": 1,
+            "mode": "automatic"
+          },
+          {
+            "id": "analytics-dashboard-evidence-audit",
+            "revision": 1,
+            "mode": "automatic"
+          },
+          {
+            "id": "analytics-executive-business-review",
+            "revision": 1,
+            "mode": "automatic"
+          }
+        ],
+        "warnings": [],
+        "passed": true
+      },
+      {
+        "question": "Explain how a company revenue forecast reconciles across region/store and category/product hierarchies, including which leaf nodes are allocated.",
+        "source": "all",
+        "manual": [],
+        "expected_relevant_skill": "prediction-hierarchical-planning",
+        "selected": [
+          {
+            "id": "prediction-hierarchical-planning",
+            "revision": 1,
+            "mode": "automatic"
+          },
+          {
+            "id": "prediction-planning-adjustments",
+            "revision": 1,
+            "mode": "automatic"
+          }
+        ],
+        "warnings": [],
+        "passed": true
+      },
+      {
+        "question": "Compare TimesFM with statistical forecasting candidates in an Advanced Analysis report; explain selected-method MAE, RMSE and Preview limitations.",
+        "source": "bigquery",
+        "manual": [
+          "prediction-backtesting"
+        ],
+        "expected_relevant_skill": "prediction-timesfm-comparison",
+        "selected": [
+          {
+            "id": "prediction-backtesting",
+            "revision": 1,
+            "mode": "manual"
+          },
+          {
+            "id": "prediction-timesfm-comparison",
+            "revision": 1,
+            "mode": "automatic"
+          },
+          {
+            "id": "prediction-sales-forecast",
+            "revision": 1,
+            "mode": "automatic"
+          }
+        ],
+        "warnings": [],
+        "passed": true
+      }
+    ]
+  },
+  "browser": {
+    "new_skill_search_visible": true,
+    "version_history_checked": true,
+    "management_controls_visible": true,
+    "card_text_wraps_at_390px": true,
+    "existing_mobile_navigation_overflow": "Header links extend beyond 390px; pre-existing navigation layout, not changed by this content operation.",
+    "errors": []
+  },
+  "unchanged": [
+    "Analytical tables and larger data profile",
+    "TimesFM settings and execution budgets",
+    "Existing shared skill documents and revisions",
+    "Cloud Run images and runtime configuration",
+    "Shared history and usage counters"
+  ],
+  "limits": "Real selector checks use operator credentials and in-memory copies of published skills. They do not establish new runtime-identity permissions or execute analytical queries, reports, or forecast fitting."
+}

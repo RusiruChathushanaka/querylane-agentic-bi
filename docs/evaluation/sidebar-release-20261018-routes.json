@@ -1,0 +1,12 @@
+{
+  "verified_at": "2026-10-17T22:10:56.777317+00:00",
+  "checks": {
+    "/reports": true,
+    "/dashboards": true,
+    "/metrics": true,
+    "/forecast-plans": true,
+    "/skills": true,
+    "/settings": true,
+    "legacy_redirect": true
+  }
+}

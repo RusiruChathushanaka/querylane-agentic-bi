@@ -1,0 +1,16 @@
+{
+  "verified_at": "2026-10-17T22:06:12.449878+00:00",
+  "source": "agentic_bi_demo.sales_orders",
+  "read_only": true,
+  "source_query_count": 1,
+  "summary": {
+    "orders": 573348,
+    "start_date": "2023-01-01",
+    "end_date": "2026-09-30",
+    "months": 45,
+    "merchandise_revenue": "354425112.2"
+  },
+  "job_id": "271fd607-3504-4678-8a92-0e51b7615c49",
+  "bytes_billed": 14680064,
+  "checks_passed": true
+}

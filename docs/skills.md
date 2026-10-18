@@ -68,7 +68,7 @@ This command writes to the named cloud demo database using operator credentials.
 
 ## Verification
 
-The [analytics and prediction pack](analytics-skills.md) adds twelve focused playbooks, sample questions and an insert-only `seed-analysis-skills` operator command. Actual prediction fitting uses Advanced Analysis; skills preserve its validation gates and the shared three-skill budget.
+The [analytics and prediction pack](analytics-skills.md) provides 24 focused playbooks, sample questions and an insert-only `seed-analysis-skills` operator command. Actual prediction fitting uses Advanced Analysis; skills preserve its validation gates and the shared three-skill budget.
 
 Run backend pytest/Ruff and frontend lint, tests, type checks, and build. The skills tests cover CRUD, concurrency, quotas, metadata discovery, immutable snapshots, SQL repairs, malformed imports, forks, and repeated voice analysis. Browser verification and its limitations are recorded in [validation.md](validation.md).
 

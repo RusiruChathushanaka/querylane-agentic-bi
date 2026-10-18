@@ -17,8 +17,8 @@
     "merchandise_revenue": "354425112.20"
   },
   "date": "2026-10-18",
-  "verified_at": "2026-10-17T21:48:04.449887+00:00",
-  "release": "Metrics, AI dashboards and Forecast Plans; verified metric-guided text/Live corrections",
+  "verified_at": "2026-10-17T22:11:21.842149+00:00",
+  "release": "Frontend sidebar: header Sources panel and single New exploration action",
   "services": {
     "agentic-bi-backend": {
       "url": "https://agentic-bi-backend-wekihucn7q-as.a.run.app",
@@ -179,28 +179,28 @@
     },
     "agentic-bi-frontend": {
       "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app",
-      "ready_revision": "agentic-bi-frontend-00017-dxz",
+      "ready_revision": "agentic-bi-frontend-00018-kd4",
       "service_account": "agentic-bi-frontend@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
-      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:0d545a6b9a04758b481bf0d87041658982e40e61a6c60edf05b8a57bc3603f46",
-      "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:0d545a6b9a04758b481bf0d87041658982e40e61a6c60edf05b8a57bc3603f46",
-      "build_id": "a1a61253-ce91-4f58-afb1-8c887ebccc61",
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:cd256d3b15d406f3fe6c907ce45d4bb42866c79becc6e011838fa7c6533245bf",
+      "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:cd256d3b15d406f3fe6c907ce45d4bb42866c79becc6e011838fa7c6533245bf",
+      "build_id": "2196c5f3-f35f-456a-aab3-b063d361024a",
       "build_source": {
         "storageSource": {
           "bucket": "project-e8b1593d-009a-4822-abf-agentic-bi-build",
-          "generation": "1792271811794136",
-          "object": "source/1792271810.047008-feaae01bd85c45479f9498f443efda3f.tgz"
+          "generation": "1792274715061836",
+          "object": "source/1792274713.167997-5171356e50d240f281d1c8311b1a0d00.tgz"
         }
       },
-      "source_base_commit": "e4af083aaebf6a4e4f4dda93194c6e5597f7cd20",
+      "source_base_commit": "06c79be14bf9ef6e676ca93bb98724eda7c9a9b9",
       "source_is_working_tree": true,
       "ready": true,
       "traffic": [
         {
           "percent": 100,
-          "revisionName": "agentic-bi-frontend-00017-dxz"
+          "revisionName": "agentic-bi-frontend-00018-kd4"
         }
       ],
-      "previous_revision": "agentic-bi-frontend-00016-tw2",
+      "previous_revision": "agentic-bi-frontend-00017-dxz",
       "runtime_environment": [
         {
           "name": "BACKEND_URL",
@@ -214,7 +214,8 @@
         }
       },
       "container_concurrency": 40,
-      "timeout_seconds": 300
+      "timeout_seconds": 300,
+      "source_verification_manifest": "evaluation/sidebar-release-20261018-source.json"
     },
     "agentic-bi-report-worker": {
       "url": "https://agentic-bi-report-worker-wekihucn7q-as.a.run.app",
@@ -378,18 +379,15 @@
   "postgres_schema": "retail_timeseries",
   "analytical_seed_or_history_reset": false,
   "configuration_changes": {
-    "backend_worker_image": true,
     "frontend_image": true,
-    "planning_admission": "PLANNING_ENABLED=true on API and private worker",
-    "timesfm_gates": "enabled/verified, unchanged",
-    "iam_changes": false,
-    "source_row_limit": 30000,
+    "backend_worker_image": false,
+    "runtime_settings": false,
     "data_profile": "timeseries",
-    "research_enabled": false,
-    "metric_agent_fixes": [
-      "Negated ad hoc wording retains catalog",
-      "MetricScope dictionary uses JSON mode with strict local validation"
-    ]
+    "source_row_limit": 30000,
+    "timesfm_gates": "enabled/verified, unchanged",
+    "planning_admission": "enabled, unchanged",
+    "iam_changes": false,
+    "source_data_writes": false
   },
   "verification_reports": [
     "evaluation/timesfm-backend-runtime.json",
@@ -422,14 +420,22 @@
     "evaluation/planning-release-20261018-catalog-agent-initial.json",
     "evaluation/planning-release-20261018-metric-scope-initial.json",
     "evaluation/planning-release-20261018-voice-catalog-initial.json",
-    "evaluation/planning-release-20261018-metric-scope-compat.json"
+    "evaluation/planning-release-20261018-metric-scope-compat.json",
+    "evaluation/sidebar-release-20261018-source.json",
+    "evaluation/sidebar-release-20261018-data.json",
+    "evaluation/sidebar-release-20261018-http.json",
+    "evaluation/sidebar-release-20261018-routes.json",
+    "evaluation/sidebar-release-20261018-configuration.json",
+    "evaluation/sidebar-release-20261018-browser.json",
+    "evaluation/sidebar-release-20261018.md"
   ],
-  "source_verification_manifest": "evaluation/planning-release-20261018-source.json",
+  "source_verification_manifest": "evaluation/sidebar-release-20261018-source.json",
   "github": {
     "repository": "https://github.com/RusiruChathushanaka/querylane-agentic-bi",
     "branch": "main",
-    "source_base_commit": "e4af083aaebf6a4e4f4dda93194c6e5597f7cd20",
-    "publication_note": "Runtime working-tree file hashes identify the source built into these images. Code and dated release evidence are published together after verification."
+    "source_base_commit": "06c79be14bf9ef6e676ca93bb98724eda7c9a9b9",
+    "publication_note": "Sidebar source, packaged skill additions and dated verification documentation are published together after the separate deployment and library-publication operations. The frontend build is identified by evaluation/sidebar-release-20261018-source.json; no new deployment is implied by Git publication.",
+    "publication_base_commit": "627c300961ef95bd468279bb9f6545e276a775e0"
   },
   "latest_verified_sample": {
     "report_id": "2ed05089e9a86e1ef3046fa6c6728680",
@@ -445,15 +451,13 @@
   },
   "temporary_runtime_jobs": "Backend runtime check removed after completion",
   "unexpected_application_error_entries": 0,
-  "runtime_configuration_preserved_except_planning_admission": true,
   "fresh_planning_acceptance": "Pending normal UTC quota reset: existing shared advanced-analysis allowance was 12/12; no reset or increase.",
   "final_revision_error_window": {
-    "from_utc": "2026-10-17T21:45:40Z",
+    "from_utc": "2026-10-17T22:08:34.465363Z",
     "revisions": [
-      "agentic-bi-backend-00024-rnd",
-      "agentic-bi-report-worker-00013-sm4",
-      "agentic-bi-frontend-00017-dxz"
+      "agentic-bi-frontend-00018-kd4"
     ],
-    "earlier_reproduced_schema_failure": "planning-release-20261018-metric-scope-initial.json"
-  }
+    "unexpected_frontend_error_entries": 0
+  },
+  "runtime_configuration_preserved": true
 }

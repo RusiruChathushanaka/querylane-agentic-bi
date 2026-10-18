@@ -204,7 +204,9 @@ export default function Workspace() {
   const [level, setLevel] = useState(0);
   const [muted, setMuted] = useState(false);
   const [search, setSearch] = useState("");
-  const [schemaSource, setSchemaSource] = useState("bigquery");
+  const [schemaSource, setSchemaSource] = useState<string | null>(null);
+  const [schemaLoading, setSchemaLoading] = useState(false);
+  const schemaRequest = useRef(0);
   const [schema, setSchema] = useState<
     {
       table: string;
@@ -765,15 +767,19 @@ export default function Workspace() {
   }
 
   async function openSchema(id: string) {
+    const request = ++schemaRequest.current;
+    setSchemaLoading(true);
     setSchemaSource(id);
     setSchema([]);
     setSchemaError("");
     try {
-      setSchema(
-        (await api<{ tables: typeof schema }>(`/connections/${id}/schema`))
-          .tables,
+      const result = await api<{ tables: typeof schema }>(
+        `/connections/${id}/schema`,
       );
+      if (request !== schemaRequest.current) return;
+      setSchema(result.tables);
     } catch (error) {
+      if (request !== schemaRequest.current) return;
       setSchemaError(
         error instanceof Error ? error.message : "Schema unavailable.",
       );
@@ -784,15 +790,17 @@ export default function Workspace() {
             ? error.message
             : "Try opening the source again.",
       });
+    } finally {
+      if (request === schemaRequest.current) setSchemaLoading(false);
     }
   }
 
   const busy = Boolean(
     updatingSkills ||
-      runId ||
-      starting ||
-      voiceState === "live" ||
-      voiceState === "connecting",
+    runId ||
+    starting ||
+    voiceState === "live" ||
+    voiceState === "connecting",
   );
   const sidebar = (
     <>
@@ -808,99 +816,6 @@ export default function Workspace() {
         <Plus data-icon="inline-start" />
         New exploration<kbd>↗</kbd>
       </Button>
-      <div className="sidebar-label">WORKSPACE</div>
-      <Button
-        variant="secondary"
-        className="workspace-item"
-        onClick={newConversation}
-      >
-        <MessageSquare data-icon="inline-start" />
-        Ask your data
-      </Button>
-      <div className="sidebar-label source-label">
-        DATA SOURCES<Badge variant="outline">{connections.length}</Badge>
-      </div>
-      <Sheet>
-        <div className="source-list">
-          {loading ? (
-            <>
-              <Skeleton className="source-skeleton" />
-              <Skeleton className="source-skeleton" />
-            </>
-          ) : (
-            connections.map((connection) => (
-              <SheetTrigger asChild key={connection.id}>
-                <button
-                  className="source-item"
-                  onClick={() => void openSchema(connection.id)}
-                >
-                  <span
-                    className={cn(
-                      "database-icon",
-                      connection.id === "postgres" && "database-icon-teal",
-                    )}
-                  >
-                    <Database aria-hidden />
-                  </span>
-                  <span>
-                    <strong>{connection.engine}</strong>
-                    <small>{connection.name}</small>
-                  </span>
-                  <span
-                    className={cn(
-                      "connection-dot",
-                      !connection.connected && "connection-dot-error",
-                    )}
-                    aria-label={
-                      connection.connected ? "Connected" : "Disconnected"
-                    }
-                  />
-                </button>
-              </SheetTrigger>
-            ))
-          )}
-        </div>
-        <SheetContent>
-          <SheetHeader>
-            <SheetTitle>
-              {schemaSource === "bigquery"
-                ? "Retail warehouse"
-                : "Business operations"}
-            </SheetTitle>
-            <SheetDescription>
-              Read-only schema · synthetic retail data
-            </SheetDescription>
-          </SheetHeader>
-          <div className="schema-content">
-            {schemaError && (
-              <Alert variant="destructive">
-                <AlertDescription>{schemaError}</AlertDescription>
-              </Alert>
-            )}
-            {!schema.length && !schemaError && (
-              <Skeleton className="result-loading" />
-            )}
-            {schema.map((table) => (
-              <details key={table.table}>
-                <summary>
-                  <TableIcon />
-                  {table.table}
-                  <Badge variant="secondary">{table.columns.length}</Badge>
-                </summary>
-                <p>{table.description}</p>
-                <ul>
-                  {table.columns.map((column) => (
-                    <li key={column.name}>
-                      <code>{column.name}</code>
-                      <span>{column.type}</span>
-                    </li>
-                  ))}
-                </ul>
-              </details>
-            ))}
-          </div>
-        </SheetContent>
-      </Sheet>
       <div className="sidebar-label history-label">
         PUBLIC EXPLORATIONS<span>{conversations.length}</span>
       </div>
@@ -945,8 +860,12 @@ export default function Workspace() {
             <FileChartColumn data-icon="inline-start" /> Reports
           </Link>
         </Button>
-        <Button asChild variant="ghost" className="workspace-settings-link"><Link href="/metrics">Business metrics</Link></Button>
-        <Button asChild variant="ghost" className="workspace-settings-link"><Link href="/forecast-plans">Forecast plans</Link></Button>
+        <Button asChild variant="ghost" className="workspace-settings-link">
+          <Link href="/metrics">Business metrics</Link>
+        </Button>
+        <Button asChild variant="ghost" className="workspace-settings-link">
+          <Link href="/forecast-plans">Forecast plans</Link>
+        </Button>
         <Button asChild variant="ghost" className="workspace-settings-link">
           <Link href="/skills">
             <BookOpen data-icon="inline-start" /> Skills library
@@ -982,7 +901,7 @@ export default function Workspace() {
       </a>
       <aside className="desktop-sidebar">{sidebar}</aside>
       <div className="workspace-main">
-        <header className="topbar">
+        <header className={cn("topbar", conversation && "topbar-conversation")}>
           <Sheet>
             <SheetTrigger asChild>
               <Button
@@ -1006,6 +925,128 @@ export default function Workspace() {
             <strong>{conversation ? "Exploration" : "Overview"}</strong>
           </div>
           <div className="topbar-actions">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="data-sources-trigger"
+                  aria-label="View data sources"
+                >
+                  <Database data-icon="inline-start" />
+                  <span>Sources</span>
+                </Button>
+              </SheetTrigger>
+              <SheetContent className="data-sources-panel">
+                <SheetHeader>
+                  <SheetTitle>Data sources</SheetTitle>
+                  <SheetDescription>
+                    Read-only connections to synthetic retail data. Choose which
+                    sources to query in the composer.
+                  </SheetDescription>
+                </SheetHeader>
+                <div className="data-sources-body">
+                  <div className="source-list">
+                    {loading ? (
+                      <>
+                        <Skeleton className="source-skeleton" />
+                        <Skeleton className="source-skeleton" />
+                      </>
+                    ) : (
+                      connections.map((connection) => (
+                        <div key={connection.id}>
+                          <button
+                            type="button"
+                            className="source-item"
+                            aria-pressed={schemaSource === connection.id}
+                            onClick={() => void openSchema(connection.id)}
+                          >
+                            <span
+                              className={cn(
+                                "database-icon",
+                                connection.id === "postgres" &&
+                                  "database-icon-teal",
+                              )}
+                            >
+                              <Database aria-hidden />
+                            </span>
+                            <span>
+                              <strong>{connection.engine}</strong>
+                              <small>{connection.name}</small>
+                              <span className="sr-only">
+                                {connection.connected
+                                  ? "Connected"
+                                  : "Disconnected"}
+                              </span>
+                            </span>
+                            <span
+                              className={cn(
+                                "connection-dot",
+                                !connection.connected && "connection-dot-error",
+                              )}
+                              aria-hidden="true"
+                            />
+                          </button>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                  {!loading && !connections.length && (
+                    <p className="source-empty">
+                      No data sources are available.
+                    </p>
+                  )}
+                  <div className="schema-content">
+                    {schemaSource ? (
+                      <h3>
+                        {
+                          connections.find(
+                            (connection) => connection.id === schemaSource,
+                          )?.name
+                        }{" "}
+                        schema
+                      </h3>
+                    ) : (
+                      <p>
+                        Choose a source above to inspect its tables and columns.
+                      </p>
+                    )}
+                    {schemaError && (
+                      <Alert variant="destructive">
+                        <AlertDescription>{schemaError}</AlertDescription>
+                      </Alert>
+                    )}
+                    {schemaLoading && <Skeleton className="result-loading" />}
+                    {schemaSource &&
+                      !schemaLoading &&
+                      !schemaError &&
+                      !schema.length && (
+                        <p>No tables are available for this source.</p>
+                      )}
+                    {schema.map((table) => (
+                      <details key={table.table}>
+                        <summary>
+                          <TableIcon />
+                          {table.table}
+                          <Badge variant="secondary">
+                            {table.columns.length}
+                          </Badge>
+                        </summary>
+                        <p>{table.description}</p>
+                        <ul>
+                          {table.columns.map((column) => (
+                            <li key={column.name}>
+                              <code>{column.name}</code>
+                              <span>{column.type}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </details>
+                    ))}
+                  </div>
+                </div>
+              </SheetContent>
+            </Sheet>
             <Button asChild variant="ghost" size="icon">
               <Link href="/settings" aria-label="Open settings">
                 <Settings2 />

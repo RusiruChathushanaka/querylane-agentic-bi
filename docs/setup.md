@@ -24,6 +24,8 @@ npm run dev
 
 Open [the landing page](http://localhost:3000), then **Open Querylane**, or enter [the workspace](http://localhost:3000/app) directly. The [guided preview](landing-page.md) uses local evidence and does not call the backend. Default local mode uses synthetic fixture sources, deterministic planning, and in-memory history. It needs no cloud credentials and is labeled in the interface.
 
+In the workspace, **Sources** in the header opens connection status and read-only table/column details. Select BigQuery or PostgreSQL inside the panel to inspect its schema. The sidebar reserves its space for public conversation history, with one **New exploration** action to start a fresh question. The composer’s source selector still determines which databases a new exploration queries.
+
 ## Environment files
 
 Copy `Backend/.env.example` to `Backend/.env` and `Frontend/.env.example` to `Frontend/.env.local` only when overrides are needed. Keep real credentials out of the repository. The frontend's server-side `BACKEND_URL` defaults to `http://localhost:8000` and is read through `/api/config` at runtime.

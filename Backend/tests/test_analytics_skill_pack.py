@@ -9,13 +9,13 @@ from app.storage import MemoryStore
 
 def test_analytics_pack_import_export_and_prediction_boundaries():
     examples = dict(analytics_examples())
-    assert len(examples) == 12
+    assert len(examples) == 24
     for skill_id, content in examples.items():
         assert skill_id.startswith(("analytics-", "prediction-"))
         assert import_skill(export_skill(content.model_dump())) == content
         assert len(content.instructions.encode("utf-8")) <= 16384
     forecasts = {key: value for key, value in examples.items() if key.startswith("prediction-")}
-    assert len(forecasts) == 4
+    assert len(forecasts) == 8
     for content in forecasts.values():
         assert "Advanced Analysis" in content.instructions
         assert "baseline" in content.instructions.lower()
@@ -30,7 +30,7 @@ async def test_reseeding_pack_preserves_edits_disabled_deleted_and_immutable_his
     store = MemoryStore()
     repo = Repository(store, settings)
     skills = Skills(repo, settings)
-    assert await seed_analytics(repo, settings) == 12
+    assert await seed_analytics(repo, settings) == 24
     original = await skills.get("prediction-sales-forecast", 1)
     await skills.mutate(
         "visitor",
@@ -45,10 +45,10 @@ async def test_reseeding_pack_preserves_edits_disabled_deleted_and_immutable_his
         patch={"expected_revision": 1},
     )
     before = await store.list("skills")
-    assert await seed_analytics(repo, settings) == 12
+    assert await seed_analytics(repo, settings) == 24
     assert await store.list("skills") == before
     assert await skills.get("prediction-sales-forecast", 1) == original
     assert (await skills.get("prediction-sales-forecast"))["name"] == "Visitor forecast"
     assert not (await skills.get("prediction-sales-forecast"))["enabled"]
     assert (await skills.get("analytics-seasonality"))["deleted"]
-    assert len(await skills.list()) == 11
+    assert len(await skills.list()) == 23

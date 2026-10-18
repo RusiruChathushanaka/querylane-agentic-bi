@@ -1,0 +1,67 @@
+{
+  "verified_at": "2026-10-17T22:09:40.230988+00:00",
+  "checks": {
+    "backend_live": true,
+    "backend_ready": true,
+    "frontend_health": true,
+    "frontend_config": true,
+    "connections": true,
+    "report_config": true,
+    "backend_url": true,
+    "sources_connected": true,
+    "two_sources": true
+  },
+  "responses": {
+    "backend_live": {
+      "status": "ok",
+      "service": "agentic-bi-backend"
+    },
+    "backend_ready": {
+      "status": "ready",
+      "mode": "gemini",
+      "storage": "firestore",
+      "visibility": "public"
+    },
+    "frontend_health": {
+      "status": "ready",
+      "backend": 200
+    },
+    "frontend_config": {
+      "backend_url": "https://agentic-bi-backend-wekihucn7q-as.a.run.app"
+    },
+    "connections": {
+      "mode": "cloud",
+      "data_profile": "timeseries",
+      "period": "DAILY · MULTI-YEAR",
+      "connections": [
+        {
+          "id": "bigquery",
+          "name": "Retail warehouse",
+          "engine": "BigQuery",
+          "tables": 5,
+          "connected": true,
+          "mode": "cloud"
+        },
+        {
+          "id": "postgres",
+          "name": "Business operations",
+          "engine": "PostgreSQL",
+          "tables": 6,
+          "connected": true,
+          "mode": "cloud"
+        }
+      ]
+    },
+    "report_config": {
+      "enabled": true,
+      "research_enabled": false,
+      "mode": "cloud_tasks",
+      "target_minutes": "3–8",
+      "timesfm": {
+        "enabled": true,
+        "model": "TimesFM 3.0",
+        "preview": true
+      }
+    }
+  }
+}
