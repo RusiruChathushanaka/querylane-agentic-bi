@@ -1,0 +1,34 @@
+{
+  "verified_at": "2026-10-18T00:12:36.619145+00:00",
+  "checks": {
+    "backend_live": {
+      "status": 200,
+      "body": {
+        "status": "ok",
+        "service": "agentic-bi-backend"
+      }
+    },
+    "backend_ready": {
+      "status": 200,
+      "body": {
+        "status": "ready",
+        "mode": "gemini",
+        "storage": "firestore",
+        "visibility": "public"
+      }
+    },
+    "frontend_health": {
+      "status": 200,
+      "body": {
+        "status": "ready",
+        "backend": 200
+      }
+    },
+    "frontend_config": {
+      "status": 200,
+      "body": {
+        "backend_url": "https://agentic-bi-backend-wekihucn7q-as.a.run.app"
+      }
+    }
+  }
+}

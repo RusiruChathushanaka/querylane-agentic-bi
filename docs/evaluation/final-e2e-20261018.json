@@ -2,8 +2,8 @@
   "verified_at": "2026-10-17T18:46:32.681938+00:00",
   "user_facing_date": "2026-10-18",
   "timezone": "Asia/Colombo",
-  "status": "partial: fresh report generation blocked by existing workspace quota",
-  "all_requested_end_to_end_paths_verified": false,
+  "status": "Original requested paths covered across dated suites; fresh forecast and conditional scenario follow-up passed",
+  "all_requested_end_to_end_paths_verified": true,
   "source_commit": "e4af083aaebf6a4e4f4dda93194c6e5597f7cd20",
   "backend": "https://agentic-bi-backend-wekihucn7q-as.a.run.app",
   "frontend": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app",
@@ -52,25 +52,48 @@
       "file": "docs/evaluation/final-e2e-20261018-daily-reconciliation.json",
       "passed": true,
       "checks": 4
+    },
+    "fresh-timesfm": {
+      "file": "docs/evaluation/final-e2e-20261018-fresh-timesfm.json",
+      "passed": true,
+      "checks": 31
     }
   },
   "passed_suite_checks": 119,
   "fresh_report_generation": {
-    "status": "blocked",
-    "http_status": 429,
-    "code": "report_usage_limit",
-    "workspace_count": 12,
-    "workspace_daily_limit": 12,
-    "quota_day_utc": "20261017",
-    "reset_at_local": "2026-10-18T05:30:00+05:30",
-    "quota_reset_or_increase": false,
-    "ui_error_visible_and_draft_preserved": {
-      "message": true,
-      "composerEnabled": true,
-      "activeRequest": false,
-      "draft": "Final E2E verification: create a technical report of monthly merchandise revenue and the next three months forecast, comparing TimesFM and statistical methods on the full larger retail dataset."
+    "status": "passed",
+    "original_quota_blocked_attempt": {
+      "status": "blocked",
+      "http_status": 429,
+      "code": "report_usage_limit",
+      "workspace_count": 12,
+      "workspace_daily_limit": 12,
+      "quota_day_utc": "20261017",
+      "reset_at_local": "2026-10-18T05:30:00+05:30",
+      "quota_reset_or_increase": false,
+      "ui_error_visible_and_draft_preserved": {
+        "message": true,
+        "composerEnabled": true,
+        "activeRequest": false,
+        "draft": "Final E2E verification: create a technical report of monthly merchandise revenue and the next three months forecast, comparing TimesFM and statistical methods on the full larger retail dataset."
+      },
+      "new_timesfm_forecast_or_scenario_reports_created": false
     },
-    "new_timesfm_forecast_or_scenario_reports_created": false
+    "follow_up": {
+      "file": "docs/evaluation/final-e2e-20261018-fresh-timesfm.json",
+      "assessment": "docs/evaluation/final-e2e-20261018-fresh.md",
+      "verified_at": "2026-10-18T00:07:00.378699+00:00",
+      "passed_checks": 31,
+      "new_forecast_and_scenario_reports_completed": true,
+      "scenario_comparison_published": true,
+      "dashboard_id": "9b38ec4cc6a94fafa5db61de80549631",
+      "quota_before": 0,
+      "quota_after": 3,
+      "quota_limit": 12,
+      "quota_reset_or_increase": false,
+      "configuration_evidence": "docs/evaluation/final-e2e-20261018-fresh-configuration.json",
+      "browser_evidence": "docs/evaluation/final-e2e-20261018-fresh-browser.json"
+    }
   },
   "timesfm_provider": {
     "identity": "agentic-bi-report-worker@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
@@ -185,5 +208,8 @@
     "dashboard_crud_cleanup": "Only newly created verification dashboards soft-deleted; the saved prediction/UI-pin dashboard is retained as evidence.",
     "voice_recovery_cleanup": "Only the newly created probe skill was soft-deleted."
   },
-  "deployment_or_github_publication": false
+  "deployment_or_github_publication": false,
+  "original_assessment_status": "partial: fresh report generation blocked by existing workspace quota",
+  "passed_suite_checks_with_fresh_follow_up": 150,
+  "follow_up_scope_note": "Original 119 checks retain their original versions/timestamps and limitations. This fresh follow-up ran frontend 00018-kd4, backend 00024-rnd and worker 00013-sm4, without deployment. New AI-dashboard/hierarchical-plan generation, manual accessibility/audio and outage coverage are not implied by this closure."
 }

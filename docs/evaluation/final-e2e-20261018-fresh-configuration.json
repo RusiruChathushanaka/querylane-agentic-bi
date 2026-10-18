@@ -1,0 +1,66 @@
+{
+  "verified_at": "2026-10-18T00:10:59.215752+00:00",
+  "checks": {
+    "agentic-bi-frontend_spec_preserved": true,
+    "agentic-bi-frontend_traffic_preserved": true,
+    "agentic-bi-frontend_revision_preserved": true,
+    "agentic-bi-backend_spec_preserved": true,
+    "agentic-bi-backend_traffic_preserved": true,
+    "agentic-bi-backend_revision_preserved": true,
+    "agentic-bi-report-worker_spec_preserved": true,
+    "agentic-bi-report-worker_traffic_preserved": true,
+    "agentic-bi-report-worker_revision_preserved": true
+  },
+  "services": {
+    "agentic-bi-frontend": {
+      "revision": "agentic-bi-frontend-00018-kd4",
+      "traffic": [
+        {
+          "percent": 100,
+          "revisionName": "agentic-bi-frontend-00018-kd4"
+        }
+      ],
+      "runtime_spec_sha256": "2bfe3afc21cf16438a92c0eb2f507cda22c2e67e777092c5b6d7be13c02f9383",
+      "flags": {
+        "DATA_PROFILE": null,
+        "SOURCE_ROW_LIMIT": null,
+        "REPORT_TIMESFM_ENABLED": null,
+        "REPORT_TIMESFM_VERIFIED": null
+      }
+    },
+    "agentic-bi-backend": {
+      "revision": "agentic-bi-backend-00024-rnd",
+      "traffic": [
+        {
+          "percent": 100,
+          "revisionName": "agentic-bi-backend-00024-rnd"
+        }
+      ],
+      "runtime_spec_sha256": "3f9047c713aee83eb3ce5499c898993aa11826db11d085d4b2980cc7df8beaae",
+      "flags": {
+        "DATA_PROFILE": "timeseries",
+        "SOURCE_ROW_LIMIT": "30000",
+        "REPORT_TIMESFM_ENABLED": "true",
+        "REPORT_TIMESFM_VERIFIED": "true"
+      }
+    },
+    "agentic-bi-report-worker": {
+      "revision": "agentic-bi-report-worker-00013-sm4",
+      "traffic": [
+        {
+          "percent": 100,
+          "revisionName": "agentic-bi-report-worker-00013-sm4"
+        }
+      ],
+      "runtime_spec_sha256": "73876d35a37aa50bc697248e2c92f201f4b263c1bf1be4ca34b9d3916f136bb5",
+      "flags": {
+        "DATA_PROFILE": "timeseries",
+        "SOURCE_ROW_LIMIT": "30000",
+        "REPORT_TIMESFM_ENABLED": "true",
+        "REPORT_TIMESFM_VERIFIED": "true"
+      }
+    }
+  },
+  "deployments_performed": 0,
+  "settings_or_iam_changes": false
+}

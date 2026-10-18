@@ -1,0 +1,166 @@
+{
+  "verified_at": "2026-10-18T00:12:13.777196+00:00",
+  "managed_jobs": [
+    {
+      "id": "abi_report_9ef66a621f51ebe08d597f8380fecb18_tf_4a336ad9b7d536931d40364f",
+      "state": "DONE",
+      "user_email": "agentic-bi-report-worker@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
+      "bytes_billed": 0,
+      "sql_sha256": "2398992c6dc0182a8bbdeb0dbc3398909863974d4961d263a34adccf46e546c6",
+      "query_parameters_sha256": "29b961678fb985e5e6f4b5a7f9f79d64631ff4822b4f0b73047c96291492f39a",
+      "maximum_bytes_billed": "1073741824",
+      "created_at": "2026-10-18T00:07:50.144000+00:00",
+      "ended_at": "2026-10-18T00:07:56.953000+00:00"
+    },
+    {
+      "id": "abi_report_9ef66a621f51ebe08d597f8380fecb18_tf_88cf3c136ad134e43174f300",
+      "state": "DONE",
+      "user_email": "agentic-bi-report-worker@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
+      "bytes_billed": 0,
+      "sql_sha256": "2398992c6dc0182a8bbdeb0dbc3398909863974d4961d263a34adccf46e546c6",
+      "query_parameters_sha256": "745c62119ed155dcc904f470c1009f2a2d3ba2cbb71299d5835e0bd9c5f4495d",
+      "maximum_bytes_billed": "1073741824",
+      "created_at": "2026-10-18T00:07:58.056000+00:00",
+      "ended_at": "2026-10-18T00:08:06.397000+00:00"
+    },
+    {
+      "id": "abi_report_e4112a63cba9d6886594cb89988ac4c5_tf_3f3796333dc5497361ad1eaa",
+      "state": "DONE",
+      "user_email": "agentic-bi-report-worker@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
+      "bytes_billed": 0,
+      "sql_sha256": "2b095aad381ed05629894326c1e0275020f4a654ac08209fe5d987c48268e8d6",
+      "query_parameters_sha256": "b4fb1c5e21510d90cfa52824c27263a28fdbc24dfe86364943b6a06724d3aaf6",
+      "maximum_bytes_billed": "1073741824",
+      "created_at": "2026-10-18T00:08:42.087000+00:00",
+      "ended_at": "2026-10-18T00:08:50.608000+00:00"
+    },
+    {
+      "id": "abi_report_e4112a63cba9d6886594cb89988ac4c5_tf_b9198085ca85ae2675c72e33",
+      "state": "DONE",
+      "user_email": "agentic-bi-report-worker@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
+      "bytes_billed": 0,
+      "sql_sha256": "2b095aad381ed05629894326c1e0275020f4a654ac08209fe5d987c48268e8d6",
+      "query_parameters_sha256": "ff25e2dd6df48fd0fe58a25172410a3d3b7f6d88dcbc4983475b69ac005b07b4",
+      "maximum_bytes_billed": "1073741824",
+      "created_at": "2026-10-18T00:08:32.852000+00:00",
+      "ended_at": "2026-10-18T00:08:40.927000+00:00"
+    }
+  ],
+  "managed_job_count": 4,
+  "runs": [
+    {
+      "id": "9ef66a621f51ebe08d597f8380fecb18",
+      "status": "complete",
+      "workflow_version": 2,
+      "kind": null,
+      "budget": null,
+      "outbox": {
+        "enqueued_at": 1792282039.7908351
+      },
+      "checkpoints": [
+        "analysis",
+        "claim_policy_v2",
+        "document",
+        "draft_0",
+        "evidence_0_monthly_revenue_history",
+        "exports",
+        "final_plan_0",
+        "forecast_comparison_0",
+        "forecast_local_0",
+        "forecast_local_0_reservation_1",
+        "metric_context",
+        "plan_0",
+        "prediction_0",
+        "prediction_artifact_0",
+        "query_plan_0_monthly_revenue_history",
+        "review_0",
+        "schema",
+        "skills",
+        "source_0_monthly_revenue_history_0",
+        "source_request_0_monthly_revenue_history_0_0",
+        "timesfm_admission_0",
+        "timesfm_admissions",
+        "timesfm_capture_0",
+        "timesfm_job_0_backtest",
+        "timesfm_job_0_backtest_result",
+        "timesfm_job_0_backtest_settled",
+        "timesfm_job_0_final",
+        "timesfm_job_0_final_result",
+        "timesfm_job_0_final_settled"
+      ]
+    },
+    {
+      "id": "e4112a63cba9d6886594cb89988ac4c5",
+      "status": "complete",
+      "workflow_version": 2,
+      "kind": null,
+      "budget": null,
+      "outbox": {
+        "enqueued_at": 1792282079.2354498
+      },
+      "checkpoints": [
+        "analysis",
+        "claim_policy_v2",
+        "document",
+        "draft_0",
+        "draft_1",
+        "evidence_2_daily_revenue_driver_series",
+        "exports",
+        "final_plan_2",
+        "forecast_comparison_0",
+        "forecast_local_0",
+        "forecast_local_0_reservation_3",
+        "metric_context",
+        "narrative_validation_0",
+        "plan_0",
+        "plan_1",
+        "plan_2",
+        "prediction_0",
+        "prediction_artifact_0",
+        "prediction_artifact_0_scenario_0",
+        "query_plan_2_daily_revenue_driver_series",
+        "review_1",
+        "schema",
+        "skills",
+        "source_2_daily_revenue_driver_series_0",
+        "source_request_2_daily_revenue_driver_series_0_0",
+        "timesfm_admission_0",
+        "timesfm_admissions",
+        "timesfm_capture_0",
+        "timesfm_job_0_backtest",
+        "timesfm_job_0_backtest_result",
+        "timesfm_job_0_backtest_settled",
+        "timesfm_job_0_final",
+        "timesfm_job_0_final_result",
+        "timesfm_job_0_final_settled"
+      ]
+    },
+    {
+      "id": "2225a336504503893a5a88753dceecb4",
+      "status": "complete",
+      "workflow_version": 2,
+      "kind": null,
+      "budget": null,
+      "outbox": {
+        "enqueued_at": 1792282192.6615918
+      },
+      "checkpoints": [
+        "base_document",
+        "claim_policy_v2",
+        "document",
+        "draft_0",
+        "exports",
+        "metric_context",
+        "review_0"
+      ]
+    }
+  ],
+  "presentation_bigquery_jobs": [],
+  "checks": {
+    "managed_jobs_complete": true,
+    "actual_private_worker_identity": true,
+    "three_run_outcomes_complete": true,
+    "presentation_no_new_bigquery_jobs": true
+  },
+  "query_values_or_credentials_persisted": false
+}

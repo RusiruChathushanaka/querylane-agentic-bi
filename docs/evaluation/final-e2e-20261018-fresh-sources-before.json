@@ -1,0 +1,37 @@
+{
+  "verified_at": "2026-10-18T00:06:44.700294+00:00",
+  "quota_day_utc": "20261018",
+  "shared_report_quota": {
+    "key": "workspace_20261018",
+    "document": null,
+    "count": 0,
+    "limit": 12,
+    "missing_means_zero": true
+  },
+  "tables": {
+    "calendar": {
+      "row_count": 1369,
+      "content_fingerprint": -8488564705535212141
+    },
+    "sales_order_items": {
+      "row_count": 1317941,
+      "content_fingerprint": 8867289935368097720
+    },
+    "sales_products": {
+      "row_count": 200,
+      "content_fingerprint": -9029152636458148788
+    },
+    "sales_orders": {
+      "row_count": 573348,
+      "content_fingerprint": 4292275408549019525
+    },
+    "sales_returns": {
+      "row_count": 97122,
+      "content_fingerprint": 7472474679519425235
+    }
+  },
+  "read_only": true,
+  "job_id": "d3831a22-9c04-442d-8762-0c5b01d079d4",
+  "bytes_billed": 473956352,
+  "fingerprint_algorithm": "BIT_XOR(FARM_FINGERPRINT(TO_JSON_STRING(row)))"
+}

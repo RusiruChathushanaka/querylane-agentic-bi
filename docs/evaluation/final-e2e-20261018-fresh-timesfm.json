@@ -1,0 +1,2227 @@
+{
+  "verified_at": "2026-10-18T00:07:00.378699+00:00",
+  "backend": "https://agentic-bi-backend-wekihucn7q-as.a.run.app",
+  "frontend": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app",
+  "checks": {
+    "enabled_managed_timesfm": true,
+    "larger_sources_active": true,
+    "forecast_idempotent_admission": true,
+    "scenario_idempotent_admission": true,
+    "forecast_worker_complete": true,
+    "45_month_revenue_reconciliation": true,
+    "forecast_managed_comparison_evaluated": true,
+    "forecast_independent_remote_score": true,
+    "forecast_forecast_published": true,
+    "forecast_immutable_source_profile": true,
+    "forecast_download_pdf": true,
+    "forecast_download_docx": true,
+    "forecast_download_data": true,
+    "forecast_matching_saved_prediction_manifest": true,
+    "forecast_comparison_progress_replay": true,
+    "scenario_worker_complete": true,
+    "1369_day_complete_evidence": true,
+    "scenario_managed_comparison_evaluated": true,
+    "scenario_independent_remote_score": true,
+    "scenario_forecast_published": true,
+    "scenario_published_or_explicit_validation_limitation": true,
+    "scenario_immutable_source_profile": true,
+    "scenario_download_pdf": true,
+    "scenario_download_docx": true,
+    "scenario_download_data": true,
+    "scenario_matching_saved_prediction_manifest": true,
+    "scenario_comparison_progress_replay": true,
+    "presentation_revision_complete": true,
+    "presentation_reuses_artifacts": true,
+    "prediction_dashboard_pin": true,
+    "saved_dashboard_read": true
+  },
+  "reports": [
+    {
+      "kind": "forecast",
+      "conversation_id": "7854c3b8966046e6b8b77f2711fdd626",
+      "report_id": "9ef66a621f51ebe08d597f8380fecb18",
+      "run_id": "9ef66a621f51ebe08d597f8380fecb18",
+      "outcome": {
+        "clarifications": [],
+        "conversation_id": "7854c3b8966046e6b8b77f2711fdd626",
+        "workflow_version": 2,
+        "attempts": 1,
+        "report_id": "9ef66a621f51ebe08d597f8380fecb18",
+        "sequence": 9,
+        "updated_at": "2026-10-18T00:08:28.482803+00:00",
+        "stage": "Preparing downloads",
+        "delivery": 0,
+        "clarification_requirements": null,
+        "cancel_requested": false,
+        "id": "9ef66a621f51ebe08d597f8380fecb18",
+        "generation": 1,
+        "status": "complete",
+        "clarification": null,
+        "revision": 1,
+        "version": 1,
+        "expires_at": 1792303639.3272517,
+        "created_at": "2026-10-18T00:07:19.218555+00:00",
+        "error": null
+      },
+      "artifacts": [
+        "1b6ed07fcc1db242ac2673749b70c7e2",
+        "015ff83eb73acde71edc024fdc7e938b"
+      ],
+      "predictions": [
+        {
+          "artifact_id": "015ff83eb73acde71edc024fdc7e938b",
+          "model": "TimesFM 3.0",
+          "provider": "bigquery",
+          "libraries": {
+            "statsmodels": "0.15.0",
+            "scikit-learn": "1.9.1",
+            "numpy": "2.5.4",
+            "pandas": "3.0.6"
+          },
+          "season": 12,
+          "interval": null,
+          "scenario_name": null,
+          "seed": 42,
+          "drivers": [],
+          "fits": 7,
+          "comparison": {
+            "model": "TimesFM 3.0",
+            "scope_note": "Driver comparisons use the explicitly recorded complete context at each cutoff; all saved history remains in source evidence.",
+            "input_ranges": {
+              "fold_1": {
+                "end": "2026-03-01",
+                "start": "2023-01-01",
+                "observations": 39
+              },
+              "fold_2": {
+                "end": "2026-06-01",
+                "start": "2023-01-01",
+                "observations": 42
+              },
+              "fold_0": {
+                "end": "2025-12-01",
+                "start": "2023-01-01",
+                "observations": 36
+              }
+            },
+            "status": "evaluated",
+            "jobs": [
+              {
+                "model": "TimesFM 3.0",
+                "executed_at": "2026-10-18T00:07:57.639826+00:00",
+                "job_id": "abi_report_9ef66a621f51ebe08d597f8380fecb18_tf_4a336ad9b7d536931d40364f",
+                "bytes_processed": 0,
+                "context": 64,
+                "identity": "4a336ad9b7d536931d40364f2cd1d6159e8ba48b5afbcc9322919b2d0511116a",
+                "input_tokens_estimated": 192,
+                "output_tokens_estimated": 9
+              },
+              {
+                "model": "TimesFM 3.0",
+                "executed_at": "2026-10-18T00:08:07.161243+00:00",
+                "job_id": "abi_report_9ef66a621f51ebe08d597f8380fecb18_tf_88cf3c136ad134e43174f300",
+                "bytes_processed": 0,
+                "context": 64,
+                "identity": "88cf3c136ad134e43174f300664a38a8100c4506204c9320a4b5c728cfe9f0f4",
+                "input_tokens_estimated": 64,
+                "output_tokens_estimated": 3
+              }
+            ],
+            "history_lengths": [
+              36,
+              39,
+              42
+            ],
+            "native_backtest_intervals": {
+              "fold_1": [
+                {
+                  "lower": 7595460.903167146,
+                  "date": "2026-04-01",
+                  "value": 8622404.0,
+                  "upper": 9622053.985859388
+                },
+                {
+                  "lower": 7646215.022240772,
+                  "date": "2026-05-01",
+                  "value": 8779635.0,
+                  "upper": 9958728.753477458
+                },
+                {
+                  "lower": 7136872.44485386,
+                  "date": "2026-06-01",
+                  "value": 8324310.5,
+                  "upper": 9584949.412538491
+                }
+              ],
+              "fold_2": [
+                {
+                  "lower": 8082917.078658124,
+                  "date": "2026-07-01",
+                  "value": 9150838.0,
+                  "upper": 10255310.902178308
+                },
+                {
+                  "lower": 8282126.890456085,
+                  "date": "2026-08-01",
+                  "value": 9418851.0,
+                  "upper": 10644166.829120364
+                },
+                {
+                  "lower": 8814992.988807717,
+                  "date": "2026-09-01",
+                  "value": 9955981.0,
+                  "upper": 11233301.533504158
+                }
+              ],
+              "fold_0": [
+                {
+                  "lower": 5507731.675077857,
+                  "date": "2026-01-01",
+                  "value": 7012587.0,
+                  "upper": 8526321.819256352
+                },
+                {
+                  "lower": 4836033.607906653,
+                  "date": "2026-02-01",
+                  "value": 6395599.0,
+                  "upper": 7922246.184484252
+                },
+                {
+                  "lower": 6532449.856422489,
+                  "date": "2026-03-01",
+                  "value": 8143497.5,
+                  "upper": 9793909.55023401
+                }
+              ]
+            },
+            "context": 64,
+            "native_final_intervals": {
+              "baseline": [
+                {
+                  "lower": 9354061.564886382,
+                  "date": "2026-10-01",
+                  "value": 10272054.0,
+                  "upper": 11224128.371338533
+                },
+                {
+                  "lower": 13307055.561491214,
+                  "date": "2026-11-01",
+                  "value": 14367920.0,
+                  "upper": 15505332.424395736
+                },
+                {
+                  "lower": 12737233.667290188,
+                  "date": "2026-12-01",
+                  "value": 13845351.0,
+                  "upper": 15010802.791656315
+                }
+              ]
+            },
+            "selection_policy_version": 1,
+            "reason": "Chronological comparison completed.",
+            "preview": true,
+            "input_hash": "b633900a9d73da5a1d8cf7c7b88f5e576068c254e91a152f4e853d85a904057e",
+            "provider": "bigquery"
+          },
+          "horizon": 3,
+          "kind": "forecast",
+          "scenario_drivers": [],
+          "data_hash": "b633900a9d73da5a1d8cf7c7b88f5e576068c254e91a152f4e853d85a904057e",
+          "specification": {
+            "season": 12,
+            "scenario_name": null,
+            "drivers": [],
+            "domain": "nonnegative",
+            "horizon": 3,
+            "rationale": "Compare managed TimesFM 3.0 Preview against statistical baselines across three chronological full-horizon folds, publishing whichever method wins on measured backtest error.",
+            "scenario_drivers": [],
+            "target": "revenue",
+            "grain": "month",
+            "future_drivers": [],
+            "assumptions": [
+              "Chronological rolling-origin backtests utilize 3 full-horizon folds ending at cutoff 2026-09-30.",
+              "Revenue domain is bounded nonnegative.",
+              "Uncertainty intervals will be published only if calibrated and supported across validation folds."
+            ],
+            "priority": 1,
+            "candidate_policy": "auto_compare",
+            "date_column": "month",
+            "task_id": "monthly_revenue_history"
+          },
+          "last_observed_period": "2026-09-01",
+          "scores": {
+            "seasonal_naive": {
+              "folds": [
+                {
+                  "test_end": "2026-03-01T00:00:00",
+                  "train_end": "2025-12-01T00:00:00",
+                  "mae": 754049.4866666669,
+                  "test_start": "2026-01-01T00:00:00"
+                },
+                {
+                  "test_end": "2026-06-01T00:00:00",
+                  "train_end": "2026-03-01T00:00:00",
+                  "mae": 921451.5899999999,
+                  "test_start": "2026-04-01T00:00:00"
+                },
+                {
+                  "test_end": "2026-09-01T00:00:00",
+                  "train_end": "2026-06-01T00:00:00",
+                  "mae": 695833.3933333332,
+                  "test_start": "2026-07-01T00:00:00"
+                }
+              ],
+              "mae": 790444.8233333334,
+              "rmse": 821560.4136049921
+            },
+            "timesfm_3": {
+              "folds": [
+                {
+                  "test_end": "2026-03-01T00:00:00",
+                  "train_end": "2025-12-01T00:00:00",
+                  "mae": 249968.99666666644,
+                  "test_start": "2026-01-01T00:00:00"
+                },
+                {
+                  "test_end": "2026-06-01T00:00:00",
+                  "train_end": "2026-03-01T00:00:00",
+                  "mae": 144932.1299999999,
+                  "test_start": "2026-04-01T00:00:00"
+                },
+                {
+                  "test_end": "2026-09-01T00:00:00",
+                  "train_end": "2026-06-01T00:00:00",
+                  "mae": 360964.37333333306,
+                  "test_start": "2026-07-01T00:00:00"
+                }
+              ],
+              "mae": 251955.16666666645,
+              "rmse": 307092.05719368544
+            },
+            "sarimax": {
+              "folds": [
+                {
+                  "test_end": "2026-03-01T00:00:00",
+                  "train_end": "2025-12-01T00:00:00",
+                  "mae": 420634.81828485866,
+                  "test_start": "2026-01-01T00:00:00"
+                },
+                {
+                  "test_end": "2026-06-01T00:00:00",
+                  "train_end": "2026-03-01T00:00:00",
+                  "mae": 149839.13145392048,
+                  "test_start": "2026-04-01T00:00:00"
+                },
+                {
+                  "test_end": "2026-09-01T00:00:00",
+                  "train_end": "2026-06-01T00:00:00",
+                  "mae": 293735.69109919545,
+                  "test_start": "2026-07-01T00:00:00"
+                }
+              ],
+              "mae": 288069.88027932483,
+              "rmse": 351426.0011745475
+            },
+            "ets": {
+              "folds": [
+                {
+                  "test_end": "2026-03-01T00:00:00",
+                  "train_end": "2025-12-01T00:00:00",
+                  "mae": 625965.1582188628,
+                  "test_start": "2026-01-01T00:00:00"
+                },
+                {
+                  "test_end": "2026-06-01T00:00:00",
+                  "train_end": "2026-03-01T00:00:00",
+                  "mae": 61071.00631728768,
+                  "test_start": "2026-04-01T00:00:00"
+                },
+                {
+                  "test_end": "2026-09-01T00:00:00",
+                  "train_end": "2026-06-01T00:00:00",
+                  "mae": 133958.5127649208,
+                  "test_start": "2026-07-01T00:00:00"
+                }
+              ],
+              "mae": 273664.89243369043,
+              "rmse": 410277.81090705155
+            }
+          },
+          "target": "revenue",
+          "selection_reason": "timesfm_3 had the lowest passing chronological MAE; ties favor statistical methods.",
+          "grain": "month",
+          "future_drivers": [],
+          "fit_seconds": 0.3184300829998392,
+          "assumptions": [
+            "Chronological rolling-origin backtests utilize 3 full-horizon folds ending at cutoff 2026-09-30.",
+            "Revenue domain is bounded nonnegative.",
+            "Uncertainty intervals will be published only if calibrated and supported across validation folds."
+          ],
+          "method": "timesfm_3",
+          "source_artifact_id": "1b6ed07fcc1db242ac2673749b70c7e2",
+          "limitations": [
+            "Historical predictive associations are not causal effects or guaranteed future performance.",
+            "Validated prediction intervals are unavailable for this bounded backtest; point predictions carry unquantified uncertainty.",
+            "Saved observations end at 2026-09-30; predictions start after that cutoff, rather than assuming data reaches the report request date 2026-10-18."
+          ],
+          "cutoff": "2026-09-30",
+          "preview": true
+        }
+      ]
+    },
+    {
+      "kind": "scenario",
+      "conversation_id": "ca087208f4ae4b5ab33d00488967a3f4",
+      "report_id": "e4112a63cba9d6886594cb89988ac4c5",
+      "run_id": "e4112a63cba9d6886594cb89988ac4c5",
+      "outcome": {
+        "workflow_version": 2,
+        "conversation_id": "ca087208f4ae4b5ab33d00488967a3f4",
+        "attempts": 1,
+        "clarifications": [
+          {
+            "question": "Please provide the structured 14-day future schedule (dates 2026-10-01 through 2026-10-14) for promotion_day (0 or 1) for both the baseline path and your alternative scenario path. In accordance with policy, future driver values cannot be invented.",
+            "forecast_inputs": {},
+            "answer": "Use daily merchandise revenue, January 2023 through September 2026; exactly one numeric promotion_day driver from the calendar. My explicit next-14-day assumptions: baseline promotion_day=0 every day; alternative promotion_day=1 every day. These are hypothetical schedules, not guaranteed lift. No other future business drivers. Keep one evidence task and compare eligible managed and statistical methods."
+          },
+          {
+            "question": "What future driver values should the prediction assume? Enter your baseline and, optionally, an alternative scenario. These are your assumptions, not guaranteed effects.",
+            "forecast_inputs": {
+              "revenue": {
+                "baseline": [
+                  {
+                    "promotion_day": 0.0
+                  },
+                  {
+                    "promotion_day": 0.0
+                  },
+                  {
+                    "promotion_day": 0.0
+                  },
+                  {
+                    "promotion_day": 0.0
+                  },
+                  {
+                    "promotion_day": 0.0
+                  },
+                  {
+                    "promotion_day": 0.0
+                  },
+                  {
+                    "promotion_day": 0.0
+                  },
+                  {
+                    "promotion_day": 0.0
+                  },
+                  {
+                    "promotion_day": 0.0
+                  },
+                  {
+                    "promotion_day": 0.0
+                  },
+                  {
+                    "promotion_day": 0.0
+                  },
+                  {
+                    "promotion_day": 0.0
+                  },
+                  {
+                    "promotion_day": 0.0
+                  },
+                  {
+                    "promotion_day": 0.0
+                  }
+                ],
+                "scenario": [
+                  {
+                    "promotion_day": 1.0
+                  },
+                  {
+                    "promotion_day": 1.0
+                  },
+                  {
+                    "promotion_day": 1.0
+                  },
+                  {
+                    "promotion_day": 1.0
+                  },
+                  {
+                    "promotion_day": 1.0
+                  },
+                  {
+                    "promotion_day": 1.0
+                  },
+                  {
+                    "promotion_day": 1.0
+                  },
+                  {
+                    "promotion_day": 1.0
+                  },
+                  {
+                    "promotion_day": 1.0
+                  },
+                  {
+                    "promotion_day": 1.0
+                  },
+                  {
+                    "promotion_day": 1.0
+                  },
+                  {
+                    "promotion_day": 1.0
+                  },
+                  {
+                    "promotion_day": 1.0
+                  },
+                  {
+                    "promotion_day": 1.0
+                  }
+                ]
+              }
+            },
+            "answer": "Use daily merchandise revenue, January 2023 through September 2026; exactly one numeric promotion_day driver from the calendar. My explicit next-14-day assumptions: baseline promotion_day=0 every day; alternative promotion_day=1 every day. These are hypothetical schedules, not guaranteed lift. No other future business drivers. Keep one evidence task and compare eligible managed and statistical methods."
+          }
+        ],
+        "delivery": 2,
+        "sequence": 13,
+        "stage": "Preparing downloads",
+        "updated_at": "2026-10-18T00:09:46.613706+00:00",
+        "report_id": "e4112a63cba9d6886594cb89988ac4c5",
+        "clarification_requirements": null,
+        "cancel_requested": false,
+        "clarification": null,
+        "generation": 3,
+        "id": "e4112a63cba9d6886594cb89988ac4c5",
+        "status": "complete",
+        "revision": 3,
+        "version": 1,
+        "expires_at": 1792303640.378577,
+        "created_at": "2026-10-18T00:07:20.275886+00:00",
+        "error": null
+      },
+      "artifacts": [
+        "74369204b67027065eb9300fa7896343",
+        "267d39bf46e5d67786edb4468b1770d8",
+        "c5a0ad566f2b322fbb11b0571182a20e"
+      ],
+      "predictions": [
+        {
+          "artifact_id": "267d39bf46e5d67786edb4468b1770d8",
+          "model": "TimesFM 3.0",
+          "provider": "bigquery",
+          "libraries": {
+            "statsmodels": "0.15.0",
+            "scikit-learn": "1.9.1",
+            "numpy": "2.5.4",
+            "pandas": "3.0.6"
+          },
+          "interval": null,
+          "season": 7,
+          "scenario_name": null,
+          "seed": 42,
+          "drivers": [
+            "promotion_day"
+          ],
+          "fits": 9,
+          "future_drivers": [
+            {
+              "promotion_day": 0.0
+            },
+            {
+              "promotion_day": 0.0
+            },
+            {
+              "promotion_day": 0.0
+            },
+            {
+              "promotion_day": 0.0
+            },
+            {
+              "promotion_day": 0.0
+            },
+            {
+              "promotion_day": 0.0
+            },
+            {
+              "promotion_day": 0.0
+            },
+            {
+              "promotion_day": 0.0
+            },
+            {
+              "promotion_day": 0.0
+            },
+            {
+              "promotion_day": 0.0
+            },
+            {
+              "promotion_day": 0.0
+            },
+            {
+              "promotion_day": 0.0
+            },
+            {
+              "promotion_day": 0.0
+            },
+            {
+              "promotion_day": 0.0
+            }
+          ],
+          "horizon": 14,
+          "kind": "forecast",
+          "scenario_drivers": [],
+          "target": "revenue",
+          "specification": {
+            "season": 7,
+            "scenario_name": "all_promotions",
+            "drivers": [
+              "promotion_day"
+            ],
+            "domain": "nonnegative",
+            "rationale": "Compare managed TimesFM and driver regression candidates across chronological full-horizon backtests using the single explicit future promotion driver.",
+            "horizon": 14,
+            "scenario_drivers": [
+              {
+                "promotion_day": 1.0
+              },
+              {
+                "promotion_day": 1.0
+              },
+              {
+                "promotion_day": 1.0
+              },
+              {
+                "promotion_day": 1.0
+              },
+              {
+                "promotion_day": 1.0
+              },
+              {
+                "promotion_day": 1.0
+              },
+              {
+                "promotion_day": 1.0
+              },
+              {
+                "promotion_day": 1.0
+              },
+              {
+                "promotion_day": 1.0
+              },
+              {
+                "promotion_day": 1.0
+              },
+              {
+                "promotion_day": 1.0
+              },
+              {
+                "promotion_day": 1.0
+              },
+              {
+                "promotion_day": 1.0
+              },
+              {
+                "promotion_day": 1.0
+              }
+            ],
+            "target": "revenue",
+            "grain": "day",
+            "future_drivers": [
+              {
+                "promotion_day": 0.0
+              },
+              {
+                "promotion_day": 0.0
+              },
+              {
+                "promotion_day": 0.0
+              },
+              {
+                "promotion_day": 0.0
+              },
+              {
+                "promotion_day": 0.0
+              },
+              {
+                "promotion_day": 0.0
+              },
+              {
+                "promotion_day": 0.0
+              },
+              {
+                "promotion_day": 0.0
+              },
+              {
+                "promotion_day": 0.0
+              },
+              {
+                "promotion_day": 0.0
+              },
+              {
+                "promotion_day": 0.0
+              },
+              {
+                "promotion_day": 0.0
+              },
+              {
+                "promotion_day": 0.0
+              },
+              {
+                "promotion_day": 0.0
+              }
+            ],
+            "assumptions": [
+              "Baseline path assumes promotion_day = 0 for all 14 future days.",
+              "Scenario path assumes promotion_day = 1 for all 14 future days as supplied by visitor.",
+              "Predictions reflect statistical associations under conditional assumptions, not causal intervention effects or guaranteed lift."
+            ],
+            "priority": 1,
+            "date_column": "date",
+            "candidate_policy": "auto_compare",
+            "task_id": "daily_revenue_driver_series"
+          },
+          "comparison": {
+            "model": "TimesFM 3.0",
+            "scope_note": "Driver comparisons use the explicitly recorded complete context at each cutoff; all saved history remains in source evidence.",
+            "input_ranges": {
+              "fold_1": {
+                "observations": 1312,
+                "start": "2023-01-30",
+                "end": "2026-09-02"
+              },
+              "fold_0": {
+                "observations": 1312,
+                "start": "2023-01-16",
+                "end": "2026-08-19"
+              },
+              "fold_2": {
+                "observations": 1312,
+                "start": "2023-02-13",
+                "end": "2026-09-16"
+              }
+            },
+            "status": "evaluated",
+            "history_lengths": [
+              1327,
+              1341,
+              1355
+            ],
+            "native_backtest_intervals": {
+              "fold_1": [
+                {
+                  "date": "2026-09-03",
+                  "lower": 249368.05907990297,
+                  "value": 282901.125,
+                  "upper": 316506.31146984064
+                },
+                {
+                  "date": "2026-09-04",
+                  "lower": 246996.63934612882,
+                  "value": 284340.84375,
+                  "upper": 325243.9331479476
+                },
+                {
+                  "date": "2026-09-05",
+                  "lower": 299891.20158359536,
+                  "value": 341727.78125,
+                  "upper": 385452.65223359596
+                },
+                {
+                  "date": "2026-09-06",
+                  "lower": 311712.4625703249,
+                  "value": 353968.375,
+                  "upper": 398760.6492600749
+                },
+                {
+                  "date": "2026-09-07",
+                  "lower": 259973.8460666129,
+                  "value": 299975.375,
+                  "upper": 345996.06434349465
+                },
+                {
+                  "date": "2026-09-08",
+                  "lower": 262385.0072367036,
+                  "value": 302382.1875,
+                  "upper": 348658.95073174045
+                },
+                {
+                  "date": "2026-09-09",
+                  "lower": 263737.5944821024,
+                  "value": 304447.9375,
+                  "upper": 350674.28142384905
+                },
+                {
+                  "date": "2026-09-10",
+                  "lower": 305080.6231653157,
+                  "value": 348954.75,
+                  "upper": 398658.25377904664
+                },
+                {
+                  "date": "2026-09-11",
+                  "lower": 302301.51989779563,
+                  "value": 349513.875,
+                  "upper": 401492.31510078977
+                },
+                {
+                  "date": "2026-09-12",
+                  "lower": 350340.89498630364,
+                  "value": 399071.625,
+                  "upper": 451885.622246949
+                },
+                {
+                  "date": "2026-09-13",
+                  "lower": 352683.32970432844,
+                  "value": 404459.84375,
+                  "upper": 460797.9863950104
+                },
+                {
+                  "date": "2026-09-14",
+                  "lower": 296672.10536663677,
+                  "value": 342876.84375,
+                  "upper": 391857.672058622
+                },
+                {
+                  "date": "2026-09-15",
+                  "lower": 284649.1794648529,
+                  "value": 325809.25,
+                  "upper": 371042.6501385094
+                },
+                {
+                  "date": "2026-09-16",
+                  "lower": 239188.45960969903,
+                  "value": 279068.1875,
+                  "upper": 323975.21152648225
+                }
+              ],
+              "fold_0": [
+                {
+                  "date": "2026-08-20",
+                  "lower": 239879.13310147147,
+                  "value": 277130.09375,
+                  "upper": 316310.63894130825
+                },
+                {
+                  "date": "2026-08-21",
+                  "lower": 240743.98262264288,
+                  "value": 281837.8125,
+                  "upper": 327344.2984016522
+                },
+                {
+                  "date": "2026-08-22",
+                  "lower": 283905.88006649696,
+                  "value": 327458.3125,
+                  "upper": 375563.7680659722
+                },
+                {
+                  "date": "2026-08-23",
+                  "lower": 292524.2774643112,
+                  "value": 336853.4375,
+                  "upper": 386867.06729905354
+                },
+                {
+                  "date": "2026-08-24",
+                  "lower": 248197.19538054292,
+                  "value": 291005.6875,
+                  "upper": 341365.0021187721
+                },
+                {
+                  "date": "2026-08-25",
+                  "lower": 240915.98683859466,
+                  "value": 281733.3125,
+                  "upper": 330506.24298823846
+                },
+                {
+                  "date": "2026-08-26",
+                  "lower": 237330.95154872435,
+                  "value": 278634.1875,
+                  "upper": 327212.0747753941
+                },
+                {
+                  "date": "2026-08-27",
+                  "lower": 232793.57822475384,
+                  "value": 275055.34375,
+                  "upper": 325002.30414914194
+                },
+                {
+                  "date": "2026-08-28",
+                  "lower": 235157.0500919951,
+                  "value": 279994.84375,
+                  "upper": 331556.43549499183
+                },
+                {
+                  "date": "2026-08-29",
+                  "lower": 279523.6925424923,
+                  "value": 326616.375,
+                  "upper": 379858.54781647783
+                },
+                {
+                  "date": "2026-08-30",
+                  "lower": 295553.4787147308,
+                  "value": 344019.4375,
+                  "upper": 399813.36092659994
+                },
+                {
+                  "date": "2026-08-31",
+                  "lower": 252420.0192101237,
+                  "value": 299896.8125,
+                  "upper": 354459.8364357076
+                },
+                {
+                  "date": "2026-09-01",
+                  "lower": 244650.23878013628,
+                  "value": 290305.21875,
+                  "upper": 343147.7962530204
+                },
+                {
+                  "date": "2026-09-02",
+                  "lower": 241207.70148276474,
+                  "value": 285207.09375,
+                  "upper": 337798.5700077745
+                }
+              ],
+              "fold_2": [
+                {
+                  "date": "2026-09-17",
+                  "lower": 241873.27967986616,
+                  "value": 275196.65625,
+                  "upper": 308265.2260179797
+                },
+                {
+                  "date": "2026-09-18",
+                  "lower": 243879.51154584132,
+                  "value": 279430.21875,
+                  "upper": 317783.1844610548
+                },
+                {
+                  "date": "2026-09-19",
+                  "lower": 302515.86625699105,
+                  "value": 343020.9375,
+                  "upper": 384572.4304519112
+                },
+                {
+                  "date": "2026-09-20",
+                  "lower": 315673.64516119234,
+                  "value": 357164.96875,
+                  "upper": 401130.9995208969
+                },
+                {
+                  "date": "2026-09-21",
+                  "lower": 247221.10686644216,
+                  "value": 286062.96875,
+                  "upper": 330020.351945426
+                },
+                {
+                  "date": "2026-09-22",
+                  "lower": 246458.75320952974,
+                  "value": 284391.59375,
+                  "upper": 325634.8708811783
+                },
+                {
+                  "date": "2026-09-23",
+                  "lower": 252202.78363573476,
+                  "value": 288194.59375,
+                  "upper": 328773.93690947
+                },
+                {
+                  "date": "2026-09-24",
+                  "lower": 245529.74661906954,
+                  "value": 282351.40625,
+                  "upper": 323102.08547982166
+                },
+                {
+                  "date": "2026-09-25",
+                  "lower": 239566.62458871648,
+                  "value": 278535.375,
+                  "upper": 321087.7434665008
+                },
+                {
+                  "date": "2026-09-26",
+                  "lower": 288609.90695217944,
+                  "value": 328396.03125,
+                  "upper": 372585.4940870798
+                },
+                {
+                  "date": "2026-09-27",
+                  "lower": 304678.65410152415,
+                  "value": 346456.6875,
+                  "upper": 391888.2354036808
+                },
+                {
+                  "date": "2026-09-28",
+                  "lower": 246781.7299119254,
+                  "value": 287613.25,
+                  "upper": 331762.08952105645
+                },
+                {
+                  "date": "2026-09-29",
+                  "lower": 245187.11027492658,
+                  "value": 284486.5625,
+                  "upper": 327468.77939591487
+                },
+                {
+                  "date": "2026-09-30",
+                  "lower": 240642.08067382156,
+                  "value": 277531.34375,
+                  "upper": 320253.2337889449
+                }
+              ]
+            },
+            "reason": "Chronological comparison completed.",
+            "context": 1312,
+            "native_final_intervals": {
+              "baseline": [
+                {
+                  "date": "2026-10-01",
+                  "lower": 249750.55787410872,
+                  "value": 294982.09375,
+                  "upper": 338573.52640435164
+                },
+                {
+                  "date": "2026-10-02",
+                  "lower": 243437.93580594496,
+                  "value": 294190.25,
+                  "upper": 346341.6492663161
+                },
+                {
+                  "date": "2026-10-03",
+                  "lower": 300707.2697606377,
+                  "value": 357303.875,
+                  "upper": 411715.0132110697
+                },
+                {
+                  "date": "2026-10-04",
+                  "lower": 303308.9679268537,
+                  "value": 358373.0,
+                  "upper": 414912.0121570431
+                },
+                {
+                  "date": "2026-10-05",
+                  "lower": 250971.6930306508,
+                  "value": 303503.1875,
+                  "upper": 359248.3147138833
+                },
+                {
+                  "date": "2026-10-06",
+                  "lower": 241331.19934499072,
+                  "value": 291642.625,
+                  "upper": 347874.47405134095
+                },
+                {
+                  "date": "2026-10-07",
+                  "lower": 254027.43521522946,
+                  "value": 303961.0625,
+                  "upper": 359687.64661712333
+                },
+                {
+                  "date": "2026-10-08",
+                  "lower": 258025.83110694622,
+                  "value": 310503.65625,
+                  "upper": 371302.7228604794
+                },
+                {
+                  "date": "2026-10-09",
+                  "lower": 261240.1519108047,
+                  "value": 317477.59375,
+                  "upper": 384189.95974709385
+                },
+                {
+                  "date": "2026-10-10",
+                  "lower": 322854.83291936887,
+                  "value": 383794.125,
+                  "upper": 455329.3575304111
+                },
+                {
+                  "date": "2026-10-11",
+                  "lower": 328886.5308415743,
+                  "value": 399542.375,
+                  "upper": 479766.61786487326
+                },
+                {
+                  "date": "2026-10-12",
+                  "lower": 276008.2240498261,
+                  "value": 334879.0,
+                  "upper": 402421.0509074088
+                },
+                {
+                  "date": "2026-10-13",
+                  "lower": 261734.41289839742,
+                  "value": 317162.53125,
+                  "upper": 380631.9224636115
+                },
+                {
+                  "date": "2026-10-14",
+                  "lower": 253754.77080107757,
+                  "value": 304655.625,
+                  "upper": 367236.78886342247
+                }
+              ],
+              "scenario": [
+                {
+                  "date": "2026-10-01",
+                  "lower": 261492.68862576986,
+                  "value": 318104.0625,
+                  "upper": 372805.539516553
+                },
+                {
+                  "date": "2026-10-02",
+                  "lower": 249366.4713777739,
+                  "value": 312947.125,
+                  "upper": 378222.12537825975
+                },
+                {
+                  "date": "2026-10-03",
+                  "lower": 305041.6807753686,
+                  "value": 382513.4375,
+                  "upper": 457777.36370103084
+                },
+                {
+                  "date": "2026-10-04",
+                  "lower": 306479.61942484445,
+                  "value": 379796.375,
+                  "upper": 453974.9252079359
+                },
+                {
+                  "date": "2026-10-05",
+                  "lower": 244860.71589932044,
+                  "value": 315902.34375,
+                  "upper": 389916.9690014008
+                },
+                {
+                  "date": "2026-10-06",
+                  "lower": 235079.9597386767,
+                  "value": 303550.0,
+                  "upper": 378062.2417324132
+                },
+                {
+                  "date": "2026-10-07",
+                  "lower": 247707.72985858895,
+                  "value": 314704.75,
+                  "upper": 388397.1525786768
+                },
+                {
+                  "date": "2026-10-08",
+                  "lower": 255954.96944294576,
+                  "value": 324128.3125,
+                  "upper": 403882.6080629239
+                },
+                {
+                  "date": "2026-10-09",
+                  "lower": 262734.8869945288,
+                  "value": 333436.46875,
+                  "upper": 420012.1280289616
+                },
+                {
+                  "date": "2026-10-10",
+                  "lower": 327315.1628619698,
+                  "value": 404381.78125,
+                  "upper": 499054.81736002804
+                },
+                {
+                  "date": "2026-10-11",
+                  "lower": 321068.7110363057,
+                  "value": 417584.6875,
+                  "upper": 532051.3309849142
+                },
+                {
+                  "date": "2026-10-12",
+                  "lower": 285279.54217566986,
+                  "value": 355701.875,
+                  "upper": 442836.9968110174
+                },
+                {
+                  "date": "2026-10-13",
+                  "lower": 271282.8042637709,
+                  "value": 339641.96875,
+                  "upper": 424194.75379418343
+                },
+                {
+                  "date": "2026-10-14",
+                  "lower": 257881.1298768744,
+                  "value": 326180.125,
+                  "upper": 412276.2285598224
+                }
+              ]
+            },
+            "selection_policy_version": 1,
+            "jobs": [
+              {
+                "job_id": "abi_report_e4112a63cba9d6886594cb89988ac4c5_tf_b9198085ca85ae2675c72e33",
+                "executed_at": "2026-10-18T00:08:41.350387+00:00",
+                "model": "TimesFM 3.0",
+                "bytes_processed": 0,
+                "context": 1312,
+                "identity": "b9198085ca85ae2675c72e338d3bd441b032bd05ed842a33b2551cdbac64dd2d",
+                "input_tokens_estimated": 7914,
+                "output_tokens_estimated": 42
+              },
+              {
+                "job_id": "abi_report_e4112a63cba9d6886594cb89988ac4c5_tf_3f3796333dc5497361ad1eaa",
+                "executed_at": "2026-10-18T00:08:50.937865+00:00",
+                "model": "TimesFM 3.0",
+                "bytes_processed": 0,
+                "context": 1312,
+                "identity": "3f3796333dc5497361ad1eaacc1db8eb2c3fb12612c296619c8ada756cfe8da7",
+                "input_tokens_estimated": 5276,
+                "output_tokens_estimated": 28
+              }
+            ],
+            "preview": true,
+            "input_hash": "d8b4c3ffb269832028a7b3aee71eafed90e43491ee963de3b08ddbf9b3d1729b",
+            "provider": "bigquery"
+          },
+          "scores": {
+            "seasonal_naive": {
+              "folds": [
+                {
+                  "test_start": "2026-08-20T00:00:00",
+                  "mae": 26814.326428571425,
+                  "train_end": "2026-08-19T00:00:00",
+                  "test_end": "2026-09-02T00:00:00"
+                },
+                {
+                  "test_start": "2026-09-03T00:00:00",
+                  "mae": 39812.729999999996,
+                  "train_end": "2026-09-02T00:00:00",
+                  "test_end": "2026-09-16T00:00:00"
+                },
+                {
+                  "test_start": "2026-09-17T00:00:00",
+                  "mae": 52626.087857142855,
+                  "train_end": "2026-09-16T00:00:00",
+                  "test_end": "2026-09-30T00:00:00"
+                }
+              ],
+              "mae": 39751.0480952381,
+              "rmse": 51574.621436563524
+            },
+            "driver_ridge": {
+              "folds": [
+                {
+                  "test_start": "2026-08-20T00:00:00",
+                  "mae": 24295.825109109526,
+                  "train_end": "2026-08-19T00:00:00",
+                  "test_end": "2026-09-02T00:00:00"
+                },
+                {
+                  "test_start": "2026-09-03T00:00:00",
+                  "mae": 35263.072447918035,
+                  "train_end": "2026-09-02T00:00:00",
+                  "test_end": "2026-09-16T00:00:00"
+                },
+                {
+                  "test_start": "2026-09-17T00:00:00",
+                  "mae": 23408.06563246066,
+                  "train_end": "2026-09-16T00:00:00",
+                  "test_end": "2026-09-30T00:00:00"
+                }
+              ],
+              "mae": 27655.654396496077,
+              "rmse": 35244.17755926291
+            },
+            "timesfm_3": {
+              "folds": [
+                {
+                  "test_start": "2026-08-20T00:00:00",
+                  "mae": 12632.498125,
+                  "train_end": "2026-08-19T00:00:00",
+                  "test_end": "2026-09-02T00:00:00"
+                },
+                {
+                  "test_start": "2026-09-03T00:00:00",
+                  "mae": 23279.397857142852,
+                  "train_end": "2026-09-02T00:00:00",
+                  "test_end": "2026-09-16T00:00:00"
+                },
+                {
+                  "test_start": "2026-09-17T00:00:00",
+                  "mae": 23928.051875,
+                  "train_end": "2026-09-16T00:00:00",
+                  "test_end": "2026-09-30T00:00:00"
+                }
+              ],
+              "mae": 19946.649285714284,
+              "rmse": 23659.317529535892
+            },
+            "ets": {
+              "folds": [
+                {
+                  "test_start": "2026-08-20T00:00:00",
+                  "mae": 8917.843873988491,
+                  "train_end": "2026-08-19T00:00:00",
+                  "test_end": "2026-09-02T00:00:00"
+                },
+                {
+                  "test_start": "2026-09-03T00:00:00",
+                  "mae": 42595.6177256571,
+                  "train_end": "2026-09-02T00:00:00",
+                  "test_end": "2026-09-16T00:00:00"
+                },
+                {
+                  "test_start": "2026-09-17T00:00:00",
+                  "mae": 23307.85658399959,
+                  "train_end": "2026-09-16T00:00:00",
+                  "test_end": "2026-09-30T00:00:00"
+                }
+              ],
+              "mae": 24940.43939454839,
+              "rmse": 35036.60381327362
+            }
+          },
+          "data_hash": "d8b4c3ffb269832028a7b3aee71eafed90e43491ee963de3b08ddbf9b3d1729b",
+          "limitations": [
+            "Historical predictive associations are not causal effects or guaranteed future performance.",
+            "Validated prediction intervals are unavailable for this bounded backtest; point predictions carry unquantified uncertainty.",
+            "Saved observations end at 2026-09-30; predictions start after that cutoff, rather than assuming data reaches the report request date 2026-10-18."
+          ],
+          "grain": "day",
+          "selection_reason": "timesfm_3 had the lowest passing chronological MAE; ties favor statistical methods.",
+          "fit_seconds": 1.1166047069999934,
+          "cutoff": "2026-09-30",
+          "method": "timesfm_3",
+          "preview": true,
+          "last_observed_period": "2026-09-30",
+          "assumptions": [
+            "Baseline path assumes promotion_day = 0 for all 14 future days.",
+            "Scenario path assumes promotion_day = 1 for all 14 future days as supplied by visitor.",
+            "Predictions reflect statistical associations under conditional assumptions, not causal intervention effects or guaranteed lift."
+          ],
+          "source_artifact_id": "74369204b67027065eb9300fa7896343"
+        },
+        {
+          "artifact_id": "c5a0ad566f2b322fbb11b0571182a20e",
+          "model": "TimesFM 3.0",
+          "provider": "bigquery",
+          "libraries": {
+            "statsmodels": "0.15.0",
+            "scikit-learn": "1.9.1",
+            "numpy": "2.5.4",
+            "pandas": "3.0.6"
+          },
+          "interval": null,
+          "season": 7,
+          "scenario_name": "all_promotions",
+          "seed": 42,
+          "drivers": [
+            "promotion_day"
+          ],
+          "fits": 9,
+          "future_drivers": [
+            {
+              "promotion_day": 0.0
+            },
+            {
+              "promotion_day": 0.0
+            },
+            {
+              "promotion_day": 0.0
+            },
+            {
+              "promotion_day": 0.0
+            },
+            {
+              "promotion_day": 0.0
+            },
+            {
+              "promotion_day": 0.0
+            },
+            {
+              "promotion_day": 0.0
+            },
+            {
+              "promotion_day": 0.0
+            },
+            {
+              "promotion_day": 0.0
+            },
+            {
+              "promotion_day": 0.0
+            },
+            {
+              "promotion_day": 0.0
+            },
+            {
+              "promotion_day": 0.0
+            },
+            {
+              "promotion_day": 0.0
+            },
+            {
+              "promotion_day": 0.0
+            }
+          ],
+          "horizon": 14,
+          "kind": "scenario",
+          "scenario_drivers": [
+            {
+              "promotion_day": 1.0
+            },
+            {
+              "promotion_day": 1.0
+            },
+            {
+              "promotion_day": 1.0
+            },
+            {
+              "promotion_day": 1.0
+            },
+            {
+              "promotion_day": 1.0
+            },
+            {
+              "promotion_day": 1.0
+            },
+            {
+              "promotion_day": 1.0
+            },
+            {
+              "promotion_day": 1.0
+            },
+            {
+              "promotion_day": 1.0
+            },
+            {
+              "promotion_day": 1.0
+            },
+            {
+              "promotion_day": 1.0
+            },
+            {
+              "promotion_day": 1.0
+            },
+            {
+              "promotion_day": 1.0
+            },
+            {
+              "promotion_day": 1.0
+            }
+          ],
+          "target": "revenue",
+          "specification": {
+            "season": 7,
+            "scenario_name": "all_promotions",
+            "drivers": [
+              "promotion_day"
+            ],
+            "domain": "nonnegative",
+            "rationale": "Compare managed TimesFM and driver regression candidates across chronological full-horizon backtests using the single explicit future promotion driver.",
+            "horizon": 14,
+            "scenario_drivers": [
+              {
+                "promotion_day": 1.0
+              },
+              {
+                "promotion_day": 1.0
+              },
+              {
+                "promotion_day": 1.0
+              },
+              {
+                "promotion_day": 1.0
+              },
+              {
+                "promotion_day": 1.0
+              },
+              {
+                "promotion_day": 1.0
+              },
+              {
+                "promotion_day": 1.0
+              },
+              {
+                "promotion_day": 1.0
+              },
+              {
+                "promotion_day": 1.0
+              },
+              {
+                "promotion_day": 1.0
+              },
+              {
+                "promotion_day": 1.0
+              },
+              {
+                "promotion_day": 1.0
+              },
+              {
+                "promotion_day": 1.0
+              },
+              {
+                "promotion_day": 1.0
+              }
+            ],
+            "target": "revenue",
+            "grain": "day",
+            "future_drivers": [
+              {
+                "promotion_day": 0.0
+              },
+              {
+                "promotion_day": 0.0
+              },
+              {
+                "promotion_day": 0.0
+              },
+              {
+                "promotion_day": 0.0
+              },
+              {
+                "promotion_day": 0.0
+              },
+              {
+                "promotion_day": 0.0
+              },
+              {
+                "promotion_day": 0.0
+              },
+              {
+                "promotion_day": 0.0
+              },
+              {
+                "promotion_day": 0.0
+              },
+              {
+                "promotion_day": 0.0
+              },
+              {
+                "promotion_day": 0.0
+              },
+              {
+                "promotion_day": 0.0
+              },
+              {
+                "promotion_day": 0.0
+              },
+              {
+                "promotion_day": 0.0
+              }
+            ],
+            "assumptions": [
+              "Baseline path assumes promotion_day = 0 for all 14 future days.",
+              "Scenario path assumes promotion_day = 1 for all 14 future days as supplied by visitor.",
+              "Predictions reflect statistical associations under conditional assumptions, not causal intervention effects or guaranteed lift."
+            ],
+            "priority": 1,
+            "date_column": "date",
+            "candidate_policy": "auto_compare",
+            "task_id": "daily_revenue_driver_series"
+          },
+          "comparison": {
+            "model": "TimesFM 3.0",
+            "scope_note": "Driver comparisons use the explicitly recorded complete context at each cutoff; all saved history remains in source evidence.",
+            "input_ranges": {
+              "fold_1": {
+                "observations": 1312,
+                "start": "2023-01-30",
+                "end": "2026-09-02"
+              },
+              "fold_0": {
+                "observations": 1312,
+                "start": "2023-01-16",
+                "end": "2026-08-19"
+              },
+              "fold_2": {
+                "observations": 1312,
+                "start": "2023-02-13",
+                "end": "2026-09-16"
+              }
+            },
+            "status": "evaluated",
+            "history_lengths": [
+              1327,
+              1341,
+              1355
+            ],
+            "native_backtest_intervals": {
+              "fold_1": [
+                {
+                  "date": "2026-09-03",
+                  "lower": 249368.05907990297,
+                  "value": 282901.125,
+                  "upper": 316506.31146984064
+                },
+                {
+                  "date": "2026-09-04",
+                  "lower": 246996.63934612882,
+                  "value": 284340.84375,
+                  "upper": 325243.9331479476
+                },
+                {
+                  "date": "2026-09-05",
+                  "lower": 299891.20158359536,
+                  "value": 341727.78125,
+                  "upper": 385452.65223359596
+                },
+                {
+                  "date": "2026-09-06",
+                  "lower": 311712.4625703249,
+                  "value": 353968.375,
+                  "upper": 398760.6492600749
+                },
+                {
+                  "date": "2026-09-07",
+                  "lower": 259973.8460666129,
+                  "value": 299975.375,
+                  "upper": 345996.06434349465
+                },
+                {
+                  "date": "2026-09-08",
+                  "lower": 262385.0072367036,
+                  "value": 302382.1875,
+                  "upper": 348658.95073174045
+                },
+                {
+                  "date": "2026-09-09",
+                  "lower": 263737.5944821024,
+                  "value": 304447.9375,
+                  "upper": 350674.28142384905
+                },
+                {
+                  "date": "2026-09-10",
+                  "lower": 305080.6231653157,
+                  "value": 348954.75,
+                  "upper": 398658.25377904664
+                },
+                {
+                  "date": "2026-09-11",
+                  "lower": 302301.51989779563,
+                  "value": 349513.875,
+                  "upper": 401492.31510078977
+                },
+                {
+                  "date": "2026-09-12",
+                  "lower": 350340.89498630364,
+                  "value": 399071.625,
+                  "upper": 451885.622246949
+                },
+                {
+                  "date": "2026-09-13",
+                  "lower": 352683.32970432844,
+                  "value": 404459.84375,
+                  "upper": 460797.9863950104
+                },
+                {
+                  "date": "2026-09-14",
+                  "lower": 296672.10536663677,
+                  "value": 342876.84375,
+                  "upper": 391857.672058622
+                },
+                {
+                  "date": "2026-09-15",
+                  "lower": 284649.1794648529,
+                  "value": 325809.25,
+                  "upper": 371042.6501385094
+                },
+                {
+                  "date": "2026-09-16",
+                  "lower": 239188.45960969903,
+                  "value": 279068.1875,
+                  "upper": 323975.21152648225
+                }
+              ],
+              "fold_0": [
+                {
+                  "date": "2026-08-20",
+                  "lower": 239879.13310147147,
+                  "value": 277130.09375,
+                  "upper": 316310.63894130825
+                },
+                {
+                  "date": "2026-08-21",
+                  "lower": 240743.98262264288,
+                  "value": 281837.8125,
+                  "upper": 327344.2984016522
+                },
+                {
+                  "date": "2026-08-22",
+                  "lower": 283905.88006649696,
+                  "value": 327458.3125,
+                  "upper": 375563.7680659722
+                },
+                {
+                  "date": "2026-08-23",
+                  "lower": 292524.2774643112,
+                  "value": 336853.4375,
+                  "upper": 386867.06729905354
+                },
+                {
+                  "date": "2026-08-24",
+                  "lower": 248197.19538054292,
+                  "value": 291005.6875,
+                  "upper": 341365.0021187721
+                },
+                {
+                  "date": "2026-08-25",
+                  "lower": 240915.98683859466,
+                  "value": 281733.3125,
+                  "upper": 330506.24298823846
+                },
+                {
+                  "date": "2026-08-26",
+                  "lower": 237330.95154872435,
+                  "value": 278634.1875,
+                  "upper": 327212.0747753941
+                },
+                {
+                  "date": "2026-08-27",
+                  "lower": 232793.57822475384,
+                  "value": 275055.34375,
+                  "upper": 325002.30414914194
+                },
+                {
+                  "date": "2026-08-28",
+                  "lower": 235157.0500919951,
+                  "value": 279994.84375,
+                  "upper": 331556.43549499183
+                },
+                {
+                  "date": "2026-08-29",
+                  "lower": 279523.6925424923,
+                  "value": 326616.375,
+                  "upper": 379858.54781647783
+                },
+                {
+                  "date": "2026-08-30",
+                  "lower": 295553.4787147308,
+                  "value": 344019.4375,
+                  "upper": 399813.36092659994
+                },
+                {
+                  "date": "2026-08-31",
+                  "lower": 252420.0192101237,
+                  "value": 299896.8125,
+                  "upper": 354459.8364357076
+                },
+                {
+                  "date": "2026-09-01",
+                  "lower": 244650.23878013628,
+                  "value": 290305.21875,
+                  "upper": 343147.7962530204
+                },
+                {
+                  "date": "2026-09-02",
+                  "lower": 241207.70148276474,
+                  "value": 285207.09375,
+                  "upper": 337798.5700077745
+                }
+              ],
+              "fold_2": [
+                {
+                  "date": "2026-09-17",
+                  "lower": 241873.27967986616,
+                  "value": 275196.65625,
+                  "upper": 308265.2260179797
+                },
+                {
+                  "date": "2026-09-18",
+                  "lower": 243879.51154584132,
+                  "value": 279430.21875,
+                  "upper": 317783.1844610548
+                },
+                {
+                  "date": "2026-09-19",
+                  "lower": 302515.86625699105,
+                  "value": 343020.9375,
+                  "upper": 384572.4304519112
+                },
+                {
+                  "date": "2026-09-20",
+                  "lower": 315673.64516119234,
+                  "value": 357164.96875,
+                  "upper": 401130.9995208969
+                },
+                {
+                  "date": "2026-09-21",
+                  "lower": 247221.10686644216,
+                  "value": 286062.96875,
+                  "upper": 330020.351945426
+                },
+                {
+                  "date": "2026-09-22",
+                  "lower": 246458.75320952974,
+                  "value": 284391.59375,
+                  "upper": 325634.8708811783
+                },
+                {
+                  "date": "2026-09-23",
+                  "lower": 252202.78363573476,
+                  "value": 288194.59375,
+                  "upper": 328773.93690947
+                },
+                {
+                  "date": "2026-09-24",
+                  "lower": 245529.74661906954,
+                  "value": 282351.40625,
+                  "upper": 323102.08547982166
+                },
+                {
+                  "date": "2026-09-25",
+                  "lower": 239566.62458871648,
+                  "value": 278535.375,
+                  "upper": 321087.7434665008
+                },
+                {
+                  "date": "2026-09-26",
+                  "lower": 288609.90695217944,
+                  "value": 328396.03125,
+                  "upper": 372585.4940870798
+                },
+                {
+                  "date": "2026-09-27",
+                  "lower": 304678.65410152415,
+                  "value": 346456.6875,
+                  "upper": 391888.2354036808
+                },
+                {
+                  "date": "2026-09-28",
+                  "lower": 246781.7299119254,
+                  "value": 287613.25,
+                  "upper": 331762.08952105645
+                },
+                {
+                  "date": "2026-09-29",
+                  "lower": 245187.11027492658,
+                  "value": 284486.5625,
+                  "upper": 327468.77939591487
+                },
+                {
+                  "date": "2026-09-30",
+                  "lower": 240642.08067382156,
+                  "value": 277531.34375,
+                  "upper": 320253.2337889449
+                }
+              ]
+            },
+            "reason": "Chronological comparison completed.",
+            "context": 1312,
+            "native_final_intervals": {
+              "baseline": [
+                {
+                  "date": "2026-10-01",
+                  "lower": 249750.55787410872,
+                  "value": 294982.09375,
+                  "upper": 338573.52640435164
+                },
+                {
+                  "date": "2026-10-02",
+                  "lower": 243437.93580594496,
+                  "value": 294190.25,
+                  "upper": 346341.6492663161
+                },
+                {
+                  "date": "2026-10-03",
+                  "lower": 300707.2697606377,
+                  "value": 357303.875,
+                  "upper": 411715.0132110697
+                },
+                {
+                  "date": "2026-10-04",
+                  "lower": 303308.9679268537,
+                  "value": 358373.0,
+                  "upper": 414912.0121570431
+                },
+                {
+                  "date": "2026-10-05",
+                  "lower": 250971.6930306508,
+                  "value": 303503.1875,
+                  "upper": 359248.3147138833
+                },
+                {
+                  "date": "2026-10-06",
+                  "lower": 241331.19934499072,
+                  "value": 291642.625,
+                  "upper": 347874.47405134095
+                },
+                {
+                  "date": "2026-10-07",
+                  "lower": 254027.43521522946,
+                  "value": 303961.0625,
+                  "upper": 359687.64661712333
+                },
+                {
+                  "date": "2026-10-08",
+                  "lower": 258025.83110694622,
+                  "value": 310503.65625,
+                  "upper": 371302.7228604794
+                },
+                {
+                  "date": "2026-10-09",
+                  "lower": 261240.1519108047,
+                  "value": 317477.59375,
+                  "upper": 384189.95974709385
+                },
+                {
+                  "date": "2026-10-10",
+                  "lower": 322854.83291936887,
+                  "value": 383794.125,
+                  "upper": 455329.3575304111
+                },
+                {
+                  "date": "2026-10-11",
+                  "lower": 328886.5308415743,
+                  "value": 399542.375,
+                  "upper": 479766.61786487326
+                },
+                {
+                  "date": "2026-10-12",
+                  "lower": 276008.2240498261,
+                  "value": 334879.0,
+                  "upper": 402421.0509074088
+                },
+                {
+                  "date": "2026-10-13",
+                  "lower": 261734.41289839742,
+                  "value": 317162.53125,
+                  "upper": 380631.9224636115
+                },
+                {
+                  "date": "2026-10-14",
+                  "lower": 253754.77080107757,
+                  "value": 304655.625,
+                  "upper": 367236.78886342247
+                }
+              ],
+              "scenario": [
+                {
+                  "date": "2026-10-01",
+                  "lower": 261492.68862576986,
+                  "value": 318104.0625,
+                  "upper": 372805.539516553
+                },
+                {
+                  "date": "2026-10-02",
+                  "lower": 249366.4713777739,
+                  "value": 312947.125,
+                  "upper": 378222.12537825975
+                },
+                {
+                  "date": "2026-10-03",
+                  "lower": 305041.6807753686,
+                  "value": 382513.4375,
+                  "upper": 457777.36370103084
+                },
+                {
+                  "date": "2026-10-04",
+                  "lower": 306479.61942484445,
+                  "value": 379796.375,
+                  "upper": 453974.9252079359
+                },
+                {
+                  "date": "2026-10-05",
+                  "lower": 244860.71589932044,
+                  "value": 315902.34375,
+                  "upper": 389916.9690014008
+                },
+                {
+                  "date": "2026-10-06",
+                  "lower": 235079.9597386767,
+                  "value": 303550.0,
+                  "upper": 378062.2417324132
+                },
+                {
+                  "date": "2026-10-07",
+                  "lower": 247707.72985858895,
+                  "value": 314704.75,
+                  "upper": 388397.1525786768
+                },
+                {
+                  "date": "2026-10-08",
+                  "lower": 255954.96944294576,
+                  "value": 324128.3125,
+                  "upper": 403882.6080629239
+                },
+                {
+                  "date": "2026-10-09",
+                  "lower": 262734.8869945288,
+                  "value": 333436.46875,
+                  "upper": 420012.1280289616
+                },
+                {
+                  "date": "2026-10-10",
+                  "lower": 327315.1628619698,
+                  "value": 404381.78125,
+                  "upper": 499054.81736002804
+                },
+                {
+                  "date": "2026-10-11",
+                  "lower": 321068.7110363057,
+                  "value": 417584.6875,
+                  "upper": 532051.3309849142
+                },
+                {
+                  "date": "2026-10-12",
+                  "lower": 285279.54217566986,
+                  "value": 355701.875,
+                  "upper": 442836.9968110174
+                },
+                {
+                  "date": "2026-10-13",
+                  "lower": 271282.8042637709,
+                  "value": 339641.96875,
+                  "upper": 424194.75379418343
+                },
+                {
+                  "date": "2026-10-14",
+                  "lower": 257881.1298768744,
+                  "value": 326180.125,
+                  "upper": 412276.2285598224
+                }
+              ]
+            },
+            "selection_policy_version": 1,
+            "jobs": [
+              {
+                "job_id": "abi_report_e4112a63cba9d6886594cb89988ac4c5_tf_b9198085ca85ae2675c72e33",
+                "executed_at": "2026-10-18T00:08:41.350387+00:00",
+                "model": "TimesFM 3.0",
+                "bytes_processed": 0,
+                "context": 1312,
+                "identity": "b9198085ca85ae2675c72e338d3bd441b032bd05ed842a33b2551cdbac64dd2d",
+                "input_tokens_estimated": 7914,
+                "output_tokens_estimated": 42
+              },
+              {
+                "job_id": "abi_report_e4112a63cba9d6886594cb89988ac4c5_tf_3f3796333dc5497361ad1eaa",
+                "executed_at": "2026-10-18T00:08:50.937865+00:00",
+                "model": "TimesFM 3.0",
+                "bytes_processed": 0,
+                "context": 1312,
+                "identity": "3f3796333dc5497361ad1eaacc1db8eb2c3fb12612c296619c8ada756cfe8da7",
+                "input_tokens_estimated": 5276,
+                "output_tokens_estimated": 28
+              }
+            ],
+            "preview": true,
+            "input_hash": "d8b4c3ffb269832028a7b3aee71eafed90e43491ee963de3b08ddbf9b3d1729b",
+            "provider": "bigquery"
+          },
+          "scores": {
+            "seasonal_naive": {
+              "folds": [
+                {
+                  "test_start": "2026-08-20T00:00:00",
+                  "mae": 26814.326428571425,
+                  "train_end": "2026-08-19T00:00:00",
+                  "test_end": "2026-09-02T00:00:00"
+                },
+                {
+                  "test_start": "2026-09-03T00:00:00",
+                  "mae": 39812.729999999996,
+                  "train_end": "2026-09-02T00:00:00",
+                  "test_end": "2026-09-16T00:00:00"
+                },
+                {
+                  "test_start": "2026-09-17T00:00:00",
+                  "mae": 52626.087857142855,
+                  "train_end": "2026-09-16T00:00:00",
+                  "test_end": "2026-09-30T00:00:00"
+                }
+              ],
+              "mae": 39751.0480952381,
+              "rmse": 51574.621436563524
+            },
+            "driver_ridge": {
+              "folds": [
+                {
+                  "test_start": "2026-08-20T00:00:00",
+                  "mae": 24295.825109109526,
+                  "train_end": "2026-08-19T00:00:00",
+                  "test_end": "2026-09-02T00:00:00"
+                },
+                {
+                  "test_start": "2026-09-03T00:00:00",
+                  "mae": 35263.072447918035,
+                  "train_end": "2026-09-02T00:00:00",
+                  "test_end": "2026-09-16T00:00:00"
+                },
+                {
+                  "test_start": "2026-09-17T00:00:00",
+                  "mae": 23408.06563246066,
+                  "train_end": "2026-09-16T00:00:00",
+                  "test_end": "2026-09-30T00:00:00"
+                }
+              ],
+              "mae": 27655.654396496077,
+              "rmse": 35244.17755926291
+            },
+            "timesfm_3": {
+              "folds": [
+                {
+                  "test_start": "2026-08-20T00:00:00",
+                  "mae": 12632.498125,
+                  "train_end": "2026-08-19T00:00:00",
+                  "test_end": "2026-09-02T00:00:00"
+                },
+                {
+                  "test_start": "2026-09-03T00:00:00",
+                  "mae": 23279.397857142852,
+                  "train_end": "2026-09-02T00:00:00",
+                  "test_end": "2026-09-16T00:00:00"
+                },
+                {
+                  "test_start": "2026-09-17T00:00:00",
+                  "mae": 23928.051875,
+                  "train_end": "2026-09-16T00:00:00",
+                  "test_end": "2026-09-30T00:00:00"
+                }
+              ],
+              "mae": 19946.649285714284,
+              "rmse": 23659.317529535892
+            },
+            "ets": {
+              "folds": [
+                {
+                  "test_start": "2026-08-20T00:00:00",
+                  "mae": 8917.843873988491,
+                  "train_end": "2026-08-19T00:00:00",
+                  "test_end": "2026-09-02T00:00:00"
+                },
+                {
+                  "test_start": "2026-09-03T00:00:00",
+                  "mae": 42595.6177256571,
+                  "train_end": "2026-09-02T00:00:00",
+                  "test_end": "2026-09-16T00:00:00"
+                },
+                {
+                  "test_start": "2026-09-17T00:00:00",
+                  "mae": 23307.85658399959,
+                  "train_end": "2026-09-16T00:00:00",
+                  "test_end": "2026-09-30T00:00:00"
+                }
+              ],
+              "mae": 24940.43939454839,
+              "rmse": 35036.60381327362
+            }
+          },
+          "data_hash": "d8b4c3ffb269832028a7b3aee71eafed90e43491ee963de3b08ddbf9b3d1729b",
+          "limitations": [
+            "Historical predictive associations are not causal effects or guaranteed future performance.",
+            "Validated prediction intervals are unavailable for this bounded backtest; point predictions carry unquantified uncertainty.",
+            "Saved observations end at 2026-09-30; predictions start after that cutoff, rather than assuming data reaches the report request date 2026-10-18."
+          ],
+          "grain": "day",
+          "selection_reason": "Best validated driver-capable method; baseline and alternative share its history and configuration.",
+          "fit_seconds": 1.1166047069999934,
+          "cutoff": "2026-09-30",
+          "method": "timesfm_3",
+          "preview": true,
+          "last_observed_period": "2026-09-30",
+          "assumptions": [
+            "Baseline path assumes promotion_day = 0 for all 14 future days.",
+            "Scenario path assumes promotion_day = 1 for all 14 future days as supplied by visitor.",
+            "Predictions reflect statistical associations under conditional assumptions, not causal intervention effects or guaranteed lift."
+          ],
+          "source_artifact_id": "74369204b67027065eb9300fa7896343"
+        }
+      ],
+      "scenario_published": true
+    }
+  ],
+  "source_writes": 0,
+  "quota_reset": false,
+  "limitations": [],
+  "configuration": {
+    "enabled": true,
+    "research_enabled": false,
+    "mode": "cloud_tasks",
+    "target_minutes": "3\u20138",
+    "timesfm": {
+      "enabled": true,
+      "model": "TimesFM 3.0",
+      "preview": true
+    }
+  },
+  "supplied_future_paths": {
+    "revenue": {
+      "baseline": [
+        {
+          "promotion_day": 0
+        },
+        {
+          "promotion_day": 0
+        },
+        {
+          "promotion_day": 0
+        },
+        {
+          "promotion_day": 0
+        },
+        {
+          "promotion_day": 0
+        },
+        {
+          "promotion_day": 0
+        },
+        {
+          "promotion_day": 0
+        },
+        {
+          "promotion_day": 0
+        },
+        {
+          "promotion_day": 0
+        },
+        {
+          "promotion_day": 0
+        },
+        {
+          "promotion_day": 0
+        },
+        {
+          "promotion_day": 0
+        },
+        {
+          "promotion_day": 0
+        },
+        {
+          "promotion_day": 0
+        }
+      ],
+      "scenario": [
+        {
+          "promotion_day": 1
+        },
+        {
+          "promotion_day": 1
+        },
+        {
+          "promotion_day": 1
+        },
+        {
+          "promotion_day": 1
+        },
+        {
+          "promotion_day": 1
+        },
+        {
+          "promotion_day": 1
+        },
+        {
+          "promotion_day": 1
+        },
+        {
+          "promotion_day": 1
+        },
+        {
+          "promotion_day": 1
+        },
+        {
+          "promotion_day": 1
+        },
+        {
+          "promotion_day": 1
+        },
+        {
+          "promotion_day": 1
+        },
+        {
+          "promotion_day": 1
+        },
+        {
+          "promotion_day": 1
+        }
+      ]
+    }
+  },
+  "presentation_run_id": "2225a336504503893a5a88753dceecb4",
+  "dashboard_id": "9b38ec4cc6a94fafa5db61de80549631",
+  "passed": true
+}

@@ -1,0 +1,92 @@
+{
+  "verified_at": "2026-10-18T00:14:59.048528+00:00",
+  "session": "querylane-final-fresh-timesfm",
+  "checks": {
+    "fresh_forecast_reader": true,
+    "fresh_scenario_reader": true,
+    "observation_cutoff_visible": true,
+    "preview_method_and_score_table_visible": true,
+    "forecast_validation_keyboard_disclosure": true,
+    "unavailable_interval_notice_visible": true,
+    "conditional_label_visible": true,
+    "same_method_scenario_notice": true,
+    "causal_limit_visible": true,
+    "immutable_dashboard_report_v1_link": true,
+    "dashboard_saved_prediction_visible": true,
+    "dashboard_png_http_200": true,
+    "dashboard_download_ready_feedback": true,
+    "dashboard_download_keyboard_open_and_escape": true,
+    "mobile_reports_and_dashboard_no_page_overflow": true,
+    "no_uncaught_browser_errors": true
+  },
+  "viewports": [
+    [
+      1280,
+      960
+    ],
+    [
+      390,
+      844
+    ]
+  ],
+  "axe": {
+    "forecast": {
+      "counts": {
+        "inapplicable": 52,
+        "incomplete": 1,
+        "passes": 36,
+        "violations": 0
+      },
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "node_count": 13
+        }
+      ]
+    },
+    "scenario": {
+      "counts": {
+        "inapplicable": 58,
+        "incomplete": 1,
+        "passes": 30,
+        "violations": 0
+      },
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "node_count": 26
+        }
+      ]
+    },
+    "dashboard": {
+      "counts": {
+        "inapplicable": 58,
+        "incomplete": 1,
+        "passes": 30,
+        "violations": 0
+      },
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "node_count": 8
+        }
+      ]
+    }
+  },
+  "report_ids": {
+    "forecast": "9ef66a621f51ebe08d597f8380fecb18",
+    "scenario": "e4112a63cba9d6886594cb89988ac4c5"
+  },
+  "dashboard_id": "9b38ec4cc6a94fafa5db61de80549631",
+  "downloads": "Both report versions 1: PDF/Word/data checksum and magic verified by hosted suite; browser PDF action exercised; new dashboard PNG returned HTTP 200 and displayed Dashboard download ready.",
+  "inference_during_saved_views": false,
+  "limitations": [
+    "Physical microphone/speaker not accessed or retested.",
+    "Screen-reader, Safari/Firefox, full interruption fidelity and production crash/outage testing not repeated.",
+    "Axe contrast checks remain incomplete; zero violations is not complete accessibility certification.",
+    "Mobile checks cover page reflow and loaded controls, not every possible local chart control configuration."
+  ]
+}

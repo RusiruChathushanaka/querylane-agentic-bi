@@ -1,0 +1,72 @@
+[
+  {
+    "httpRequest": {
+      "requestUrl": "https://agentic-bi-report-worker-wekihucn7q-as.a.run.app/internal/reports/execute",
+      "status": 200,
+      "userAgent": "Google-Cloud-Tasks"
+    },
+    "resource": {
+      "labels": {
+        "revision_name": "agentic-bi-report-worker-00013-sm4"
+      }
+    },
+    "severity": "INFO",
+    "timestamp": "2026-10-18T00:09:52.651570Z"
+  },
+  {
+    "httpRequest": {
+      "requestUrl": "https://agentic-bi-report-worker-wekihucn7q-as.a.run.app/internal/reports/execute",
+      "status": 200,
+      "userAgent": "Google-Cloud-Tasks"
+    },
+    "resource": {
+      "labels": {
+        "revision_name": "agentic-bi-report-worker-00013-sm4"
+      }
+    },
+    "severity": "INFO",
+    "timestamp": "2026-10-18T00:07:59.224603Z"
+  },
+  {
+    "httpRequest": {
+      "requestUrl": "https://agentic-bi-report-worker-wekihucn7q-as.a.run.app/internal/reports/execute",
+      "status": 200,
+      "userAgent": "Google-Cloud-Tasks"
+    },
+    "resource": {
+      "labels": {
+        "revision_name": "agentic-bi-report-worker-00013-sm4"
+      }
+    },
+    "severity": "INFO",
+    "timestamp": "2026-10-18T00:07:49.590282Z"
+  },
+  {
+    "httpRequest": {
+      "requestUrl": "https://agentic-bi-report-worker-wekihucn7q-as.a.run.app/internal/reports/execute",
+      "status": 200,
+      "userAgent": "Google-Cloud-Tasks"
+    },
+    "resource": {
+      "labels": {
+        "revision_name": "agentic-bi-report-worker-00013-sm4"
+      }
+    },
+    "severity": "INFO",
+    "timestamp": "2026-10-18T00:07:20.540566Z"
+  },
+  {
+    "httpRequest": {
+      "requestUrl": "https://agentic-bi-report-worker-wekihucn7q-as.a.run.app/internal/reports/execute",
+      "status": 200,
+      "userAgent": "Google-Cloud-Tasks"
+    },
+    "resource": {
+      "labels": {
+        "revision_name": "agentic-bi-report-worker-00013-sm4"
+      }
+    },
+    "severity": "INFO",
+    "timestamp": "2026-10-18T00:07:19.812888Z"
+  }
+]
