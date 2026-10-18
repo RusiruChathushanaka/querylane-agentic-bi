@@ -828,10 +828,10 @@
     "semantic_hash": "9ff870893d5a3776f60e9464f58edc17"
   },
   "Frontend/src/components/workspace.tsx": {
-    "mtime": 1792274628.2203646,
-    "seen": 1792304056.048458,
-    "ast_hash": "fc6dab700b8aadd432f3d9ef44bde50e",
-    "semantic_hash": "fc6dab700b8aadd432f3d9ef44bde50e"
+    "mtime": 1792304282.7208078,
+    "seen": 1792305641.0620852,
+    "ast_hash": "0035d114d9caad5773bb69c75919e590",
+    "semantic_hash": "0035d114d9caad5773bb69c75919e590"
   },
   "Frontend/src/hooks/use-app-motion.ts": {
     "mtime": 1792088715.2666326,
@@ -972,8 +972,8 @@
     "semantic_hash": "2bfa86decba7cb37117b4cfc4f5b4fb6"
   },
   "Frontend/tsconfig.json": {
-    "mtime": 1792274667.9594634,
-    "seen": 1792304056.04849,
+    "mtime": 1792304430.185617,
+    "seen": 1792305641.0621178,
     "ast_hash": "f488cf7181b93259985af64ccde63f14",
     "semantic_hash": "f488cf7181b93259985af64ccde63f14"
   },
@@ -1020,10 +1020,10 @@
     "semantic_hash": "ca25fe234f223d659813d5932b9de159"
   },
   "AGENTS.md": {
-    "mtime": 1792303593.6838923,
-    "seen": 1792304056.0485,
-    "ast_hash": "4ea116d179117d1e62fab08457cecc67",
-    "semantic_hash": "4ea116d179117d1e62fab08457cecc67"
+    "mtime": 1792305408.451876,
+    "seen": 1792305641.062128,
+    "ast_hash": "e4a6d7a5d5f6275d80546390bd27f101",
+    "semantic_hash": "e4a6d7a5d5f6275d80546390bd27f101"
   },
   "Backend/README.md": {
     "mtime": 1792255047.9951062,
@@ -1128,10 +1128,10 @@
     "semantic_hash": "807599428ed630912bd0e16742c84918"
   },
   "README.md": {
-    "mtime": 1792282499.0506902,
-    "seen": 1792304056.048529,
-    "ast_hash": "90f7495838d1f562760bc8735c4ebb67",
-    "semantic_hash": "90f7495838d1f562760bc8735c4ebb67"
+    "mtime": 1792305408.4061172,
+    "seen": 1792305641.062164,
+    "ast_hash": "64c6c630eb9eb2948b513964dfbf7909",
+    "semantic_hash": "64c6c630eb9eb2948b513964dfbf7909"
   },
   "docs/adr/0001-public-workspace-without-accounts.md": {
     "mtime": 1792073376.6843567,
@@ -1182,10 +1182,10 @@
     "semantic_hash": "b3cfa8ad839c0b3e2e2db33db48dae73"
   },
   "docs/architecture.md": {
-    "mtime": 1792303615.2565215,
-    "seen": 1792304056.048543,
-    "ast_hash": "7c98adfbcbaefaf4ea294487dde69810",
-    "semantic_hash": "7c98adfbcbaefaf4ea294487dde69810"
+    "mtime": 1792305408.4934163,
+    "seen": 1792305641.062177,
+    "ast_hash": "b34f5d9c3392519b9927052072ca8c9b",
+    "semantic_hash": "b34f5d9c3392519b9927052072ca8c9b"
   },
   "docs/charts.md": {
     "mtime": 1792155999.748274,
@@ -1266,10 +1266,10 @@
     "semantic_hash": "4f445ad1b79698f5d00e0015ce304153"
   },
   "docs/validation.md": {
-    "mtime": 1792302987.3382657,
-    "seen": 1792304056.0485601,
-    "ast_hash": "d8a007511796c8dfd98b2556c4706226",
-    "semantic_hash": "d8a007511796c8dfd98b2556c4706226"
+    "mtime": 1792305540.695312,
+    "seen": 1792305641.062196,
+    "ast_hash": "c2de9c559c516a0664bd26f417b8aded",
+    "semantic_hash": "c2de9c559c516a0664bd26f417b8aded"
   },
   "docs/voice-skill-author-plan.md": {
     "mtime": 1792095850.629606,

@@ -92,9 +92,13 @@ Paths shortened after the first entry in a cell use that entry's directory. Sour
 
 The desktop and mobile sidebars prioritize public conversation history and library navigation. **New exploration** is the single reset action and returns to `/app`; the duplicate **Ask your data** row and workspace heading were removed. Search, conversation selection and shared links retain their existing behavior.
 
+Business metrics (`/metrics`) and Forecast plans (`/forecast-plans`) use the existing Lucide `Target` and `TrendingUp` icons in the shared sidebar fragment. Their 16px size and inline-start placement match the other library links. The SVGs are decorative (`aria-hidden="true"`); visible text remains each native link's accessible name. This presentation change adds no state, API, dependency or execution flow. The application diagram's boundaries remain unchanged.
+
 The header **Sources** button opens an accessible sheet containing BigQuery/PostgreSQL connection status and schema inspection. It uses the existing connection/schema API, with loading, empty and recoverable error states. A request-generation guard ignores late schema responses after a visitor switches sources. Selection is conveyed with `aria-pressed`; Escape closes the sheet and restores trigger focus. Narrow headers hide the active-chat breadcrumb to retain room for actions. The composer's source selector still determines sources for analysis; inspecting a schema does not change that choice or execute analytical SQL.
 
 The [sidebar release](evaluation/sidebar-release-20261018.md) records frontend `00018-kd4`, with API `00024-rnd` and worker `00013-sm4` unchanged. Its browser checks measured 221px of history space at 1009×904 and verified mobile layout, schema switching, search and reset. Those observations describe that release rather than an ongoing layout guarantee.
+
+The later [navigation icon release](evaluation/navigation-icons-release-20261018.md), published in commit `3dbebe4`, records frontend `00019-gvr` at full traffic and the same API/worker revisions. The image-only candidate passed readiness, configuration comparison and HTTP checks before promotion; its temporary tag was removed. Desktop, 557px/390px mobile, keyboard activation and settled accessibility checks passed. Initial fade-time contrast and pre-unmount dismissal observations remain in the evidence alongside successful settled rechecks. Source metadata, runtime settings and enabled/verified TimesFM gates were preserved; no new analytical/model work ran.
 
 ## Curated analytics and prediction skills
 
