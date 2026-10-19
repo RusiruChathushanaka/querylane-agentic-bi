@@ -16,9 +16,9 @@
     "months": 45,
     "merchandise_revenue": "354425112.20"
   },
-  "date": "2026-10-18",
-  "verified_at": "2026-10-18T06:30:42.936838+00:00",
-  "release": "Frontend navigation icons: Business metrics and Forecast plans",
+  "date": "2026-10-19",
+  "verified_at": "2026-10-19T10:45:16.581662+00:00",
+  "release": "Forecast Plans and AI Dashboard Builder skills picker layout",
   "services": {
     "agentic-bi-backend": {
       "url": "https://agentic-bi-backend-wekihucn7q-as.a.run.app",
@@ -179,28 +179,28 @@
     },
     "agentic-bi-frontend": {
       "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app",
-      "ready_revision": "agentic-bi-frontend-00019-gvr",
+      "ready_revision": "agentic-bi-frontend-00042-van",
       "service_account": "agentic-bi-frontend@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
-      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:03adba9fb62c77c858e6d9b49cc0aa8a77302e53268cb169d4b603ef175a65a5",
-      "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:03adba9fb62c77c858e6d9b49cc0aa8a77302e53268cb169d4b603ef175a65a5",
-      "build_id": "2f560c13-5d84-4336-8ed3-08c3b64de878",
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:b8a87d35e5e344f37b4ee9232a81b70f5b075f269b0aebe07850097d5a5e91e6",
+      "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:b8a87d35e5e344f37b4ee9232a81b70f5b075f269b0aebe07850097d5a5e91e6",
+      "build_id": "2bc1a72a-f897-4292-b762-a6af7432b907",
       "build_source": {
         "storageSource": {
           "bucket": "project-e8b1593d-009a-4822-abf-agentic-bi-build",
-          "generation": "1792304535212957",
-          "object": "source/1792304533.758926-48254a603570494e86533bacbeb11ed5.tgz"
+          "generation": "1792406218693835",
+          "object": "source/1792406217.041348-99e4ea136d74413f873aab125242e464.tgz"
         }
       },
-      "source_base_commit": "22625a68d64aebcaa7e8e3dcdb2c604475132652",
+      "source_base_commit": "fa6627b1ff357ce9f0be2bc18deebcd8ff1682fc",
       "source_is_working_tree": true,
       "ready": true,
       "traffic": [
         {
           "percent": 100,
-          "revisionName": "agentic-bi-frontend-00019-gvr"
+          "revisionName": "agentic-bi-frontend-00042-van"
         }
       ],
-      "previous_revision": "agentic-bi-frontend-00018-kd4",
+      "previous_revision": "agentic-bi-frontend-00019-gvr",
       "runtime_environment": [
         {
           "name": "BACKEND_URL",
@@ -215,7 +215,7 @@
       },
       "container_concurrency": 40,
       "timeout_seconds": 300,
-      "source_verification_manifest": "evaluation/navigation-icons-release-20261018-source.json"
+      "source_verification_manifest": "evaluation/forecast-plan-ui-release-20261019-source.json"
     },
     "agentic-bi-report-worker": {
       "url": "https://agentic-bi-report-worker-wekihucn7q-as.a.run.app",
@@ -390,59 +390,21 @@
     "source_data_writes": false
   },
   "verification_reports": [
-    "evaluation/timesfm-backend-runtime.json",
-    "evaluation/timesfm-browser.json",
-    "evaluation/timesfm-data-preservation.json",
-    "evaluation/timesfm-deployed.json",
-    "evaluation/timesfm-job-audit.json",
-    "evaluation/timesfm-local.json",
-    "evaluation/timesfm-operator-compatibility.json",
-    "evaluation/timesfm-release-health.json",
-    "evaluation/timesfm-release-source.json",
-    "evaluation/timesfm-sources-after.json",
-    "evaluation/timesfm-sources-before.json",
-    "evaluation/timesfm-voice-regression.json",
-    "evaluation/timesfm-worker-runtime.json",
-    "evaluation/landing-timesfm-local.json",
-    "evaluation/landing-timesfm-deployed.json",
-    "evaluation/landing-timesfm-deployed.md",
-    "evaluation/planning-release-20261018-source.json",
-    "evaluation/planning-release-20261018-sources-before.json",
-    "evaluation/planning-release-20261018-sources-after.json",
-    "evaluation/planning-release-20261018-runtime.json",
-    "evaluation/planning-release-20261018-analytics.json",
-    "evaluation/planning-release-20261018-voice.json",
-    "evaluation/planning-release-20261018-api.json",
-    "evaluation/planning-release-20261018-browser.json",
-    "evaluation/planning-release-20261018.md",
-    "evaluation/planning-release-20261018-catalog-agent.json",
-    "evaluation/planning-release-20261018-voice-catalog.json",
-    "evaluation/planning-release-20261018-catalog-agent-initial.json",
-    "evaluation/planning-release-20261018-metric-scope-initial.json",
-    "evaluation/planning-release-20261018-voice-catalog-initial.json",
-    "evaluation/planning-release-20261018-metric-scope-compat.json",
-    "evaluation/sidebar-release-20261018-source.json",
-    "evaluation/sidebar-release-20261018-data.json",
-    "evaluation/sidebar-release-20261018-http.json",
-    "evaluation/sidebar-release-20261018-routes.json",
-    "evaluation/sidebar-release-20261018-configuration.json",
-    "evaluation/sidebar-release-20261018-browser.json",
-    "evaluation/sidebar-release-20261018.md",
-    "evaluation/navigation-icons-release-20261018-source.json",
-    "evaluation/navigation-icons-release-20261018-candidate.json",
-    "evaluation/navigation-icons-release-20261018-preservation.json",
-    "evaluation/navigation-icons-release-20261018-http.json",
-    "evaluation/navigation-icons-release-20261018-routes.json",
-    "evaluation/navigation-icons-release-20261018-browser.json",
-    "evaluation/navigation-icons-release-20261018.md"
+    "evaluation/forecast-plan-ui-20261019.md",
+    "evaluation/forecast-plan-ui-release-20261019-source.json",
+    "evaluation/forecast-plan-ui-release-20261019-candidate.json",
+    "evaluation/forecast-plan-ui-release-20261019-preservation.json",
+    "evaluation/forecast-plan-ui-release-20261019-http.json",
+    "evaluation/forecast-plan-ui-release-20261019-browser.json",
+    "evaluation/forecast-plan-ui-release-20261019.md"
   ],
-  "source_verification_manifest": "evaluation/navigation-icons-release-20261018-source.json",
+  "source_verification_manifest": "evaluation/forecast-plan-ui-release-20261019-source.json",
   "github": {
     "repository": "https://github.com/RusiruChathushanaka/querylane-agentic-bi",
     "branch": "main",
-    "source_base_commit": "22625a68d64aebcaa7e8e3dcdb2c604475132652",
-    "publication_note": "Navigation icon code and dated release evidence are published after verified frontend-only deployment. The source manifest hashes identify the exact runtime files built from the working tree; publication does not change analytical runtimes or data.",
-    "publication_base_commit": "22625a68d64aebcaa7e8e3dcdb2c604475132652"
+    "source_base_commit": "fa6627b1ff357ce9f0be2bc18deebcd8ff1682fc",
+    "publication_note": "Frontend picker fixes, regression tests, submission exclusions and dated deployment/testing documentation published after verification. Built-source hashes are verified against the Cloud Build source archive. Submission materials remain local and excluded.",
+    "publication_base_commit": "fa6627b1ff357ce9f0be2bc18deebcd8ff1682fc"
   },
   "latest_verified_sample": {
     "report_id": "2ed05089e9a86e1ef3046fa6c6728680",
@@ -456,13 +418,13 @@
     "id": "7d213e6c777244fb99c9bc363ff42f22",
     "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/dashboards/7d213e6c777244fb99c9bc363ff42f22"
   },
-  "temporary_runtime_jobs": "Backend runtime check removed after completion",
+  "temporary_runtime_jobs": "No runtime verification jobs created for this frontend-only release.",
   "unexpected_application_error_entries": 0,
-  "fresh_planning_acceptance": "Fresh AI Dashboard Builder and 237-node Forecast Plans worker acceptance remains unverified; this frontend-only release starts no expensive jobs. See planning-release-20261018.md and final-e2e-20261018-fresh.md for dated boundaries.",
+  "fresh_planning_acceptance": "Fresh AI Dashboard Builder and 237-node Forecast Plans worker acceptance remains separate and unverified; this UI-only release starts no analytical jobs. See planning-release-20261018.md and final-e2e-20261018-fresh.md.",
   "final_revision_error_window": {
-    "from_utc": "2026-10-18T06:25:25.603964Z",
+    "from_utc": "2026-10-19T10:40:00Z",
     "revisions": [
-      "agentic-bi-frontend-00019-gvr"
+      "agentic-bi-frontend-00042-van"
     ],
     "unexpected_frontend_error_entries": 0
   },

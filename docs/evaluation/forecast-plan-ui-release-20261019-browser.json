@@ -1,0 +1,264 @@
+{
+  "verified_at": "2026-10-19T10:41:20.358682+00:00",
+  "scope": "Live public pages; no API fixtures or analytical submissions",
+  "layout": [
+    {
+      "buttonClear": true,
+      "columns": "231px",
+      "count": 29,
+      "gridHeight": 320,
+      "gridOverflow": false,
+      "minTarget": 47,
+      "overlaps": 0,
+      "pageOverflow": false,
+      "textOverflow": 0,
+      "width": 320,
+      "route": "forecast-plans"
+    },
+    {
+      "buttonClear": true,
+      "columns": "301px",
+      "count": 29,
+      "gridHeight": 320,
+      "gridOverflow": false,
+      "minTarget": 47,
+      "overlaps": 0,
+      "pageOverflow": false,
+      "textOverflow": 0,
+      "width": 390,
+      "route": "forecast-plans"
+    },
+    {
+      "buttonClear": true,
+      "columns": "321.438px 321.438px",
+      "count": 29,
+      "gridHeight": 320,
+      "gridOverflow": false,
+      "minTarget": 47,
+      "overlaps": 0,
+      "pageOverflow": false,
+      "textOverflow": 0,
+      "width": 768,
+      "route": "forecast-plans"
+    },
+    {
+      "buttonClear": true,
+      "columns": "252.547px 252.562px 252.547px 252.562px",
+      "count": 29,
+      "gridHeight": 320,
+      "gridOverflow": false,
+      "minTarget": 47,
+      "overlaps": 0,
+      "pageOverflow": false,
+      "textOverflow": 0,
+      "width": 1280,
+      "route": "forecast-plans"
+    },
+    {
+      "buttonClear": true,
+      "columns": "251.75px 251.75px 251.75px 251.75px",
+      "count": 29,
+      "gridHeight": 320,
+      "gridOverflow": false,
+      "minTarget": 47,
+      "overlaps": 0,
+      "pageOverflow": false,
+      "textOverflow": 0,
+      "width": 1600,
+      "route": "forecast-plans"
+    },
+    {
+      "buttonClear": true,
+      "columns": "481.703px",
+      "count": 29,
+      "gridHeight": 640,
+      "gridOverflow": false,
+      "minTarget": 94,
+      "overlaps": 0,
+      "pageOverflow": false,
+      "textOverflow": 0,
+      "width": 1280,
+      "route": "forecast-plans",
+      "cssZoom": "200%"
+    },
+    {
+      "buttonClear": true,
+      "columns": "231px",
+      "count": 29,
+      "gridHeight": 320,
+      "gridOverflow": false,
+      "minTarget": 47,
+      "overlaps": 0,
+      "pageOverflow": false,
+      "textOverflow": 0,
+      "width": 320,
+      "route": "dashboards/build"
+    },
+    {
+      "buttonClear": true,
+      "columns": "301px",
+      "count": 29,
+      "gridHeight": 320,
+      "gridOverflow": false,
+      "minTarget": 47,
+      "overlaps": 0,
+      "pageOverflow": false,
+      "textOverflow": 0,
+      "width": 390,
+      "route": "dashboards/build"
+    },
+    {
+      "buttonClear": true,
+      "columns": "321.438px 321.438px",
+      "count": 29,
+      "gridHeight": 320,
+      "gridOverflow": false,
+      "minTarget": 47,
+      "overlaps": 0,
+      "pageOverflow": false,
+      "textOverflow": 0,
+      "width": 768,
+      "route": "dashboards/build"
+    },
+    {
+      "buttonClear": true,
+      "columns": "252.547px 252.562px 252.547px 252.562px",
+      "count": 29,
+      "gridHeight": 320,
+      "gridOverflow": false,
+      "minTarget": 47,
+      "overlaps": 0,
+      "pageOverflow": false,
+      "textOverflow": 0,
+      "width": 1280,
+      "route": "dashboards/build"
+    },
+    {
+      "buttonClear": true,
+      "columns": "251.75px 251.75px 251.75px 251.75px",
+      "count": 29,
+      "gridHeight": 320,
+      "gridOverflow": false,
+      "minTarget": 47,
+      "overlaps": 0,
+      "pageOverflow": false,
+      "textOverflow": 0,
+      "width": 1600,
+      "route": "dashboards/build"
+    },
+    {
+      "buttonClear": true,
+      "columns": "481.703px",
+      "count": 29,
+      "gridHeight": 640,
+      "gridOverflow": false,
+      "minTarget": 94,
+      "overlaps": 0,
+      "pageOverflow": false,
+      "textOverflow": 0,
+      "width": 1280,
+      "route": "dashboards/build",
+      "cssZoom": "200%"
+    }
+  ],
+  "checks": {
+    "forecast-plans_320": true,
+    "forecast-plans_390": true,
+    "forecast-plans_768": true,
+    "forecast-plans_1280": true,
+    "forecast-plans_1600": true,
+    "forecast-plans_zoom": true,
+    "dashboards/build_320": true,
+    "dashboards/build_390": true,
+    "dashboards/build_768": true,
+    "dashboards/build_1280": true,
+    "dashboards/build_1600": true,
+    "dashboards/build_zoom": true,
+    "keyboard_space_selects": true,
+    "visible_keyboard_focus": true,
+    "three_skill_limit": true,
+    "search_retains_hidden_attachments": true,
+    "no_search_matches": true,
+    "search_enter_cannot_submit": true,
+    "keyboard_search_clearing": true,
+    "selected_removable": true,
+    "axe_light": true,
+    "dark_teal_reduced_motion": true,
+    "axe_dark": true,
+    "no_analytical_or_library_mutations": true
+  },
+  "accessibility": {
+    "light": {
+      "axeVersion": "4.12.1",
+      "counts": {
+        "inapplicable": 70,
+        "incomplete": 0,
+        "passes": 18,
+        "violations": 0
+      },
+      "incomplete": [],
+      "lifecycle": {
+        "effectiveLaunch": {
+          "browserLaunched": true,
+          "engine": "chrome",
+          "launchHash": 12798390076057945372
+        },
+        "launched": false,
+        "relaunchedBrowser": false,
+        "restartedBackground": false,
+        "restoreStatus": "not_configured",
+        "reused": true,
+        "saveStatus": "not_attempted"
+      },
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/forecast-plans",
+      "violations": []
+    },
+    "dark_teal_reduced_motion": {
+      "axeVersion": "4.12.1",
+      "counts": {
+        "inapplicable": 70,
+        "incomplete": 0,
+        "passes": 18,
+        "violations": 0
+      },
+      "incomplete": [],
+      "lifecycle": {
+        "effectiveLaunch": {
+          "browserLaunched": true,
+          "engine": "chrome",
+          "launchHash": 12798390076057945372
+        },
+        "launched": false,
+        "relaunchedBrowser": false,
+        "restartedBackground": false,
+        "restoreStatus": "not_configured",
+        "reused": true,
+        "saveStatus": "not_attempted"
+      },
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/forecast-plans",
+      "violations": []
+    }
+  },
+  "initial_observations": [
+    "CLI fill with an empty string cleared the DOM value without updating React search state; no skills remained rendered. Real Backspace input restored all 29 choices and retained all three attachments. The remaining checks continued from that settled state."
+  ],
+  "mutation_requests": [
+    {
+      "method": "POST",
+      "url": "https://agentic-bi-backend-wekihucn7q-as.a.run.app/api/v1/guest-sessions"
+    }
+  ],
+  "initial_assertions": {
+    "no_mutations_or_analytical_submissions": false,
+    "observation": "One automatic guest-session credential request was observed. This is not an analytical submission; no report, forecast-plan, dashboard-build or source mutation requests were made."
+  },
+  "browser_errors": {
+    "errors": []
+  },
+  "limits": [
+    "Emulated Chromium viewports; no physical mobile or screen-reader test",
+    "200% CSS zoom simulation; not browser menu zoom",
+    "No new forecasts, model calls or dashboard builds",
+    "One application guest-session request observed; no credential contents retained"
+  ]
+}

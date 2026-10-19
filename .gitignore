@@ -1,4 +1,5 @@
 .DS_Store
+Submision/
 .env
 .env.*
 !.env.example

@@ -1,0 +1,20 @@
+{
+  "verified_at": "2026-10-19T10:40:55.536054+00:00",
+  "revision": "agentic-bi-frontend-00042-van",
+  "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:b8a87d35e5e344f37b4ee9232a81b70f5b075f269b0aebe07850097d5a5e91e6",
+  "checks": {
+    "runtime_spec_preserved": true,
+    "runtime_annotations_preserved": true,
+    "ready": true,
+    "old_revision_still_serving": true,
+    "candidate_http": true
+  },
+  "routes": {
+    "/forecast-plans": 200,
+    "/dashboards/build": 200,
+    "/api/config": 200,
+    "/api/health": 200
+  },
+  "candidate_url": "https://release-check---agentic-bi-frontend-wekihucn7q-as.a.run.app",
+  "previous_revision": "agentic-bi-frontend-00019-gvr"
+}

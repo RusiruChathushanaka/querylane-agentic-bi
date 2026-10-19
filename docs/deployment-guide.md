@@ -317,6 +317,8 @@ A service previously pinned to an explicit revision can keep routing to that rev
 
 ### Image-only releases that preserve existing configuration
 
+Submission materials under the repository's `Submision/` directory are excluded from both Git and Cloud Build source uploads. Keep them local; inspect the upload file selection before release and stage explicit source/documentation paths for publication.
+
 When only application code changes, use `infra/deploy.py --build-only` with the reviewed frontend/backend URLs and explicit `--data-profile timeseries` for the backend. After Cloud Build reports `SUCCESS`, inspect its image digest. Update the existing service with `gcloud run services update SERVICE --image VERIFIED_IMAGE --no-traffic --project "$BI_PROJECT_ID" --region "$BI_REGION"`. This path preserves existing runtime overrides and makes no IAM change. It differs from the helper's full deployment path, which applies its declared environment/secret configuration.
 
 Inspect the exact `status.latestCreatedRevisionName`, its Ready condition and `status.imageDigest`. Compare the candidate's runtime spec, identity, environment, secret references, limits and CPU-allocation annotations to the before-release snapshot. Only then promote that named revision using `update-traffic --to-revisions CANDIDATE=100`. Keep the prior serving revision for rollback. The backend and private worker reuse the same verified backend digest; retain the worker's private access and dispatch settings. Update the frontend after the API/worker. Do not change revisions during acceptance tests.

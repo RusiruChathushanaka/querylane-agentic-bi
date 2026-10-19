@@ -111,6 +111,59 @@
   line-height: 1.6;
   margin: 0.75rem 0;
 }
+.bi-skills {
+  min-width: 0;
+  margin: 1rem 0;
+}
+.bi-skills legend {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+.bi-skills-search {
+  max-width: 28rem;
+  margin-bottom: 0.75rem;
+}
+.bi-skills-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+  gap: 0.5rem;
+  max-height: 20rem;
+  overflow: auto;
+  padding: 0.25rem;
+  scrollbar-gutter: stable;
+}
+.bi-skill-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  min-width: 0;
+  min-height: 44px;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 0.65rem;
+  background: var(--card);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  cursor: pointer;
+}
+.bi-skill-option input {
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+  margin-top: 0.15rem;
+  accent-color: var(--primary);
+}
+.bi-skill-option span {
+  min-width: 0;
+}
+.bi-skill-option:has(input:checked) {
+  border-color: var(--primary);
+  background: var(--secondary);
+}
+.bi-skill-option:has(input:disabled) {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
 .bi-error {
   padding: 1rem;
   border: 1px solid var(--destructive);

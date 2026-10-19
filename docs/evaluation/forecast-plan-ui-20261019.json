@@ -1,0 +1,220 @@
+{
+  "date": "2026-10-19",
+  "scope": "Local shared planning skills picker; not deployed",
+  "routes": [
+    "/forecast-plans",
+    "/dashboards/build"
+  ],
+  "fixture": {
+    "source": "Public /api/v1/skills metadata captured read-only",
+    "skills": 29,
+    "metrics": "empty local fixture",
+    "plans": "empty local fixture",
+    "cloud_jobs_created": 0
+  },
+  "layout": [
+    {
+      "buttonClear": true,
+      "columns": "216px",
+      "count": 29,
+      "gridHeight": 320,
+      "gridOverflow": false,
+      "minTarget": 47,
+      "overlaps": 0,
+      "pageOverflow": false,
+      "textOverflow": 0,
+      "width": 320,
+      "route": "forecast-plans"
+    },
+    {
+      "buttonClear": true,
+      "columns": "286px",
+      "count": 29,
+      "gridHeight": 320,
+      "gridOverflow": false,
+      "minTarget": 47,
+      "overlaps": 0,
+      "pageOverflow": false,
+      "textOverflow": 0,
+      "width": 390,
+      "route": "forecast-plans"
+    },
+    {
+      "buttonClear": true,
+      "columns": "313.922px 313.922px",
+      "count": 29,
+      "gridHeight": 320,
+      "gridOverflow": false,
+      "minTarget": 47,
+      "overlaps": 0,
+      "pageOverflow": false,
+      "textOverflow": 0,
+      "width": 768,
+      "route": "forecast-plans"
+    },
+    {
+      "buttonClear": true,
+      "columns": "252.547px 252.555px 252.547px 252.555px",
+      "count": 29,
+      "gridHeight": 320,
+      "gridOverflow": false,
+      "minTarget": 47,
+      "overlaps": 0,
+      "pageOverflow": false,
+      "textOverflow": 0,
+      "width": 1280,
+      "route": "forecast-plans"
+    },
+    {
+      "buttonClear": true,
+      "columns": "251.75px 251.75px 251.75px 251.75px",
+      "count": 29,
+      "gridHeight": 320,
+      "gridOverflow": false,
+      "minTarget": 47,
+      "overlaps": 0,
+      "pageOverflow": false,
+      "textOverflow": 0,
+      "width": 1600,
+      "route": "forecast-plans"
+    },
+    {
+      "buttonClear": true,
+      "columns": "474.203px",
+      "count": 29,
+      "gridHeight": 640,
+      "gridOverflow": false,
+      "minTarget": 94,
+      "overlaps": 0,
+      "pageOverflow": false,
+      "textOverflow": 0,
+      "width": 1280,
+      "route": "forecast-plans",
+      "cssZoom": "200%"
+    },
+    {
+      "buttonClear": true,
+      "columns": "216px",
+      "count": 29,
+      "gridHeight": 320,
+      "gridOverflow": false,
+      "minTarget": 47,
+      "overlaps": 0,
+      "pageOverflow": false,
+      "textOverflow": 0,
+      "width": 320,
+      "route": "dashboards/build"
+    },
+    {
+      "buttonClear": true,
+      "columns": "286px",
+      "count": 29,
+      "gridHeight": 320,
+      "gridOverflow": false,
+      "minTarget": 47,
+      "overlaps": 0,
+      "pageOverflow": false,
+      "textOverflow": 0,
+      "width": 390,
+      "route": "dashboards/build"
+    },
+    {
+      "buttonClear": true,
+      "columns": "313.922px 313.922px",
+      "count": 29,
+      "gridHeight": 320,
+      "gridOverflow": false,
+      "minTarget": 47,
+      "overlaps": 0,
+      "pageOverflow": false,
+      "textOverflow": 0,
+      "width": 768,
+      "route": "dashboards/build"
+    },
+    {
+      "buttonClear": true,
+      "columns": "252.547px 252.555px 252.547px 252.555px",
+      "count": 29,
+      "gridHeight": 320,
+      "gridOverflow": false,
+      "minTarget": 47,
+      "overlaps": 0,
+      "pageOverflow": false,
+      "textOverflow": 0,
+      "width": 1280,
+      "route": "dashboards/build"
+    },
+    {
+      "buttonClear": true,
+      "columns": "251.75px 251.75px 251.75px 251.75px",
+      "count": 29,
+      "gridHeight": 320,
+      "gridOverflow": false,
+      "minTarget": 47,
+      "overlaps": 0,
+      "pageOverflow": false,
+      "textOverflow": 0,
+      "width": 1600,
+      "route": "dashboards/build"
+    },
+    {
+      "buttonClear": true,
+      "columns": "474.203px",
+      "count": 29,
+      "gridHeight": 640,
+      "gridOverflow": false,
+      "minTarget": 94,
+      "overlaps": 0,
+      "pageOverflow": false,
+      "textOverflow": 0,
+      "width": 1280,
+      "route": "dashboards/build",
+      "cssZoom": "200%"
+    }
+  ],
+  "interaction": {
+    "keyboard_space_selects": true,
+    "keyboard_space_removes": true,
+    "focus_outline_px": 2,
+    "three_selected_disables_other_26": true,
+    "search_preserves_hidden_attachments": true,
+    "empty_search_message": true,
+    "search_enter_submissions": 0
+  },
+  "axe": {
+    "selector": ".bi-skills",
+    "version": "4.12.1",
+    "light": {
+      "passes": 18,
+      "violations": 0,
+      "incomplete": 0
+    },
+    "dark_teal_reduced_motion": {
+      "passes": 18,
+      "violations": 0,
+      "incomplete": 0
+    }
+  },
+  "engineering": {
+    "frontend_tests_passed": 58,
+    "lint": "passed",
+    "typescript": "passed",
+    "production_build": "passed with fresh .next-ui-check output; bypassed the sandbox-failed compiler cache"
+  },
+  "limits": [
+    "CSS zoom emulates 200%; browser menu zoom not checked",
+    "Chromium desktop and emulated viewports; no physical mobile or screen-reader validation",
+    "No fresh forecasting or dashboard generation; UI fixtures only"
+  ],
+  "production_preview": {
+    "widths": [
+      390,
+      1280
+    ],
+    "skills": 29,
+    "grid": true,
+    "page_overflow": false,
+    "submit_clear": true,
+    "initial_fixture_origin_mismatch": "corrected before passing assertions"
+  }
+}
