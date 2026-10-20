@@ -18,6 +18,8 @@ The card uses saved analytical defaults even when a visitor's browser prefers a 
 
 Card widths are Standard or Wide, with a single column on mobile. Use Earlier/Later for keyboard-accessible arrangement; order changes save immediately and announce position. Each card retains original query timestamps, source profile, completeness and join assumptions. A dashboard is not a synchronized database snapshot and does not combine unrelated card totals.
 
+Each saved-result section has a theme-aware outline, rounded corners and responsive internal padding. The outline groups its context, notes, chart or table, skills and source evidence together; a separate top rule distinguishes the source footer. Consistent grid gaps separate neighboring sections, and the nested chat-result frame is flattened to avoid doubled borders and padding. These dashboard-only styles preserve the existing Standard/Wide layout, chart controls and saved evidence. Downloads continue using their existing saved-view renderer.
+
 PNG exports describe the current chart view; CSV exports the full saved result regardless of the displayed range or sampling. Existing limits, numerical rules and formula protection apply. Tables retain semantic headers and keyboard-scrollable overflow. A failed card has its own Retry state.
 
 ## Shared edits and recovery

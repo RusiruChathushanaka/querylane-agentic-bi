@@ -1,0 +1,20 @@
+{
+  "verified_at": "2026-10-20T18:49:59.337147+00:00",
+  "revision": "agentic-bi-frontend-00048-qux",
+  "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:b4f5c1c5bf8a5d46e9c534f1fa0a8e0c0300adf1dbd651547211ca25c2848dcb",
+  "checks": {
+    "runtime_spec_preserved": true,
+    "runtime_annotations_preserved": true,
+    "ready": true,
+    "old_revision_still_serving": true,
+    "candidate_http": true
+  },
+  "routes": {
+    "/dashboards": 200,
+    "/dashboards/f3e02849a4873200a4a0e83347f4d13b": 200,
+    "/api/config": 200,
+    "/api/health": 200
+  },
+  "candidate_url": "https://release-check---agentic-bi-frontend-wekihucn7q-as.a.run.app",
+  "previous_revision": "agentic-bi-frontend-00045-gej"
+}

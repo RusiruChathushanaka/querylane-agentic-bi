@@ -1,0 +1,95 @@
+{
+  "verified_at": "2026-10-20T18:50:36.568691+00:00",
+  "checks": {
+    "frontend_health": true,
+    "frontend_config": true,
+    "backend_live": true,
+    "backend_ready": true,
+    "connections": true,
+    "reports_config": true,
+    "models": true,
+    "timesfm_enabled": true,
+    "timeseries_profile": true
+  },
+  "details": {
+    "frontend_health": {
+      "status": "ready",
+      "backend": 200
+    },
+    "frontend_config": {
+      "backend_url": "https://agentic-bi-backend-wekihucn7q-as.a.run.app"
+    },
+    "backend_live": {
+      "status": "ok",
+      "service": "agentic-bi-backend"
+    },
+    "backend_ready": {
+      "status": "ready",
+      "mode": "gemini",
+      "storage": "firestore",
+      "visibility": "public"
+    },
+    "connections": {
+      "mode": "cloud",
+      "data_profile": "timeseries",
+      "period": "DAILY \u00b7 MULTI-YEAR",
+      "connections": [
+        {
+          "id": "bigquery",
+          "name": "Retail warehouse",
+          "engine": "BigQuery",
+          "tables": 5,
+          "connected": true,
+          "mode": "cloud"
+        },
+        {
+          "id": "postgres",
+          "name": "Business operations",
+          "engine": "PostgreSQL",
+          "tables": 6,
+          "connected": true,
+          "mode": "cloud"
+        }
+      ]
+    },
+    "reports_config": {
+      "enabled": true,
+      "research_enabled": false,
+      "mode": "cloud_tasks",
+      "target_minutes": "3\u20138",
+      "timesfm": {
+        "enabled": true,
+        "model": "TimesFM 3.0",
+        "preview": true
+      }
+    },
+    "models": {
+      "models": [
+        {
+          "id": "gemini-3.8-flash",
+          "name": "Gemini 3.8 Flash",
+          "description": "For complex questions and cross-source analysis."
+        },
+        {
+          "id": "gemini-3.5-flash-lite",
+          "name": "Gemini 3.5 Flash-Lite",
+          "description": "For quick, lightweight questions with lower model cost."
+        }
+      ],
+      "default_model": "gemini-3.8-flash",
+      "mode": "gemini",
+      "live_model": "gemini-live-2.5-flash-native-audio"
+    }
+  },
+  "routes": {
+    "/": 200,
+    "/app": 200,
+    "/forecast-plans": 200,
+    "/dashboards/build": 200,
+    "/dashboards": 200,
+    "/reports": 200,
+    "/metrics": 200,
+    "/skills": 200,
+    "/settings": 200
+  }
+}

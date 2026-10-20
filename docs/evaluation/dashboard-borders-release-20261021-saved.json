@@ -1,0 +1,18 @@
+{
+  "verified_at": "2026-10-20T18:53:19.494627+00:00",
+  "checks": {
+    "f3e02849a4873200a4a0e83347f4d13b": true,
+    "91ba0cccdd954464bd295558c008133c": true
+  },
+  "snapshots": {
+    "f3e02849a4873200a4a0e83347f4d13b": {
+      "before_sha256": "37b1a0b153e048997b2367e93cc1e0845fbfba2c6e81dc0b4db53dcb98419801",
+      "after_sha256": "37b1a0b153e048997b2367e93cc1e0845fbfba2c6e81dc0b4db53dcb98419801"
+    },
+    "91ba0cccdd954464bd295558c008133c": {
+      "before_sha256": "b0f95642731655128fdae3f689f85ddc2bf9802bd0f38ad14eb4849b681403bd",
+      "after_sha256": "b0f95642731655128fdae3f689f85ddc2bf9802bd0f38ad14eb4849b681403bd"
+    }
+  },
+  "scope": "Exact saved dashboard read responses, including published revisions/items/views; no shared writes or source/model calls."
+}

@@ -1,0 +1,578 @@
+{
+  "scope": "Hosted saved-dashboard presentation verification; no new analytical jobs or dashboard edits",
+  "before": {
+    "columns": "574.805px 574.805px",
+    "dark": true,
+    "gap": "28px",
+    "overflow": false,
+    "sections": [
+      {
+        "border": "0px",
+        "borderColor": "rgb(51, 66, 87)",
+        "footerRule": "0px",
+        "padding": "0px",
+        "wide": true,
+        "width": 1177.609375
+      },
+      {
+        "border": "0px",
+        "borderColor": "rgb(51, 66, 87)",
+        "footerRule": "0px",
+        "padding": "0px",
+        "wide": false,
+        "width": 574.8046875
+      },
+      {
+        "border": "0px",
+        "borderColor": "rgb(51, 66, 87)",
+        "footerRule": "0px",
+        "padding": "0px",
+        "wide": false,
+        "width": 574.8046875
+      }
+    ],
+    "width": 1280
+  },
+  "checks": {
+    "desktop_section_borders": true,
+    "desktop_padding": true,
+    "desktop_wide_standard_layout": true,
+    "light_theme": true,
+    "mobile_padding": true,
+    "dark_theme": true,
+    "responsive_no_horizontal_overflow": true,
+    "consistent_grid_gap": true,
+    "keyboard_chart_expansion": true,
+    "escape_restores_chart_focus": false,
+    "mobile_edit_controls": true,
+    "dark_desktop_borders": true,
+    "nested_frame_flattened": true,
+    "no_mutations_or_analytical_submissions": true
+  },
+  "layouts": [
+    {
+      "name": "desktop-light",
+      "columns": "574.805px 574.805px",
+      "dark": false,
+      "gap": "28px",
+      "overflow": false,
+      "sections": [
+        {
+          "border": "1px",
+          "borderColor": "oklab(0.769551 -0.00481112 -0.0179036)",
+          "footerRule": "1px",
+          "padding": "24px",
+          "wide": true,
+          "width": 1177.609375
+        },
+        {
+          "border": "1px",
+          "borderColor": "oklab(0.769551 -0.00481112 -0.0179036)",
+          "footerRule": "1px",
+          "padding": "24px",
+          "wide": false,
+          "width": 574.8046875
+        },
+        {
+          "border": "1px",
+          "borderColor": "oklab(0.769551 -0.00481112 -0.0179036)",
+          "footerRule": "1px",
+          "padding": "24px",
+          "wide": false,
+          "width": 574.8046875
+        }
+      ],
+      "width": 1280
+    },
+    {
+      "name": "mobile-dark-390",
+      "columns": "358px",
+      "dark": true,
+      "gap": "28px",
+      "overflow": false,
+      "sections": [
+        {
+          "border": "1px",
+          "borderColor": "oklab(0.517257 -0.00795082 -0.0335081)",
+          "footerRule": "1px",
+          "padding": "16px",
+          "wide": true,
+          "width": 358
+        },
+        {
+          "border": "1px",
+          "borderColor": "oklab(0.517257 -0.00795082 -0.0335081)",
+          "footerRule": "1px",
+          "padding": "16px",
+          "wide": false,
+          "width": 358
+        },
+        {
+          "border": "1px",
+          "borderColor": "oklab(0.517257 -0.00795082 -0.0335081)",
+          "footerRule": "1px",
+          "padding": "16px",
+          "wide": false,
+          "width": 358
+        }
+      ],
+      "width": 390
+    },
+    {
+      "name": "mobile-dark-320",
+      "columns": "288px",
+      "dark": true,
+      "gap": "28px",
+      "overflow": false,
+      "sections": [
+        {
+          "border": "1px",
+          "borderColor": "oklab(0.517257 -0.00795082 -0.0335081)",
+          "footerRule": "1px",
+          "padding": "16px",
+          "wide": true,
+          "width": 288
+        },
+        {
+          "border": "1px",
+          "borderColor": "oklab(0.517257 -0.00795082 -0.0335081)",
+          "footerRule": "1px",
+          "padding": "16px",
+          "wide": false,
+          "width": 288
+        },
+        {
+          "border": "1px",
+          "borderColor": "oklab(0.517257 -0.00795082 -0.0335081)",
+          "footerRule": "1px",
+          "padding": "16px",
+          "wide": false,
+          "width": 288
+        }
+      ],
+      "width": 320
+    },
+    {
+      "name": "tablet-dark-768",
+      "columns": "706.562px",
+      "dark": true,
+      "gap": "28px",
+      "overflow": false,
+      "sections": [
+        {
+          "border": "1px",
+          "borderColor": "oklab(0.517257 -0.00795082 -0.0335081)",
+          "footerRule": "1px",
+          "padding": "16px",
+          "wide": true,
+          "width": 706.5625
+        },
+        {
+          "border": "1px",
+          "borderColor": "oklab(0.517257 -0.00795082 -0.0335081)",
+          "footerRule": "1px",
+          "padding": "16px",
+          "wide": false,
+          "width": 706.5625
+        },
+        {
+          "border": "1px",
+          "borderColor": "oklab(0.517257 -0.00795082 -0.0335081)",
+          "footerRule": "1px",
+          "padding": "16px",
+          "wide": false,
+          "width": 706.5625
+        }
+      ],
+      "width": 768
+    },
+    {
+      "name": "desktop-dark",
+      "columns": "358px",
+      "dark": true,
+      "gap": "28px",
+      "overflow": false,
+      "sections": [
+        {
+          "border": "1px",
+          "borderColor": "oklab(0.517257 -0.00795082 -0.0335081)",
+          "footerRule": "1px",
+          "padding": "16px",
+          "wide": true,
+          "width": 358
+        },
+        {
+          "border": "1px",
+          "borderColor": "oklab(0.517257 -0.00795082 -0.0335081)",
+          "footerRule": "1px",
+          "padding": "16px",
+          "wide": false,
+          "width": 358
+        },
+        {
+          "border": "1px",
+          "borderColor": "oklab(0.517257 -0.00795082 -0.0335081)",
+          "footerRule": "1px",
+          "padding": "16px",
+          "wide": false,
+          "width": 358
+        }
+      ],
+      "width": 390
+    }
+  ],
+  "screenshots": [
+    "dashboard-borders-release-20261021-desktop.jpg",
+    "dashboard-borders-release-20261021-mobile.jpg"
+  ],
+  "mobile_edit": {
+    "borders": [
+      "1px",
+      "1px",
+      "1px"
+    ],
+    "groups": 3,
+    "overflow": false
+  },
+  "initial_observations": [
+    "An immediate Escape focus assertion returned false; repeat inspection after the dialog transition records the actual focus target below.",
+    "The first local baseline page was blocked by its fixture CORS configuration. A separate fixture backend with the matching origin resolved that harness issue. The previous bundle has 0px section borders and reproduces BODY focus after Escape, confirming the focus-return limitation predates this CSS release."
+  ],
+  "focus_control": {
+    "scope": "Previous .next-release-check bundle, isolated fixture backend; no deployed/shared changes",
+    "outline": "0px",
+    "focus": {
+      "tag": "BODY"
+    }
+  },
+  "requests": [
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/dashboards/f3e02849a4873200a4a0e83347f4d13b"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/media/5c285b27cdda1fe8-s.p.2_mbdogr7ni8i.woff2"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/media/99e609270109b47d-s.p.40sczeszzbjw1.woff2"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/media/a343f882a40d2cc9-s.p.1sj6eobyi31rd.woff2"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/media/effe91970fc4db64-s.p.0oace-s_gkfks.woff2"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/05ncp5p1u2w2x.css"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/3sglpai7xi9-c.css"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/0p_2cg1f6u1z9.css"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/3xic34odrqk7-.js"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/3-rp__fazq2qp.js"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/0-8qqqs0ffky1.js"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/217kmgt0mht9e.js"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/turbopack-3-ry682tkyiqk.js"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/00mr0tj6zi79o.js"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/3pefv_itzqydi.js"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/0_v78undc9im_.js"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/1w6kgklmq20ua.js"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/3w-q744bcqadp.js"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/05oay804p8fju.js"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/0x9312-ej5lza.js"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/1l8damovmkq2t.js"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/1nmnj6ltkefgm.js"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/api/config"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/app"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/dashboards"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/reports"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/icon.svg"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-backend-wekihucn7q-as.a.run.app/api/v1/dashboards/f3e02849a4873200a4a0e83347f4d13b"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/metrics"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/forecast-plans"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/skills"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/3flwsj288562p.css"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/settings"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/0kb2cw0pid-av.css"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/app"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/dashboards"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-backend-wekihucn7q-as.a.run.app/api/v1/artifacts/19c542c515812c97074c9f7e77092f03"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-backend-wekihucn7q-as.a.run.app/api/v1/artifacts/a6f5885aa25aaf0067cbeffb5ff38151"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/reports"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/1bm806eo6lq-j.js"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/06xqt24gs66pf.js"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/metrics"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/1uxhj5elv70fi.js"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/00uaeo1yam54k.js"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/3d-iplvdpra3e.js"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/4580pa_m1y9tk.js"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/1rapn3obyo6c7.js"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/forecast-plans"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/0x09wqst3qtgq.js"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/skills"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-backend-wekihucn7q-as.a.run.app/api/v1/artifacts/3d150427bc3e000c21677419a6396e75"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/0vwqlzszvntcr.js"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/25ydi7419ewbu.js"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/1_lug25zj5bz6.css"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/0owj2w-i6od3c.js"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/settings"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/26wr0dxe43q8p.js"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-backend-wekihucn7q-as.a.run.app/api/v1/artifacts/19c542c515812c97074c9f7e77092f03/chart-data"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-backend-wekihucn7q-as.a.run.app/api/v1/artifacts/3d150427bc3e000c21677419a6396e75/chart-data"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/2ll93u-sur5j0.js"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/0z4lyvvsoa1cj.js"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/42bkt3eoyngpn.js"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/2nr9p5qcx0w80.js"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/2-etrpa6h1e49.js"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/39qvqmph36unt.js"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/_next/static/chunks/2rvpd08xsq3cm.js"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-backend-wekihucn7q-as.a.run.app/api/v1/artifacts/a6f5885aa25aaf0067cbeffb5ff38151/chart-data"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/skills/analytics-ai-dashboard-brief/revisions/1"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/skills/analytics-published-metrics/revisions/1"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/skills/analytics-dashboard-evidence-audit/revisions/1"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/skills/analytics-published-metrics/revisions/1"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/skills/analytics-ai-dashboard-brief/revisions/1"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/skills/analytics-dashboard-evidence-audit/revisions/1"
+    },
+    {
+      "method": "GET",
+      "url": "nullimage/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNSIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSIjZmZmZmZmIiBkPSJNMjAgM2gtMVYxaC0ydjJIN1YxSDV2Mkg0Yy0xLjEgMC0yIC45LTIgMnYxNmMwIDEuMS45IDIgMiAyaDE2YzEuMSAwIDItLjkgMi0yVjVjMC0xLjEtLjktMi0yLTJ6bTAgMThINFY4aDE2djEzeiIvPjxwYXRoIGZpbGw9Im5vbmUiIGQ9Ik0wIDBoMjR2MjRIMHoiLz48L3N2Zz4="
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/dashboards/f3e02849a4873200a4a0e83347f4d13b"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/dashboards/build"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/dashboards/f3e02849a4873200a4a0e83347f4d13b"
+    },
+    {
+      "method": "GET",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/dashboards/build"
+    }
+  ],
+  "network_capture_complete": true,
+  "console_errors": [],
+  "verified_at": "2026-10-20T18:55:12.655Z",
+  "limits": [
+    "Emulated browser widths; no physical mobile or full screen-reader/contrast audit",
+    "Chart expansion opens and Escape closes; trigger focus restoration fails in both the prior local bundle and deployed application",
+    "No new analyses, report generation, forecasting or exports executed; styling-only release"
+  ]
+}
