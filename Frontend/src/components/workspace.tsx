@@ -103,30 +103,38 @@ const suggestions = [
   {
     icon: TrendingUp,
     title: "See the bigger picture",
-    question: "Show monthly revenue as a line chart",
-    detail: "Explore how sales changed over time",
+    question:
+      "Show monthly merchandise revenue across all complete months of available history as a line chart in USD. Use completed orders, after discounts and before refunds, tax and shipping. State the observation cutoff.",
+    detail: "Explore monthly merchandise revenue over time",
     source: "BigQuery",
+    sourceId: "bigquery",
   },
   {
     icon: Target,
     title: "Actuals meet ambition",
-    question: "Compare regional revenue with targets",
-    detail: "Bring warehouse sales and targets together",
+    question:
+      "Compare regional merchandise revenue with regional revenue targets across the complete months covered by both sources. Show actual revenue and target revenue in USD for each region. Actual revenue uses completed orders, after discounts and before refunds, tax and shipping.",
+    detail: "Compare regional revenue and full-month targets",
     source: "Cross-source",
+    sourceId: "all",
   },
   {
     icon: Users,
     title: "Know your customers",
-    question: "What is revenue by customer segment?",
-    detail: "Connect sales to customer profiles",
+    question:
+      "Use an ad hoc breakdown of merchandise revenue by customer segment across all available completed-order history. Revenue is after discounts and before refunds, tax and shipping. Connect sales to customer profiles by customer_id and show a bar chart in USD. This breakdown is not a published catalog definition.",
+    detail: "Explore sales by segment with an ad hoc breakdown",
     source: "Cross-source",
+    sourceId: "all",
   },
   {
     icon: BarChart3,
     title: "Find what sells",
-    question: "Break down revenue by product category",
-    detail: "Discover your strongest product categories",
+    question:
+      "Break down merchandise revenue by product category across all available completed-order history as a bar chart in USD. Revenue is after discounts and before refunds, tax and shipping. Use line revenue for the category breakdown so order totals are not duplicated.",
+    detail: "Compare product categories by merchandise revenue",
     source: "BigQuery",
+    sourceId: "bigquery",
   },
 ];
 
@@ -494,15 +502,21 @@ export default function Workspace() {
     input.current?.focus();
   }
 
-  async function ensureConversation() {
-    if (conversation && activeConversation.current === conversation.id)
+  async function ensureConversation(requestedSource?: string) {
+    if (
+      conversation &&
+      activeConversation.current === conversation.id &&
+      (!requestedSource || conversation.source === requestedSource)
+    )
       return conversation;
+    const questionSource = requestedSource ?? source;
     const created = await api<Conversation>("/conversations", {
       method: "POST",
-      body: JSON.stringify({ source }),
+      body: JSON.stringify({ source: questionSource }),
     });
     activeConversation.current = created.id;
     setConversation(created);
+    setSource(questionSource);
     history.replaceState(null, "", workspacePath(created.id));
     await refreshList();
     return created;
@@ -535,7 +549,7 @@ export default function Workspace() {
     });
   }
 
-  async function ask(text = question) {
+  async function ask(text = question, requestedSource?: string) {
     if (
       !text.trim() ||
       updatingSkills ||
@@ -551,7 +565,7 @@ export default function Workspace() {
     setQuestion("");
     setDraftArtifact(null);
     try {
-      const chat = await ensureConversation();
+      const chat = await ensureConversation(requestedSource);
       if (advanced) {
         const signature = JSON.stringify([
           chat.id,
@@ -1244,7 +1258,9 @@ export default function Workspace() {
                         key={suggestion.title}
                         className="suggestion-card"
                         disabled={busy || loading}
-                        onClick={() => void ask(suggestion.question)}
+                        onClick={() =>
+                          void ask(suggestion.question, suggestion.sourceId)
+                        }
                         whileHover={reduced ? undefined : { y: -3 }}
                         whileTap={reduced ? undefined : { scale: 0.985 }}
                         transition={SPRING_PRESS}

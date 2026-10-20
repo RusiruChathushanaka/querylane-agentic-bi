@@ -1,0 +1,251 @@
+{
+  "verified_at": "2026-10-20T17:57:40.161890+00:00",
+  "scope": "Explicit Flash-Lite verification of the two cross-source prompts after default-model provider 504 errors; no default or fallback changed",
+  "reference": "Independent local generated Parquet aggregates, not model output",
+  "attempt_policy": "One explicit alternate-model probe per cross-source example; default-model failures remain in the initial record",
+  "analyses": [
+    {
+      "title": "Actuals meet ambition",
+      "source": "all",
+      "question": "Compare regional merchandise revenue with regional revenue targets across the complete months covered by both sources. Show actual revenue and target revenue in USD for each region. Actual revenue uses completed orders, after discounts and before refunds, tax and shipping.",
+      "model": "gemini-3.5-flash-lite",
+      "checks": {
+        "terminal_complete": true,
+        "artifact_created": true,
+        "all_groups_present": true,
+        "independent_values": true,
+        "complete_timeseries_source": true,
+        "expected_sources": true,
+        "independent_targets": true
+      },
+      "conversation_id": "e4a32836c5c84b8cbb889751f28c070f",
+      "run_id": "01f5ffbbce1cb3eea3ce5f0f993e141e",
+      "stages": [
+        "skills",
+        "schema",
+        "query",
+        "query",
+        "relationship",
+        "answer"
+      ],
+      "errors": [],
+      "artifact_id": "bbd840c700854288aa159bb22369befd",
+      "row_count": 4,
+      "rows": [
+        {
+          "dimension": "East",
+          "actual": "88442586.77",
+          "target": "40698165.66"
+        },
+        {
+          "dimension": "North",
+          "actual": "89290218.08",
+          "target": "40698165.66"
+        },
+        {
+          "dimension": "South",
+          "actual": "88888411.61",
+          "target": "40698165.66"
+        },
+        {
+          "dimension": "West",
+          "actual": "87803895.74",
+          "target": "40698165.66"
+        }
+      ],
+      "visualization": {
+        "title": "Revenue compared with targets",
+        "x": "dimension",
+        "measures": [
+          {
+            "additive": true,
+            "unit": "currency",
+            "label": "Release verification merchandise revenue",
+            "direction": "neutral",
+            "currency": "USD",
+            "role": "measure",
+            "compares_to": null,
+            "percent_scale": null,
+            "field": "actual"
+          },
+          {
+            "additive": true,
+            "unit": "currency",
+            "label": "Full-month target",
+            "direction": "neutral",
+            "currency": "USD",
+            "role": "target",
+            "compares_to": "actual",
+            "percent_scale": null,
+            "field": "target"
+          }
+        ],
+        "format": "number",
+        "type": "bar",
+        "partial_periods": [],
+        "granularity": null,
+        "dimension_kind": "category",
+        "version": 2,
+        "y": [
+          "actual",
+          "target"
+        ]
+      },
+      "provenance": [
+        {
+          "sql": "SELECT dimension AS dimension, value AS actual FROM (WITH q0 AS (SELECT t.region AS dimension, SUM(t.revenue) AS value FROM `project-e8b1593d-009a-4822-abf.agentic_bi_demo.sales_orders` AS t WHERE t.order_date >= CAST('2023-01-01' AS DATE) AND t.order_date <= CAST('2026-09-30' AS DATE) GROUP BY dimension), spine AS (SELECT dimension FROM q0) SELECT s.dimension, COALESCE(q0.value, 0) AS value FROM spine AS s LEFT JOIN q0 ON s.dimension = q0.dimension ORDER BY s.dimension) AS compiled_actual",
+          "elapsed_ms": 1515,
+          "complete": true,
+          "columns": [
+            {
+              "type": "STRING",
+              "name": "dimension"
+            },
+            {
+              "type": "NUMERIC",
+              "name": "actual"
+            }
+          ],
+          "job_id": "abi_01f5ffbbce1cb3eea3ce5f0f993e141e_fa5b3050dbd34124930e59fc4e445050_0",
+          "source": "bigquery",
+          "bytes_processed": 17487145,
+          "row_count": 4,
+          "executed_at": "2026-10-20T17:57:48.018062+00:00"
+        },
+        {
+          "sql": "SELECT region AS dimension, SUM(target_revenue) AS target FROM retail_timeseries.regional_targets WHERE month >= '2023-01' AND month <= '2026-09' GROUP BY region",
+          "elapsed_ms": 65,
+          "complete": true,
+          "columns": [
+            {
+              "type": "text",
+              "name": "dimension"
+            },
+            {
+              "type": "numeric",
+              "name": "target"
+            }
+          ],
+          "job_id": null,
+          "source": "postgres",
+          "bytes_processed": null,
+          "row_count": 4,
+          "executed_at": "2026-10-20T17:57:48.606030+00:00"
+        }
+      ],
+      "metrics_used": null,
+      "expected_total": "354425112.20",
+      "actual_total": "354425112.20"
+    },
+    {
+      "title": "Know your customers",
+      "source": "all",
+      "question": "Use an ad hoc breakdown of merchandise revenue by customer segment across all available completed-order history. Revenue is after discounts and before refunds, tax and shipping. Connect sales to customer profiles by customer_id and show a bar chart in USD. This breakdown is not a published catalog definition.",
+      "model": "gemini-3.5-flash-lite",
+      "checks": {
+        "terminal_complete": true,
+        "artifact_created": true,
+        "all_groups_present": true,
+        "independent_values": true,
+        "complete_timeseries_source": true,
+        "expected_sources": true,
+        "explicit_ad_hoc_not_catalog_backed": true
+      },
+      "conversation_id": "4eb4e076f2e44f868c77c5e5abde370a",
+      "run_id": "f8f756e45f0b7abfa5835df0bf05b89d",
+      "stages": [
+        "skills",
+        "schema",
+        "query",
+        "query",
+        "relationship",
+        "answer"
+      ],
+      "errors": [],
+      "artifact_id": "9f3459e5301f4e3fb93618f6292536f6",
+      "row_count": 2,
+      "rows": [
+        {
+          "segment": "New",
+          "revenue": "118729938.91"
+        },
+        {
+          "segment": "Returning",
+          "revenue": "235695173.29"
+        }
+      ],
+      "visualization": {
+        "title": "Merchandise Revenue by Customer Segment",
+        "x": "segment",
+        "measures": [
+          {
+            "additive": true,
+            "unit": "currency",
+            "label": "Merchandise Revenue",
+            "direction": "neutral",
+            "currency": "USD",
+            "role": "primary",
+            "compares_to": null,
+            "percent_scale": null,
+            "field": "revenue"
+          }
+        ],
+        "format": "currency",
+        "type": "bar",
+        "partial_periods": [],
+        "granularity": null,
+        "dimension_kind": "category",
+        "version": 2,
+        "y": [
+          "revenue"
+        ]
+      },
+      "provenance": [
+        {
+          "sql": "SELECT customer_id, SUM(revenue) AS revenue FROM `project-e8b1593d-009a-4822-abf`.agentic_bi_demo.sales_orders WHERE status = 'completed' GROUP BY customer_id",
+          "elapsed_ms": 3135,
+          "complete": true,
+          "columns": [
+            {
+              "type": "STRING",
+              "name": "customer_id"
+            },
+            {
+              "type": "NUMERIC",
+              "name": "revenue"
+            }
+          ],
+          "job_id": "abi_f8f756e45f0b7abfa5835df0bf05b89d_39c3da9e44eb4345b0c981317e466417_0",
+          "source": "bigquery",
+          "bytes_processed": 21213876,
+          "row_count": 24992,
+          "executed_at": "2026-10-20T17:58:07.986071+00:00"
+        },
+        {
+          "sql": "SELECT customer_id, segment FROM retail_timeseries.customer_profiles",
+          "elapsed_ms": 327,
+          "complete": true,
+          "columns": [
+            {
+              "type": "text",
+              "name": "customer_id"
+            },
+            {
+              "type": "text",
+              "name": "segment"
+            }
+          ],
+          "job_id": null,
+          "source": "postgres",
+          "bytes_processed": null,
+          "row_count": 25000,
+          "executed_at": "2026-10-20T17:58:08.771543+00:00"
+        }
+      ],
+      "metrics_used": null,
+      "expected_total": "354425112.20",
+      "actual_total": "354425112.20"
+    }
+  ],
+  "all_passed": true
+}

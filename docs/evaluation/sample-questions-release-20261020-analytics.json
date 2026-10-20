@@ -1,0 +1,614 @@
+{
+  "verified_at": "2026-10-20T18:20:45.048936+00:00",
+  "scope": "Fresh real deployed card activations, default model; immutable results compared with independent local Parquet totals.",
+  "attempt_policy": "One browser activation per card, at most two concurrent; no fresh retry or model substitution. Replaying existing run events only.",
+  "analyses": [
+    {
+      "sample": "See the bigger picture",
+      "conversation_id": "5af777da9fe84118b1134feb46330400",
+      "run_id": "9691732a5904bec212864f2430693656",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/app?chat=5af777da9fe84118b1134feb46330400",
+      "model": "default",
+      "checks": {
+        "terminal_complete": true,
+        "artifact_created": true,
+        "all_groups_present": true,
+        "independent_values": true,
+        "complete_timeseries_source": true,
+        "expected_sources": true
+      },
+      "stages": [
+        "skills",
+        "schema",
+        "query",
+        "answer"
+      ],
+      "errors": [],
+      "artifact_id": "fdd5de319c6841619ce3e318c955c046",
+      "row_count": 45,
+      "rows": [
+        {
+          "date": "2023-01-01",
+          "value": "5128601.16"
+        },
+        {
+          "date": "2023-02-01",
+          "value": "4451906.37"
+        },
+        {
+          "date": "2023-03-01",
+          "value": "6042031.93"
+        },
+        {
+          "date": "2023-04-01",
+          "value": "6176858.36"
+        },
+        {
+          "date": "2023-05-01",
+          "value": "6276432.27"
+        },
+        {
+          "date": "2023-06-01",
+          "value": "5878420.8"
+        },
+        {
+          "date": "2023-07-01",
+          "value": "6570848.39"
+        },
+        {
+          "date": "2023-08-01",
+          "value": "6790032.3"
+        },
+        {
+          "date": "2023-09-01",
+          "value": "6929738.68"
+        },
+        {
+          "date": "2023-10-01",
+          "value": "7238531.96"
+        },
+        {
+          "date": "2023-11-01",
+          "value": "10717254.52"
+        },
+        {
+          "date": "2023-12-01",
+          "value": "10311476.16"
+        },
+        {
+          "date": "2024-01-01",
+          "value": "5464659.78"
+        },
+        {
+          "date": "2024-02-01",
+          "value": "5242439.63"
+        },
+        {
+          "date": "2024-03-01",
+          "value": "6779918.37"
+        },
+        {
+          "date": "2024-04-01",
+          "value": "6936270.5"
+        },
+        {
+          "date": "2024-05-01",
+          "value": "7172012.52"
+        },
+        {
+          "date": "2024-06-01",
+          "value": "6810657.31"
+        },
+        {
+          "date": "2024-07-01",
+          "value": "7170495.14"
+        },
+        {
+          "date": "2024-08-01",
+          "value": "7866722.95"
+        },
+        {
+          "date": "2024-09-01",
+          "value": "7925364.97"
+        },
+        {
+          "date": "2024-10-01",
+          "value": "8363652.61"
+        },
+        {
+          "date": "2024-11-01",
+          "value": "11982051.82"
+        },
+        {
+          "date": "2024-12-01",
+          "value": "11687610.02"
+        },
+        {
+          "date": "2025-01-01",
+          "value": "6287838.3"
+        },
+        {
+          "date": "2025-02-01",
+          "value": "5760456.97"
+        },
+        {
+          "date": "2025-03-01",
+          "value": "7554751.28"
+        },
+        {
+          "date": "2025-04-01",
+          "value": "7443298.39"
+        },
+        {
+          "date": "2025-05-01",
+          "value": "7966415.74"
+        },
+        {
+          "date": "2025-06-01",
+          "value": "7262901.77"
+        },
+        {
+          "date": "2025-07-01",
+          "value": "8193920.48"
+        },
+        {
+          "date": "2025-08-01",
+          "value": "8571082.05"
+        },
+        {
+          "date": "2025-09-01",
+          "value": "8905732.37"
+        },
+        {
+          "date": "2025-10-01",
+          "value": "9036738.06"
+        },
+        {
+          "date": "2025-11-01",
+          "value": "13916706.76"
+        },
+        {
+          "date": "2025-12-01",
+          "value": "12550880.75"
+        },
+        {
+          "date": "2026-01-01",
+          "value": "6829832.61"
+        },
+        {
+          "date": "2026-02-01",
+          "value": "6360155.65"
+        },
+        {
+          "date": "2026-03-01",
+          "value": "8675206.75"
+        },
+        {
+          "date": "2026-04-01",
+          "value": "8483338.93"
+        },
+        {
+          "date": "2026-05-01",
+          "value": "8852343.78"
+        },
+        {
+          "date": "2026-06-01",
+          "value": "8101287.96"
+        },
+        {
+          "date": "2026-07-01",
+          "value": "8733930.08"
+        },
+        {
+          "date": "2026-08-01",
+          "value": "9576580.1"
+        },
+        {
+          "date": "2026-09-01",
+          "value": "9447724.9"
+        }
+      ],
+      "visualization": {
+        "title": "Release verification merchandise revenue",
+        "x": "date",
+        "measures": [
+          {
+            "additive": true,
+            "unit": "currency",
+            "label": "Release verification merchandise revenue",
+            "direction": "neutral",
+            "currency": "USD",
+            "role": "measure",
+            "compares_to": null,
+            "percent_scale": null,
+            "field": "value"
+          }
+        ],
+        "format": "number",
+        "type": "line",
+        "partial_periods": [],
+        "granularity": "month",
+        "dimension_kind": "temporal",
+        "version": 2,
+        "y": [
+          "value"
+        ]
+      },
+      "provenance": [
+        {
+          "sql": "WITH q0 AS (SELECT DATE_TRUNC(t.order_date, MONTH) AS date, SUM(t.revenue) AS value FROM `project-e8b1593d-009a-4822-abf.agentic_bi_demo.sales_orders` AS t WHERE t.order_date >= CAST('2023-01-01' AS DATE) AND t.order_date <= CAST('2026-09-30' AS DATE) GROUP BY date), spine AS (SELECT date FROM q0) SELECT s.date, COALESCE(q0.value, 0) AS value FROM spine AS s LEFT JOIN q0 ON s.date = q0.date ORDER BY s.date",
+          "elapsed_ms": 985,
+          "complete": true,
+          "columns": [
+            {
+              "type": "DATE",
+              "name": "date"
+            },
+            {
+              "type": "NUMERIC",
+              "name": "value"
+            }
+          ],
+          "job_id": "abi_9691732a5904bec212864f2430693656_93e8207bf5264ada84e567ea7fb56194_0",
+          "source": "bigquery",
+          "bytes_processed": 0,
+          "row_count": 45,
+          "executed_at": "2026-10-20T18:17:06.873547+00:00"
+        }
+      ],
+      "metrics_used": null,
+      "expected_total": "354425112.20",
+      "actual_total": "354425112.20"
+    },
+    {
+      "sample": "Actuals meet ambition",
+      "conversation_id": "5f17782ba6354051832202f2d00357f0",
+      "run_id": "e8916456cf351cf75927c343911cfb63",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/app?chat=5f17782ba6354051832202f2d00357f0",
+      "model": "default",
+      "checks": {
+        "terminal_complete": true,
+        "artifact_created": true,
+        "all_groups_present": true,
+        "independent_values": true,
+        "complete_timeseries_source": true,
+        "expected_sources": true,
+        "independent_targets": true
+      },
+      "stages": [
+        "skills",
+        "schema",
+        "query",
+        "query",
+        "relationship",
+        "answer"
+      ],
+      "errors": [],
+      "artifact_id": "13a570b995f34cd1be0f56e2f0fb1c36",
+      "row_count": 4,
+      "rows": [
+        {
+          "dimension": "East",
+          "actual": "88442586.77",
+          "target": "40698165.66"
+        },
+        {
+          "dimension": "North",
+          "actual": "89290218.08",
+          "target": "40698165.66"
+        },
+        {
+          "dimension": "South",
+          "actual": "88888411.61",
+          "target": "40698165.66"
+        },
+        {
+          "dimension": "West",
+          "actual": "87803895.74",
+          "target": "40698165.66"
+        }
+      ],
+      "visualization": {
+        "title": "Revenue compared with targets",
+        "x": "dimension",
+        "measures": [
+          {
+            "additive": true,
+            "unit": "currency",
+            "label": "Release verification merchandise revenue",
+            "direction": "neutral",
+            "currency": "USD",
+            "role": "measure",
+            "compares_to": null,
+            "percent_scale": null,
+            "field": "actual"
+          },
+          {
+            "additive": true,
+            "unit": "currency",
+            "label": "Full-month target",
+            "direction": "neutral",
+            "currency": "USD",
+            "role": "target",
+            "compares_to": "actual",
+            "percent_scale": null,
+            "field": "target"
+          }
+        ],
+        "format": "number",
+        "type": "bar",
+        "partial_periods": [],
+        "granularity": null,
+        "dimension_kind": "category",
+        "version": 2,
+        "y": [
+          "actual",
+          "target"
+        ]
+      },
+      "provenance": [
+        {
+          "sql": "SELECT dimension AS dimension, value AS actual FROM (WITH q0 AS (SELECT t.region AS dimension, SUM(t.revenue) AS value FROM `project-e8b1593d-009a-4822-abf.agentic_bi_demo.sales_orders` AS t WHERE t.order_date >= CAST('2023-01-01' AS DATE) AND t.order_date <= CAST('2026-09-30' AS DATE) GROUP BY dimension), spine AS (SELECT dimension FROM q0) SELECT s.dimension, COALESCE(q0.value, 0) AS value FROM spine AS s LEFT JOIN q0 ON s.dimension = q0.dimension ORDER BY s.dimension) AS compiled_actual",
+          "elapsed_ms": 757,
+          "complete": true,
+          "columns": [
+            {
+              "type": "STRING",
+              "name": "dimension"
+            },
+            {
+              "type": "NUMERIC",
+              "name": "actual"
+            }
+          ],
+          "job_id": "abi_e8916456cf351cf75927c343911cfb63_1b8373d633b54ec2b8600166d814136a_0",
+          "source": "bigquery",
+          "bytes_processed": 0,
+          "row_count": 4,
+          "executed_at": "2026-10-20T18:17:55.088536+00:00"
+        },
+        {
+          "sql": "SELECT region AS dimension, SUM(target_revenue) AS target FROM retail_timeseries.regional_targets WHERE month >= '2023-01' AND month <= '2026-09' GROUP BY region",
+          "elapsed_ms": 29,
+          "complete": true,
+          "columns": [
+            {
+              "type": "text",
+              "name": "dimension"
+            },
+            {
+              "type": "numeric",
+              "name": "target"
+            }
+          ],
+          "job_id": null,
+          "source": "postgres",
+          "bytes_processed": null,
+          "row_count": 4,
+          "executed_at": "2026-10-20T18:17:55.541430+00:00"
+        }
+      ],
+      "metrics_used": null,
+      "expected_total": "354425112.20",
+      "actual_total": "354425112.20"
+    },
+    {
+      "sample": "Know your customers",
+      "conversation_id": "d3b66a62b6c94844bc2dce5d6ec7c96d",
+      "run_id": "9d3bbea437d9a984e5972820a2331fd7",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/app?chat=d3b66a62b6c94844bc2dce5d6ec7c96d",
+      "model": "default",
+      "checks": {
+        "terminal_complete": true,
+        "artifact_created": true,
+        "all_groups_present": true,
+        "independent_values": true,
+        "complete_timeseries_source": true,
+        "expected_sources": true,
+        "explicit_ad_hoc_not_catalog_backed": true
+      },
+      "stages": [
+        "skills",
+        "schema",
+        "query",
+        "query",
+        "relationship",
+        "answer"
+      ],
+      "errors": [],
+      "artifact_id": "349de15dfb07456790081be8238410af",
+      "row_count": 2,
+      "rows": [
+        {
+          "segment": "New",
+          "revenue": "118729938.91"
+        },
+        {
+          "segment": "Returning",
+          "revenue": "235695173.29"
+        }
+      ],
+      "visualization": {
+        "title": "Merchandise Revenue by Customer Segment",
+        "x": "segment",
+        "measures": [
+          {
+            "additive": true,
+            "unit": "currency",
+            "label": "Merchandise Revenue",
+            "direction": "neutral",
+            "currency": "USD",
+            "role": "primary",
+            "compares_to": null,
+            "percent_scale": null,
+            "field": "revenue"
+          }
+        ],
+        "format": "currency",
+        "type": "bar",
+        "partial_periods": [],
+        "granularity": null,
+        "dimension_kind": "category",
+        "version": 2,
+        "y": [
+          "revenue"
+        ]
+      },
+      "provenance": [
+        {
+          "sql": "SELECT customer_id, SUM(revenue) AS customer_revenue FROM `project-e8b1593d-009a-4822-abf`.agentic_bi_demo.sales_orders WHERE status = 'completed' GROUP BY customer_id",
+          "elapsed_ms": 2898,
+          "complete": true,
+          "columns": [
+            {
+              "type": "STRING",
+              "name": "customer_id"
+            },
+            {
+              "type": "NUMERIC",
+              "name": "customer_revenue"
+            }
+          ],
+          "job_id": "abi_9d3bbea437d9a984e5972820a2331fd7_9cd76099984b4c2f83ee4f75e6c0efd3_0",
+          "source": "bigquery",
+          "bytes_processed": 21213876,
+          "row_count": 24992,
+          "executed_at": "2026-10-20T18:19:36.207487+00:00"
+        },
+        {
+          "sql": "SELECT customer_id, segment FROM retail_timeseries.customer_profiles WHERE customer_id IS NOT NULL",
+          "elapsed_ms": 439,
+          "complete": true,
+          "columns": [
+            {
+              "type": "text",
+              "name": "customer_id"
+            },
+            {
+              "type": "text",
+              "name": "segment"
+            }
+          ],
+          "job_id": null,
+          "source": "postgres",
+          "bytes_processed": null,
+          "row_count": 25000,
+          "executed_at": "2026-10-20T18:19:37.034521+00:00"
+        }
+      ],
+      "metrics_used": null,
+      "expected_total": "354425112.20",
+      "actual_total": "354425112.20"
+    },
+    {
+      "sample": "Find what sells",
+      "conversation_id": "0bb8e7474a354b59b393115a582adee2",
+      "run_id": "3cafc376861c8e10c525de2d63fc4590",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/app?chat=0bb8e7474a354b59b393115a582adee2",
+      "model": "default",
+      "checks": {
+        "terminal_complete": true,
+        "artifact_created": true,
+        "all_groups_present": true,
+        "independent_values": true,
+        "complete_timeseries_source": true,
+        "expected_sources": true
+      },
+      "stages": [
+        "skills",
+        "schema",
+        "query",
+        "answer"
+      ],
+      "errors": [],
+      "artifact_id": "76c4f582ee834d46ad57c43dc063bcdd",
+      "row_count": 8,
+      "rows": [
+        {
+          "dimension": "Accessories",
+          "value": "40465705.77"
+        },
+        {
+          "dimension": "Apparel",
+          "value": "41945735.12"
+        },
+        {
+          "dimension": "Beauty",
+          "value": "44920824.97"
+        },
+        {
+          "dimension": "Electronics",
+          "value": "57440129.82"
+        },
+        {
+          "dimension": "Footwear",
+          "value": "40690377.2"
+        },
+        {
+          "dimension": "Home",
+          "value": "40322293.21"
+        },
+        {
+          "dimension": "Outdoor",
+          "value": "43235847.95"
+        },
+        {
+          "dimension": "Toys",
+          "value": "45404198.16"
+        }
+      ],
+      "visualization": {
+        "title": "Release verification merchandise revenue",
+        "x": "dimension",
+        "measures": [
+          {
+            "additive": true,
+            "unit": "currency",
+            "label": "Release verification merchandise revenue",
+            "direction": "neutral",
+            "currency": "USD",
+            "role": "measure",
+            "compares_to": null,
+            "percent_scale": null,
+            "field": "value"
+          }
+        ],
+        "format": "number",
+        "type": "bar",
+        "partial_periods": [],
+        "granularity": null,
+        "dimension_kind": "category",
+        "version": 2,
+        "y": [
+          "value"
+        ]
+      },
+      "provenance": [
+        {
+          "sql": "WITH q0 AS (SELECT p.category AS dimension, SUM(t.line_revenue) AS value FROM `project-e8b1593d-009a-4822-abf.agentic_bi_demo.sales_order_items` AS t JOIN `project-e8b1593d-009a-4822-abf.agentic_bi_demo.sales_products` AS p ON t.product_id = p.product_id WHERE t.order_date >= CAST('2023-01-01' AS DATE) AND t.order_date <= CAST('2026-09-30' AS DATE) GROUP BY dimension), spine AS (SELECT dimension FROM q0) SELECT s.dimension, COALESCE(q0.value, 0) AS value FROM spine AS s LEFT JOIN q0 ON s.dimension = q0.dimension ORDER BY s.dimension",
+          "elapsed_ms": 808,
+          "complete": true,
+          "columns": [
+            {
+              "type": "STRING",
+              "name": "dimension"
+            },
+            {
+              "type": "NUMERIC",
+              "name": "value"
+            }
+          ],
+          "job_id": "abi_3cafc376861c8e10c525de2d63fc4590_69b01517cf4448098e8d74c2d6df9490_0",
+          "source": "bigquery",
+          "bytes_processed": 0,
+          "row_count": 8,
+          "executed_at": "2026-10-20T18:19:24.208239+00:00"
+        }
+      ],
+      "metrics_used": null,
+      "expected_total": "354425112.20",
+      "actual_total": "354425112.20"
+    }
+  ],
+  "all_passed": true
+}

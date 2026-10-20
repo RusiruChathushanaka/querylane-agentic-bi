@@ -24,6 +24,8 @@ Ctrl/⌘ + Enter sends in either composer mode; Shift + Enter inserts a new line
 
 Existing conversations retain their sources. For result presentation, a manual visualization selection takes priority over the browser preference. Unsupported preferred views fall back to the artifact’s recommendation, then a table. Formatting changes display precision only: stored numbers, currencies (USD), SQL, result completeness, and evidence are preserved. Narrative answers remain as generated.
 
+The four workspace sample cards select their advertised sources explicitly: monthly/category revenue uses BigQuery; regional targets/customer segments use both sources. This selection applies to the sample exploration without changing the saved default. Manually typed questions continue to use that default for new conversations. The customer-segment example explicitly requests an ad hoc breakdown because the published revenue definition does not support that dimension; it does not modify or claim provenance from a published definition.
+
 Voice options are read when starting or reconnecting a session. Turning off spoken responses suppresses browser playback; Gemini still produces its live audio response. This preference does not reduce model usage. Microphone permission is requested only after starting voice. Transcripts remain public and raw audio is not recorded.
 
 ## Analysis model selection

@@ -1,0 +1,188 @@
+{
+  "verified_at": "2026-10-20T18:18:06.222091+00:00",
+  "scope": "Deployed Chromium layout/accessibility checks; emulated widths, no physical mobile device. No sample activation in this session.",
+  "layouts": [
+    {
+      "cards": [
+        {
+          "height": 167.890625,
+          "label": "See the bigger picture\n\nExplore monthly merchandise revenue over time\n\nBigQuery",
+          "width": 131
+        },
+        {
+          "height": 167.890625,
+          "label": "Actuals meet ambition\n\nCompare regional revenue and full-month targets\n\nCross-source",
+          "width": 131
+        },
+        {
+          "height": 167.890625,
+          "label": "Know your customers\n\nExplore sales by segment with an ad hoc breakdown\n\nCross-source",
+          "width": 131
+        },
+        {
+          "height": 167.890625,
+          "label": "Find what sells\n\nCompare product categories by merchandise revenue\n\nBigQuery",
+          "width": 131
+        }
+      ],
+      "overflow": false,
+      "width": 320,
+      "passed": true
+    },
+    {
+      "cards": [
+        {
+          "height": 136.09375,
+          "label": "See the bigger picture\n\nExplore monthly merchandise revenue over time\n\nBigQuery",
+          "width": 166
+        },
+        {
+          "height": 136.09375,
+          "label": "Actuals meet ambition\n\nCompare regional revenue and full-month targets\n\nCross-source",
+          "width": 166
+        },
+        {
+          "height": 136.09375,
+          "label": "Know your customers\n\nExplore sales by segment with an ad hoc breakdown\n\nCross-source",
+          "width": 166
+        },
+        {
+          "height": 136.09375,
+          "label": "Find what sells\n\nCompare product categories by merchandise revenue\n\nBigQuery",
+          "width": 166
+        }
+      ],
+      "overflow": false,
+      "width": 390,
+      "passed": true
+    },
+    {
+      "cards": [
+        {
+          "height": 114.5,
+          "label": "See the bigger picture\n\nExplore monthly merchandise revenue over time\n\nBigQuery",
+          "width": 304
+        },
+        {
+          "height": 114.5,
+          "label": "Actuals meet ambition\n\nCompare regional revenue and full-month targets\n\nCross-source",
+          "width": 304
+        },
+        {
+          "height": 114.5,
+          "label": "Know your customers\n\nExplore sales by segment with an ad hoc breakdown\n\nCross-source",
+          "width": 304
+        },
+        {
+          "height": 114.5,
+          "label": "Find what sells\n\nCompare product categories by merchandise revenue\n\nBigQuery",
+          "width": 304
+        }
+      ],
+      "overflow": false,
+      "width": 768,
+      "passed": true
+    },
+    {
+      "cards": [
+        {
+          "height": 114.5,
+          "label": "See the bigger picture\n\nExplore monthly merchandise revenue over time\n\nBigQuery",
+          "width": 399
+        },
+        {
+          "height": 114.5,
+          "label": "Actuals meet ambition\n\nCompare regional revenue and full-month targets\n\nCross-source",
+          "width": 399
+        },
+        {
+          "height": 114.5,
+          "label": "Know your customers\n\nExplore sales by segment with an ad hoc breakdown\n\nCross-source",
+          "width": 399
+        },
+        {
+          "height": 114.5,
+          "label": "Find what sells\n\nCompare product categories by merchandise revenue\n\nBigQuery",
+          "width": 399
+        }
+      ],
+      "overflow": false,
+      "width": 1280,
+      "passed": true
+    }
+  ],
+  "accessibility": {
+    "light": {
+      "axeVersion": "4.12.1",
+      "counts": {
+        "inapplicable": 83,
+        "incomplete": 0,
+        "passes": 5,
+        "violations": 0
+      },
+      "incomplete": [],
+      "lifecycle": {
+        "effectiveLaunch": {
+          "browserLaunched": true,
+          "engine": "chrome",
+          "launchHash": 11677035664275010974
+        },
+        "launched": false,
+        "relaunchedBrowser": false,
+        "restartedBackground": false,
+        "restoreStatus": "not_configured",
+        "reused": true,
+        "saveStatus": "not_attempted"
+      },
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/app",
+      "violations": []
+    },
+    "dark_teal_reduced_motion": {
+      "axeVersion": "4.12.1",
+      "counts": {
+        "inapplicable": 84,
+        "incomplete": 0,
+        "passes": 4,
+        "violations": 0
+      },
+      "incomplete": [],
+      "lifecycle": {
+        "effectiveLaunch": {
+          "browserLaunched": true,
+          "engine": "chrome",
+          "launchHash": 11677035664275010974
+        },
+        "launched": false,
+        "relaunchedBrowser": false,
+        "restartedBackground": false,
+        "restoreStatus": "not_configured",
+        "reused": true,
+        "saveStatus": "not_attempted"
+      },
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/app",
+      "violations": []
+    }
+  },
+  "light_theme_confirmed": true,
+  "keyboard_tab_order": true,
+  "browser_errors": {
+    "errors": [],
+    "lifecycle": {
+      "effectiveLaunch": {
+        "browserLaunched": true,
+        "engine": "chrome",
+        "launchHash": 11677035664275010974
+      },
+      "launched": false,
+      "relaunchedBrowser": false,
+      "restartedBackground": false,
+      "restoreStatus": "not_configured",
+      "reused": true,
+      "saveStatus": "not_attempted"
+    }
+  },
+  "initial_observations": [
+    "The first system-theme scan rendered dark, so its light label was not accepted. This recheck explicitly forces and confirms light before scanning, then checks dark/teal/reduced motion. Both initial scans had zero violations."
+  ],
+  "all_passed": true
+}

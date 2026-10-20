@@ -1,0 +1,419 @@
+{
+  "verified_at": "2026-10-20T17:51:22.402108+00:00",
+  "scope": "Exact corrected sample prompts against existing deployed backend; frontend source changes are local, not deployed",
+  "reference": "Independent local generated Parquet aggregates, not model output",
+  "attempt_policy": "One new analysis per corrected example; no automatic mutation replay, deployment, seed or quota reset",
+  "analyses": [
+    {
+      "title": "See the bigger picture",
+      "source": "bigquery",
+      "question": "Show monthly merchandise revenue across all complete months of available history as a line chart in USD. Use completed orders, after discounts and before refunds, tax and shipping. State the observation cutoff.",
+      "checks": {
+        "terminal_complete": true,
+        "artifact_created": true,
+        "all_groups_present": true,
+        "independent_values": true,
+        "complete_timeseries_source": true,
+        "expected_sources": true
+      },
+      "conversation_id": "18f87b7ef1c644a99ebfbb1216e551ba",
+      "run_id": "7707a5fd24dfaad1be999d05e310db86",
+      "stages": [
+        "skills",
+        "schema",
+        "query",
+        "answer"
+      ],
+      "errors": [],
+      "artifact_id": "657572d22da840b785801bf51b3298ea",
+      "row_count": 45,
+      "rows": [
+        {
+          "date": "2023-01-01",
+          "value": "5128601.16"
+        },
+        {
+          "date": "2023-02-01",
+          "value": "4451906.37"
+        },
+        {
+          "date": "2023-03-01",
+          "value": "6042031.93"
+        },
+        {
+          "date": "2023-04-01",
+          "value": "6176858.36"
+        },
+        {
+          "date": "2023-05-01",
+          "value": "6276432.27"
+        },
+        {
+          "date": "2023-06-01",
+          "value": "5878420.8"
+        },
+        {
+          "date": "2023-07-01",
+          "value": "6570848.39"
+        },
+        {
+          "date": "2023-08-01",
+          "value": "6790032.3"
+        },
+        {
+          "date": "2023-09-01",
+          "value": "6929738.68"
+        },
+        {
+          "date": "2023-10-01",
+          "value": "7238531.96"
+        },
+        {
+          "date": "2023-11-01",
+          "value": "10717254.52"
+        },
+        {
+          "date": "2023-12-01",
+          "value": "10311476.16"
+        },
+        {
+          "date": "2024-01-01",
+          "value": "5464659.78"
+        },
+        {
+          "date": "2024-02-01",
+          "value": "5242439.63"
+        },
+        {
+          "date": "2024-03-01",
+          "value": "6779918.37"
+        },
+        {
+          "date": "2024-04-01",
+          "value": "6936270.5"
+        },
+        {
+          "date": "2024-05-01",
+          "value": "7172012.52"
+        },
+        {
+          "date": "2024-06-01",
+          "value": "6810657.31"
+        },
+        {
+          "date": "2024-07-01",
+          "value": "7170495.14"
+        },
+        {
+          "date": "2024-08-01",
+          "value": "7866722.95"
+        },
+        {
+          "date": "2024-09-01",
+          "value": "7925364.97"
+        },
+        {
+          "date": "2024-10-01",
+          "value": "8363652.61"
+        },
+        {
+          "date": "2024-11-01",
+          "value": "11982051.82"
+        },
+        {
+          "date": "2024-12-01",
+          "value": "11687610.02"
+        },
+        {
+          "date": "2025-01-01",
+          "value": "6287838.3"
+        },
+        {
+          "date": "2025-02-01",
+          "value": "5760456.97"
+        },
+        {
+          "date": "2025-03-01",
+          "value": "7554751.28"
+        },
+        {
+          "date": "2025-04-01",
+          "value": "7443298.39"
+        },
+        {
+          "date": "2025-05-01",
+          "value": "7966415.74"
+        },
+        {
+          "date": "2025-06-01",
+          "value": "7262901.77"
+        },
+        {
+          "date": "2025-07-01",
+          "value": "8193920.48"
+        },
+        {
+          "date": "2025-08-01",
+          "value": "8571082.05"
+        },
+        {
+          "date": "2025-09-01",
+          "value": "8905732.37"
+        },
+        {
+          "date": "2025-10-01",
+          "value": "9036738.06"
+        },
+        {
+          "date": "2025-11-01",
+          "value": "13916706.76"
+        },
+        {
+          "date": "2025-12-01",
+          "value": "12550880.75"
+        },
+        {
+          "date": "2026-01-01",
+          "value": "6829832.61"
+        },
+        {
+          "date": "2026-02-01",
+          "value": "6360155.65"
+        },
+        {
+          "date": "2026-03-01",
+          "value": "8675206.75"
+        },
+        {
+          "date": "2026-04-01",
+          "value": "8483338.93"
+        },
+        {
+          "date": "2026-05-01",
+          "value": "8852343.78"
+        },
+        {
+          "date": "2026-06-01",
+          "value": "8101287.96"
+        },
+        {
+          "date": "2026-07-01",
+          "value": "8733930.08"
+        },
+        {
+          "date": "2026-08-01",
+          "value": "9576580.1"
+        },
+        {
+          "date": "2026-09-01",
+          "value": "9447724.9"
+        }
+      ],
+      "visualization": {
+        "title": "Release verification merchandise revenue",
+        "x": "date",
+        "measures": [
+          {
+            "additive": true,
+            "unit": "currency",
+            "label": "Release verification merchandise revenue",
+            "direction": "neutral",
+            "currency": "USD",
+            "role": "measure",
+            "compares_to": null,
+            "percent_scale": null,
+            "field": "value"
+          }
+        ],
+        "format": "number",
+        "type": "line",
+        "partial_periods": [],
+        "granularity": "month",
+        "dimension_kind": "temporal",
+        "version": 2,
+        "y": [
+          "value"
+        ]
+      },
+      "provenance": [
+        {
+          "sql": "WITH q0 AS (SELECT DATE_TRUNC(t.order_date, MONTH) AS date, SUM(t.revenue) AS value FROM `project-e8b1593d-009a-4822-abf.agentic_bi_demo.sales_orders` AS t WHERE t.order_date >= CAST('2023-01-01' AS DATE) AND t.order_date <= CAST('2026-09-30' AS DATE) GROUP BY date), spine AS (SELECT date FROM q0) SELECT s.date, COALESCE(q0.value, 0) AS value FROM spine AS s LEFT JOIN q0 ON s.date = q0.date ORDER BY s.date",
+          "elapsed_ms": 1940,
+          "complete": true,
+          "columns": [
+            {
+              "type": "DATE",
+              "name": "date"
+            },
+            {
+              "type": "NUMERIC",
+              "name": "value"
+            }
+          ],
+          "job_id": "abi_7707a5fd24dfaad1be999d05e310db86_cbafd77e61a0458e891b36d52a8c1074_0",
+          "source": "bigquery",
+          "bytes_processed": 13760352,
+          "row_count": 45,
+          "executed_at": "2026-10-20T17:51:33.434766+00:00"
+        }
+      ],
+      "metrics_used": null,
+      "expected_total": "354425112.20",
+      "actual_total": "354425112.20"
+    },
+    {
+      "title": "Actuals meet ambition",
+      "source": "all",
+      "question": "Compare regional merchandise revenue with regional revenue targets across the complete months covered by both sources. Show actual revenue and target revenue in USD for each region. Actual revenue uses completed orders, after discounts and before refunds, tax and shipping.",
+      "checks": {
+        "terminal_complete": false,
+        "artifact_created": false
+      },
+      "conversation_id": "d809c199967f4c6587a8136159cec234",
+      "run_id": "507e6a6d13d3651439709deb9d835033",
+      "stages": [
+        "skills",
+        "schema"
+      ],
+      "errors": [
+        {
+          "message": "The model is temporarily unavailable. Try again shortly.",
+          "code": "model_transient"
+        }
+      ],
+      "answers": []
+    },
+    {
+      "title": "Know your customers",
+      "source": "all",
+      "question": "Use an ad hoc breakdown of merchandise revenue by customer segment across all available completed-order history. Revenue is after discounts and before refunds, tax and shipping. Connect sales to customer profiles by customer_id and show a bar chart in USD. This breakdown is not a published catalog definition.",
+      "checks": {
+        "terminal_complete": false,
+        "artifact_created": false
+      },
+      "conversation_id": "efc0b338200c43c086583662cbafd619",
+      "run_id": "4096d6327ab52e51ac63c6ca3435d479",
+      "stages": [
+        "skills",
+        "schema"
+      ],
+      "errors": [
+        {
+          "message": "The model is temporarily unavailable. Try again shortly.",
+          "code": "model_transient"
+        }
+      ],
+      "answers": []
+    },
+    {
+      "title": "Find what sells",
+      "source": "bigquery",
+      "question": "Break down merchandise revenue by product category across all available completed-order history as a bar chart in USD. Revenue is after discounts and before refunds, tax and shipping. Use line revenue for the category breakdown so order totals are not duplicated.",
+      "checks": {
+        "terminal_complete": true,
+        "artifact_created": true,
+        "all_groups_present": true,
+        "independent_values": true,
+        "complete_timeseries_source": true,
+        "expected_sources": true
+      },
+      "conversation_id": "8b34a818a3694affb82a7781c18cc1fe",
+      "run_id": "fb57a6a2c2c39b5f98ede6939d0827f6",
+      "stages": [
+        "skills",
+        "schema",
+        "query",
+        "answer"
+      ],
+      "errors": [],
+      "artifact_id": "dc204645be314212af96e38b678b8d1a",
+      "row_count": 8,
+      "rows": [
+        {
+          "dimension": "Accessories",
+          "value": "40465705.77"
+        },
+        {
+          "dimension": "Apparel",
+          "value": "41945735.12"
+        },
+        {
+          "dimension": "Beauty",
+          "value": "44920824.97"
+        },
+        {
+          "dimension": "Electronics",
+          "value": "57440129.82"
+        },
+        {
+          "dimension": "Footwear",
+          "value": "40690377.2"
+        },
+        {
+          "dimension": "Home",
+          "value": "40322293.21"
+        },
+        {
+          "dimension": "Outdoor",
+          "value": "43235847.95"
+        },
+        {
+          "dimension": "Toys",
+          "value": "45404198.16"
+        }
+      ],
+      "visualization": {
+        "title": "Release verification merchandise revenue",
+        "x": "dimension",
+        "measures": [
+          {
+            "additive": true,
+            "unit": "currency",
+            "label": "Release verification merchandise revenue",
+            "direction": "neutral",
+            "currency": "USD",
+            "role": "measure",
+            "compares_to": null,
+            "percent_scale": null,
+            "field": "value"
+          }
+        ],
+        "format": "number",
+        "type": "bar",
+        "partial_periods": [],
+        "granularity": null,
+        "dimension_kind": "category",
+        "version": 2,
+        "y": [
+          "value"
+        ]
+      },
+      "provenance": [
+        {
+          "sql": "WITH q0 AS (SELECT p.category AS dimension, SUM(t.line_revenue) AS value FROM `project-e8b1593d-009a-4822-abf.agentic_bi_demo.sales_order_items` AS t JOIN `project-e8b1593d-009a-4822-abf.agentic_bi_demo.sales_products` AS p ON t.product_id = p.product_id WHERE t.order_date >= CAST('2023-01-01' AS DATE) AND t.order_date <= CAST('2026-09-30' AS DATE) GROUP BY dimension), spine AS (SELECT dimension FROM q0) SELECT s.dimension, COALESCE(q0.value, 0) AS value FROM spine AS s LEFT JOIN q0 ON s.dimension = q0.dimension ORDER BY s.dimension",
+          "elapsed_ms": 1727,
+          "complete": true,
+          "columns": [
+            {
+              "type": "STRING",
+              "name": "dimension"
+            },
+            {
+              "type": "NUMERIC",
+              "name": "value"
+            }
+          ],
+          "job_id": "abi_fb57a6a2c2c39b5f98ede6939d0827f6_66b2ef277ec645d6a28d6487ed3a8c36_0",
+          "source": "bigquery",
+          "bytes_processed": 43495703,
+          "row_count": 8,
+          "executed_at": "2026-10-20T17:54:56.737053+00:00"
+        }
+      ],
+      "metrics_used": null,
+      "expected_total": "354425112.20",
+      "actual_total": "354425112.20"
+    }
+  ],
+  "all_passed": false
+}

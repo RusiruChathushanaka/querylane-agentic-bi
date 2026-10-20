@@ -1,0 +1,257 @@
+{
+  "date": "2026-10-20",
+  "scope": "Local optimized production build, actual Workspace handlers; API and SSE responses intercepted, no hosted model calls in browser matrix",
+  "initial_source_regression": [
+    {
+      "card": "See the bigger picture",
+      "expected": "bigquery",
+      "actual": "postgres",
+      "passed": false
+    },
+    {
+      "card": "Actuals meet ambition",
+      "expected": "all",
+      "actual": "postgres",
+      "passed": false
+    },
+    {
+      "card": "Know your customers",
+      "expected": "all",
+      "actual": "postgres",
+      "passed": false
+    },
+    {
+      "card": "Find what sells",
+      "expected": "bigquery",
+      "actual": "postgres",
+      "passed": false
+    }
+  ],
+  "corrected_cases": [
+    {
+      "default": "postgres",
+      "card": "See the bigger picture",
+      "expected": "bigquery",
+      "actual": "bigquery",
+      "saved_preference_preserved": true,
+      "passed": true
+    },
+    {
+      "default": "postgres",
+      "card": "Actuals meet ambition",
+      "expected": "all",
+      "actual": "all",
+      "saved_preference_preserved": true,
+      "passed": true
+    },
+    {
+      "default": "postgres",
+      "card": "Know your customers",
+      "expected": "all",
+      "actual": "all",
+      "saved_preference_preserved": true,
+      "passed": true
+    },
+    {
+      "default": "postgres",
+      "card": "Find what sells",
+      "expected": "bigquery",
+      "actual": "bigquery",
+      "saved_preference_preserved": true,
+      "passed": true
+    },
+    {
+      "default": "postgres",
+      "card": "Manual question",
+      "expected": "postgres",
+      "actual": "postgres",
+      "saved_preference_preserved": true,
+      "passed": true
+    },
+    {
+      "default": "bigquery",
+      "card": "See the bigger picture",
+      "expected": "bigquery",
+      "actual": "bigquery",
+      "saved_preference_preserved": true,
+      "passed": true
+    },
+    {
+      "default": "bigquery",
+      "card": "Actuals meet ambition",
+      "expected": "all",
+      "actual": "all",
+      "saved_preference_preserved": true,
+      "passed": true
+    },
+    {
+      "default": "bigquery",
+      "card": "Know your customers",
+      "expected": "all",
+      "actual": "all",
+      "saved_preference_preserved": true,
+      "passed": true
+    },
+    {
+      "default": "bigquery",
+      "card": "Find what sells",
+      "expected": "bigquery",
+      "actual": "bigquery",
+      "saved_preference_preserved": true,
+      "passed": true
+    },
+    {
+      "default": "bigquery",
+      "card": "Manual question",
+      "expected": "bigquery",
+      "actual": "bigquery",
+      "saved_preference_preserved": true,
+      "passed": true
+    },
+    {
+      "default": "all",
+      "card": "See the bigger picture",
+      "expected": "bigquery",
+      "actual": "bigquery",
+      "saved_preference_preserved": true,
+      "passed": true
+    },
+    {
+      "default": "all",
+      "card": "Actuals meet ambition",
+      "expected": "all",
+      "actual": "all",
+      "saved_preference_preserved": true,
+      "passed": true
+    },
+    {
+      "default": "all",
+      "card": "Know your customers",
+      "expected": "all",
+      "actual": "all",
+      "saved_preference_preserved": true,
+      "passed": true
+    },
+    {
+      "default": "all",
+      "card": "Find what sells",
+      "expected": "bigquery",
+      "actual": "bigquery",
+      "saved_preference_preserved": true,
+      "passed": true
+    },
+    {
+      "default": "all",
+      "card": "Manual question",
+      "expected": "all",
+      "actual": "all",
+      "saved_preference_preserved": true,
+      "passed": true
+    },
+    {
+      "layout": {
+        "cards": 4,
+        "overflow": false,
+        "width": 320
+      },
+      "passed": true
+    },
+    {
+      "layout": {
+        "cards": 4,
+        "overflow": false,
+        "width": 390
+      },
+      "passed": true
+    },
+    {
+      "layout": {
+        "cards": 4,
+        "overflow": false,
+        "width": 768
+      },
+      "passed": true
+    },
+    {
+      "layout": {
+        "cards": 4,
+        "overflow": false,
+        "width": 1280
+      },
+      "passed": true
+    },
+    {
+      "accessibility": {
+        "inapplicable": 83,
+        "incomplete": 0,
+        "passes": 5,
+        "violations": 0
+      },
+      "violations": [],
+      "passed": true
+    }
+  ],
+  "samples": [
+    {
+      "icon": 0,
+      "title": "See the bigger picture",
+      "question": "Show monthly merchandise revenue across all complete months of available history as a line chart in USD. Use completed orders, after discounts and before refunds, tax and shipping. State the observation cutoff.",
+      "detail": "Explore monthly merchandise revenue over time",
+      "source": "BigQuery",
+      "sourceId": "bigquery"
+    },
+    {
+      "icon": 0,
+      "title": "Actuals meet ambition",
+      "question": "Compare regional merchandise revenue with regional revenue targets across the complete months covered by both sources. Show actual revenue and target revenue in USD for each region. Actual revenue uses completed orders, after discounts and before refunds, tax and shipping.",
+      "detail": "Compare regional revenue and full-month targets",
+      "source": "Cross-source",
+      "sourceId": "all"
+    },
+    {
+      "icon": 0,
+      "title": "Know your customers",
+      "question": "Use an ad hoc breakdown of merchandise revenue by customer segment across all available completed-order history. Revenue is after discounts and before refunds, tax and shipping. Connect sales to customer profiles by customer_id and show a bar chart in USD. This breakdown is not a published catalog definition.",
+      "detail": "Explore sales by segment with an ad hoc breakdown",
+      "source": "Cross-source",
+      "sourceId": "all"
+    },
+    {
+      "icon": 0,
+      "title": "Find what sells",
+      "question": "Break down merchandise revenue by product category across all available completed-order history as a bar chart in USD. Revenue is after discounts and before refunds, tax and shipping. Use line revenue for the category breakdown so order totals are not duplicated.",
+      "detail": "Compare product categories by merchandise revenue",
+      "source": "BigQuery",
+      "sourceId": "bigquery"
+    }
+  ],
+  "code_sha256": "592bf39fefb53f0643248f9481a14bb7e29854442309f43505ff2a67b264537f",
+  "initial_customer_failure": {
+    "conversation_id": "eae6e04ca60246e0942cbdfbf8d448b3",
+    "question": "What is revenue by customer segment?",
+    "response": "Customer segment is not a supported dimension. Available dimensions are: region, store, category, product, and channel."
+  },
+  "local_gates": {
+    "frontend_tests": 58,
+    "lint": "passed",
+    "typescript": "passed",
+    "production_build": "passed, .next-release-check",
+    "published_metric_policy_tests": 9,
+    "sql_tests": 65
+  },
+  "limits": [
+    "Local UI only; revised buttons are not deployed",
+    "Chromium viewport emulation, not physical mobile",
+    "No microphone, model defaults, catalogue definitions, IAM, deployment or source data changed"
+  ],
+  "initial_accessibility_observation": {
+    "accessibility": {
+      "inapplicable": 83,
+      "incomplete": 0,
+      "passes": 4,
+      "violations": 1
+    },
+    "passed": false
+  },
+  "accessibility_recheck": "Initial production scan ran during the welcome reveal and flagged one contrast rule. After a 700ms transition wait, the focused scan found zero violations. Both observations are retained."
+}

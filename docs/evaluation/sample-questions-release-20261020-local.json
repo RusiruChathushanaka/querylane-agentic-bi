@@ -1,0 +1,175 @@
+{
+  "scope": "Rerun of isolated optimized-build browser regression; all API calls intercepted, no model/source calls.",
+  "cases": [
+    {
+      "default": "postgres",
+      "card": "See the bigger picture",
+      "expected": "bigquery",
+      "actual": "bigquery",
+      "saved_preference_preserved": true,
+      "passed": true
+    },
+    {
+      "default": "postgres",
+      "card": "Actuals meet ambition",
+      "expected": "all",
+      "actual": "all",
+      "saved_preference_preserved": true,
+      "passed": true
+    },
+    {
+      "default": "postgres",
+      "card": "Know your customers",
+      "expected": "all",
+      "actual": "all",
+      "saved_preference_preserved": true,
+      "passed": true
+    },
+    {
+      "default": "postgres",
+      "card": "Find what sells",
+      "expected": "bigquery",
+      "actual": "bigquery",
+      "saved_preference_preserved": true,
+      "passed": true
+    },
+    {
+      "default": "postgres",
+      "card": "Manual question",
+      "expected": "postgres",
+      "actual": "postgres",
+      "saved_preference_preserved": true,
+      "passed": true
+    },
+    {
+      "default": "bigquery",
+      "card": "See the bigger picture",
+      "expected": "bigquery",
+      "actual": "bigquery",
+      "saved_preference_preserved": true,
+      "passed": true
+    },
+    {
+      "default": "bigquery",
+      "card": "Actuals meet ambition",
+      "expected": "all",
+      "actual": "all",
+      "saved_preference_preserved": true,
+      "passed": true
+    },
+    {
+      "default": "bigquery",
+      "card": "Know your customers",
+      "expected": "all",
+      "actual": "all",
+      "saved_preference_preserved": true,
+      "passed": true
+    },
+    {
+      "default": "bigquery",
+      "card": "Find what sells",
+      "expected": "bigquery",
+      "actual": "bigquery",
+      "saved_preference_preserved": true,
+      "passed": true
+    },
+    {
+      "default": "bigquery",
+      "card": "Manual question",
+      "expected": "bigquery",
+      "actual": "bigquery",
+      "saved_preference_preserved": true,
+      "passed": true
+    },
+    {
+      "default": "all",
+      "card": "See the bigger picture",
+      "expected": "bigquery",
+      "actual": "bigquery",
+      "saved_preference_preserved": true,
+      "passed": true
+    },
+    {
+      "default": "all",
+      "card": "Actuals meet ambition",
+      "expected": "all",
+      "actual": "all",
+      "saved_preference_preserved": true,
+      "passed": true
+    },
+    {
+      "default": "all",
+      "card": "Know your customers",
+      "expected": "all",
+      "actual": "all",
+      "saved_preference_preserved": true,
+      "passed": true
+    },
+    {
+      "default": "all",
+      "card": "Find what sells",
+      "expected": "bigquery",
+      "actual": "bigquery",
+      "saved_preference_preserved": true,
+      "passed": true
+    },
+    {
+      "default": "all",
+      "card": "Manual question",
+      "expected": "all",
+      "actual": "all",
+      "saved_preference_preserved": true,
+      "passed": true
+    },
+    {
+      "layout": {
+        "cards": 4,
+        "overflow": false,
+        "width": 320
+      },
+      "passed": true
+    },
+    {
+      "layout": {
+        "cards": 4,
+        "overflow": false,
+        "width": 390
+      },
+      "passed": true
+    },
+    {
+      "layout": {
+        "cards": 4,
+        "overflow": false,
+        "width": 768
+      },
+      "passed": true
+    },
+    {
+      "layout": {
+        "cards": 4,
+        "overflow": false,
+        "width": 1280
+      },
+      "passed": true
+    },
+    {
+      "accessibility": {
+        "inapplicable": 83,
+        "incomplete": 0,
+        "passes": 5,
+        "violations": 0
+      },
+      "violations": [],
+      "passed": true
+    }
+  ],
+  "frontend_tests": 58,
+  "lint": "passed",
+  "typescript": "passed",
+  "production_build": "Cloud Build 7040ce92-ead0-4041-b3dc-a91f8c4dc0de SUCCESS",
+  "existing_backend_regressions_from_preparation": {
+    "metric_policy": 9,
+    "sql_analytics": 65
+  }
+}

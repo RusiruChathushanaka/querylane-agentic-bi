@@ -1,0 +1,297 @@
+{
+  "verified_at": "2026-10-20T18:20:06.678689+00:00",
+  "scope": "Real deployed card activation; saved PostgreSQL preference and default model. No mocked API calls.",
+  "cases": [
+    {
+      "sample": "See the bigger picture",
+      "expected_source": "bigquery",
+      "model": "default",
+      "viewport": {
+        "width": 1600,
+        "height": 1200
+      },
+      "checks": {
+        "four_cards_without_horizontal_overflow": true,
+        "advertised_source_used": true,
+        "exact_corrected_question_submitted": true,
+        "saved_preference_preserved": true
+      },
+      "layout": {
+        "cards": 4,
+        "overflow": false,
+        "width": 1600
+      },
+      "interaction": "Native card click",
+      "probe": {
+        "starts": [
+          {
+            "body": {
+              "source": "bigquery"
+            },
+            "response": {
+              "id": "5af777da9fe84118b1134feb46330400",
+              "source": "bigquery",
+              "title": "New exploration"
+            }
+          }
+        ],
+        "turns": [
+          {
+            "body": {
+              "question": "Show monthly merchandise revenue across all complete months of available history as a line chart in USD. Use completed orders, after discounts and before refunds, tax and shipping. State the observation cutoff."
+            },
+            "response": {
+              "events_url": "/api/v1/runs/9691732a5904bec212864f2430693656/events",
+              "run_id": "9691732a5904bec212864f2430693656",
+              "status": "running"
+            }
+          }
+        ]
+      },
+      "conversation_id": "5af777da9fe84118b1134feb46330400",
+      "run_id": "9691732a5904bec212864f2430693656",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/app?chat=5af777da9fe84118b1134feb46330400",
+      "terminal_status": {
+        "status": "complete"
+      },
+      "rendered_text": "PUBLIC EXPLORATION\nShow monthly merchandise revenue across all complete months of available history as a line\n\nBigQuery\n\u00b7\nSynthetic retail data\n\u00b7\nVisible to everyone\n\nGuest question\n\nShow monthly merchandise revenue across all complete months of available history as a line chart in USD. Use completed orders, after discounts and before refunds, tax and shipping. State the observation cutoff.\n\nQuerylane\n\nAcross the 45 complete months of available history (starting 2023-01-01), total completed-order merchandise revenue (after discounts, before refunds, tax, and shipping) reached $354,425,112.20 USD. Monthly revenue ranged from a low of $4,451,906.37 USD (February 2023) to a peak of $13,916,706.76 USD. Based on the 45-month series beginning in January 2023, the observation cutoff covers through September 2026.\n\nSkills used\nRetail sales trends\nv1 \u00b7 Automatic\nRetail KPI definitions and weighted ratios\nv1 \u00b7 Automatic\nCalendar trends and retail seasonality\nv1 \u00b7 Automatic\nQUERY RESULT\nPublished business metrics\nPin to dashboard\nLine\nBusiness metrics used \u00b7 saved definitions\nBigQuery\n985 ms\n45 rows\nComplete inputs\n\nRelease verification merchandise revenue \u00b7 USD \u00b7 month observations\n\nStart date\nEnd date\nReset\nExpand\nPNG\nCSV\nHighest observed\n$13,916,706.76\nNovember 1, 2025\nPeriod change\n\u2212$128,855.20 \u00b7 -1.35%\nSeptember 1, 2026 vs August 1, 2026\nRelease verification merchandise revenue \u00b7 USD\nJan 1, 2023\nJul 1, 2023\nJan 1, 2024\nJul 1, 2024\nJan 1, 2025\nJul 1, 2025\nJan 1, 2026\nSep 1, 2026\n$0\n$3.5M\n$7M\n$10.5M\n$14M\nPeak\nLatest\nPlot 1. Use left and right arrow keys to inspect values. Use the inspect observation control below to pin details.\nInspect observation\nSelect a point or use this list\u2026\nJanuary 1, 2023\nFebruary 1, 2023\nMarch 1, 2023\nApril 1, 2023\nMay 1, 2023\nJune 1, 2023\nJuly 1, 2023\nAugust 1, 2023\nSeptember 1, 2023\nOctober 1, 2023\nNovember 1, 2023\nDecember 1, 2023\nJanuary 1, 2024\nFebruary 1, 2024\nMarch 1, 2024\nApril 1, 2024\nMay 1, 2024\nJune 1, 2024\nJuly 1, 2024\nAugust 1, 2024\nSeptember 1, 2024\nOctober 1, 2024\nNovember 1, 2024\nDecember 1, 2024\nJanuary 1, 2025\nFebruary 1, 2025\nMarch 1, 2025\nApril 1, 2025\nMay 1, 2025\nJune 1, 2025\nJuly 1, 2025\nAugust 1, 2025\nSeptember 1, 2025\nOctober 1, 2025\nNovember 1, 2025\nDecember 1, 2025\nJanuary 1, 2026\nFebruary 1, 2026\nMarch 1, 2026\nApril 1, 2026\nMay 1, 2026\nJune 1, 2026\nJuly 1, 2026\nAugust 1, 2026\nSeptember 1, 2026\n\nJanuary 1, 2023 \u2013 September 1, 2026 \u00b7 45 plotted. Switch to Table for the saved data and SQL evidence.\n\nSQL & evidence\n1 source\nRead-only analysis\nWould you like the full monthly breakdown for all 45 months exported as a table?\nShould we calculate year-over-year growth rates across matching months?\nWould you like to examine average order value (AOV) or order volumes over this same period?",
+      "browser_errors": {
+        "errors": [],
+        "lifecycle": {
+          "effectiveLaunch": {
+            "browserLaunched": true,
+            "engine": "chrome",
+            "launchHash": 11677035664275010974
+          },
+          "launched": false,
+          "relaunchedBrowser": false,
+          "restartedBackground": false,
+          "restoreStatus": "not_configured",
+          "reused": true,
+          "saveStatus": "not_attempted"
+        }
+      }
+    },
+    {
+      "sample": "Actuals meet ambition",
+      "expected_source": "all",
+      "model": "default",
+      "viewport": {
+        "width": 1600,
+        "height": 1200
+      },
+      "checks": {
+        "four_cards_without_horizontal_overflow": true,
+        "advertised_source_used": true,
+        "exact_corrected_question_submitted": true,
+        "saved_preference_preserved": true
+      },
+      "layout": {
+        "cards": 4,
+        "overflow": false,
+        "width": 1600
+      },
+      "interaction": "Native card click",
+      "probe": {
+        "starts": [
+          {
+            "body": {
+              "source": "all"
+            },
+            "response": {
+              "id": "5f17782ba6354051832202f2d00357f0",
+              "source": "all",
+              "title": "New exploration"
+            }
+          }
+        ],
+        "turns": [
+          {
+            "body": {
+              "question": "Compare regional merchandise revenue with regional revenue targets across the complete months covered by both sources. Show actual revenue and target revenue in USD for each region. Actual revenue uses completed orders, after discounts and before refunds, tax and shipping."
+            },
+            "response": {
+              "events_url": "/api/v1/runs/e8916456cf351cf75927c343911cfb63/events",
+              "run_id": "e8916456cf351cf75927c343911cfb63",
+              "status": "running"
+            }
+          }
+        ]
+      },
+      "conversation_id": "5f17782ba6354051832202f2d00357f0",
+      "run_id": "e8916456cf351cf75927c343911cfb63",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/app?chat=5f17782ba6354051832202f2d00357f0",
+      "terminal_status": {
+        "status": "complete"
+      },
+      "rendered_text": "PUBLIC EXPLORATION\nCompare regional merchandise revenue with regional revenue targets across the complete mon\n\nBigQuery + PostgreSQL\n\u00b7\nSynthetic retail data\n\u00b7\nVisible to everyone\n\nGuest question\n\nCompare regional merchandise revenue with regional revenue targets across the complete months covered by both sources. Show actual revenue and target revenue in USD for each region. Actual revenue uses completed orders, after discounts and before refunds, tax and shipping.\n\nQuerylane\n\nAcross the complete months covered by both sources, actual merchandise revenue and targets by region are:\n\nEast: Actual Revenue = $88,442,586.77 | Target Revenue = $40,698,165.66\nNorth: Actual Revenue = $89,290,218.08 | Target Revenue = $40,698,165.66\nSouth: Actual Revenue = $88,888,411.61 | Target Revenue = $40,698,165.66\nWest: Actual Revenue = $87,803,895.74 | Target Revenue = $40,698,165.66\n\nTotal: Actual Revenue = $354,425,112.20 | Target Revenue = $162,792,662.64\n\nAssumptions & Join Details:\n\nActual revenue reflects completed orders after discounts and before refunds, tax, and shipping.\nBoth sources were queried independently without a shared transactional snapshot.\nThe join between actual revenue and full-month targets achieved a 1:1 match across all 4 regions with 0 unmatched keys.\nSkills used\nRegional target attainment\nv1 \u00b7 Automatic\nCross-source grain and join reconciliation\nv1 \u00b7 Automatic\nComparable-store and target performance\nv1 \u00b7 Automatic\nQUERY RESULT\nRevenue target comparison\nPin to dashboard\nBar\nBusiness metrics used \u00b7 saved definitions\nBigQuery\nPostgreSQL\n786 ms\n4 rows\nComplete inputs\n\nRelease verification merchandise revenue \u00b7 USD\n\nPrimary measure\nRelease verification merchandise revenue\nFull-month target\nOrder\nHighest first\nLowest first\nName A\u2013Z\nQuery order\nCategories\nTop 5\nTop 10\nTop 20\nReset\nExpand\nPNG\nCSV\nLeading category\n$89,290,218.08\nNorth\nShare of total\n25.2%\nNorth\nVariance to target\n+$48,592,052.42 \u00b7 +119.40%\nNorth\nRelease verification merchandise revenue\nFull-month target\nRelease verification merchandise revenue \u00b7 Full-month target \u00b7 USD\nNorth\nSouth\nEast\nWest\n$0\n$25M\n$50M\n$75M\n$89.3M\nPlot 1. Use left and right arrow keys to inspect values. Use the inspect observation control below to pin details.\nInspect observation\nSelect a point or use this list\u2026\nNorth\nSouth\nEast\nWest\n\n4 saved observations \u00b7 4 plotted. Switch to Table for the saved data and SQL evidence.\n\nInferred relationship \u00b7 one-to-one\n\nPublished actual revenue and full-month targets joined at identical month/region/store grain; independent source timestamps. Missing targets remain null.\n\n0 unmatched warehouse rows \u00b7 0 unmatched operations rows \u00b7 100% key coverage\nSQL & evidence\n2 sources\nRead-only analysis\nWould you like to see attainment percentages and dollar gaps for each region?\nWould you like a monthly breakdown of revenue versus targets for each region?\nWould you like to examine store-level performance within any specific region?",
+      "browser_errors": {
+        "errors": [],
+        "lifecycle": {
+          "effectiveLaunch": {
+            "browserLaunched": true,
+            "engine": "chrome",
+            "launchHash": 11677035664275010974
+          },
+          "launched": false,
+          "relaunchedBrowser": false,
+          "restartedBackground": false,
+          "restoreStatus": "not_configured",
+          "reused": true,
+          "saveStatus": "not_attempted"
+        }
+      }
+    },
+    {
+      "sample": "Know your customers",
+      "expected_source": "all",
+      "model": "default",
+      "viewport": {
+        "width": 390,
+        "height": 1200
+      },
+      "checks": {
+        "four_cards_without_horizontal_overflow": true,
+        "advertised_source_used": true,
+        "exact_corrected_question_submitted": true,
+        "saved_preference_preserved": true
+      },
+      "layout": {
+        "cards": 4,
+        "overflow": false,
+        "width": 390
+      },
+      "interaction": "Keyboard activation at mobile width",
+      "probe": {
+        "starts": [
+          {
+            "body": {
+              "source": "all"
+            },
+            "response": {
+              "id": "d3b66a62b6c94844bc2dce5d6ec7c96d",
+              "source": "all",
+              "title": "New exploration"
+            }
+          }
+        ],
+        "turns": [
+          {
+            "body": {
+              "question": "Use an ad hoc breakdown of merchandise revenue by customer segment across all available completed-order history. Revenue is after discounts and before refunds, tax and shipping. Connect sales to customer profiles by customer_id and show a bar chart in USD. This breakdown is not a published catalog definition."
+            },
+            "response": {
+              "events_url": "/api/v1/runs/9d3bbea437d9a984e5972820a2331fd7/events",
+              "run_id": "9d3bbea437d9a984e5972820a2331fd7",
+              "status": "running"
+            }
+          }
+        ]
+      },
+      "conversation_id": "d3b66a62b6c94844bc2dce5d6ec7c96d",
+      "run_id": "9d3bbea437d9a984e5972820a2331fd7",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/app?chat=d3b66a62b6c94844bc2dce5d6ec7c96d",
+      "terminal_status": {
+        "status": "complete"
+      },
+      "rendered_text": "PUBLIC EXPLORATION\nUse an ad hoc breakdown of merchandise revenue by customer segment across all available co\n\nBigQuery + PostgreSQL\n\u00b7\nSynthetic retail data\n\u00b7\nVisible to everyone\n\nGuest question\n\nUse an ad hoc breakdown of merchandise revenue by customer segment across all available completed-order history. Revenue is after discounts and before refunds, tax and shipping. Connect sales to customer profiles by customer_id and show a bar chart in USD. This breakdown is not a published catalog definition.\n\nQuerylane\n\nAcross all available completed-order history, total merchandise revenue (after discounts and before refunds, tax, and shipping) is $354,425,112.20 across two customer segments:\n\nReturning: $235,695,173.29\nNew: $118,729,938.91\n\nNotes & Assumptions:\n\nOrders were filtered to status = 'completed'.\nCustomer segment is a fixed synthetic customer profile attribute, not a point-in-time snapshot.\nData was aggregated by joining BigQuery completed orders to PostgreSQL customer profiles via customer_id (100% match on left order keys; sources were queried independently without a shared transactional snapshot).\n\nAutomatic skill selection is unavailable. Valid manual attachments are still applied.\n\nQUERY RESULT\nMerchandise Revenue by Customer Segment\nPin to dashboard\nBar\n\nAd hoc analysis \u2014 no published metric definition was captured.\n\nBigQuery\nPostgreSQL\n3,337 ms\n2 rows\nComplete inputs\n\nMerchandise Revenue \u00b7 USD\n\nOrder\nHighest first\nLowest first\nName A\u2013Z\nQuery order\nCategories\nTop 5\nTop 10\nTop 20\nReset\nExpand\nPNG\nCSV\nLeading category\n$235,695,173.29\nReturning\nShare of total\n66.5%\nReturning\nMerchandise Revenue \u00b7 USD\nReturning\nNew\n$0\n$60M\n$120M\n$180M\n$235.7M\nPlot 1. Use left and right arrow keys to inspect values. Use the inspect observation control below to pin details.\nInspect observation\nSelect a point or use this list\u2026\nReturning\nNew\n\n2 saved observations \u00b7 2 plotted. Switch to Table for the saved data and SQL evidence.\n\nInferred relationship \u00b7 one-to-one\n\nConnect BigQuery completed order revenue per customer_id to PostgreSQL customer profiles to calculate total revenue per segment.\n\n0 unmatched warehouse rows \u00b7 8 unmatched operations rows \u00b7 100% key coverage\nSQL & evidence\n2 sources\nWhat is the breakdown of order counts and average order value (AOV) across these customer segments?\nHow has merchandise revenue by customer segment trended over time (e.g., by year or quarter)?\nWhat products or merchandise categories drive the most revenue within the Returning segment?",
+      "browser_errors": {
+        "errors": [],
+        "lifecycle": {
+          "effectiveLaunch": {
+            "browserLaunched": true,
+            "engine": "chrome",
+            "launchHash": 11677035664275010974
+          },
+          "launched": false,
+          "relaunchedBrowser": false,
+          "restartedBackground": false,
+          "restoreStatus": "not_configured",
+          "reused": true,
+          "saveStatus": "not_attempted"
+        }
+      }
+    },
+    {
+      "sample": "Find what sells",
+      "expected_source": "bigquery",
+      "model": "default",
+      "viewport": {
+        "width": 1600,
+        "height": 1200
+      },
+      "checks": {
+        "four_cards_without_horizontal_overflow": true,
+        "advertised_source_used": true,
+        "exact_corrected_question_submitted": true,
+        "saved_preference_preserved": true
+      },
+      "layout": {
+        "cards": 4,
+        "overflow": false,
+        "width": 1600
+      },
+      "interaction": "Native card click",
+      "probe": {
+        "starts": [
+          {
+            "body": {
+              "source": "bigquery"
+            },
+            "response": {
+              "id": "0bb8e7474a354b59b393115a582adee2",
+              "source": "bigquery",
+              "title": "New exploration"
+            }
+          }
+        ],
+        "turns": [
+          {
+            "body": {
+              "question": "Break down merchandise revenue by product category across all available completed-order history as a bar chart in USD. Revenue is after discounts and before refunds, tax and shipping. Use line revenue for the category breakdown so order totals are not duplicated."
+            },
+            "response": {
+              "events_url": "/api/v1/runs/3cafc376861c8e10c525de2d63fc4590/events",
+              "run_id": "3cafc376861c8e10c525de2d63fc4590",
+              "status": "running"
+            }
+          }
+        ]
+      },
+      "conversation_id": "0bb8e7474a354b59b393115a582adee2",
+      "run_id": "3cafc376861c8e10c525de2d63fc4590",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/app?chat=0bb8e7474a354b59b393115a582adee2",
+      "terminal_status": {
+        "status": "complete"
+      },
+      "rendered_text": "PUBLIC EXPLORATION\nBreak down merchandise revenue by product category across all available completed-order hi\n\nBigQuery\n\u00b7\nSynthetic retail data\n\u00b7\nVisible to everyone\n\nGuest question\n\nBreak down merchandise revenue by product category across all available completed-order history as a bar chart in USD. Revenue is after discounts and before refunds, tax and shipping. Use line revenue for the category breakdown so order totals are not duplicated.\n\nQuerylane\n\nAcross all available completed-order history, total merchandise line revenue sums to $354,425,112.20 across all 8 product categories. Revenue is reported in USD, after discounts and before refunds, tax, and shipping.\n\nMerchandise revenue breakdown by category (ranked by revenue):\n\nElectronics: $57,440,129.82\nToys: $45,404,198.16\nBeauty: $44,920,824.97\nOutdoor: $43,235,847.95\nApparel: $41,945,735.12\nFootwear: $40,690,377.20\nAccessories: $40,465,705.77\nHome: $40,322,293.21\nSkills used\nProduct and category performance\nv1 \u00b7 Automatic\nRetail KPI definitions and weighted ratios\nv1 \u00b7 Automatic\nQUERY RESULT\nPublished business metrics\nPin to dashboard\nBar\nBusiness metrics used \u00b7 saved definitions\nBigQuery\n808 ms\n8 rows\nComplete inputs\n\nRelease verification merchandise revenue \u00b7 USD\n\nOrder\nHighest first\nLowest first\nName A\u2013Z\nQuery order\nCategories\nTop 5\nTop 10\nTop 20\nReset\nExpand\nPNG\nCSV\nLeading category\n$57,440,129.82\nElectronics\nShare of total\n16.2%\nElectronics\nRelease verification merchandise revenue \u00b7 USD\nElectronics\nToys\nBeauty\nOutdoor\nApparel\nAccessories\nHome\n$0\n$15M\n$30M\n$45M\n$57.4M\nPlot 1. Use left and right arrow keys to inspect values. Use the inspect observation control below to pin details.\nInspect observation\nSelect a point or use this list\u2026\nElectronics\nToys\nBeauty\nOutdoor\nApparel\nFootwear\nAccessories\nHome\n\n8 saved observations \u00b7 8 plotted. Switch to Table for the saved data and SQL evidence.\n\nSQL & evidence\n1 source\nRead-only analysis\nWhat is the percentage revenue share for each product category?\nHow do these categories rank by total units sold?\nWhat is the category merchandise revenue breakdown broken down by year or quarter?",
+      "browser_errors": {
+        "errors": [],
+        "lifecycle": {
+          "effectiveLaunch": {
+            "browserLaunched": true,
+            "engine": "chrome",
+            "launchHash": 11677035664275010974
+          },
+          "launched": false,
+          "relaunchedBrowser": false,
+          "restartedBackground": false,
+          "restoreStatus": "not_configured",
+          "reused": true,
+          "saveStatus": "not_attempted"
+        }
+      }
+    }
+  ],
+  "screenshots": [
+    "sample-questions-release-20261020-desktop.png",
+    "sample-questions-release-20261020-mobile.png",
+    "sample-questions-release-20261020-regional-result.png",
+    "sample-questions-release-20261020-segment-result-mobile.png"
+  ],
+  "limits": [
+    "Chromium desktop and emulated mobile widths; no physical device, full screen-reader, Safari or Firefox test",
+    "Four real default-model analyses, one activation each; no repeated fresh retry or silent model replacement",
+    "Opening the test workspace creates ordinary guest credentials; no physical microphone access or new report/forecast inference"
+  ]
+}
