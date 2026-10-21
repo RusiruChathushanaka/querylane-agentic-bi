@@ -27,3 +27,7 @@ docs/deployment.json
 **/package-lock.json
 **/uv.lock
 skills-lock.json
+
+# Submission media and organizer documents stay outside the code map.
+Submision/
+Submission/

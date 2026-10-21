@@ -1,5 +1,6 @@
 "use client";
 
+import { AppSelect, AppSelectItem } from "@/components/ui/app-select";
 import Link from "next/link";
 import { usePendingRequest } from "@/hooks/use-pending-request";
 import { useUnsavedNavigation } from "@/hooks/use-unsaved-navigation";
@@ -314,10 +315,10 @@ export function MetricsWorkspace({ id }: { id?: string }) {
           ? "Left metric / numerator"
           : "Right metric / denominator"}
       </span>
-      <select
+      <AppSelect
         value={draft?.formula[side]?.id ?? ""}
-        onChange={(e) => {
-          const m = metrics.find((v) => v.id === e.target.value);
+        onValueChange={(selectedValue) => {
+          const m = metrics.find((v) => v.id === selectedValue);
           if (draft)
             update({
               formula: {
@@ -332,17 +333,17 @@ export function MetricsWorkspace({ id }: { id?: string }) {
             });
         }}
       >
-        <option value="">Choose a published metric</option>
+        <AppSelectItem value="">Choose a published metric</AppSelectItem>
         {metrics
           .filter(
             (m) => m.published_version && !m.archived && m.id !== selected?.id,
           )
           .map((m) => (
-            <option key={m.id} value={m.id}>
+            <AppSelectItem key={m.id} value={String(m.id)}>
               {m.name} · v{m.published_version}
-            </option>
+            </AppSelectItem>
           ))}
-      </select>
+      </AppSelect>
     </label>
   );
   return (
@@ -442,19 +443,19 @@ export function MetricsWorkspace({ id }: { id?: string }) {
               </label>
               <label className="bi-field">
                 <span>Calculation</span>
-                <select
+                <AppSelect
                   value={
                     draft.formula.operation === "ratio" ||
                     draft.formula.operation === "subtract"
                       ? draft.formula.operation
                       : "measure"
                   }
-                  onChange={(e) =>
-                    e.target.value === "measure"
+                  onValueChange={(selectedValue) =>
+                    selectedValue === "measure"
                       ? chooseMeasure("revenue")
                       : update({
                           formula: {
-                            operation: e.target.value as "ratio" | "subtract",
+                            operation: selectedValue as "ratio" | "subtract",
                             measure: null,
                             left: null,
                             right: null,
@@ -462,22 +463,28 @@ export function MetricsWorkspace({ id }: { id?: string }) {
                         })
                   }
                 >
-                  <option value="measure">Approved source measure</option>
-                  <option value="subtract">Difference</option>
-                  <option value="ratio">Ratio</option>
-                </select>
+                  <AppSelectItem value="measure">
+                    Approved source measure
+                  </AppSelectItem>
+                  <AppSelectItem value="subtract">Difference</AppSelectItem>
+                  <AppSelectItem value="ratio">Ratio</AppSelectItem>
+                </AppSelect>
               </label>
               {draft.formula.measure ? (
                 <label className="bi-field">
                   <span>Measure</span>
-                  <select
+                  <AppSelect
                     value={draft.formula.measure}
-                    onChange={(e) => chooseMeasure(e.target.value)}
+                    onValueChange={(selectedValue) =>
+                      chooseMeasure(selectedValue)
+                    }
                   >
                     {bindings.map((v) => (
-                      <option key={v}>{v}</option>
+                      <AppSelectItem value={String(v)} key={v}>
+                        {v}
+                      </AppSelectItem>
                     ))}
-                  </select>
+                  </AppSelect>
                 </label>
               ) : (
                 <>
@@ -488,33 +495,35 @@ export function MetricsWorkspace({ id }: { id?: string }) {
               )}
               <label className="bi-field">
                 <span>Time basis</span>
-                <select
+                <AppSelect
                   value={draft.time_basis}
-                  onChange={(e) =>
+                  onValueChange={(selectedValue) =>
                     update({
-                      time_basis: e.target
-                        .value as MetricDefinition["time_basis"],
+                      time_basis:
+                        selectedValue as MetricDefinition["time_basis"],
                     })
                   }
                 >
-                  <option value="order_date">Order date</option>
-                  <option value="refund_date">
+                  <AppSelectItem value="order_date">Order date</AppSelectItem>
+                  <AppSelectItem value="refund_date">
                     Refund-date reporting calendar
-                  </option>
-                </select>
+                  </AppSelectItem>
+                </AppSelect>
               </label>
               <label className="bi-field">
                 <span>Units</span>
-                <select
+                <AppSelect
                   value={draft.unit}
-                  onChange={(e) =>
-                    update({ unit: e.target.value as MetricDefinition["unit"] })
+                  onValueChange={(selectedValue) =>
+                    update({ unit: selectedValue as MetricDefinition["unit"] })
                   }
                 >
                   {["currency", "count", "percent", "number"].map((v) => (
-                    <option key={v}>{v}</option>
+                    <AppSelectItem value={String(v)} key={v}>
+                      {v}
+                    </AppSelectItem>
                   ))}
-                </select>
+                </AppSelect>
               </label>
               <fieldset className="bi-wide">
                 <legend>Supported breakdowns</legend>
@@ -680,12 +689,13 @@ export function MetricsWorkspace({ id }: { id?: string }) {
                 )}
                 <label className="bi-field">
                   <span>Inspect immutable version</span>
-                  <select
+                  <AppSelect
+                    key={selected.id}
                     defaultValue=""
-                    onChange={(e) => {
-                      if (e.target.value)
+                    onValueChange={(selectedValue) => {
+                      if (selectedValue)
                         void api(
-                          `/metrics/${selected.id}/revisions/${e.target.value}`,
+                          `/metrics/${selected.id}/revisions/${selectedValue}`,
                         )
                           .then((v) =>
                             setHistorical(JSON.stringify(v, null, 2)),
@@ -693,16 +703,16 @@ export function MetricsWorkspace({ id }: { id?: string }) {
                           .catch((e) => setError(e.message));
                     }}
                   >
-                    <option value="">Choose version</option>
+                    <AppSelectItem value="">Choose version</AppSelectItem>
                     {Array.from(
                       { length: selected.published_version },
                       (_, i) => (
-                        <option key={i} value={i + 1}>
+                        <AppSelectItem key={i} value={String(i + 1)}>
                           Version {i + 1}
-                        </option>
+                        </AppSelectItem>
                       ),
                     )}
-                  </select>
+                  </AppSelect>
                 </label>
                 {historical && (
                   <pre
@@ -730,10 +740,13 @@ export function MetricsWorkspace({ id }: { id?: string }) {
           </label>
           <label className="bi-field">
             <span>State</span>
-            <select value={filter} onChange={(e) => setFilter(e.target.value)}>
-              <option value="active">Active metrics</option>
-              <option value="archived">Archived</option>
-            </select>
+            <AppSelect
+              value={filter}
+              onValueChange={(selectedValue) => setFilter(selectedValue)}
+            >
+              <AppSelectItem value="active">Active metrics</AppSelectItem>
+              <AppSelectItem value="archived">Archived</AppSelectItem>
+            </AppSelect>
           </label>
           <Button
             variant="outline"

@@ -292,7 +292,7 @@
   border-bottom: 1px solid var(--border);
   padding: 16px 0;
 }
-.report-toolbar select {
+.report-toolbar :is(select, [data-slot="select-trigger"]) {
   max-width: 160px;
 }
 .report-dialog-form {
@@ -304,9 +304,9 @@
   gap: 8px;
   font-size: 13px;
 }
-.report-dialog-form select,
-.report-filter select,
-.report-toolbar select {
+.report-dialog-form :is(select, [data-slot="select-trigger"]),
+.report-filter :is(select, [data-slot="select-trigger"]),
+.report-toolbar :is(select, [data-slot="select-trigger"]) {
   padding: 9px 12px;
   background: var(--card);
   border: 1px solid var(--border);
@@ -371,7 +371,7 @@
 :where(
   .reports-page a,
   .reports-page button,
-  .reports-page select,
+  .reports-page :is(select, [data-slot="select-trigger"]),
   .reports-page textarea,
   .reports-page summary,
   .conversation-reports a
@@ -396,4 +396,310 @@
   gap: 6px;
   margin: 12px 0;
   overflow-wrap: anywhere;
+}
+
+/* Report briefing: scoped to saved report pages, never workspace charts. */
+.reports-hero > div:first-child {
+  min-width: 0;
+  flex: 1;
+}
+.reports-hero h1 {
+  max-width: 940px;
+  overflow-wrap: anywhere;
+  font-size: clamp(28px, 3.4vw, 42px);
+}
+.report-request {
+  margin-top: 16px;
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+.report-request summary,
+.report-document summary {
+  cursor: pointer;
+  font-weight: 600;
+  padding: 8px 0;
+}
+.report-request p {
+  margin: 12px 0;
+}
+.report-request a {
+  text-decoration: underline;
+}
+.report-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
+  margin: 24px 0;
+}
+.report-facts > div {
+  min-width: 0;
+  padding-inline-start: 14px;
+  border-inline-start: 2px solid var(--border);
+}
+.report-facts dt {
+  font-size: 11px;
+  color: var(--muted-foreground);
+  margin-bottom: 6px;
+}
+.report-facts dd {
+  font-size: 13px;
+  line-height: 1.6;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.report-layout {
+  grid-template-columns: 190px minmax(0, 1fr);
+  gap: 28px;
+  align-items: start;
+}
+.report-outline a[aria-current="location"] {
+  border-color: var(--primary);
+  color: var(--foreground);
+  background: var(--accent);
+  border-radius: 0 6px 6px 0;
+}
+.report-section {
+  border: 1px solid color-mix(in oklab, var(--border) 78%, var(--foreground));
+  border-radius: 18px;
+  padding: clamp(18px, 2.5vw, 30px);
+  margin-bottom: 28px;
+  background: var(--card);
+  overflow-wrap: anywhere;
+}
+.report-section .markdown-content {
+  font-size: 14px;
+  line-height: 1.85;
+  max-width: 78ch;
+}
+.report-section .markdown-content p,
+.report-section .markdown-content ul {
+  margin-block: 14px;
+}
+.report-section > h2 {
+  font-size: clamp(19px, 2vw, 23px);
+  line-height: 1.4;
+}
+.report-executive {
+  border-top: 3px solid var(--primary);
+}
+.report-summary {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+.report-highlights {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+  gap: 12px;
+  margin-top: 24px;
+}
+.report-highlights > div {
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  min-width: 0;
+}
+.report-highlights dt {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.report-highlights dd {
+  font: 600 clamp(20px, 2.3vw, 27px)/1.4 var(--font-manrope);
+  margin-top: 8px;
+  overflow-wrap: anywhere;
+}
+.report-highlights details {
+  font-size: 11px;
+  line-height: 1.7;
+}
+.report-section-recommendation {
+  border-inline-start: 3px solid var(--primary);
+}
+.report-result-section {
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-top: 24px;
+  padding: clamp(12px, 1.6vw, 20px);
+  background: var(--background);
+}
+.report-result-section .result-card {
+  margin: 0;
+  border: 0;
+  box-shadow: none;
+  background: transparent;
+  min-width: 0;
+}
+.report-result-section .result-card > [data-slot="card-header"] {
+  padding: 16px 0;
+}
+.report-result-section .result-card > [data-slot="card-content"] {
+  padding: 12px 0;
+}
+.report-prediction {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 18px;
+  margin-bottom: 8px;
+  font-size: 12px;
+  line-height: 1.8;
+}
+.report-prediction .report-facts {
+  margin: 12px 0;
+}
+.report-prediction-caveat {
+  border-inline-start: 3px solid var(--primary);
+  padding: 8px 12px;
+  margin-top: 12px;
+}
+.report-scenario-assumptions {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  margin-top: 12px;
+}
+.report-scenario-assumptions pre {
+  max-height: 240px;
+  overflow: auto;
+  white-space: pre;
+  font-family: var(--font-plex-mono);
+}
+.report-comparison-scroll {
+  overflow: auto;
+}
+.report-comparison-scroll table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.report-comparison-scroll caption {
+  text-align: start;
+  padding-block: 12px;
+  color: var(--muted-foreground);
+}
+.report-comparison-scroll th,
+.report-comparison-scroll td {
+  padding: 10px;
+  border-bottom: 1px solid var(--border);
+  text-align: start;
+}
+.report-comparison-scroll td {
+  font-variant-numeric: tabular-nums;
+}
+.report-comparison-scroll tbody tr:nth-child(even) {
+  background: var(--card);
+}
+.report-source-times {
+  margin-block: 20px;
+  font-size: 12px;
+  line-height: 1.8;
+}
+.report-source-times li {
+  margin-bottom: 12px;
+}
+.report-library-overview {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+.report-library-overview > div {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px;
+  display: grid;
+  gap: 8px;
+}
+.report-library-overview strong {
+  font: 600 26px var(--font-manrope);
+}
+.report-library-overview span {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 1.5;
+}
+.report-library-card {
+  border-color: color-mix(in oklab, var(--border) 78%, var(--foreground));
+  gap: 14px;
+}
+.report-library-actions {
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+}
+.report-mobile-outline {
+  display: none;
+}
+@media (max-width: 760px) {
+  .report-layout {
+    display: block;
+  }
+  .report-outline {
+    display: none;
+  }
+  .report-mobile-outline {
+    display: grid;
+    gap: 8px;
+    margin: 24px 0;
+    font-size: 12px;
+  }
+  .report-mobile-outline :is(select, [data-slot="select-trigger"]) {
+    width: 100%;
+    min-width: 0;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--card);
+  }
+  .report-toolbar {
+    gap: 10px;
+  }
+  .report-toolbar .grow {
+    display: none;
+  }
+  .report-library-overview {
+    gap: 8px;
+  }
+  .report-library-overview > div {
+    padding: 12px;
+  }
+  .report-library-overview strong {
+    font-size: 22px;
+  }
+}
+@media (max-width: 390px) {
+  .reports-main {
+    padding-inline: 12px;
+  }
+  .report-section {
+    padding: 16px;
+  }
+  .report-result-section {
+    padding: 10px;
+  }
+  .report-filter > input,
+  .report-filter > :is(select, [data-slot="select-trigger"]) {
+    width: 100%;
+    max-width: none;
+  }
+}
+.report-section:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 4px;
+}
+.report-scenario-paths {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 12px;
+  margin-block: 16px;
+}
+.report-scenario-paths > div {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+}
+@media (min-width: 761px) {
+  .report-filter > [data-slot="select-trigger"] {
+    width: auto;
+    min-width: 150px;
+  }
 }

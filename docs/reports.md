@@ -51,6 +51,24 @@ The same immutable report document drives web, PDF (ReportLab), Word (python-doc
 
 Files use immutable names, checksums and exclusive creation. Production uses a dedicated private bucket; backend download endpoints mediate reads. Local exports go to ignored `.reports/` (or `REPORT_LOCAL_DIRECTORY`). Rendering/fitting run in terminable child processes. PDF text is selectable and Word uses real headings/tables; PDF/UA certification is not claimed.
 
+## Report presentation
+
+The library groups public reports into bordered cards with ready/in-progress counts, status labels and local name/date sorting. Search and filters read saved metadata only. The reader uses the immutable document title; the editable library name and source conversation remain available in a disclosure. Renaming the library entry does not rewrite a saved document.
+
+Each narrative section and chart has its own theme-aware border and padding. Verified-highlight cards show up to three saved numerical claims, excluding row-count and dimension-label diagnostics; values and calculations are never regenerated for display. Unicode bullet lines are displayed as semantic lists without changing stored Markdown. Desktop navigation highlights the current section; the mobile section selector moves keyboard focus to its destination. Source timestamps remain independent, not a synchronized-snapshot claim.
+
+Forecast overviews retain cutoff, horizon, method, Preview status and interval limitations. Candidate tables show saved MAE/RMSE and selection outcomes, not accuracy percentages. Scenario panels distinguish baseline and alternative paths and show the full saved future-driver assumptions. Allocated estimates and planning adjustments remain explicitly labeled. Technical provenance is available in a disclosure; the shared result card keeps its existing evidence panel by default outside the report reader.
+
+Newly rendered PDF/Word files use an A4 briefing layout, an executive opening, formatted tables, chart captions, headers/footers, numbered sections and a technical appendix. Reports with four or more sections include contents: clickable page references/bookmarks in PDF, internal links and normal heading navigation in Word. PDF embeds fonts packaged with Matplotlib; Word uses editable Arial styles. Tables repeat headers and preview at most 20 rows/eight columns; long text cells are abbreviated. Saved future point estimates receive a separate complete horizon table, so a historical preview cannot hide the forecast. Full-precision data is retained separately. ReportLab and Word paginate independently, so page counts may differ. These are selectable-text documents, not a PDF/UA or screen-reader certification.
+
+Forecast diagnostics use structured method, score, fold and assumption tables instead of raw JSON in human-readable documents. Units and currency are taken only from saved metadata. Static chart colors and cutoff annotations match the report identity; mixed units remain separate. Uncertainty and synthetic-data caveats stay visible.
+
+The data ZIP preserves existing artifact-ID CSV filenames, row values, provenance, predictions and checksums. Additive `README.md`, `data_dictionary.csv`, `report.json` and dataset titles make the bundle easier to navigate. `manifest.json` records `presentation_version: 2`; consumers should continue using its dataset entries rather than treating every CSV in the archive as an analytical dataset. Individual result CSV downloads retain their existing full-row contract.
+
+**Compatibility:** existing persisted files are never overwritten or restyled during reads/downloads. The new renderer applies when a new version is published. A presentation revision can reuse saved analysis to create a newly styled version through the existing reviewed workflow; it may still use the report writer, but executes no new source SQL or forecast inference. Rendering and downloads themselves execute no model calls. Large-file deadlines, immutable storage checks and recovery checkpoints are unchanged.
+
+See [local design verification](evaluation/report-design-local-20261021.md). This documents local implementation, not a Cloud Run release.
+
 ## Optional external research
 
 Set `REPORT_RESEARCH_ENABLED=true` only after verifying the selected Vertex model and required display behavior. The opt-in Research panel uses a separate Search-only ADK agent with in-memory sessions and curated public retail topics. No database rows, schema, conversation, or free-form private question enter Search. The original response, grounding links and supplied Search Suggestions stay in the requesting browser component and disappear on navigation/clear; none feed report writing, shared history or exports. Search invocations are limited to three per guest/day and twelve workspace/day; one invocation can issue multiple billable searches.
@@ -84,3 +102,5 @@ PYTHONPATH=. uv run python scripts/smoke_reports.py --gemini --output ../docs/ev
 ```
 
 The helper explicitly uses memory storage and the existing generated Parquet bundle. It cannot deploy, upload data, invoke production report dispatch, or persist Search responses. Use `--model gemini-3.5-flash-lite` to check the second configured text model.
+
+The [21 October hosted release](evaluation/report-dropdown-release-20261021.md) verifies forecast version 3 and scenario version 2 through private-worker presentation revisions. Their PDF, Word and ZIP files use the new design; previous versions retain their original bytes. All 45 future point values match the saved evidence. Report version/style/mode/model filters, mobile section navigation and chart controls now share bounded, keyboard-operable Radix dropdowns with the rest of the application.

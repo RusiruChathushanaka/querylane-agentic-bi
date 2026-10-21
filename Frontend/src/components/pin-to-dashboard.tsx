@@ -1,5 +1,6 @@
 "use client";
 
+import { AppSelect, AppSelectItem } from "@/components/ui/app-select";
 import "@/app/dashboards.css";
 
 import Link from "next/link";
@@ -243,17 +244,17 @@ export function PinToDashboard({
             ) : (
               <Field>
                 <FieldLabel htmlFor="pin-dashboard">Dashboard</FieldLabel>
-                <select
+                <AppSelect
                   id="pin-dashboard"
                   className="dashboard-native-select"
                   value={selected}
-                  onChange={(e) => {
-                    setSelected(e.target.value);
+                  onValueChange={(selectedValue) => {
+                    setSelected(selectedValue);
                     setError("");
                     setDuplicate(false);
                   }}
                 >
-                  <option value="">Choose a dashboard…</option>
+                  <AppSelectItem value="">Choose a dashboard…</AppSelectItem>
                   {boards
                     .filter((b) =>
                       `${b.name} ${b.description}`
@@ -261,16 +262,16 @@ export function PinToDashboard({
                         .includes(query.toLowerCase()),
                     )
                     .map((b) => (
-                      <option key={b.id} value={b.id}>
+                      <AppSelectItem key={b.id} value={String(b.id)}>
                         {b.name} · {b.card_count}{" "}
                         {b.card_count === 1 ? "card" : "cards"}
                         {boards.filter((other) => other.name === b.name)
                           .length > 1
                           ? ` · ${b.id.slice(0, 6)}`
                           : ""}
-                      </option>
+                      </AppSelectItem>
                     ))}
-                </select>
+                </AppSelect>
                 {!boards.length && (
                   <p>
                     Create your first dashboard below. It will be visible to

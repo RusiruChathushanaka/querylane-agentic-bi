@@ -87,7 +87,7 @@
   font-weight: 600;
 }
 .bi-field input,
-.bi-field select,
+.bi-field :is(select, [data-slot="select-trigger"]),
 .bi-field textarea,
 .bi-select {
   min-height: 2.6rem;
@@ -265,7 +265,17 @@
   flex-wrap: wrap;
   margin-top: 1rem;
 }
-.bi-main :is(button, a, input, select, textarea, summary, pre, [role="region"]):focus-visible {
+.bi-main
+  :is(
+    button,
+    a,
+    input,
+    :is(select, [data-slot="select-trigger"]),
+    textarea,
+    summary,
+    pre,
+    [role="region"]
+  ):focus-visible {
   outline: 2px solid var(--ring);
   outline-offset: 3px;
 }

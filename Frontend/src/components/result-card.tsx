@@ -80,10 +80,12 @@ export default function ResultCard({
   initialState,
   onCapture,
   allowPin = true,
+  showPredictionEvidence = true,
 }: {
   initialState?: ChartViewState;
   onCapture?: (capture: ChartCapture) => void;
   allowPin?: boolean;
+  showPredictionEvidence?: boolean;
   artifact: Artifact;
   onExplore?: (question: string) => void;
 }) {
@@ -242,7 +244,7 @@ export default function ResultCard({
             </SelectContent>
           </Select>
         </div>
-        {artifact.prediction && <PredictionEvidence prediction={artifact.prediction} artifactId={artifact.id} reportId={artifact.report_id} reportVersion={artifact.report_version} />}
+        {showPredictionEvidence && artifact.prediction && <PredictionEvidence prediction={artifact.prediction} artifactId={artifact.id} reportId={artifact.report_id} reportVersion={artifact.report_version} />}
         <MetricEvidence metrics={artifact.metric_snapshots ?? []} />
         {artifact.metric_resolution === "ad_hoc" && <p className="text-xs text-muted-foreground">Ad hoc analysis — no published metric definition was captured.</p>}
         {artifact.forecast_plan_id && <a className="underline" href={`/forecast-plans/${artifact.forecast_plan_id}?version=${artifact.forecast_plan_version}`}>Forecast plan version {artifact.forecast_plan_version}</a>}

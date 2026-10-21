@@ -1,0 +1,157 @@
+{
+  "verification_date": "2026-10-21",
+  "scope": "Local report presentation implementation; not deployed or published to GitHub",
+  "source_reports": [
+    {
+      "kind": "forecast",
+      "source_report": "9ef66a621f51ebe08d597f8380fecb18",
+      "source_version": 1,
+      "pdf_pages": 10,
+      "future_values_verified": 3,
+      "files": {
+        "pdf": {
+          "bytes": 154943,
+          "sha256": "79c48e8a0dd10d2978b8b1dfd8ac852f949a8e89a9949f650d701e9f9855cee8"
+        },
+        "docx": {
+          "bytes": 129655,
+          "sha256": "e7b10dc11b4b86561f2a5a3c6c5f7c51b6995ac69a31712a16dbe3fb2d3ae5e9"
+        },
+        "data": {
+          "bytes": 10088,
+          "sha256": "9013b267d035d136f3b4e6ee7cf42a7e58d15f05b8dac885980c14bfcbcfd1f3"
+        }
+      },
+      "checks": {
+        "all_future_points_match_pdf_and_word": true,
+        "full_row_csv_counts": true,
+        "csv_checksums": true,
+        "provenance_and_prediction_unchanged": true,
+        "saved_document_json_unchanged": true,
+        "pdf_bookmarks": true,
+        "word_page_field": true,
+        "cutoff_labels": true
+      }
+    },
+    {
+      "kind": "scenario",
+      "source_report": "e4112a63cba9d6886594cb89988ac4c5",
+      "source_version": 1,
+      "pdf_pages": 17,
+      "future_values_verified": 42,
+      "files": {
+        "pdf": {
+          "bytes": 409924,
+          "sha256": "05c2b5393d572f60f8eb05aec3a6f7d1eda8d021d52458010e1336d071d363ab"
+        },
+        "docx": {
+          "bytes": 347560,
+          "sha256": "3fc8143bf0a1a9e0f4ea2d04962942a747130d0af749c31b34b12441d6662de6"
+        },
+        "data": {
+          "bytes": 44727,
+          "sha256": "9badaa5ca94f958a3071a46868d1c25b336cbbeec351aaba9e15ffb9bba14a66"
+        }
+      },
+      "checks": {
+        "all_future_points_match_pdf_and_word": true,
+        "full_row_csv_counts": true,
+        "csv_checksums": true,
+        "provenance_and_prediction_unchanged": true,
+        "saved_document_json_unchanged": true,
+        "pdf_bookmarks": true,
+        "word_page_field": true,
+        "cutoff_labels": true
+      }
+    }
+  ],
+  "download_checks": [
+    {
+      "report": "forecast",
+      "format": "pdf",
+      "saved_download_matches_rendered_file": true
+    },
+    {
+      "report": "forecast",
+      "format": "docx",
+      "saved_download_matches_rendered_file": true
+    },
+    {
+      "report": "forecast",
+      "format": "data",
+      "saved_download_matches_rendered_file": true
+    },
+    {
+      "report": "scenario",
+      "format": "pdf",
+      "saved_download_matches_rendered_file": true
+    },
+    {
+      "report": "scenario",
+      "format": "docx",
+      "saved_download_matches_rendered_file": true
+    },
+    {
+      "report": "scenario",
+      "format": "data",
+      "saved_download_matches_rendered_file": true
+    }
+  ],
+  "original_download_copy_matches_captured_checksum": true,
+  "browser_checks": {
+    "desktop_1280_no_overflow": true,
+    "section_borders_and_padding": true,
+    "active_desktop_outline": true,
+    "mobile_390_no_overflow": true,
+    "mobile_320_no_overflow": true,
+    "mobile_jump_moves_section_focus": true,
+    "candidate_table_caption_and_scroll_region": true,
+    "light_and_dark_styles_inspected": true,
+    "library_search_empty_state": true,
+    "library_sort_and_status_filter": true,
+    "scenario_assumption_panels": true,
+    "independent_source_timestamps": true,
+    "pdf_browser_download": true,
+    "reader_error_logs_empty": true
+  },
+  "engineering": {
+    "backend_passed": 446,
+    "backend_existing_skips": 1,
+    "frontend_passed": 61,
+    "ruff": "passed",
+    "eslint": "passed",
+    "typescript": "passed",
+    "production_build": "passed"
+  },
+  "rendered_pages": {
+    "pdf_forecast": 10,
+    "pdf_scenario": 17,
+    "word_forecast": 9,
+    "word_scenario": 15
+  },
+  "source_sha256": {
+    "Backend/app/report_exports.py": "9807c3a562b3309cedc0713bfc4dc2d7f6d9077e297732972be39bbb64ab9440",
+    "Frontend/src/app/reports.css": "63f8377ea1c48c7abcbf4361ca20fca5c7c0056ac32405494eaacf45f7e187fd",
+    "Frontend/src/components/report-workspace.tsx": "ff3d8394bf9b820fecfa2188e49601c0e995b1f1d368d8c2ac20b2cb7adcc6c4",
+    "Frontend/src/components/reports-library.tsx": "ba2a87ed1149db8a7fd3383d7d607357529ec142afc5fe8af5e1d4f2871b7564",
+    "Frontend/src/components/result-card.tsx": "02f36504820c2bfbf804ada44e8d9584ec9b2b8e74579bae00f92511a6ab9511",
+    "Backend/tests/test_report_presentation.py": "3486a3e31a56c72da756dd7ee46372b2330e5c1b855a05010e98b4d732387df9",
+    "Frontend/tests/report-presentation.test.mjs": "3e2387a43e74c0e463fc0521834b667514637cc5061c9e1042660d0be7b7ac21"
+  },
+  "preservation": {
+    "hosted_mutations": false,
+    "new_sql_or_inference": false,
+    "analytical_upload_or_seeding": false,
+    "quota_or_history_reset": false,
+    "dataset_settings_changed": false,
+    "timesfm_settings_changed": false,
+    "submission_folder_changed": false
+  },
+  "limitations": [
+    "Responsive viewports are emulated; physical mobile devices were not tested.",
+    "Basic keyboard checks are not a full screen-reader or accessibility certification.",
+    "PDFs have selectable text and bookmarks but are not PDF/UA tagged.",
+    "PDF and Word paginate independently.",
+    "Cloud Run deployment and GitHub publication were not performed."
+  ]
+}

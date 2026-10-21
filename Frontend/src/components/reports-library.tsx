@@ -1,4 +1,6 @@
 "use client";
+
+import { AppSelect, AppSelectItem } from "@/components/ui/app-select";
 import Link from "next/link";
 import { workspacePath } from "@/lib/workspace-links";
 import { useCallback, useEffect, useState } from "react";
@@ -25,6 +27,7 @@ export function ReportsLibrary() {
   const [deleted, setDeleted] = useState(false);
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState("all");
+  const [sort, setSort] = useState("updated");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState("");
@@ -143,6 +146,30 @@ export function ReportsLibrary() {
           reports. Versions preserve their original evidence. Opening a report
           runs no new queries.
         </div>
+        <div className="report-library-overview" aria-label="Reports overview">
+          <div>
+            <strong>{reports.length}</strong>
+            <span>{deleted ? "Recoverable reports" : "Public reports"}</span>
+          </div>
+          <div>
+            <strong>
+              {reports.filter((report) => report.status === "complete").length}
+            </strong>
+            <span>Ready to read</span>
+          </div>
+          <div>
+            <strong>
+              {
+                reports.filter((report) =>
+                  ["running", "queued", "waiting_input"].includes(
+                    report.status,
+                  ),
+                ).length
+              }
+            </strong>
+            <span>In progress / awaiting input</span>
+          </div>
+        </div>
         <div className="report-filter">
           <Input
             aria-label="Search public reports"
@@ -150,19 +177,30 @@ export function ReportsLibrary() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
-          <select
+          <AppSelect
             aria-label="Filter report status"
             value={filter}
-            onChange={(e) => setFilter(e.target.value)}
+            onValueChange={(selectedValue) => setFilter(selectedValue)}
           >
-            <option value="all">All statuses</option>
-            <option value="complete">Ready</option>
-            <option value="running">Analyzing</option>
-            <option value="queued">Queued</option>
-            <option value="waiting_input">Needs information</option>
-            <option value="failed">Failed</option>
-            <option value="cancelled">Cancelled</option>
-          </select>
+            <AppSelectItem value="all">All statuses</AppSelectItem>
+            <AppSelectItem value="complete">Ready</AppSelectItem>
+            <AppSelectItem value="running">Analyzing</AppSelectItem>
+            <AppSelectItem value="queued">Queued</AppSelectItem>
+            <AppSelectItem value="waiting_input">
+              Needs information
+            </AppSelectItem>
+            <AppSelectItem value="failed">Failed</AppSelectItem>
+            <AppSelectItem value="cancelled">Cancelled</AppSelectItem>
+          </AppSelect>
+          <AppSelect
+            aria-label="Sort reports"
+            value={sort}
+            onValueChange={(selectedValue) => setSort(selectedValue)}
+          >
+            <AppSelectItem value="updated">Recently updated</AppSelectItem>
+            <AppSelectItem value="name">Name A–Z</AppSelectItem>
+            <AppSelectItem value="created">Newest created</AppSelectItem>
+          </AppSelect>
           <Button
             variant={deleted ? "secondary" : "outline"}
             onClick={() => {
@@ -197,53 +235,73 @@ export function ReportsLibrary() {
           </div>
         ) : shown.length ? (
           <div className="report-grid">
-            {shown.map((report) => (
-              <Reveal key={report.id} className="report-library-card">
-                <div className="report-icon">
-                  <FileChartColumn aria-hidden />
-                  <Badge variant="outline">
-                    {report.status.replaceAll("_", " ")}
-                  </Badge>
-                </div>
-                <h2>
-                  <Link href={`/reports/${report.id}`}>{report.name}</Link>
-                </h2>
-                <p>
-                  {report.versions.length} saved{" "}
-                  {report.versions.length === 1 ? "version" : "versions"} ·
-                  Public
-                </p>
-                <time dateTime={report.updated_at}>
-                  Updated {new Date(report.updated_at).toLocaleString()}
-                </time>
-                <div className="report-actions">
-                  <Button asChild variant="outline" size="sm">
-                    <Link href={`/reports/${report.id}`}>
-                      Open
-                      <ArrowUpRight aria-hidden />
-                    </Link>
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    disabled={
-                      busy === report.id ||
-                      ["queued", "running", "waiting_input"].includes(
-                        report.status,
-                      )
-                    }
-                    onClick={() => void change(report)}
-                  >
-                    {deleted ? (
-                      <RotateCcw aria-hidden />
-                    ) : (
-                      <Trash2 aria-hidden />
-                    )}
-                    {deleted ? "Restore" : "Delete"}
-                  </Button>
-                </div>
-              </Reveal>
-            ))}
+            {[...shown]
+              .sort((a, b) =>
+                sort === "name"
+                  ? a.name.localeCompare(b.name)
+                  : Date.parse(
+                      sort === "created" ? b.created_at : b.updated_at,
+                    ) -
+                    Date.parse(
+                      sort === "created" ? a.created_at : a.updated_at,
+                    ),
+              )
+              .map((report) => (
+                <Reveal key={report.id} className="report-library-card">
+                  <div className="report-icon">
+                    <FileChartColumn aria-hidden />
+                    <Badge variant="outline">
+                      {
+                        {
+                          complete: "Ready",
+                          running: "Analyzing",
+                          queued: "Queued",
+                          waiting_input: "Needs information",
+                          failed: "Failed",
+                          cancelled: "Cancelled",
+                        }[report.status]
+                      }
+                    </Badge>
+                  </div>
+                  <h2>
+                    <Link href={`/reports/${report.id}`}>{report.name}</Link>
+                  </h2>
+                  <p>
+                    {report.versions.length} saved{" "}
+                    {report.versions.length === 1 ? "version" : "versions"} ·
+                    Public
+                  </p>
+                  <time dateTime={report.updated_at}>
+                    Updated {new Date(report.updated_at).toLocaleString()}
+                  </time>
+                  <div className="report-actions report-library-actions">
+                    <Button asChild variant="outline" size="sm">
+                      <Link href={`/reports/${report.id}`}>
+                        Open
+                        <ArrowUpRight aria-hidden />
+                      </Link>
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      disabled={
+                        busy === report.id ||
+                        ["queued", "running", "waiting_input"].includes(
+                          report.status,
+                        )
+                      }
+                      onClick={() => void change(report)}
+                    >
+                      {deleted ? (
+                        <RotateCcw aria-hidden />
+                      ) : (
+                        <Trash2 aria-hidden />
+                      )}
+                      {deleted ? "Restore" : "Delete"}
+                    </Button>
+                  </div>
+                </Reveal>
+              ))}
           </div>
         ) : (
           !error && (

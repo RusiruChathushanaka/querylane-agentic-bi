@@ -148,3 +148,9 @@ The services retain dedicated identities in `asia-southeast1`, project `project-
 ## Fresh TimesFM acceptance — 18 October 2026
 
 The [post-reset forecast/scenario follow-up](docs/evaluation/final-e2e-20261018-fresh.md) passed **31/31 checks**, completing both new reports through the private worker, publishing a conditional scenario, matching PDF/Word/data exports, reusing predictions in a presentation revision and pinning a saved chart. Combined with the original dated 119-check assessment, this closes its fresh-generation gap. Larger-data fingerprints, all live service specs/traffic and enabled/verified TimesFM settings were preserved. Manual accessibility/audio and the separately documented fresh AI-dashboard/hierarchical-plan gates remain distinct.
+
+## Report presentation
+
+See [report presentation](docs/reports.md#report-presentation) and [local design verification](docs/evaluation/report-design-local-20261021.md) for the reader and PDF/Word/data bundle redesign. Existing exported versions remain unchanged.
+
+The [21 October report and dropdown release](docs/evaluation/report-dropdown-release-20261021.md) deploys the new report briefing/download design and consistent menus across reports, dashboards, metrics, planning and charts. Hosted presentation revisions reuse saved forecast/scenario evidence; old files remain immutable. See [the forecast briefing](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/reports/9ef66a621f51ebe08d597f8380fecb18?version=3) and [conditional-scenario briefing](https://agentic-bi-frontend-wekihucn7q-as.a.run.app/reports/e4112a63cba9d6886594cb89988ac4c5?version=2).

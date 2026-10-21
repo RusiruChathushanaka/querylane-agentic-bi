@@ -4075,3 +4075,9 @@
   animation-duration: 0s !important;
   transition-duration: 0s !important;
 }
+
+/* Shared choice controls: portals keep menus out of clipped cards and dialogs. */
+.app-select-trigger { min-height: 40px; text-align: start; cursor: pointer; }
+[data-slot="select-value"] { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+[data-slot="select-content"] { max-width: calc(100vw - 24px); }
+[data-slot="select-item"] { overflow-wrap: anywhere; }

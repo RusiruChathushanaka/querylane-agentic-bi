@@ -1,5 +1,6 @@
 "use client";
 
+import { AppSelect, AppSelectItem } from "@/components/ui/app-select";
 import "@/app/charts.css";
 
 import { useEffect, useId, useRef, useState } from "react";
@@ -690,7 +691,12 @@ export default function InsightfulChart({
             : shown.map((m) => ({
                 label: `${m.label} (${m.unit === "currency" ? m.currency : m.unit})`,
                 color: colors[m.field],
-                dashed: ["target", "comparison", "forecast", "scenario"].includes(m.role),
+                dashed: [
+                  "target",
+                  "comparison",
+                  "forecast",
+                  "scenario",
+                ].includes(m.role),
               })),
         );
       }
@@ -744,20 +750,20 @@ export default function InsightfulChart({
               {measures.length > 1 && (
                 <label>
                   Primary measure
-                  <select
+                  <AppSelect
                     value={current}
-                    onChange={(e) => {
-                      setPrimary(e.target.value);
-                      setHidden({ ...hidden, [e.target.value]: false });
+                    onValueChange={(selectedValue) => {
+                      setPrimary(selectedValue);
+                      setHidden({ ...hidden, [selectedValue]: false });
                       setPin(null);
                     }}
                   >
                     {measures.map((m) => (
-                      <option key={m.field} value={m.field}>
+                      <AppSelectItem key={m.field} value={String(m.field)}>
                         {m.label}
-                      </option>
+                      </AppSelectItem>
                     ))}
-                  </select>
+                  </AppSelect>
                 </label>
               )}
               {temporal ? (
@@ -790,28 +796,36 @@ export default function InsightfulChart({
                   <>
                     <label>
                       Order
-                      <select
+                      <AppSelect
                         value={order}
-                        onChange={(e) => setOrder(e.target.value)}
+                        onValueChange={(selectedValue) =>
+                          setOrder(selectedValue)
+                        }
                       >
-                        <option value="value_desc">Highest first</option>
-                        <option value="value_asc">Lowest first</option>
-                        <option value="label">Name A–Z</option>
-                        <option value="original">Query order</option>
-                      </select>
+                        <AppSelectItem value="value_desc">
+                          Highest first
+                        </AppSelectItem>
+                        <AppSelectItem value="value_asc">
+                          Lowest first
+                        </AppSelectItem>
+                        <AppSelectItem value="label">Name A–Z</AppSelectItem>
+                        <AppSelectItem value="original">
+                          Query order
+                        </AppSelectItem>
+                      </AppSelect>
                     </label>
                     <label>
                       Categories
-                      <select
+                      <AppSelect
                         value={top}
-                        onChange={(e) => setTop(e.target.value)}
+                        onValueChange={(selectedValue) => setTop(selectedValue)}
                       >
                         {[5, 10, 20].map((n) => (
-                          <option key={n} value={n}>
+                          <AppSelectItem key={n} value={String(n)}>
                             Top {n}
-                          </option>
+                          </AppSelectItem>
                         ))}
-                      </select>
+                      </AppSelect>
                     </label>
                   </>
                 )
@@ -821,22 +835,22 @@ export default function InsightfulChart({
                   {["x", "y"].map((axis) => (
                     <label key={axis}>
                       {axis.toUpperCase()} measure
-                      <select
+                      <AppSelect
                         value={axis === "x" ? scatterX : scatterY}
-                        onChange={(e) =>
+                        onValueChange={(selectedValue) =>
                           setScatterAxes({
                             x: scatterX,
                             y: scatterY,
-                            [axis]: e.target.value,
+                            [axis]: selectedValue,
                           })
                         }
                       >
                         {numericFields.map((f) => (
-                          <option key={f} value={f}>
+                          <AppSelectItem key={f} value={String(f)}>
                             {label(f)}
-                          </option>
+                          </AppSelectItem>
                         ))}
-                      </select>
+                      </AppSelect>
                     </label>
                   ))}
                 </>
@@ -1065,29 +1079,30 @@ export default function InsightfulChart({
             {view !== "kpi" && data.rows.length > 0 && (
               <label className="chart-inspect">
                 Inspect observation
-                <select
+                <AppSelect
                   value={pinned?._key ?? ""}
-                  onChange={(e) =>
+                  onValueChange={(selectedValue) =>
                     setPin(
-                      data.rows.find(
-                        (r) => String(r._key) === e.target.value,
-                      ) ?? null,
+                      data.rows.find((r) => String(r._key) === selectedValue) ??
+                        null,
                     )
                   }
                 >
-                  <option value="">Select a point or use this list…</option>
+                  <AppSelectItem value="">
+                    Select a point or use this list…
+                  </AppSelectItem>
                   {data.rows
                     .filter((r) => !r._gap)
                     .map((r, i) => (
-                      <option key={i} value={r._key}>
+                      <AppSelectItem key={i} value={String(r._key)}>
                         {data.visualization.x
                           ? temporal
                             ? dateLabel(r[data.visualization.x])
                             : String(r[data.visualization.x] ?? "Missing")
                           : `Observation ${i + 1}`}
-                      </option>
+                      </AppSelectItem>
                     ))}
-                </select>
+                </AppSelect>
               </label>
             )}
             {effectiveView === "pie" && data.composition && (

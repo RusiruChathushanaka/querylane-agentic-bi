@@ -1,0 +1,394 @@
+{
+  "checks": {
+    "table_metadata_unchanged": true,
+    "iam_unchanged": true
+  },
+  "tables": {
+    "sales_orders": {
+      "rows": 573348,
+      "bytes": 152689649,
+      "modified": "2026-10-16T11:47:38.786000+00:00",
+      "schema": [
+        {
+          "name": "order_id",
+          "type": "STRING",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "customer_id",
+          "type": "STRING",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "store_id",
+          "type": "STRING",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "order_timestamp",
+          "type": "TIMESTAMP",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "order_date",
+          "type": "DATE",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "month",
+          "type": "STRING",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "region",
+          "type": "STRING",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "channel",
+          "type": "STRING",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "currency",
+          "type": "STRING",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "gross_sales",
+          "type": "NUMERIC",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "discount_amount",
+          "type": "NUMERIC",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "revenue",
+          "type": "NUMERIC",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "tax_amount",
+          "type": "NUMERIC",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "shipping_amount",
+          "type": "NUMERIC",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "total_paid",
+          "type": "NUMERIC",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "units",
+          "type": "INTEGER",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "status",
+          "type": "STRING",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "campaign_id",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "name": "record_hash",
+          "type": "STRING",
+          "mode": "REQUIRED"
+        }
+      ]
+    },
+    "sales_order_items": {
+      "rows": 1317941,
+      "bytes": 300360180,
+      "modified": "2026-10-16T11:47:38.786000+00:00",
+      "schema": [
+        {
+          "name": "order_item_id",
+          "type": "STRING",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "order_id",
+          "type": "STRING",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "order_date",
+          "type": "DATE",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "product_id",
+          "type": "STRING",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "quantity",
+          "type": "INTEGER",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "unit_price",
+          "type": "NUMERIC",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "unit_cost",
+          "type": "NUMERIC",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "gross_amount",
+          "type": "NUMERIC",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "discount_amount",
+          "type": "NUMERIC",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "line_revenue",
+          "type": "NUMERIC",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "cost_amount",
+          "type": "NUMERIC",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "promotion_id",
+          "type": "STRING",
+          "mode": "NULLABLE"
+        },
+        {
+          "name": "record_hash",
+          "type": "STRING",
+          "mode": "REQUIRED"
+        }
+      ]
+    },
+    "sales_returns": {
+      "rows": 97122,
+      "bytes": 20031451,
+      "modified": "2026-10-16T11:47:38.786000+00:00",
+      "schema": [
+        {
+          "name": "return_id",
+          "type": "STRING",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "order_id",
+          "type": "STRING",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "order_item_id",
+          "type": "STRING",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "product_id",
+          "type": "STRING",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "order_date",
+          "type": "DATE",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "return_date",
+          "type": "DATE",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "quantity",
+          "type": "INTEGER",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "refund_amount",
+          "type": "NUMERIC",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "returned_cost",
+          "type": "NUMERIC",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "reason",
+          "type": "STRING",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "record_hash",
+          "type": "STRING",
+          "mode": "REQUIRED"
+        }
+      ]
+    },
+    "sales_products": {
+      "rows": 200,
+      "bytes": 32100,
+      "modified": "2026-10-16T11:47:38.786000+00:00",
+      "schema": [
+        {
+          "name": "product_id",
+          "type": "STRING",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "product_name",
+          "type": "STRING",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "category",
+          "type": "STRING",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "brand",
+          "type": "STRING",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "unit_price",
+          "type": "NUMERIC",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "unit_cost",
+          "type": "NUMERIC",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "launched_on",
+          "type": "DATE",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "record_hash",
+          "type": "STRING",
+          "mode": "REQUIRED"
+        }
+      ]
+    },
+    "calendar": {
+      "rows": 1369,
+      "bytes": 193029,
+      "modified": "2026-10-16T11:47:38.786000+00:00",
+      "schema": [
+        {
+          "name": "calendar_date",
+          "type": "DATE",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "year",
+          "type": "INTEGER",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "quarter",
+          "type": "INTEGER",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "month",
+          "type": "STRING",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "month_start",
+          "type": "DATE",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "week_start",
+          "type": "DATE",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "iso_year",
+          "type": "INTEGER",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "iso_week",
+          "type": "INTEGER",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "day_of_week",
+          "type": "INTEGER",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "is_weekend",
+          "type": "BOOLEAN",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "is_promotion_day",
+          "type": "BOOLEAN",
+          "mode": "REQUIRED"
+        },
+        {
+          "name": "record_hash",
+          "type": "STRING",
+          "mode": "REQUIRED"
+        }
+      ]
+    }
+  },
+  "services": {
+    "agentic-bi-frontend": {
+      "before": "agentic-bi-frontend-00048-qux",
+      "after": "agentic-bi-frontend-00023-hsg",
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:b0304a9a31461e4a434b1863789a138c77d6fb6588e85c116b75fc3314c9d6c0",
+      "runtime_preserved": true,
+      "traffic_percent": 100,
+      "env": {}
+    },
+    "agentic-bi-backend": {
+      "before": "agentic-bi-backend-00024-rnd",
+      "after": "agentic-bi-backend-00025-8ml",
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:ff98b8757359f0a00838e8ad30811bcf292e9919b0c445938e0ab27d465d2fa2",
+      "runtime_preserved": true,
+      "traffic_percent": 100,
+      "env": {
+        "DATA_PROFILE": "timeseries",
+        "SOURCE_ROW_LIMIT": "30000",
+        "REPORT_TIMESFM_ENABLED": "true",
+        "REPORT_TIMESFM_VERIFIED": "true"
+      }
+    },
+    "agentic-bi-report-worker": {
+      "before": "agentic-bi-report-worker-00013-sm4",
+      "after": "agentic-bi-report-worker-00014-kgl",
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:ff98b8757359f0a00838e8ad30811bcf292e9919b0c445938e0ab27d465d2fa2",
+      "runtime_preserved": true,
+      "traffic_percent": 100,
+      "env": {
+        "DATA_PROFILE": "timeseries",
+        "SOURCE_ROW_LIMIT": "30000",
+        "REPORT_TIMESFM_ENABLED": "true",
+        "REPORT_TIMESFM_VERIFIED": "true"
+      }
+    }
+  }
+}

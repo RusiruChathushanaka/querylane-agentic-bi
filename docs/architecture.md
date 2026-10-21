@@ -1,6 +1,6 @@
 # Architecture
 
-This describes the implemented application. [deployment.json](deployment.json) and [validation.md](validation.md) record the **18 October 2026** releases and verification; they are dated evidence rather than live service discovery. Fresh TimesFM forecast/scenario reports passed after the normal quota reset; fresh AI Dashboard Builder and Forecast Plans worker acceptance remains unverified. The public frontend/API and private report worker are deployed. The recorded profile is `timeseries`, and optional Search research is disabled.
+This describes the implemented application. [deployment.json](deployment.json) and [validation.md](validation.md) record dated releases and verification, including the **21 October 2026** report/dropdown release; they are dated evidence rather than live service discovery. Fresh TimesFM forecast/scenario reports passed after the normal quota reset; fresh AI Dashboard Builder and Forecast Plans worker acceptance remains unverified. The public frontend/API and private report worker are deployed. The recorded profile is `timeseries`, and optional Search research is disabled.
 
 Standalone Mermaid copies live in [graphify/](graphify/README.md). Refresh them from the fenced blocks below when changing a flow.
 
@@ -14,6 +14,7 @@ flowchart LR
     Preview -->|Explicit evidence link / no prefetch| Version[Saved report version / no inference]
     Legacy[Legacy root chat links] -->|307 /app with query preserved| Browser
     Browser -->|HTTP and SSE| API[Public FastAPI on Cloud Run]
+    Browser --> Choices[Shared Radix choice controls / portal and keyboard focus]
     Browser --> Sources[Header Sources sheet / schema inspection]
     Sources -->|Existing connection and schema reads| API
     Browser <-->|PCM and transcripts| Voice[WebSocket handlers in public API]
@@ -62,6 +63,14 @@ The frontend contains no database credentials or Google model keys. `/api/config
 
 The voice bridge and skill author are handlers within the public backend, not additional deployed services. Browser pages use the API for every persistent read/write. The separate report worker accepts authenticated task/scheduler invocation; its internal endpoints are not mounted on the public API. Database/model credentials stay in workload identity and backend secret references.
 
+## Shared dropdown presentation
+
+`ui/app-select.tsx` adapts existing native-choice values to the shared shadcn/Radix Select primitive. Reports, chart exploration, dashboard libraries/builders/editors/pinning, metric authoring and Forecast Plans use the same trigger and portaled menu. Settings, workspace and skills retain their existing Radix controls and receive the shared presentation correction. Action menus remain DropdownMenu components; multi-selection remains checkboxes.
+
+Popper placement, collision padding, a bounded scrollable viewport, wrapping option labels, focus indicators and theme tokens keep choices readable at narrow widths and inside dialogs. Empty defaults and numeric IDs/horizons are encoded internally and decoded before state handlers; no analytical request or saved contract changes. A report section jump explicitly transfers focus after menu close; Escape preserves normal trigger restoration. Hidden Radix form controls remain aria-hidden and outside the tab order.
+
+The [report/dropdown release](evaluation/report-dropdown-release-20261021.md) verifies real report presentation revisions and saved-result downloads, plus representative desktop/mobile menus. It does not revalidate new numerical forecasting, voice or hierarchical jobs. Existing report versions keep their original export bytes.
+
 ## Source-code map
 
 | Capability | Main implementation | Contract / guide |
@@ -69,6 +78,7 @@ The voice bridge and skill author are handlers within the public backend, not ad
 | Public landing and guided preview | `Frontend/src/app/page.tsx`, `Frontend/src/components/landing/`, `Frontend/src/lib/landing-preview-data.json` | [Landing page](landing-page.md), [ADR 0008](adr/0008-landing-workspace-routes.md) |
 | Workspace route compatibility | `Frontend/src/app/app/page.tsx`, `Frontend/next.config.ts`, `Frontend/src/lib/workspace-links.ts` | [Landing page](landing-page.md) |
 | Workspace, history and source inspection | `Frontend/src/components/workspace.tsx`, `Frontend/src/app/globals.css` | [Workspace navigation](#workspace-navigation-and-source-inspection), [setup](setup.md) |
+| Shared dropdown controls | `Frontend/src/components/ui/app-select.tsx`, `ui/select.tsx` | [Dropdown presentation](#shared-dropdown-presentation) |
 | Runtime API configuration | `Frontend/src/lib/api.ts`, `Frontend/src/app/api/config/route.ts` | [Setup](setup.md), [settings](settings.md) |
 | Public routing and ordinary analysis | `Backend/app/main.py`, `analysis.py`, `ai.py`, `repository.py` | `Backend/app/models.py`, [ADRs](adr/) |
 | Model failure policy and browser recovery | `Backend/app/model_errors.py`, `ai.py`, `voice.py`; `Frontend/src/lib/api.ts`, `voice.ts` | [Error handling](error-handling.md) |
@@ -223,7 +233,7 @@ flowchart LR
 
 Cloud Task delivery is at least once. Application checkpoints, stable BigQuery IDs, fenced writes and immutable exports make completed stages reusable; uncheckpointed external work can repeat. The worker holds its request open, and the application caps computation independently of Cloud Run/task deadlines. Recovery checks workflow version, source profile and captured schema. Report ADK records use a separately fenced collection preserved by history reset. No experimental ADK invocation resumption is required.
 
-PDF, Word and CSV ZIP are produced from the same immutable document/evidence. Presentation revisions reuse saved artifacts; reanalysis is explicit. Report references retain source and derived artifact pages; dashboard references remain independent. Administrative purge requires an expired recovery window and a maintenance fence.
+PDF, Word and CSV ZIP are produced from the same immutable document/evidence. Presentation revisions reuse saved artifacts; reanalysis is explicit. The report reader adds bordered narrative/chart sections, saved-claim highlights and responsive section navigation. The existing export renderer produces the A4 briefing and structured diagnostics from those same captured inputs; ZIP documentation is additive and artifact CSV names/values remain stable. `ResultCard` retains its default prediction evidence presentation; the report reader supplies its own visible overview and keeps full reproducibility details in a disclosure. This presentation change adds no execution stage, collection or analytical endpoint. Historical files remain immutable; redesigned exports require a newly published version. See [report presentation](reports.md#report-presentation) for compatibility and local verification. Report references retain source and derived artifact pages; dashboard references remain independent. Administrative purge requires an expired recovery window and a maintenance fence.
 
 Reports persist `reports/{id}/revisions`, `report_runs/{id}/{events,checkpoints}`, `report_outbox`, `report_conversations`, `report_artifact_refs`, `report_quotas` and `report_adk_sessions` in the named Firestore database. The application atomically admits work and creates an outbox, attempts immediate enqueue, and relies on the private scheduled reconciler for recovery. Completed stages reuse checkpoints; task delivery is at least once and uncheckpointed external calls can repeat. Predictions use chronological backtests and publish either a supported candidate/baseline or a clear withholding reason. Invalid or unapproved prose falls back explicitly to verified evidence summaries after bounded repair.
 

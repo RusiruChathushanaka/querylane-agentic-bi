@@ -1,5 +1,6 @@
 "use client";
 
+import { AppSelect, AppSelectItem } from "@/components/ui/app-select";
 import Link from "next/link";
 import { dashboardChanges } from "@/lib/planning-review";
 import { PlanningSkills } from "./planning-skills";
@@ -465,14 +466,16 @@ export function DashboardBuilder({
               </label>
               <label className="bi-field">
                 <span>Sources</span>
-                <select
+                <AppSelect
                   value={source}
-                  onChange={(e) => setSource(e.target.value)}
+                  onValueChange={(selectedValue) => setSource(selectedValue)}
                 >
-                  <option value="all">BigQuery + PostgreSQL</option>
-                  <option value="bigquery">BigQuery</option>
-                  <option value="postgres">PostgreSQL</option>
-                </select>
+                  <AppSelectItem value="all">
+                    BigQuery + PostgreSQL
+                  </AppSelectItem>
+                  <AppSelectItem value="bigquery">BigQuery</AppSelectItem>
+                  <AppSelectItem value="postgres">PostgreSQL</AppSelectItem>
+                </AppSelect>
               </label>
               <label className="bi-field">
                 <span>Start date (optional)</span>
@@ -492,17 +495,17 @@ export function DashboardBuilder({
               </label>
               <label className="bi-field">
                 <span>Analysis model</span>
-                <select
+                <AppSelect
                   value={selectedModel}
-                  onChange={(e) => setModel(e.target.value)}
+                  onValueChange={(selectedValue) => setModel(selectedValue)}
                 >
-                  <option value="">Workspace default</option>
+                  <AppSelectItem value="">Workspace default</AppSelectItem>
                   {models.map((m) => (
-                    <option key={m.id} value={m.id}>
+                    <AppSelectItem key={m.id} value={String(m.id)}>
                       {m.label ?? m.name ?? m.id}
-                    </option>
+                    </AppSelectItem>
                   ))}
-                </select>
+                </AppSelect>
               </label>
               <label>
                 <input
@@ -641,25 +644,25 @@ export function DashboardBuilder({
                   </label>
                   <label className="bi-field">
                     <span>Width</span>
-                    <select
+                    <AppSelect
                       value={card.width}
-                      onChange={(e) =>
+                      onValueChange={(selectedValue) =>
                         patchCard(i, {
-                          width: e.target.value as ProposedCard["width"],
+                          width: selectedValue as ProposedCard["width"],
                         })
                       }
                     >
-                      <option value="standard">Standard</option>
-                      <option value="wide">Wide</option>
-                    </select>
+                      <AppSelectItem value="standard">Standard</AppSelectItem>
+                      <AppSelectItem value="wide">Wide</AppSelectItem>
+                    </AppSelect>
                   </label>
                   <label className="bi-field">
                     <span>Published chart type</span>
-                    <select
+                    <AppSelect
                       value={card.view.view}
-                      onChange={(e) =>
+                      onValueChange={(selectedValue) =>
                         patchCard(i, {
-                          view: { ...card.view, view: e.target.value },
+                          view: { ...card.view, view: selectedValue },
                         })
                       }
                     >
@@ -672,9 +675,11 @@ export function DashboardBuilder({
                         "pie",
                         "scatter",
                       ].map((v) => (
-                        <option key={v}>{v}</option>
+                        <AppSelectItem value={String(v)} key={v}>
+                          {v}
+                        </AppSelectItem>
                       ))}
-                    </select>
+                    </AppSelect>
                   </label>
                   <label className="bi-field">
                     <span>Note</span>

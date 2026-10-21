@@ -61,6 +61,7 @@ import {
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -465,9 +466,11 @@ export function SkillsWorkspace() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All sources</SelectItem>
-                <SelectItem value="bigquery">BigQuery</SelectItem>
-                <SelectItem value="postgres">PostgreSQL</SelectItem>
+                <SelectGroup>
+                  <SelectItem value="all">All sources</SelectItem>
+                  <SelectItem value="bigquery">BigQuery</SelectItem>
+                  <SelectItem value="postgres">PostgreSQL</SelectItem>
+                </SelectGroup>
               </SelectContent>
             </Select>
             <Button
@@ -727,9 +730,11 @@ export function SkillsWorkspace() {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="all">All sources</SelectItem>
-                        <SelectItem value="bigquery">BigQuery</SelectItem>
-                        <SelectItem value="postgres">PostgreSQL</SelectItem>
+                        <SelectGroup>
+                          <SelectItem value="all">All sources</SelectItem>
+                          <SelectItem value="bigquery">BigQuery</SelectItem>
+                          <SelectItem value="postgres">PostgreSQL</SelectItem>
+                        </SelectGroup>
                       </SelectContent>
                     </Select>
                   </Field>

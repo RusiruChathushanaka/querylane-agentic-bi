@@ -16,34 +16,76 @@
     "months": 45,
     "merchandise_revenue": "354425112.20"
   },
+  "data_profile": "timeseries",
+  "postgres_schema": "retail_timeseries",
   "date": "2026-10-21",
-  "verified_at": "2026-10-20T18:56:00.174159+00:00",
-  "release": "Dashboard chart-section borders and responsive spacing",
+  "verified_at": "2026-10-21T04:47:25.667602+00:00",
+  "release": "Report briefing and shared dropdowns",
   "services": {
-    "agentic-bi-backend": {
-      "url": "https://agentic-bi-backend-wekihucn7q-as.a.run.app",
-      "ready_revision": "agentic-bi-backend-00024-rnd",
-      "service_account": "agentic-bi-backend@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
-      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:73e239ec3a76e390f271d71fbdad9d0c3e6fa167331990786871e9eae9dd9d94",
-      "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:73e239ec3a76e390f271d71fbdad9d0c3e6fa167331990786871e9eae9dd9d94",
-      "build_id": "1dbf40e4-1ad3-44cd-a0ad-c29c5347c9f8",
+    "agentic-bi-frontend": {
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app",
+      "ready_revision": "agentic-bi-frontend-00023-hsg",
+      "previous_revision": "agentic-bi-frontend-00048-qux",
+      "service_account": "agentic-bi-frontend@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:b0304a9a31461e4a434b1863789a138c77d6fb6588e85c116b75fc3314c9d6c0",
+      "image_digest": "sha256:b0304a9a31461e4a434b1863789a138c77d6fb6588e85c116b75fc3314c9d6c0",
+      "build_id": "66f39771-c9e8-45a2-8857-371a4a28e894",
       "build_source": {
         "storageSource": {
           "bucket": "project-e8b1593d-009a-4822-abf-agentic-bi-build",
-          "generation": "1792273222851872",
-          "object": "source/1792273221.228143-4246425e4f0848f3b9d93d33265244ce.tgz"
+          "generation": "1792556847159216",
+          "object": "source/1792556842.157674-40f69240e47f4dc1b71a5e06f620c4a4.tgz"
         }
       },
-      "source_base_commit": "e4af083aaebf6a4e4f4dda93194c6e5597f7cd20",
+      "source_base_commit": "4a355ba25cb6ad94f0c8fb25b6336ea2e0c8ae1a",
       "source_is_working_tree": true,
       "ready": true,
       "traffic": [
         {
           "percent": 100,
-          "revisionName": "agentic-bi-backend-00024-rnd"
+          "revisionName": "agentic-bi-frontend-00023-hsg"
         }
       ],
-      "previous_revision": "agentic-bi-backend-00021-6rd",
+      "runtime_environment": [
+        {
+          "name": "BACKEND_URL",
+          "value": "https://agentic-bi-backend-wekihucn7q-as.a.run.app"
+        }
+      ],
+      "resources": {
+        "limits": {
+          "cpu": "1000m",
+          "memory": "512Mi"
+        }
+      },
+      "container_concurrency": 40,
+      "timeout_seconds": 300,
+      "source_verification_manifest": "evaluation/report-dropdown-release-20261021-source.json"
+    },
+    "agentic-bi-backend": {
+      "url": "https://agentic-bi-backend-wekihucn7q-as.a.run.app",
+      "ready_revision": "agentic-bi-backend-00025-8ml",
+      "previous_revision": "agentic-bi-backend-00024-rnd",
+      "service_account": "agentic-bi-backend@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:ff98b8757359f0a00838e8ad30811bcf292e9919b0c445938e0ab27d465d2fa2",
+      "image_digest": "sha256:ff98b8757359f0a00838e8ad30811bcf292e9919b0c445938e0ab27d465d2fa2",
+      "build_id": "4fcce4aa-6141-4b5e-8c78-01a24655811c",
+      "build_source": {
+        "storageSource": {
+          "bucket": "project-e8b1593d-009a-4822-abf-agentic-bi-build",
+          "generation": "1792556619697592",
+          "object": "source/1792556614.197061-a5b8f4d7f0bd47938ff9aae8dd14823d.tgz"
+        }
+      },
+      "source_base_commit": "4a355ba25cb6ad94f0c8fb25b6336ea2e0c8ae1a",
+      "source_is_working_tree": true,
+      "ready": true,
+      "traffic": [
+        {
+          "percent": 100,
+          "revisionName": "agentic-bi-backend-00025-8ml"
+        }
+      ],
       "runtime_environment": [
         {
           "name": "ENVIRONMENT",
@@ -175,72 +217,33 @@
         }
       },
       "container_concurrency": 8,
-      "timeout_seconds": 3600
-    },
-    "agentic-bi-frontend": {
-      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app",
-      "ready_revision": "agentic-bi-frontend-00048-qux",
-      "service_account": "agentic-bi-frontend@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
-      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:b4f5c1c5bf8a5d46e9c534f1fa0a8e0c0300adf1dbd651547211ca25c2848dcb",
-      "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:b4f5c1c5bf8a5d46e9c534f1fa0a8e0c0300adf1dbd651547211ca25c2848dcb",
-      "build_id": "5731572f-8a70-4493-8840-3ccdbd22a2a1",
-      "build_source": {
-        "storageSource": {
-          "bucket": "project-e8b1593d-009a-4822-abf-agentic-bi-build",
-          "generation": "1792521957586456",
-          "object": "source/1792521951.770084-2b465174f19e4e75a14db5673c288c76.tgz"
-        }
-      },
-      "source_base_commit": "55c89fc98475ed2343693b62147072955aafd317",
-      "source_is_working_tree": true,
-      "ready": true,
-      "traffic": [
-        {
-          "percent": 100,
-          "revisionName": "agentic-bi-frontend-00048-qux"
-        }
-      ],
-      "previous_revision": "agentic-bi-frontend-00045-gej",
-      "runtime_environment": [
-        {
-          "name": "BACKEND_URL",
-          "value": "https://agentic-bi-backend-wekihucn7q-as.a.run.app"
-        }
-      ],
-      "resources": {
-        "limits": {
-          "cpu": "1000m",
-          "memory": "512Mi"
-        }
-      },
-      "container_concurrency": 40,
-      "timeout_seconds": 300,
-      "source_verification_manifest": "evaluation/dashboard-borders-release-20261021-source.json"
+      "timeout_seconds": 3600,
+      "source_verification_manifest": "evaluation/report-dropdown-release-20261021-source.json"
     },
     "agentic-bi-report-worker": {
       "url": "https://agentic-bi-report-worker-wekihucn7q-as.a.run.app",
-      "ready_revision": "agentic-bi-report-worker-00013-sm4",
+      "ready_revision": "agentic-bi-report-worker-00014-kgl",
+      "previous_revision": "agentic-bi-report-worker-00013-sm4",
       "service_account": "agentic-bi-report-worker@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
-      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:73e239ec3a76e390f271d71fbdad9d0c3e6fa167331990786871e9eae9dd9d94",
-      "image_digest": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:73e239ec3a76e390f271d71fbdad9d0c3e6fa167331990786871e9eae9dd9d94",
-      "build_id": "1dbf40e4-1ad3-44cd-a0ad-c29c5347c9f8",
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:ff98b8757359f0a00838e8ad30811bcf292e9919b0c445938e0ab27d465d2fa2",
+      "image_digest": "sha256:ff98b8757359f0a00838e8ad30811bcf292e9919b0c445938e0ab27d465d2fa2",
+      "build_id": "4fcce4aa-6141-4b5e-8c78-01a24655811c",
       "build_source": {
         "storageSource": {
           "bucket": "project-e8b1593d-009a-4822-abf-agentic-bi-build",
-          "generation": "1792273222851872",
-          "object": "source/1792273221.228143-4246425e4f0848f3b9d93d33265244ce.tgz"
+          "generation": "1792556619697592",
+          "object": "source/1792556614.197061-a5b8f4d7f0bd47938ff9aae8dd14823d.tgz"
         }
       },
-      "source_base_commit": "e4af083aaebf6a4e4f4dda93194c6e5597f7cd20",
+      "source_base_commit": "4a355ba25cb6ad94f0c8fb25b6336ea2e0c8ae1a",
       "source_is_working_tree": true,
       "ready": true,
       "traffic": [
         {
           "percent": 100,
-          "revisionName": "agentic-bi-report-worker-00013-sm4"
+          "revisionName": "agentic-bi-report-worker-00014-kgl"
         }
       ],
-      "previous_revision": "agentic-bi-report-worker-00010-wnw",
       "runtime_environment": [
         {
           "name": "ENVIRONMENT",
@@ -372,65 +375,68 @@
         }
       },
       "container_concurrency": 1,
-      "timeout_seconds": 660
+      "timeout_seconds": 660,
+      "source_verification_manifest": "evaluation/report-dropdown-release-20261021-source.json"
     }
   },
-  "data_profile": "timeseries",
-  "postgres_schema": "retail_timeseries",
   "analytical_seed_or_history_reset": false,
-  "configuration_changes": {
-    "frontend_image": true,
-    "backend_worker_image": false,
-    "runtime_settings": false,
-    "data_profile": "timeseries",
-    "source_row_limit": 30000,
-    "timesfm_gates": "enabled/verified, unchanged",
-    "planning_admission": "enabled, unchanged",
-    "iam_changes": false,
-    "source_data_writes": false
-  },
+  "configuration_changes": "Image-only routine release; runtime specs, identities, secret references, IAM, source profile/row limits and TimesFM gates preserved.",
   "verification_reports": [
-    "evaluation/dashboard-borders-release-20261021-source.json",
-    "evaluation/dashboard-borders-release-20261021-candidate.json",
-    "evaluation/dashboard-borders-release-20261021-preservation.json",
-    "evaluation/dashboard-borders-release-20261021-http.json",
-    "evaluation/dashboard-borders-release-20261021-browser.json",
-    "evaluation/dashboard-borders-release-20261021-saved.json",
-    "evaluation/dashboard-borders-release-20261021.md"
+    "evaluation/report-dropdown-release-20261021.md",
+    "evaluation/report-dropdown-release-20261021.json",
+    "evaluation/report-dropdown-release-20261021-source.json",
+    "evaluation/report-dropdown-release-20261021-preservation.json"
   ],
-  "source_verification_manifest": "evaluation/dashboard-borders-release-20261021-source.json",
+  "source_verification_manifest": "evaluation/report-dropdown-release-20261021-source.json",
   "github": {
     "repository": "https://github.com/RusiruChathushanaka/querylane-agentic-bi",
     "branch": "main",
-    "source_base_commit": "55c89fc98475ed2343693b62147072955aafd317",
-    "publication_note": "Dashboard section outlines, spacing, feature documentation and dated release verification published after verification. Built-source hashes are verified against the Cloud Build source archive. Submission materials remain local and excluded.",
-    "publication_base_commit": "55c89fc98475ed2343693b62147072955aafd317"
+    "publication_note": "Code and documentation published after hosted verification; identify commit through Git history. Both Submission spellings excluded."
   },
-  "latest_verified_sample": {
-    "report_id": "2ed05089e9a86e1ef3046fa6c6728680",
-    "version": 1,
-    "presentation_revision": 2,
-    "forecast": "TimesFM 3.0 Preview; three monthly periods, cutoff 2026-09-30; intervals unavailable and disclosed.",
-    "scenario_report_id": "f0853cca9462ee293ddaf45e6627e843",
-    "scenario": "Fourteen-day explicit promotion paths; separate same-method TimesFM scenario artifact."
-  },
-  "latest_verified_dashboard": {
-    "id": "7d213e6c777244fb99c9bc363ff42f22",
-    "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/dashboards/7d213e6c777244fb99c9bc363ff42f22"
-  },
-  "temporary_runtime_jobs": "No runtime verification jobs created for this frontend-only release.",
-  "unexpected_application_error_entries": 0,
-  "fresh_planning_acceptance": "Fresh AI Dashboard Builder and 237-node Forecast Plans worker acceptance remains separate and unverified; this styling-only release starts no analytical or model jobs. See planning-release-20261018.md and final-e2e-20261018-fresh.md.",
-  "final_revision_error_window": {
-    "from_utc": "2026-10-20T18:49:59.337147+00:00",
-    "revisions": [
-      "agentic-bi-frontend-00048-qux"
-    ],
-    "unexpected_frontend_error_entries": 0,
-    "through_utc": "2026-10-20T18:56:00.211871+00:00"
-  },
+  "previous_release": "evaluation/dashboard-borders-release-20261021.md",
+  "latest_verified_reports": [
+    {
+      "kind": "forecast",
+      "report_id": "9ef66a621f51ebe08d597f8380fecb18",
+      "version": 3,
+      "run_id": "207185d01e6c81c3bcb7a6b435aa6fc8",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/reports/9ef66a621f51ebe08d597f8380fecb18?version=3",
+      "budgets": {
+        "queries": 0,
+        "fit_seconds": 0,
+        "scan_bytes": 0,
+        "model_calls": 2,
+        "fits": 0,
+        "seconds": 35.503390073776245,
+        "output_tokens": 1502
+      }
+    },
+    {
+      "kind": "scenario",
+      "report_id": "e4112a63cba9d6886594cb89988ac4c5",
+      "version": 2,
+      "run_id": "0da1eb895ed6aeb7f73479b5b1b0e807",
+      "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/reports/e4112a63cba9d6886594cb89988ac4c5?version=2",
+      "budgets": {
+        "queries": 0,
+        "fit_seconds": 0,
+        "scan_bytes": 0,
+        "model_calls": 2,
+        "fits": 0,
+        "seconds": 20.922202587127686,
+        "output_tokens": 2661
+      }
+    }
+  ],
   "runtime_configuration_preserved": true,
-  "known_interface_limits": {
-    "expanded_chart_focus_return": "Escape closes the expanded chart but focus returns to BODY in the deployed app and a prior local frontend bundle. Recorded in the browser assessment; this CSS-only release changes no focus logic."
-  }
+  "known_interface_limits": [
+    "Emulated widths, not physical devices; no complete screen-reader or contrast certification.",
+    "PDF selectable text/bookmarks, not PDF/UA tagging; Word visually rendered with LibreOffice, not Microsoft Word.",
+    "No fresh numerical forecast, scenario, voice or planning execution; two saved-evidence presentation revisions only.",
+    "Preservation uses five BigQuery tables row/byte/schema/modified metadata, no content rescan or PostgreSQL recount.",
+    "Two dialog Cancel CDP calls timed out after their click; subsequent screenshots/DOM confirmed closure and no save. One guessed Half option did not exist; supported Standard/Wide options were then tested.",
+    "Initial focus observations during close animation were inconclusive; settled Escape focus and explicit section transfer passed.",
+    "Existing expanded-chart BODY focus behavior from the preceding release remains outside this dropdown change."
+  ],
+  "fresh_planning_acceptance": "Not exercised by this presentation/dropdown release; use separately dated worker acceptance evidence."
 }

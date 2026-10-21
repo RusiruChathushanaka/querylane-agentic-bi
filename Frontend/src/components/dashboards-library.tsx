@@ -1,4 +1,6 @@
 "use client";
+
+import { AppSelect, AppSelectItem } from "@/components/ui/app-select";
 import Link from "next/link";
 import { workspacePath } from "@/lib/workspace-links";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -161,7 +163,9 @@ export function DashboardsLibrary() {
                 Public — anyone can view and edit
               </Badge>
             </div>
-            <Button asChild variant="outline"><Link href="/dashboards/build">Build with AI</Link></Button>
+            <Button asChild variant="outline">
+              <Link href="/dashboards/build">Build with AI</Link>
+            </Button>
             <Button onClick={() => setEditor("new")}>
               <Plus data-icon="inline-start" />
               Create dashboard
@@ -189,15 +193,15 @@ export function DashboardsLibrary() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
-          <select
+          <AppSelect
             aria-label="Sort dashboards"
             className="dashboard-native-select"
             value={sort}
-            onChange={(e) => setSort(e.target.value)}
+            onValueChange={(selectedValue) => setSort(selectedValue)}
           >
-            <option value="updated">Recently updated</option>
-            <option value="name">Name</option>
-          </select>
+            <AppSelectItem value="updated">Recently updated</AppSelectItem>
+            <AppSelectItem value="name">Name</AppSelectItem>
+          </AppSelect>
           <Button
             variant="outline"
             size="sm"

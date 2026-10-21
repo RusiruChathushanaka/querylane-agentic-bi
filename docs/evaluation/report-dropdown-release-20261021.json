@@ -1,0 +1,1042 @@
+{
+  "verified_at": "2026-10-21T04:47:25.667602+00:00",
+  "client_date": "2026-10-21",
+  "release": "Report briefing and shared dropdowns",
+  "source_base_commit": "4a355ba25cb6ad94f0c8fb25b6336ea2e0c8ae1a",
+  "local_checks": {
+    "backend_passed": 446,
+    "backend_skipped": 1,
+    "ruff": "passed",
+    "frontend_passed": 63,
+    "eslint": "passed",
+    "typescript": "passed",
+    "production_build": "passed"
+  },
+  "services": {
+    "agentic-bi-frontend": {
+      "before": "agentic-bi-frontend-00048-qux",
+      "after": "agentic-bi-frontend-00023-hsg",
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:b0304a9a31461e4a434b1863789a138c77d6fb6588e85c116b75fc3314c9d6c0",
+      "runtime_preserved": true,
+      "traffic_percent": 100,
+      "env": {}
+    },
+    "agentic-bi-backend": {
+      "before": "agentic-bi-backend-00024-rnd",
+      "after": "agentic-bi-backend-00025-8ml",
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:ff98b8757359f0a00838e8ad30811bcf292e9919b0c445938e0ab27d465d2fa2",
+      "runtime_preserved": true,
+      "traffic_percent": 100,
+      "env": {
+        "DATA_PROFILE": "timeseries",
+        "SOURCE_ROW_LIMIT": "30000",
+        "REPORT_TIMESFM_ENABLED": "true",
+        "REPORT_TIMESFM_VERIFIED": "true"
+      }
+    },
+    "agentic-bi-report-worker": {
+      "before": "agentic-bi-report-worker-00013-sm4",
+      "after": "agentic-bi-report-worker-00014-kgl",
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:ff98b8757359f0a00838e8ad30811bcf292e9919b0c445938e0ab27d465d2fa2",
+      "runtime_preserved": true,
+      "traffic_percent": 100,
+      "env": {
+        "DATA_PROFILE": "timeseries",
+        "SOURCE_ROW_LIMIT": "30000",
+        "REPORT_TIMESFM_ENABLED": "true",
+        "REPORT_TIMESFM_VERIFIED": "true"
+      }
+    }
+  },
+  "hosted_presentation": {
+    "at": "2026-10-21T04:31:41.634791+00:00",
+    "reports": [
+      {
+        "kind": "forecast",
+        "report_id": "9ef66a621f51ebe08d597f8380fecb18",
+        "base_artifacts": [
+          "1b6ed07fcc1db242ac2673749b70c7e2",
+          "015ff83eb73acde71edc024fdc7e938b"
+        ],
+        "base_downloads": {
+          "pdf": {
+            "sha256": "ba83668c2e1eaab75b8aff9e709926d990caaa9d5956f1442601deceefdc9888",
+            "size": 97406,
+            "content_type": "application/pdf"
+          },
+          "docx": {
+            "sha256": "faf0f3a1e30e03613535a6f9917458d7efd75912cef134434847d51860a93ac6",
+            "size": 117856,
+            "content_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+          },
+          "data": {
+            "sha256": "303a735dedae5a6666d4c5043a6e86ecb7228ef6c91efb64381f45c371a1c3cf",
+            "size": 5292,
+            "content_type": "application/zip"
+          }
+        },
+        "run_id": "207185d01e6c81c3bcb7a6b435aa6fc8",
+        "version": 3,
+        "status": "complete",
+        "budgets": {
+          "queries": 0,
+          "fit_seconds": 0,
+          "scan_bytes": 0,
+          "model_calls": 2,
+          "fits": 0,
+          "seconds": 35.503390073776245,
+          "output_tokens": 1502
+        },
+        "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/reports/9ef66a621f51ebe08d597f8380fecb18?version=3",
+        "document": {
+          "title": "Monthly Merchandise Revenue Forecast and Model Evaluation (Oct\u2013Dec 2026)",
+          "mode_note": "Gemini coordinated analysis",
+          "revision_mode": "presentation",
+          "skills_used": [
+            {
+              "revision": 1,
+              "id": "prediction-timesfm-comparison",
+              "description": "Interpret managed TimesFM 3.0 Preview against validated statistical baselines, recording candidate outcomes and supported uncertainty.",
+              "name": "TimesFM candidate comparison and evidence",
+              "mode": "automatic"
+            },
+            {
+              "revision": 1,
+              "id": "prediction-sales-forecast",
+              "description": "Forecast retail revenue, order counts, or unit demand through Advanced Analysis using complete series, naive baselines, and chronological validation.",
+              "name": "Revenue and demand forecasting",
+              "mode": "automatic"
+            },
+            {
+              "revision": 1,
+              "id": "prediction-backtesting",
+              "description": "Audit time-series leakage, baseline selection, rolling backtests, uncertainty intervals, and forecast reliability.",
+              "name": "Forecast validation and uncertainty",
+              "mode": "automatic"
+            }
+          ],
+          "claim_policy_version": 2,
+          "created_at": "2026-10-21T04:31:42.867437+00:00",
+          "report_id": "9ef66a621f51ebe08d597f8380fecb18",
+          "definitions": [
+            "Revenue: Merchandise sales after discounts, before refunds, taxes, and shipping fees (SUM(revenue) from completed sales orders).",
+            "Completed Orders: Distinct count of orders where status is exactly 'completed'.",
+            "History Window: Dense calendar months from 2023-01-01 through 2026-09-30 (45 complete observations).",
+            "Forecast Horizon: 3 complete calendar months (October, November, and December 2026)."
+          ],
+          "data_profile": "timeseries",
+          "assumptions": [
+            "Data cutoff is 2026-09-30; all historical periods through September 2026 are fully mature and closed.",
+            "No external business drivers or scenario drivers are provided; predictions are univariate associations based strictly on past observed monthly patterns.",
+            "Candidate promotion adheres to application policy: candidate must beat the baseline by at least 5% lower aggregate MAE and win in at least two of the three chronological folds; otherwise, the baseline statistical method is retained."
+          ],
+          "sections": [
+            {
+              "claim_ids": [
+                "c_99672e497dbadaff",
+                "c_5e6f9c694327ee5e",
+                "c_e6d64c7c5b3c5795",
+                "c_a6137caff30b5582",
+                "c_6ccbc6af16aed31c",
+                "c_a0c602512bd7efa5",
+                "c_18ddbad84ab6fe1e"
+              ],
+              "id": "executive_findings",
+              "title": "Executive Findings and Sales Trends",
+              "artifact_ids": [
+                "1b6ed07fcc1db242ac2673749b70c7e2"
+              ],
+              "markdown": "- Across the closed historical horizon, monthly merchandise revenue ranged from a low of 4,451,906.37 to a high of 13,916,706.76.\n- Peak historical merchandise revenue occurred at period 2025-11-01.\n- Monthly completed order counts reached a low of 7,482 and an observed peak of 22,180 during 2025-11-01.\n- Total historical rows preserved in the dataset comprise 45 complete months.",
+              "kind": "finding"
+            },
+            {
+              "claim_ids": [
+                "c_1162a02e1c528a50",
+                "c_d3f48876da42aff5",
+                "c_8e609cd601e68695",
+                "c_882347f6e46b9e19",
+                "c_26c27b4737631cff",
+                "c_e1cfd989a9af518f",
+                "c_b5d0fde0295c8f59"
+              ],
+              "id": "forecast_evaluation",
+              "title": "Quarterly Horizon Projections",
+              "artifact_ids": [
+                "015ff83eb73acde71edc024fdc7e938b"
+              ],
+              "markdown": "- The three-month projection series encompasses total table records of 48 spanning historical records and future months.\n- Observed revenue benchmarks in the prediction artifact match the recorded minimum of 4,451,906.37 and historical maximum of 13,916,706.76 observed at 2025-11-01.\n- Forward monthly forecast values span from 10,272,054 to a high of 14,367,920.\n- The maximum forecast value occurs at period 2026-11-01.",
+              "kind": "finding"
+            },
+            {
+              "claim_ids": [],
+              "id": "methodology",
+              "title": "Model Evaluation and Selection Methodology",
+              "artifact_ids": [],
+              "markdown": "- Model promotion was conducted via chronological rolling-origin backtests across three full-horizon folds using nonnegative constraints.\n- TimesFM was selected over statistical alternatives including SARIMAX, ETS, and Seasonal Naive based on recorded aggregate MAE performance across chronological folds.\n- The forecast horizon projects calendar month intervals without uncalibrated predictive intervals.",
+              "kind": "methodology"
+            },
+            {
+              "claim_ids": [],
+              "id": "data_limitations",
+              "title": "Data Limitations and Uncertainty",
+              "artifact_ids": [],
+              "markdown": "- Historical predictive associations are univariate patterns and do not imply causal mechanisms or guaranteed performance.\n- Saved observations terminate at the recorded data cutoff, and predictions initiate immediately following that point.\n- Synthetic retail data verifies pipeline implementation rather than real-world predictive reliability.\n- Validated prediction intervals remain unavailable for this bounded backtest, leaving point predictions with unquantified uncertainty.",
+              "kind": "limitation"
+            },
+            {
+              "claim_ids": [
+                "c_b5d0fde0295c8f59"
+              ],
+              "id": "practical_recommendations",
+              "title": "Operational Recommendations",
+              "artifact_ids": [],
+              "markdown": "- Plan merchandise inventory and fulfillment resources against the seasonal peak expected in 2026-11-01 while budgeting for forecast variance.\n- Maintain standard inventory safety stock given the absence of validated uncertainty intervals around point predictions.\n- Re-evaluate fold error metrics and model candidate selection as new actual monthly sales figures mature.",
+              "kind": "recommendation"
+            }
+          ],
+          "schema_version": 1,
+          "style": "business",
+          "model": "gemini-3.8-flash",
+          "scope": "Evaluate complete monthly merchandise sales revenue (after discounts, before refunds/tax/shipping) and completed order counts from January 2023 through September 2026 inclusive (45 months). Generate a 3-month forecast for October through December 2026 comparing managed TimesFM 3.0 Preview against statistical baselines across three chronological backtest folds, reporting the data-supported winning method without bias.",
+          "artifact_ids": [
+            "1b6ed07fcc1db242ac2673749b70c7e2",
+            "015ff83eb73acde71edc024fdc7e938b"
+          ],
+          "base_version": 1,
+          "limitations": [
+            "Historical predictive associations are not causal effects or guaranteed future performance.",
+            "Validated prediction intervals are unavailable for this bounded backtest; point predictions carry unquantified uncertainty.",
+            "Saved observations end at 2026-09-30; predictions start after that cutoff, rather than assuming data reaches the report request date 2026-10-18.",
+            "Synthetic retail data supports implementation evaluation, not a claim of real-world forecasting reliability.",
+            "Grouped rates and averages are not averaged into population-wide ratios without their original denominators; request a source-calculated overall ratio when needed."
+          ],
+          "summary": "This release evaluation report reviews monthly merchandise sales revenue and completed order volumes across historical closed periods and evaluates a three-month forward forecast. Managed TimesFM achieved lower backtest error across validation folds compared to statistical baselines, projecting continued seasonal merchandise revenue through year-end.",
+          "skill_warnings": [],
+          "version": 3,
+          "claims": [
+            {
+              "calculation": "count(saved rows); not the source population",
+              "id": "c_18ddbad84ab6fe1e",
+              "label": "Number of saved result rows",
+              "unit": "count",
+              "artifact_id": "1b6ed07fcc1db242ac2673749b70c7e2",
+              "value": "45",
+              "formatted": "45"
+            },
+            {
+              "calculation": "labels at max(revenue); no statistical-anomaly or causal claim",
+              "id": "c_e6d64c7c5b3c5795",
+              "label": "revenue: dimension labels sharing the highest saved value",
+              "unit": "label",
+              "artifact_id": "1b6ed07fcc1db242ac2673749b70c7e2",
+              "value": "[\"2025-11-01\"]",
+              "formatted": "2025-11-01"
+            },
+            {
+              "calculation": "minimum(revenue); 45 non-null saved observations",
+              "id": "c_99672e497dbadaff",
+              "label": "revenue: minimum over saved rows",
+              "unit": "number",
+              "artifact_id": "1b6ed07fcc1db242ac2673749b70c7e2",
+              "value": "4451906.37",
+              "formatted": "4,451,906.37"
+            },
+            {
+              "calculation": "maximum(revenue); 45 non-null saved observations",
+              "id": "c_5e6f9c694327ee5e",
+              "label": "revenue: maximum over saved rows",
+              "unit": "number",
+              "artifact_id": "1b6ed07fcc1db242ac2673749b70c7e2",
+              "value": "13916706.76",
+              "formatted": "13,916,706.76"
+            },
+            {
+              "calculation": "labels at max(order_count); no statistical-anomaly or causal claim",
+              "id": "c_a0c602512bd7efa5",
+              "label": "order_count: dimension labels sharing the highest saved value",
+              "unit": "label",
+              "artifact_id": "1b6ed07fcc1db242ac2673749b70c7e2",
+              "value": "[\"2025-11-01\"]",
+              "formatted": "2025-11-01"
+            },
+            {
+              "calculation": "minimum(order_count); 45 non-null saved observations",
+              "id": "c_a6137caff30b5582",
+              "label": "order count: minimum over saved rows",
+              "unit": "number",
+              "artifact_id": "1b6ed07fcc1db242ac2673749b70c7e2",
+              "value": "7482",
+              "formatted": "7,482"
+            },
+            {
+              "calculation": "maximum(order_count); 45 non-null saved observations",
+              "id": "c_6ccbc6af16aed31c",
+              "label": "order count: maximum over saved rows",
+              "unit": "number",
+              "artifact_id": "1b6ed07fcc1db242ac2673749b70c7e2",
+              "value": "22180",
+              "formatted": "22,180"
+            },
+            {
+              "calculation": "count(saved rows); not the source population",
+              "id": "c_1162a02e1c528a50",
+              "label": "Number of saved result rows",
+              "unit": "count",
+              "artifact_id": "015ff83eb73acde71edc024fdc7e938b",
+              "value": "48",
+              "formatted": "48"
+            },
+            {
+              "calculation": "labels at max(observed); no statistical-anomaly or causal claim",
+              "id": "c_882347f6e46b9e19",
+              "label": "observed: dimension labels sharing the highest saved value",
+              "unit": "label",
+              "artifact_id": "015ff83eb73acde71edc024fdc7e938b",
+              "value": "[\"2025-11-01\"]",
+              "formatted": "2025-11-01"
+            },
+            {
+              "calculation": "minimum(observed); 45 non-null saved observations",
+              "id": "c_d3f48876da42aff5",
+              "label": "Observed: minimum over saved rows",
+              "unit": "number",
+              "artifact_id": "015ff83eb73acde71edc024fdc7e938b",
+              "value": "4451906.37",
+              "formatted": "4,451,906.37"
+            },
+            {
+              "calculation": "maximum(observed); 45 non-null saved observations",
+              "id": "c_8e609cd601e68695",
+              "label": "Observed: maximum over saved rows",
+              "unit": "number",
+              "artifact_id": "015ff83eb73acde71edc024fdc7e938b",
+              "value": "13916706.76",
+              "formatted": "13,916,706.76"
+            },
+            {
+              "calculation": "labels at max(forecast); no statistical-anomaly or causal claim",
+              "id": "c_b5d0fde0295c8f59",
+              "label": "forecast: dimension labels sharing the highest saved value",
+              "unit": "label",
+              "artifact_id": "015ff83eb73acde71edc024fdc7e938b",
+              "value": "[\"2026-11-01\"]",
+              "formatted": "2026-11-01"
+            },
+            {
+              "calculation": "minimum(forecast); 3 non-null saved observations",
+              "id": "c_26c27b4737631cff",
+              "label": "Forecast: minimum over saved rows",
+              "unit": "number",
+              "artifact_id": "015ff83eb73acde71edc024fdc7e938b",
+              "value": "10272054.0",
+              "formatted": "10,272,054"
+            },
+            {
+              "calculation": "maximum(forecast); 3 non-null saved observations",
+              "id": "c_e1cfd989a9af518f",
+              "label": "Forecast: maximum over saved rows",
+              "unit": "number",
+              "artifact_id": "015ff83eb73acde71edc024fdc7e938b",
+              "value": "14367920.0",
+              "formatted": "14,367,920"
+            }
+          ],
+          "reviewed": true,
+          "source": "bigquery"
+        },
+        "downloads": {
+          "pdf": {
+            "bytes": 152628,
+            "sha256": "2e0a67023a0710d7b2bb40d976b59e741367a24ed6094f59599f20f8f7f87e6f",
+            "content_type": "application/pdf"
+          },
+          "docx": {
+            "bytes": 135061,
+            "sha256": "b4b23fe726e7c0de223a322f3b33f30c2370e06c78b27453e506d93540df9efa",
+            "content_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+          },
+          "data": {
+            "bytes": 9875,
+            "sha256": "ad0bc4f97f2d4c57db3146d8388af37824c9f5b34a5cddedc97f779eb377c12f",
+            "content_type": "application/zip"
+          }
+        },
+        "artifact_reuse_exact": true,
+        "old_downloads_unchanged": true,
+        "manifest_presentation_version": 2,
+        "workflow_version": 2,
+        "execution_mode": "presentation"
+      },
+      {
+        "kind": "scenario",
+        "report_id": "e4112a63cba9d6886594cb89988ac4c5",
+        "base_artifacts": [
+          "74369204b67027065eb9300fa7896343",
+          "267d39bf46e5d67786edb4468b1770d8",
+          "c5a0ad566f2b322fbb11b0571182a20e"
+        ],
+        "base_downloads": {
+          "pdf": {
+            "sha256": "f2bc729ed22eb48c1a495a508d3af1e74ed25de902f1aa8246530e98d8c8c8f5",
+            "size": 354367,
+            "content_type": "application/pdf"
+          },
+          "docx": {
+            "sha256": "7e3133c31ed79b7996ed65d0b4d24f775c1d2d25c47dba353ee7ece0a66a57b6",
+            "size": 333624,
+            "content_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+          },
+          "data": {
+            "sha256": "2bed6722ab36c6bb081f73b063eee060a155487deb2ce288b730329d4b68d5a3",
+            "size": 39169,
+            "content_type": "application/zip"
+          }
+        },
+        "run_id": "0da1eb895ed6aeb7f73479b5b1b0e807",
+        "version": 2,
+        "status": "complete",
+        "budgets": {
+          "queries": 0,
+          "fit_seconds": 0,
+          "scan_bytes": 0,
+          "model_calls": 2,
+          "fits": 0,
+          "seconds": 20.922202587127686,
+          "output_tokens": 2661
+        },
+        "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/reports/e4112a63cba9d6886594cb89988ac4c5?version=2",
+        "document": {
+          "title": "Technical 14-Day Conditional Revenue Forecast and Promotion Scenario Analysis",
+          "mode_note": "Gemini coordinated analysis",
+          "revision_mode": "presentation",
+          "skills_used": [
+            {
+              "revision": 1,
+              "id": "prediction-driver-scenarios",
+              "description": "Compare future predictions under explicit baseline and alternative driver assumptions, with historical support and causal caveats.",
+              "name": "Conditional driver and promotion scenarios",
+              "mode": "automatic"
+            },
+            {
+              "revision": 1,
+              "id": "prediction-timesfm-comparison",
+              "description": "Interpret managed TimesFM 3.0 Preview against validated statistical baselines, recording candidate outcomes and supported uncertainty.",
+              "name": "TimesFM candidate comparison and evidence",
+              "mode": "automatic"
+            },
+            {
+              "revision": 1,
+              "id": "prediction-backtesting",
+              "description": "Audit time-series leakage, baseline selection, rolling backtests, uncertainty intervals, and forecast reliability.",
+              "name": "Forecast validation and uncertainty",
+              "mode": "automatic"
+            }
+          ],
+          "claim_policy_version": 2,
+          "created_at": "2026-10-21T04:32:24.083161+00:00",
+          "report_id": "e4112a63cba9d6886594cb89988ac4c5",
+          "definitions": [
+            "Merchandise revenue is defined as sales revenue after discounts, before refunds, sales taxes, and shipping fees.",
+            "promotion_day is a binary numeric indicator (0 or 1) indicating whether a synthetic promotion was scheduled on that calendar date."
+          ],
+          "data_profile": "timeseries",
+          "assumptions": [],
+          "sections": [
+            {
+              "claim_ids": [
+                "c_6c8ef5fe7a90806c",
+                "c_5c4bc5537f2b2463",
+                "c_b2d54e030de283c7",
+                "c_8e3e3389bb30f67d",
+                "c_4aef06b0363de714",
+                "c_b779012b51c28d76",
+                "c_8e29c9c7298353f2",
+                "c_d8167a81a3e7631f",
+                "c_d711852a2ebae470",
+                "c_3ee3496ea762863d"
+              ],
+              "id": "executive-findings",
+              "title": "Executive Findings and Performance Summary",
+              "artifact_ids": [
+                "74369204b67027065eb9300fa7896343"
+              ],
+              "markdown": "- Historical merchandise revenue across the 1,369 saved daily records totaled USD 354,425,112.20, with a daily mean of USD 258,893.43.\n- Daily merchandise sales ranged from USD 0.00 to a series maximum of USD 999,924.68, recorded on 2025-11-28.\n- In the final period of recorded history, merchandise revenue rose to USD 290,357.09 from USD 263,881.39 in the adjacent preceding day, reflecting an absolute increase of USD 26,475.70 and a growth rate of 10.03%.",
+              "kind": "finding"
+            },
+            {
+              "claim_ids": [
+                "c_12eae27f4740f1f0",
+                "c_39ccf221e6ccc6d7",
+                "c_ba71ffd6e9259528",
+                "c_5b11688277c5302a",
+                "c_17c8cdbba18dd69f",
+                "c_34a881d149bafdc3",
+                "c_9b6ebc9d48da5fed",
+                "c_705d38e49452d6a8",
+                "c_61699850e8217078",
+                "c_3e4fbf1a9bc6086f",
+                "c_1a411507f4d56f9a",
+                "c_b6cf2ed52de9c343",
+                "c_1c27c664b95926e9",
+                "c_de1ff747dd37f909",
+                "c_15b3e5e5d904c227",
+                "c_3e940aa84330bb7e",
+                "c_d7699a36440beeb7"
+              ],
+              "id": "baseline-and-scenario-forecasts",
+              "title": "Baseline Forecast and Promotional Scenario Comparison",
+              "artifact_ids": [
+                "267d39bf46e5d67786edb4468b1770d8",
+                "c5a0ad566f2b322fbb11b0571182a20e"
+              ],
+              "markdown": "- The baseline forecast artifact contains 1,383 total records combining observed data and future projections; the historical maximum observed revenue remains USD 999,924.68 on 2025-11-28 with a minimum of USD 0.00.\n- Under baseline non-promotional conditions, the daily forward projection spans from a low of USD 291,642.62 to a peak of USD 399,542.38 on 2026-10-11.\n- The scenario artifact also records 1,383 total rows with observed minimum of USD 0.00 and maximum of USD 999,924.68 peaking on 2025-11-28.\n- Baseline forecast projections in the scenario run span between USD 291,642.62 and USD 399,542.38, reaching their highest estimate on 2026-10-11.\n- Under the full promotional assumption across future periods, simulated revenue shifts higher across all boundaries, bounded by a minimum of USD 303,550.00 and a maximum of USD 417,584.69, peaking on 2026-10-11.",
+              "kind": "finding"
+            },
+            {
+              "claim_ids": [],
+              "id": "methodology",
+              "title": "Methodology and Prediction Specification",
+              "artifact_ids": [],
+              "markdown": "- Merchandise revenue is extracted from completed customer sales orders, defined net of discounts and before refunds, sales taxes, and shipping expenses.\n- Daily series continuity is maintained through an explicit calendar join ensuring that zero-sales days are recorded rather than omitted.\n- The promotional schedule is tracked via a binary indicator denoting whether an active promotion was scheduled for each calendar date.\n- Forecasting candidate models were evaluated chronologically over rolling folds; TimesFM was selected after demonstrating the lowest cross-validated error against statistical benchmarks ETS, seasonal naive, and driver ridge regression.\n- Conditional projections evaluate two explicit paths: a baseline assumption setting future promotional days to zero, and an alternative scenario fixing all projection dates as active promotion days.",
+              "kind": "methodology"
+            },
+            {
+              "claim_ids": [],
+              "id": "limitations-and-risks",
+              "title": "Limitations and Data Quality Considerations",
+              "artifact_ids": [],
+              "markdown": "- Observed statistical relationships between promotional indicators and revenue represent associative patterns and must not be interpreted as proven causal lift or guaranteed future performance.\n- Validated prediction intervals are unavailable for this bounded backtest; forward point estimates carry unquantified variance.\n- Recorded observations terminate at the end of the historical sample window; projections start immediately after that cutoff rather than aligning with later reporting run dates.\n- Evaluation is conducted on synthetic retail datasets, which validate pipeline implementation and scoring routines rather than certifying real-world production forecasting accuracy.\n- Summary ratios and averages cannot be combined across distinct groupings without original denominators.",
+              "kind": "limitation"
+            },
+            {
+              "claim_ids": [],
+              "id": "business-recommendations",
+              "title": "Strategic Recommendations and Operational Next Steps",
+              "artifact_ids": [],
+              "markdown": "- Treat scenario revenue increases as indicative conditional simulations rather than contracted financial targets when structuring inventory commitments and fulfillment plans.\n- Execute controlled experimental holdouts or staged promotional schedules before committing marketing expenditures across consecutive calendar dates.\n- Incorporate empirical margin data, refund rates, and fulfillment cost structures alongside merchandise sales to evaluate true net profitability under promotional surges.\n- Re-run backtest evaluations on real production transaction logs once live order histories are released to replace synthetic operational baselines.",
+              "kind": "recommendation"
+            }
+          ],
+          "schema_version": 1,
+          "style": "business",
+          "model": "gemini-3.8-flash",
+          "scope": "Daily merchandise revenue and promotion schedule from 2023-01-01 through 2026-09-30, followed by a 14-day conditional forecast and scenario comparison (baseline promotion_day=0 vs alternative promotion_day=1) based on visitor-supplied schedules.",
+          "artifact_ids": [
+            "74369204b67027065eb9300fa7896343",
+            "267d39bf46e5d67786edb4468b1770d8",
+            "c5a0ad566f2b322fbb11b0571182a20e"
+          ],
+          "base_version": 1,
+          "limitations": [
+            "Historical predictive associations are not causal effects or guaranteed future performance.",
+            "Validated prediction intervals are unavailable for this bounded backtest; point predictions carry unquantified uncertainty.",
+            "Saved observations end at 2026-09-30; predictions start after that cutoff, rather than assuming data reaches the report request date 2026-10-18.",
+            "Synthetic retail data supports implementation evaluation, not a claim of real-world forecasting reliability.",
+            "Grouped rates and averages are not averaged into population-wide ratios without their original denominators; request a source-calculated overall ratio when needed."
+          ],
+          "summary": "This verification report synthesizes historical daily merchandise revenue performance alongside managed conditional forecasts and promotional scenario runs. Observed revenue across 1,369 calendar records reaches a cumulative USD 354,425,112.20, averaging USD 258,893.43 per day. Historical daily totals range from USD 0.00 to USD 999,924.68, with the peak recorded on 2025-11-28. Across the unpromoted baseline forecast window, projected values range between USD 291,642.62 and USD 399,542.38, peaking on 2026-10-11. Under the alternative promotional scenario, projected daily merchandise revenue shifts to a span between USD 303,550.00 and USD 417,584.69, also reaching its highest level on 2026-10-11.",
+          "skill_warnings": [],
+          "version": 2,
+          "claims": [
+            {
+              "calculation": "count(saved rows); not the source population",
+              "id": "c_6c8ef5fe7a90806c",
+              "label": "Number of saved result rows",
+              "unit": "count",
+              "artifact_id": "74369204b67027065eb9300fa7896343",
+              "value": "1369",
+              "formatted": "1,369"
+            },
+            {
+              "calculation": "labels at max(revenue); no statistical-anomaly or causal claim",
+              "id": "c_b779012b51c28d76",
+              "label": "revenue: dimension labels sharing the highest saved value",
+              "unit": "label",
+              "artifact_id": "74369204b67027065eb9300fa7896343",
+              "value": "[\"2025-11-28\"]",
+              "formatted": "2025-11-28"
+            },
+            {
+              "calculation": "(latest - adjacent previous) / abs(previous) \u00d7 100; zero baseline withheld",
+              "id": "c_3ee3496ea762863d",
+              "label": "revenue: change from 2026-09-29 to 2026-09-30",
+              "unit": "percent",
+              "artifact_id": "74369204b67027065eb9300fa7896343",
+              "value": "10.03318195345264779755783460",
+              "formatted": "10.03%"
+            },
+            {
+              "calculation": "minimum(revenue); 1369 non-null saved observations",
+              "id": "c_8e3e3389bb30f67d",
+              "label": "Merchandise Revenue: minimum over saved rows",
+              "unit": "currency",
+              "artifact_id": "74369204b67027065eb9300fa7896343",
+              "value": "0",
+              "formatted": "USD 0.00"
+            },
+            {
+              "calculation": "maximum(revenue); 1369 non-null saved observations",
+              "id": "c_4aef06b0363de714",
+              "label": "Merchandise Revenue: maximum over saved rows",
+              "unit": "currency",
+              "artifact_id": "74369204b67027065eb9300fa7896343",
+              "value": "999924.68",
+              "formatted": "USD 999,924.68"
+            },
+            {
+              "calculation": "latest(revenue); 1369 non-null saved observations",
+              "id": "c_8e29c9c7298353f2",
+              "label": "Merchandise Revenue: latest over saved rows",
+              "unit": "currency",
+              "artifact_id": "74369204b67027065eb9300fa7896343",
+              "value": "290357.09",
+              "formatted": "USD 290,357.09"
+            },
+            {
+              "calculation": "previous adjacent period(revenue); 1369 non-null saved observations",
+              "id": "c_d8167a81a3e7631f",
+              "label": "Merchandise Revenue: previous adjacent period over saved rows",
+              "unit": "currency",
+              "artifact_id": "74369204b67027065eb9300fa7896343",
+              "value": "263881.39",
+              "formatted": "USD 263,881.39"
+            },
+            {
+              "calculation": "latest minus previous adjacent period(revenue); 1369 non-null saved observations",
+              "id": "c_d711852a2ebae470",
+              "label": "Merchandise Revenue: latest minus previous adjacent period over saved rows",
+              "unit": "currency",
+              "artifact_id": "74369204b67027065eb9300fa7896343",
+              "value": "26475.70",
+              "formatted": "USD 26,475.70"
+            },
+            {
+              "calculation": "total(revenue); 1369 non-null saved observations",
+              "id": "c_5c4bc5537f2b2463",
+              "label": "Merchandise Revenue: total over saved rows",
+              "unit": "currency",
+              "artifact_id": "74369204b67027065eb9300fa7896343",
+              "value": "354425112.20",
+              "formatted": "USD 354,425,112.20"
+            },
+            {
+              "calculation": "average(revenue); 1369 non-null saved observations",
+              "id": "c_b2d54e030de283c7",
+              "label": "Merchandise Revenue: average over saved rows",
+              "unit": "currency",
+              "artifact_id": "74369204b67027065eb9300fa7896343",
+              "value": "258893.4347699050401753104456",
+              "formatted": "USD 258,893.43"
+            },
+            {
+              "calculation": "count(saved rows); not the source population",
+              "id": "c_12eae27f4740f1f0",
+              "label": "Number of saved result rows",
+              "unit": "count",
+              "artifact_id": "267d39bf46e5d67786edb4468b1770d8",
+              "value": "1383",
+              "formatted": "1,383"
+            },
+            {
+              "calculation": "labels at max(observed); no statistical-anomaly or causal claim",
+              "id": "c_39ccf221e6ccc6d7",
+              "label": "observed: dimension labels sharing the highest saved value",
+              "unit": "label",
+              "artifact_id": "267d39bf46e5d67786edb4468b1770d8",
+              "value": "[\"2025-11-28\"]",
+              "formatted": "2025-11-28"
+            },
+            {
+              "calculation": "minimum(observed); 1369 non-null saved observations",
+              "id": "c_ba71ffd6e9259528",
+              "label": "Observed: minimum over saved rows",
+              "unit": "currency",
+              "artifact_id": "267d39bf46e5d67786edb4468b1770d8",
+              "value": "0.0",
+              "formatted": "USD 0.00"
+            },
+            {
+              "calculation": "maximum(observed); 1369 non-null saved observations",
+              "id": "c_5b11688277c5302a",
+              "label": "Observed: maximum over saved rows",
+              "unit": "currency",
+              "artifact_id": "267d39bf46e5d67786edb4468b1770d8",
+              "value": "999924.68",
+              "formatted": "USD 999,924.68"
+            },
+            {
+              "calculation": "labels at max(forecast); no statistical-anomaly or causal claim",
+              "id": "c_17c8cdbba18dd69f",
+              "label": "forecast: dimension labels sharing the highest saved value",
+              "unit": "label",
+              "artifact_id": "267d39bf46e5d67786edb4468b1770d8",
+              "value": "[\"2026-10-11\"]",
+              "formatted": "2026-10-11"
+            },
+            {
+              "calculation": "minimum(forecast); 14 non-null saved observations",
+              "id": "c_34a881d149bafdc3",
+              "label": "Forecast: minimum over saved rows",
+              "unit": "currency",
+              "artifact_id": "267d39bf46e5d67786edb4468b1770d8",
+              "value": "291642.625",
+              "formatted": "USD 291,642.62"
+            },
+            {
+              "calculation": "maximum(forecast); 14 non-null saved observations",
+              "id": "c_9b6ebc9d48da5fed",
+              "label": "Forecast: maximum over saved rows",
+              "unit": "currency",
+              "artifact_id": "267d39bf46e5d67786edb4468b1770d8",
+              "value": "399542.375",
+              "formatted": "USD 399,542.38"
+            },
+            {
+              "calculation": "count(saved rows); not the source population",
+              "id": "c_705d38e49452d6a8",
+              "label": "Number of saved result rows",
+              "unit": "count",
+              "artifact_id": "c5a0ad566f2b322fbb11b0571182a20e",
+              "value": "1383",
+              "formatted": "1,383"
+            },
+            {
+              "calculation": "labels at max(observed); no statistical-anomaly or causal claim",
+              "id": "c_61699850e8217078",
+              "label": "observed: dimension labels sharing the highest saved value",
+              "unit": "label",
+              "artifact_id": "c5a0ad566f2b322fbb11b0571182a20e",
+              "value": "[\"2025-11-28\"]",
+              "formatted": "2025-11-28"
+            },
+            {
+              "calculation": "minimum(observed); 1369 non-null saved observations",
+              "id": "c_3e4fbf1a9bc6086f",
+              "label": "Observed: minimum over saved rows",
+              "unit": "currency",
+              "artifact_id": "c5a0ad566f2b322fbb11b0571182a20e",
+              "value": "0.0",
+              "formatted": "USD 0.00"
+            },
+            {
+              "calculation": "maximum(observed); 1369 non-null saved observations",
+              "id": "c_1a411507f4d56f9a",
+              "label": "Observed: maximum over saved rows",
+              "unit": "currency",
+              "artifact_id": "c5a0ad566f2b322fbb11b0571182a20e",
+              "value": "999924.68",
+              "formatted": "USD 999,924.68"
+            },
+            {
+              "calculation": "labels at max(forecast); no statistical-anomaly or causal claim",
+              "id": "c_b6cf2ed52de9c343",
+              "label": "forecast: dimension labels sharing the highest saved value",
+              "unit": "label",
+              "artifact_id": "c5a0ad566f2b322fbb11b0571182a20e",
+              "value": "[\"2026-10-11\"]",
+              "formatted": "2026-10-11"
+            },
+            {
+              "calculation": "minimum(forecast); 14 non-null saved observations",
+              "id": "c_1c27c664b95926e9",
+              "label": "Forecast: minimum over saved rows",
+              "unit": "currency",
+              "artifact_id": "c5a0ad566f2b322fbb11b0571182a20e",
+              "value": "291642.625",
+              "formatted": "USD 291,642.62"
+            },
+            {
+              "calculation": "maximum(forecast); 14 non-null saved observations",
+              "id": "c_de1ff747dd37f909",
+              "label": "Forecast: maximum over saved rows",
+              "unit": "currency",
+              "artifact_id": "c5a0ad566f2b322fbb11b0571182a20e",
+              "value": "399542.375",
+              "formatted": "USD 399,542.38"
+            },
+            {
+              "calculation": "labels at max(scenario); no statistical-anomaly or causal claim",
+              "id": "c_15b3e5e5d904c227",
+              "label": "scenario: dimension labels sharing the highest saved value",
+              "unit": "label",
+              "artifact_id": "c5a0ad566f2b322fbb11b0571182a20e",
+              "value": "[\"2026-10-11\"]",
+              "formatted": "2026-10-11"
+            },
+            {
+              "calculation": "minimum(scenario); 14 non-null saved observations",
+              "id": "c_3e940aa84330bb7e",
+              "label": "Scenario: minimum over saved rows",
+              "unit": "currency",
+              "artifact_id": "c5a0ad566f2b322fbb11b0571182a20e",
+              "value": "303550.0",
+              "formatted": "USD 303,550.00"
+            },
+            {
+              "calculation": "maximum(scenario); 14 non-null saved observations",
+              "id": "c_d7699a36440beeb7",
+              "label": "Scenario: maximum over saved rows",
+              "unit": "currency",
+              "artifact_id": "c5a0ad566f2b322fbb11b0571182a20e",
+              "value": "417584.6875",
+              "formatted": "USD 417,584.69"
+            }
+          ],
+          "reviewed": true,
+          "source": "bigquery"
+        },
+        "downloads": {
+          "pdf": {
+            "bytes": 406106,
+            "sha256": "6409c40beaf08f4fa180cccf6bc5bd7e9bafc1287ba4bd927ade34e2097df719",
+            "content_type": "application/pdf"
+          },
+          "docx": {
+            "bytes": 367697,
+            "sha256": "266868a2d8ec6f6f3d7e0b6243d0c75354b598bc6acde047f66db5c4c1a9bec1",
+            "content_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+          },
+          "data": {
+            "bytes": 44951,
+            "sha256": "d6d796992615703568c43fd824bc96ec77a9c78afa6e49a27651de83e6bae4c1",
+            "content_type": "application/zip"
+          }
+        },
+        "artifact_reuse_exact": true,
+        "old_downloads_unchanged": true,
+        "manifest_presentation_version": 2,
+        "workflow_version": 2,
+        "execution_mode": "presentation"
+      }
+    ],
+    "checks": {},
+    "source_queries_requested": 0,
+    "new_numerical_inference_requested": 0,
+    "passed": true,
+    "shared_quota_after": {
+      "count": 2
+    }
+  },
+  "download_content_checks": [
+    {
+      "kind": "forecast",
+      "pdf_pages": 9,
+      "future_points_matching_pdf_word": 3,
+      "csv_rowcounts_original_prediction_provenance": true,
+      "bookmarks_and_page_fields": true
+    },
+    {
+      "kind": "scenario",
+      "pdf_pages": 15,
+      "future_points_matching_pdf_word": 42,
+      "csv_rowcounts_original_prediction_provenance": true,
+      "bookmarks_and_page_fields": true
+    }
+  ],
+  "http": {
+    "https://agentic-bi-backend-wekihucn7q-as.a.run.app/health/live": {
+      "status": 200,
+      "json": {
+        "status": "ok",
+        "service": "agentic-bi-backend"
+      }
+    },
+    "https://agentic-bi-backend-wekihucn7q-as.a.run.app/health/ready": {
+      "status": 200,
+      "json": {
+        "status": "ready",
+        "mode": "gemini",
+        "storage": "firestore",
+        "visibility": "public"
+      }
+    },
+    "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/": {
+      "status": 200
+    },
+    "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/app": {
+      "status": 200
+    },
+    "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/reports": {
+      "status": 200
+    },
+    "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/dashboards": {
+      "status": 200
+    },
+    "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/metrics": {
+      "status": 200
+    },
+    "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/forecast-plans": {
+      "status": 200
+    },
+    "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/skills": {
+      "status": 200
+    },
+    "https://agentic-bi-frontend-wekihucn7q-as.a.run.app/settings": {
+      "status": 200
+    },
+    "legacy_chat_redirect": {
+      "status": 307,
+      "location": "/app?chat=release-link-test&source=bigquery"
+    }
+  },
+  "dropdown_inventory": {
+    "Frontend/src/components/reports-library.tsx": 2,
+    "Frontend/src/components/dashboards-library.tsx": 1,
+    "Frontend/src/components/forecast-plans.tsx": 9,
+    "Frontend/src/components/dashboard-builder.tsx": 4,
+    "Frontend/src/components/dashboard-workspace.tsx": 2,
+    "Frontend/src/components/report-workspace.tsx": 5,
+    "Frontend/src/components/metrics-workspace.tsx": 7,
+    "Frontend/src/components/pin-to-dashboard.tsx": 1,
+    "Frontend/src/components/charts/insightful-chart.tsx": 5
+  },
+  "native_selects_remaining_in_app_tsx": 0,
+  "browser_checks": [
+    {
+      "scope": "local",
+      "check": "Local Reports status filtering,49-option chart menu and320px bounded layout; hosted Ready filter and Name A\u2013Z sorting also selected successfully",
+      "passed": true
+    },
+    {
+      "scope": "local",
+      "check": "Metric Ratio authoring and empty published-definition defaults",
+      "passed": true
+    },
+    {
+      "scope": "local",
+      "check": "Settings visualization and Skills source dropdowns; Escape closes",
+      "passed": true
+    },
+    {
+      "scope": "hosted",
+      "check": "320px report section menu stays within x12..308; document width320",
+      "passed": true
+    },
+    {
+      "scope": "hosted",
+      "check": "Mobile section selection focuses section-forecast_evaluation",
+      "passed": true
+    },
+    {
+      "scope": "hosted",
+      "check": "Desktop report version menu and keyboard selection of version2",
+      "passed": true
+    },
+    {
+      "scope": "hosted",
+      "check": "1280px report bordered sections (1px; summary3px) and30px padding; no page overflow",
+      "passed": true
+    },
+    {
+      "scope": "hosted",
+      "check": "Forecast Plans6-month numeric horizon and published-metric chooser",
+      "passed": true
+    },
+    {
+      "scope": "hosted",
+      "check": "Metrics Archived filter selection",
+      "passed": true
+    },
+    {
+      "scope": "hosted",
+      "check": "Dashboard library sorting menu",
+      "passed": true
+    },
+    {
+      "scope": "hosted",
+      "check": "AI builder model selection and empty Workspace default round-trip;390px source menu",
+      "passed": true
+    },
+    {
+      "scope": "hosted",
+      "check": "Dark/reduced-motion report revision Style dropdown above dialog, x32..358 at390px; canceled",
+      "passed": true
+    },
+    {
+      "scope": "hosted",
+      "check": "Pin dialog11-option dashboard menu bounded x12..378, height352 at390px; Escape returns focus to pin-dashboard",
+      "passed": true
+    },
+    {
+      "scope": "hosted",
+      "check": "Dashboard card Standard/Wide and numeric precision options; canceled without saving",
+      "passed": true
+    },
+    {
+      "scope": "hosted",
+      "check": "Saved-chart observation selection,390px document containment",
+      "passed": true
+    },
+    {
+      "scope": "hosted",
+      "check": "Scenario table has14 assumption rows plusheader and descriptive native caption",
+      "passed": true
+    },
+    {
+      "scope": "hosted",
+      "check": "Actual mobile PDF and ZIP, desktop Word button downloads",
+      "passed": true
+    },
+    {
+      "scope": "hosted",
+      "check": "Inspected report browser error log empty",
+      "passed": true
+    }
+  ],
+  "screenshots": [
+    "report-dropdown-release-20261021-dark-dialog.jpg",
+    "report-dropdown-release-20261021-mobile-dropdown.jpg",
+    "report-dropdown-release-20261021-word-forecast.jpg",
+    "report-dropdown-release-20261021-pdf-forecast.jpg",
+    "report-dropdown-release-20261021-builder-mobile.jpg",
+    "report-dropdown-release-20261021-mobile.jpg",
+    "report-dropdown-release-20261021-desktop.jpg",
+    "report-dropdown-release-20261021-pin-mobile.jpg",
+    "report-dropdown-release-20261021-word-scenario.jpg",
+    "report-dropdown-release-20261021-pdf-scenario.jpg"
+  ],
+  "limitations": [
+    "Emulated widths, not physical devices; no complete screen-reader or contrast certification.",
+    "PDF selectable text/bookmarks, not PDF/UA tagging; Word visually rendered with LibreOffice, not Microsoft Word.",
+    "No fresh numerical forecast, scenario, voice or planning execution; two saved-evidence presentation revisions only.",
+    "Preservation uses five BigQuery tables row/byte/schema/modified metadata, no content rescan or PostgreSQL recount.",
+    "Two dialog Cancel CDP calls timed out after their click; subsequent screenshots/DOM confirmed closure and no save. One guessed Half option did not exist; supported Standard/Wide options were then tested.",
+    "Initial focus observations during close animation were inconclusive; settled Escape focus and explicit section transfer passed.",
+    "Existing expanded-chart BODY focus behavior from the preceding release remains outside this dropdown change."
+  ],
+  "scope": {
+    "analytical_writes": 0,
+    "quota_resets": false,
+    "iam_changes": false,
+    "submission_tracked": false,
+    "submission_uploaded": false
+  },
+  "browser_download_checks": [
+    {
+      "kind": "forecast",
+      "format": "pdf",
+      "browser_download_matches_saved_version": true,
+      "sha256": "2e0a67023a0710d7b2bb40d976b59e741367a24ed6094f59599f20f8f7f87e6f"
+    },
+    {
+      "kind": "scenario",
+      "format": "docx",
+      "browser_download_matches_saved_version": true,
+      "sha256": "266868a2d8ec6f6f3d7e0b6243d0c75354b598bc6acde047f66db5c4c1a9bec1"
+    },
+    {
+      "kind": "scenario",
+      "format": "data",
+      "browser_download_matches_saved_version": true,
+      "sha256": "d6d796992615703568c43fd824bc96ec77a9c78afa6e49a27651de83e6bae4c1"
+    }
+  ],
+  "publication_gate": {
+    "graph_source_hashes": 294,
+    "native_endpoints_valid": true,
+    "mermaid_synced": 2,
+    "local_document_links_checked": 384,
+    "json_and_diff": "passed",
+    "submission_paths_tracked": false
+  }
+}

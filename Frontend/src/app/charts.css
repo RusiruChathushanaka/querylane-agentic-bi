@@ -28,9 +28,9 @@
   font-size: 11px;
   color: var(--muted-foreground);
 }
-.chart-toolbar select,
+.chart-toolbar :is(select, [data-slot="select-trigger"]),
 .chart-toolbar input,
-.chart-inspect select {
+.chart-inspect :is(select, [data-slot="select-trigger"]) {
   color: var(--foreground);
   background: var(--background);
   border: 1px solid var(--border);
@@ -148,7 +148,8 @@
   touch-action: pan-y;
 }
 .insight-plot .recharts-surface:focus-visible,
-.chart-explorer :is(button, input, select):focus-visible {
+.chart-explorer
+  :is(button, input, :is(select, [data-slot="select-trigger"])):focus-visible {
   outline: 2px solid var(--primary);
   outline-offset: 3px;
 }
@@ -274,8 +275,8 @@
 }
 @media (pointer: coarse) {
   .chart-legend button,
-  .chart-toolbar :is(input, select),
-  .chart-inspect select {
+  .chart-toolbar :is(input, :is(select, [data-slot="select-trigger"])),
+  .chart-inspect :is(select, [data-slot="select-trigger"]) {
     min-height: 44px;
   }
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import { AppSelect, AppSelectItem } from "@/components/ui/app-select";
 import Link from "next/link";
 import { workspacePath } from "@/lib/workspace-links";
 import dynamic from "next/dynamic";
@@ -363,17 +364,17 @@ function DashboardWidget({
               </Field>
               <Field>
                 <FieldLabel htmlFor={`card-width-${item.id}`}>Width</FieldLabel>
-                <select
+                <AppSelect
                   className="dashboard-native-select"
                   id={`card-width-${item.id}`}
                   value={width}
-                  onChange={(e) =>
-                    setWidth(e.target.value as "standard" | "wide")
+                  onValueChange={(selectedValue) =>
+                    setWidth(selectedValue as "standard" | "wide")
                   }
                 >
-                  <option value="standard">Standard</option>
-                  <option value="wide">Wide</option>
-                </select>
+                  <AppSelectItem value="standard">Standard</AppSelectItem>
+                  <AppSelectItem value="wide">Wide</AppSelectItem>
+                </AppSelect>
               </Field>
               <Field>
                 <FieldLabel htmlFor={`card-highlights-${item.id}`}>
@@ -389,18 +390,18 @@ function DashboardWidget({
                 <FieldLabel htmlFor={`card-decimals-${item.id}`}>
                   Number precision
                 </FieldLabel>
-                <select
+                <AppSelect
                   className="dashboard-native-select"
                   id={`card-decimals-${item.id}`}
                   value={decimals}
-                  onChange={(e) =>
-                    setDecimals(Number(e.target.value) as 0 | 1 | 2)
+                  onValueChange={(selectedValue) =>
+                    setDecimals(Number(selectedValue) as 0 | 1 | 2)
                   }
                 >
-                  <option value="0">0 decimal places</option>
-                  <option value="1">1 decimal place</option>
-                  <option value="2">2 decimal places</option>
-                </select>
+                  <AppSelectItem value="0">0 decimal places</AppSelectItem>
+                  <AppSelectItem value="1">1 decimal place</AppSelectItem>
+                  <AppSelectItem value="2">2 decimal places</AppSelectItem>
+                </AppSelect>
               </Field>
             </FieldGroup>
             {formError && <p role="alert">{formError}</p>}
@@ -652,7 +653,13 @@ export function DashboardWorkspace({
                 </p>
               </div>
               <div className="dash-card-actions">
-                {edit && !board.deleted && <Button asChild variant="outline"><Link href={`/dashboards/build?dashboard=${board.id}`}>Improve with AI</Link></Button>}
+                {edit && !board.deleted && (
+                  <Button asChild variant="outline">
+                    <Link href={`/dashboards/build?dashboard=${board.id}`}>
+                      Improve with AI
+                    </Link>
+                  </Button>
+                )}
                 <DashboardShare dashboard={board} />
                 {!board.deleted && <DashboardDownload dashboard={board} />}
                 <Button variant="outline" onClick={reload}>

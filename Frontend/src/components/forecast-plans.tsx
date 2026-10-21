@@ -1,5 +1,6 @@
 "use client";
 
+import { AppSelect, AppSelectItem } from "@/components/ui/app-select";
 import Link from "next/link";
 import { PlanningSkills } from "./planning-skills";
 import { usePreferences } from "@/hooks/use-preferences";
@@ -546,42 +547,54 @@ export function ForecastPlans({
                 </label>
                 <label className="bi-field">
                   <span>Published revenue definition</span>
-                  <select
+                  <AppSelect
                     required
                     value={metricId}
-                    onChange={(e) => setMetricId(e.target.value)}
+                    onValueChange={(selectedValue) =>
+                      setMetricId(selectedValue)
+                    }
                   >
-                    <option value="">Choose a metric</option>
+                    <AppSelectItem value="">Choose a metric</AppSelectItem>
                     {metrics.map((m) => (
-                      <option key={m.id} value={m.id}>
+                      <AppSelectItem key={m.id} value={String(m.id)}>
                         {m.name} · v{m.published_version}
-                      </option>
+                      </AppSelectItem>
                     ))}
-                  </select>
+                  </AppSelect>
                 </label>
                 <label className="bi-field">
                   <span>Future months</span>
-                  <select
+                  <AppSelect
                     value={horizon}
-                    onChange={(e) => setHorizon(Number(e.target.value))}
+                    onValueChange={(selectedValue) =>
+                      setHorizon(Number(selectedValue))
+                    }
                   >
                     {[1, 2, 3, 4, 5, 6].map((v) => (
-                      <option key={v} value={v}>
+                      <AppSelectItem key={v} value={String(v)}>
                         {v} month{v > 1 ? "s" : ""}
-                      </option>
+                      </AppSelectItem>
                     ))}
-                  </select>
+                  </AppSelect>
                 </label>
                 <label className="bi-field">
                   <span>Planning view</span>
-                  <select
+                  <AppSelect
                     value={hierarchy}
-                    onChange={(e) => setHierarchy(e.target.value)}
+                    onValueChange={(selectedValue) =>
+                      setHierarchy(selectedValue)
+                    }
                   >
-                    <option value="both">Geography + products</option>
-                    <option value="geography">Focus on geography</option>
-                    <option value="products">Focus on products</option>
-                  </select>
+                    <AppSelectItem value="both">
+                      Geography + products
+                    </AppSelectItem>
+                    <AppSelectItem value="geography">
+                      Focus on geography
+                    </AppSelectItem>
+                    <AppSelectItem value="products">
+                      Focus on products
+                    </AppSelectItem>
+                  </AppSelect>
                 </label>
                 <label className="bi-field">
                   <span>Priority region or category (optional)</span>
@@ -643,19 +656,23 @@ export function ForecastPlans({
               </label>
               <label className="bi-field">
                 <span>Library</span>
-                <select
+                <AppSelect
                   value={deleted ? "deleted" : "active"}
-                  onChange={(e) => setDeleted(e.target.value === "deleted")}
+                  onValueChange={(selectedValue) =>
+                    setDeleted(selectedValue === "deleted")
+                  }
                 >
-                  <option value="active">Active plans</option>
-                  <option value="deleted">Recently deleted</option>
-                </select>
+                  <AppSelectItem value="active">Active plans</AppSelectItem>
+                  <AppSelectItem value="deleted">
+                    Recently deleted
+                  </AppSelectItem>
+                </AppSelect>
               </label>
               <label className="bi-field">
                 <span>Status</span>
-                <select
+                <AppSelect
                   value={status}
-                  onChange={(e) => setStatus(e.target.value)}
+                  onValueChange={(selectedValue) => setStatus(selectedValue)}
                 >
                   {[
                     "all",
@@ -666,9 +683,11 @@ export function ForecastPlans({
                     "cancelled",
                     "waiting_input",
                   ].map((v) => (
-                    <option key={v}>{v}</option>
+                    <AppSelectItem value={String(v)} key={v}>
+                      {v}
+                    </AppSelectItem>
                   ))}
-                </select>
+                </AppSelect>
               </label>
             </div>
             {loading ? (
@@ -718,16 +737,18 @@ export function ForecastPlans({
           <div className="bi-toolbar">
             <label className="bi-field">
               <span>Immutable version</span>
-              <select
+              <AppSelect
                 value={selectedVersion ?? root.latest_version ?? ""}
-                onChange={(e) => setSelectedVersion(Number(e.target.value))}
+                onValueChange={(selectedValue) =>
+                  setSelectedVersion(Number(selectedValue))
+                }
               >
                 {root.versions.map((v) => (
-                  <option key={v} value={v}>
+                  <AppSelectItem key={v} value={String(v)}>
                     Version {v}
-                  </option>
+                  </AppSelectItem>
                 ))}
-              </select>
+              </AppSelect>
             </label>
             <Button
               disabled={
@@ -914,13 +935,19 @@ export function ForecastPlans({
               <div className="bi-fields">
                 <label className="bi-field">
                   <span>Adjustment</span>
-                  <select
+                  <AppSelect
                     value={operation}
-                    onChange={(e) => setOperation(e.target.value)}
+                    onValueChange={(selectedValue) =>
+                      setOperation(selectedValue)
+                    }
                   >
-                    <option value="percent">Percentage change</option>
-                    <option value="set">Set USD per future month</option>
-                  </select>
+                    <AppSelectItem value="percent">
+                      Percentage change
+                    </AppSelectItem>
+                    <AppSelectItem value="set">
+                      Set USD per future month
+                    </AppSelectItem>
+                  </AppSelect>
                 </label>
                 <label className="bi-field">
                   <span>
@@ -972,13 +999,15 @@ export function ForecastPlans({
               <div className="bi-toolbar">
                 <label className="bi-field">
                   <span>Report style</span>
-                  <select
+                  <AppSelect
                     value={reportStyle}
-                    onChange={(e) => setReportStyle(e.target.value)}
+                    onValueChange={(selectedValue) =>
+                      setReportStyle(selectedValue)
+                    }
                   >
-                    <option value="business">Business</option>
-                    <option value="technical">Technical</option>
-                  </select>
+                    <AppSelectItem value="business">Business</AppSelectItem>
+                    <AppSelectItem value="technical">Technical</AppSelectItem>
+                  </AppSelect>
                 </label>
                 <Button
                   disabled={busy || root?.deleted}
@@ -992,28 +1021,28 @@ export function ForecastPlans({
               <h2>Compare saved versions</h2>
               <label className="bi-field">
                 <span>Comparison version</span>
-                <select
+                <AppSelect
                   value={compareVersion}
-                  onChange={(e) => {
-                    setCompareVersion(e.target.value);
-                    if (e.target.value)
+                  onValueChange={(selectedValue) => {
+                    setCompareVersion(selectedValue);
+                    if (selectedValue)
                       void api<ForecastRevision>(
-                        `/forecast-plans/${id}/revisions/${e.target.value}`,
+                        `/forecast-plans/${id}/revisions/${selectedValue}`,
                       )
                         .then((v) => setComparison(v.document))
                         .catch((e) => setError(e.message));
                     else setComparison(null);
                   }}
                 >
-                  <option value="">Choose version</option>
+                  <AppSelectItem value="">Choose version</AppSelectItem>
                   {root?.versions
                     .filter((v) => v !== doc.version)
                     .map((v) => (
-                      <option key={v} value={v}>
+                      <AppSelectItem key={v} value={String(v)}>
                         Version {v}
-                      </option>
+                      </AppSelectItem>
                     ))}
-                </select>
+                </AppSelect>
               </label>
               {comparison && (
                 <div

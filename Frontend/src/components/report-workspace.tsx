@@ -1,8 +1,10 @@
 "use client";
+
+import { AppSelect, AppSelectItem } from "@/components/ui/app-select";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { workspacePath } from "@/lib/workspace-links";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   ArrowLeft,
   Download,
@@ -19,6 +21,10 @@ import type { Report, ReportRevision, ReportRun } from "@/lib/report-types";
 import { DashboardHeader } from "@/components/dashboard-shared";
 import { ReportRunCard } from "@/components/report-run-card";
 import { MarkdownContent } from "@/components/markdown-content";
+import {
+  PredictionEvidence,
+  forecastMethodLabel,
+} from "@/components/prediction-evidence";
 import { SkillEvidence } from "@/components/skill-evidence";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -51,6 +57,23 @@ export function ReportWorkspace({
   const [dialog, setDialog] = useState<"rename" | "revise" | null>(null);
   const [tick, setTick] = useState(0);
   const [exporting, setExporting] = useState("");
+  const [activeSection, setActiveSection] = useState("executive-summary");
+  const pendingSectionFocus = useRef<HTMLElement | null>(null);
+  useEffect(() => {
+    if (!revision) return;
+    const sections = Array.from(
+      document.querySelectorAll<HTMLElement>(".report-section"),
+    );
+    const update = () => {
+      const current = sections
+        .filter((section) => section.getBoundingClientRect().top <= 160)
+        .at(-1);
+      setActiveSection(current?.id ?? "executive-summary");
+    };
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    return () => window.removeEventListener("scroll", update);
+  }, [revision]);
   const load = useCallback(
     async (signal?: AbortSignal) => {
       try {
@@ -103,7 +126,13 @@ export function ReportWorkspace({
       const href = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = href;
-      link.download = `querylane-${id.slice(0, 12)}-v${revision.version}.${format === "data" ? "zip" : format}`;
+      link.download = `querylane-${
+        revision.document.title
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-|-$/g, "")
+          .slice(0, 70) || id.slice(0, 12)
+      }-v${revision.version}.${format === "data" ? "zip" : format}`;
       link.click();
       setTimeout(() => URL.revokeObjectURL(href), 60000);
       toast.success("Report downloaded", { id: `download:${id}` });
@@ -144,13 +173,22 @@ export function ReportWorkspace({
                 <div className="reports-eyebrow">
                   Public intelligence report
                 </div>
-                <h1>{report.name}</h1>
+                <h1>{doc?.title ?? report.name}</h1>
                 <p>
                   {doc?.scope ??
                     (report.latest_version
                       ? "Loading the saved report and evidence…"
                       : "The analyst is preparing saved findings and evidence.")}
                 </p>
+                {doc && (
+                  <details className="report-request">
+                    <summary>Library name & source conversation</summary>
+                    <p>{report.name}</p>
+                    <Link href={workspacePath(report.conversation_id)}>
+                      Open source conversation
+                    </Link>
+                  </details>
+                )}
               </div>
               <div className="report-actions">
                 <Button
@@ -217,25 +255,25 @@ export function ReportWorkspace({
                   <label className="sr-only" htmlFor="report-version">
                     Saved report version
                   </label>
-                  <select
+                  <AppSelect
                     id="report-version"
                     value={revision?.version}
-                    onChange={(e) => {
+                    onValueChange={(selectedValue) => {
                       setRevision(null);
-                      setVersion(Number(e.target.value));
+                      setVersion(Number(selectedValue));
                       history.replaceState(
                         null,
                         "",
-                        `/reports/${id}?version=${e.target.value}`,
+                        `/reports/${id}?version=${selectedValue}`,
                       );
                     }}
                   >
                     {[...report.versions].reverse().map((v) => (
-                      <option value={v} key={v}>
+                      <AppSelectItem value={String(v)} key={v}>
                         Version {v}
-                      </option>
+                      </AppSelectItem>
                     ))}
-                  </select>
+                  </AppSelect>
                   <Badge variant="outline">{doc.style} report</Badge>
                   <Badge variant="secondary">{doc.data_profile}</Badge>
                   <div className="grow" />
@@ -271,28 +309,161 @@ export function ReportWorkspace({
                   tables; data ZIP includes all saved rows, predictions, and
                   provenance. No new queries or model calls.
                 </p>
+                <dl
+                  className="report-facts"
+                  aria-label="Saved report information"
+                >
+                  <div>
+                    <dt>Saved version</dt>
+                    <dd>
+                      {revision?.version} ·{" "}
+                      {doc.style === "business" ? "Business" : "Technical"}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Created</dt>
+                    <dd>
+                      {new Date(doc.created_at).toLocaleDateString(undefined, {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                      })}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Evidence</dt>
+                    <dd>{doc.artifact_ids.length} saved results</dd>
+                  </div>
+                  <div>
+                    <dt>Source scope</dt>
+                    <dd>
+                      {doc.data_profile === "timeseries"
+                        ? "Synthetic retail · multi-year"
+                        : doc.data_profile}
+                    </dd>
+                  </div>
+                </dl>
+                <div className="report-mobile-outline">
+                  <label htmlFor="report-section-select">Jump to section</label>
+                  <AppSelect
+                    id="report-section-select"
+                    value={activeSection}
+                    onCloseAutoFocus={(event) => {
+                      if (pendingSectionFocus.current) {
+                        event.preventDefault();
+                        pendingSectionFocus.current.focus({
+                          preventScroll: true,
+                        });
+                        pendingSectionFocus.current = null;
+                      }
+                    }}
+                    onValueChange={(selectedValue) => {
+                      const target = document.getElementById(selectedValue);
+                      target?.scrollIntoView({
+                        behavior: "instant",
+                        block: "start",
+                      });
+                      pendingSectionFocus.current = target;
+                      setActiveSection(selectedValue);
+                    }}
+                  >
+                    <AppSelectItem value="executive-summary">
+                      Executive summary
+                    </AppSelectItem>
+                    {doc.sections.map((section) => (
+                      <AppSelectItem
+                        key={section.id}
+                        value={String(`section-${section.id}`)}
+                      >
+                        {section.title}
+                      </AppSelectItem>
+                    ))}
+                    <AppSelectItem value="report-evidence">
+                      Evidence & limitations
+                    </AppSelectItem>
+                  </AppSelect>
+                </div>
                 <div className="report-layout">
                   <nav className="report-outline" aria-label="Report sections">
-                    <a href="#executive-summary">Executive summary</a>
+                    <a
+                      href="#executive-summary"
+                      aria-current={
+                        activeSection === "executive-summary"
+                          ? "location"
+                          : undefined
+                      }
+                    >
+                      Executive summary
+                    </a>
                     {doc.sections.map((s) => (
-                      <a key={s.id} href={`#section-${s.id}`}>
+                      <a
+                        key={s.id}
+                        href={`#section-${s.id}`}
+                        aria-current={
+                          activeSection === `section-${s.id}`
+                            ? "location"
+                            : undefined
+                        }
+                      >
                         {s.title}
                       </a>
                     ))}
-                    <a href="#report-evidence">Evidence & limitations</a>
+                    <a
+                      href="#report-evidence"
+                      aria-current={
+                        activeSection === "report-evidence"
+                          ? "location"
+                          : undefined
+                      }
+                    >
+                      Evidence & limitations
+                    </a>
                   </nav>
                   <article className="report-document">
-                    <section id="executive-summary" className="report-section">
+                    <section
+                      id="executive-summary"
+                      tabIndex={-1}
+                      className="report-section report-executive"
+                    >
                       <h2>Executive summary</h2>
                       <div className="report-summary">
-                        <MarkdownContent>{doc.summary}</MarkdownContent>
+                        <MarkdownContent>
+                          {doc.summary.replace(/^\s*•\s+/gm, "- ")}
+                        </MarkdownContent>
                       </div>
+                      {doc.claims.length > 0 && (
+                        <dl
+                          className="report-highlights"
+                          aria-label="Saved verified highlights"
+                        >
+                          {doc.claims
+                            .filter(
+                              (claim) =>
+                                !/number of saved result rows|dimension labels/i.test(
+                                  claim.label,
+                                ),
+                            )
+                            .slice(0, 3)
+                            .map((claim) => (
+                              <div key={claim.id}>
+                                <dt>{claim.label}</dt>
+                                <dd>{claim.formatted}</dd>
+                                <details>
+                                  <summary>Calculation & evidence</summary>
+                                  <p>{claim.calculation}</p>
+                                  <p>Saved result: {claim.artifact_id}</p>
+                                </details>
+                              </div>
+                            ))}
+                        </dl>
+                      )}
                     </section>
                     {doc.sections.map((s) => (
                       <section
                         key={s.id}
                         id={`section-${s.id}`}
-                        className="report-section"
+                        tabIndex={-1}
+                        className={`report-section report-section-${s.kind}`}
                       >
                         <h2>{s.title}</h2>
                         {s.kind === "recommendation" && (
@@ -300,16 +471,30 @@ export function ReportWorkspace({
                             Recommendation · analyst interpretation
                           </Badge>
                         )}
-                        <MarkdownContent>{s.markdown}</MarkdownContent>
+                        <MarkdownContent>
+                          {s.markdown.replace(/^\s*•\s+/gm, "- ")}
+                        </MarkdownContent>
                         {s.artifact_ids.map(
                           (a) =>
                             artifacts[a] && (
-                              <ResultCard key={a} artifact={artifacts[a]} />
+                              <div key={a} className="report-result-section">
+                                {artifacts[a].prediction && (
+                                  <ReportPrediction artifact={artifacts[a]} />
+                                )}
+                                <ResultCard
+                                  artifact={artifacts[a]}
+                                  showPredictionEvidence={false}
+                                />
+                              </div>
                             ),
                         )}
                       </section>
                     ))}
-                    <section id="report-evidence" className="report-section">
+                    <section
+                      id="report-evidence"
+                      tabIndex={-1}
+                      className="report-section"
+                    >
                       <h2>Evidence & limitations</h2>
                       <div className="report-note">
                         <ul>
@@ -351,6 +536,26 @@ export function ReportWorkspace({
                             {new Date(doc.created_at).toLocaleString()}
                           </p>
                         </div>
+                      </details>
+                      <details className="report-source-times">
+                        <summary>Independent source timestamps</summary>
+                        <ul>
+                          {Object.values(artifacts).flatMap((artifact) =>
+                            artifact.provenance.map((source, index) => (
+                              <li key={`${artifact.id}-${index}`}>
+                                <strong>{source.source}</strong> ·{" "}
+                                {new Date(source.executed_at).toLocaleString()}
+                                <br />
+                                {artifact.title}
+                              </li>
+                            )),
+                          )}
+                        </ul>
+                        <p>
+                          Each timestamp belongs to its saved source execution;
+                          sources are not assumed to be one synchronized
+                          snapshot.
+                        </p>
                       </details>
                       <SkillEvidence
                         skills={doc.skills_used}
@@ -489,17 +694,19 @@ function ReportEditDialog({
             <>
               <label>
                 Revision type
-                <select
+                <AppSelect
                   value={revisionMode}
-                  onChange={(e) => setRevisionMode(e.target.value)}
+                  onValueChange={(selectedValue) =>
+                    setRevisionMode(selectedValue)
+                  }
                 >
-                  <option value="presentation">
+                  <AppSelectItem value="presentation">
                     Rework presentation — saved evidence
-                  </option>
-                  <option value="reanalyze">
+                  </AppSelectItem>
+                  <AppSelectItem value="reanalyze">
                     Reanalyze — new source queries
-                  </option>
-                </select>
+                  </AppSelectItem>
+                </AppSelect>
               </label>
               <label>
                 {revisionMode === "presentation"
@@ -514,15 +721,15 @@ function ReportEditDialog({
               </label>
               <label>
                 Style
-                <select
+                <AppSelect
                   value={style}
-                  onChange={(e) =>
-                    setStyle(e.target.value as "business" | "technical")
+                  onValueChange={(selectedValue) =>
+                    setStyle(selectedValue as "business" | "technical")
                   }
                 >
-                  <option value="business">Business</option>
-                  <option value="technical">Technical</option>
-                </select>
+                  <AppSelectItem value="business">Business</AppSelectItem>
+                  <AppSelectItem value="technical">Technical</AppSelectItem>
+                </AppSelect>
               </label>
             </>
           )}
@@ -637,10 +844,10 @@ function ResearchPanel() {
         <label className="sr-only" htmlFor="research-topic">
           Public research topic
         </label>
-        <select
+        <AppSelect
           id="research-topic"
           value={topic}
-          onChange={(e) => setTopic(e.target.value)}
+          onValueChange={(selectedValue) => setTopic(selectedValue)}
         >
           {[
             "retail seasonality",
@@ -648,9 +855,11 @@ function ResearchPanel() {
             "retail inventory planning",
             "retail promotion measurement",
           ].map((t) => (
-            <option key={t}>{t}</option>
+            <AppSelectItem value={String(t)} key={t}>
+              {t}
+            </AppSelectItem>
           ))}
-        </select>
+        </AppSelect>
         <Button variant="outline" disabled={busy} onClick={() => void search()}>
           <Search aria-hidden />
           {busy ? "Researching…" : "Search public topic"}
@@ -691,5 +900,176 @@ function ResearchPanel() {
         </>
       )}
     </aside>
+  );
+}
+
+export function ReportPrediction({ artifact }: { artifact: Artifact }) {
+  const prediction = artifact.prediction;
+  if (!prediction) return null;
+  const scenario = prediction.kind === "scenario";
+  const adjusted = prediction.kind === "adjusted_plan";
+  return (
+    <div className="report-prediction">
+      <p className="reports-eyebrow">
+        {adjusted
+          ? "Planning assumptions — not statistical predictions"
+          : scenario
+            ? "Conditional scenario"
+            : "Forecast overview"}
+      </p>
+      <dl className="report-facts">
+        <div>
+          <dt>Observed through</dt>
+          <dd>{prediction.cutoff}</dd>
+        </div>
+        <div>
+          <dt>Horizon</dt>
+          <dd>
+            {prediction.horizon} {prediction.grain} periods
+          </dd>
+        </div>
+        <div>
+          <dt>Selected method</dt>
+          <dd>
+            {prediction.method === "timesfm_3"
+              ? "TimesFM 3.0"
+              : prediction.method.replaceAll("_", " ")}
+            {prediction.preview ? " · Preview" : ""}
+          </dd>
+        </div>
+      </dl>
+      {prediction.status === "allocated" && (
+        <p>Allocated estimate; this node was not independently modeled.</p>
+      )}
+      <p>{prediction.selection_reason}</p>
+      <p className="report-prediction-caveat">
+        {prediction.interval
+          ? `Saved interval level: ${Math.round(prediction.interval.level * 100)}%.`
+          : "Validated intervals unavailable; uncertainty is not quantified."}{" "}
+        Solid lines represent observations; dashed lines represent predictions.
+      </p>
+      {prediction.scores && (
+        <details>
+          <summary>Candidate comparison · chronological backtests</summary>
+          <div
+            className="report-comparison-scroll"
+            role="region"
+            aria-label="Forecast candidate comparison"
+            tabIndex={0}
+          >
+            <table>
+              <caption>
+                Held-out errors in the saved target units; lower is better. This
+                is not an accuracy percentage.
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">Method</th>
+                  <th scope="col">MAE</th>
+                  <th scope="col">RMSE</th>
+                  <th scope="col">Outcome</th>
+                </tr>
+              </thead>
+              <tbody>
+                {Object.entries(prediction.scores).map(([method, score]) => (
+                  <tr key={method}>
+                    <th scope="row">{forecastMethodLabel(method)}</th>
+                    <td>
+                      {score.mae.toLocaleString(undefined, {
+                        maximumFractionDigits: 2,
+                      })}
+                    </td>
+                    <td>
+                      {score.rmse.toLocaleString(undefined, {
+                        maximumFractionDigits: 2,
+                      })}
+                    </td>
+                    <td>
+                      {method === prediction.method ? "Selected" : "Compared"}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </details>
+      )}
+      {scenario && (
+        <div className="report-scenario-assumptions">
+          <h3>Explicit future assumptions</h3>
+          <p>
+            Baseline and alternative paths are conditional inputs, not causal
+            lift estimates.
+          </p>
+          <ul>
+            {(prediction.assumptions ?? []).map((assumption, index) => (
+              <li key={index}>{assumption}</li>
+            ))}
+          </ul>
+          <div className="report-scenario-paths">
+            <div>
+              <strong>Baseline path</strong>
+              <p>
+                {prediction.future_drivers?.length ?? 0} saved future periods
+              </p>
+            </div>
+            <div>
+              <strong>Alternative path</strong>
+              <p>
+                {prediction.scenario_drivers?.length ?? 0} saved future periods
+              </p>
+            </div>
+          </div>
+          <details>
+            <summary>Baseline & alternative driver paths</summary>
+            <div
+              className="report-comparison-scroll"
+              role="region"
+              aria-label="Saved scenario assumptions"
+              tabIndex={0}
+            >
+              <table>
+                <caption>
+                  Explicit assumptions for each future period; held-out targets
+                  are not future inputs.
+                </caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Period</th>
+                    <th scope="col">Driver</th>
+                    <th scope="col">Baseline</th>
+                    <th scope="col">Alternative</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {(prediction.future_drivers ?? []).flatMap((path, index) =>
+                    (prediction.drivers ?? []).map((driver) => (
+                      <tr key={`${index}-${driver}`}>
+                        <th scope="row">{index + 1}</th>
+                        <td>{driver}</td>
+                        <td>{path[driver] ?? "Not available"}</td>
+                        <td>
+                          {prediction.scenario_drivers?.[index]?.[driver] ??
+                            "Not available"}
+                        </td>
+                      </tr>
+                    )),
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </details>
+        </div>
+      )}
+      <details>
+        <summary>Technical provenance & reproducibility</summary>
+        <PredictionEvidence
+          prediction={prediction}
+          artifactId={artifact.id}
+          reportId={artifact.report_id}
+          reportVersion={artifact.report_version}
+        />
+      </details>
+    </div>
   );
 }
