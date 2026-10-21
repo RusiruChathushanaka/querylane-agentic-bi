@@ -109,3 +109,7 @@ The two curated Mermaid diagrams remain unchanged because icons introduce no ser
 ## Report briefing and shared dropdown coverage
 
 The [21 October report/dropdown release](../evaluation/report-dropdown-release-20261021.md) adds consistent report sections and a shared Radix choice adapter across libraries, authoring and chart controls. The application diagram now identifies this browser-only component boundary. The generated map refreshes code and changed-document semantics, including report export presentation and immutable saved-evidence reuse. Its graph generation invokes no analytical work; actual worker/download/browser checks remain in the dated assessment. Both Submission spellings are excluded from graph/build/Git scope.
+
+### Documentation synchronization after publication
+
+The documentation follow-up indexes the published report/dropdown implementation in commit [`82e9f7a`](https://github.com/RusiruChathushanaka/querylane-agentic-bi/commit/82e9f7a538a684acf2bf061661e45de5d2aa553b). README now identifies frontend `00023-hsg`, API `00025-8ml` and private worker `00014-kgl` as the latest recorded release, retaining earlier releases as history. AGENTS and architecture describe immutable new-version exports, complete future-point/scenario evidence, the 36-control shared dropdown adapter and focused regression checks. This follow-up refreshes document semantics and graph hashes only; it performs no deployment, source/model operation or new runtime verification. The two architecture Mermaid flows remain unchanged and synchronized.

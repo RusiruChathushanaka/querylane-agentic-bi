@@ -1020,10 +1020,10 @@
     "semantic_hash": "ca25fe234f223d659813d5932b9de159"
   },
   "AGENTS.md": {
-    "mtime": 1792557520.8185763,
-    "seen": 1792557909.539115,
-    "ast_hash": "cb85dd96803e47521f5f1ac76309d537",
-    "semantic_hash": "cb85dd96803e47521f5f1ac76309d537"
+    "mtime": 1792559362.2020495,
+    "seen": 1792559505.858389,
+    "ast_hash": "3f05ff6db14d2bcabe7608d5a3b39d5f",
+    "semantic_hash": "3f05ff6db14d2bcabe7608d5a3b39d5f"
   },
   "Backend/README.md": {
     "mtime": 1792255047.9951062,
@@ -1128,10 +1128,10 @@
     "semantic_hash": "807599428ed630912bd0e16742c84918"
   },
   "README.md": {
-    "mtime": 1792557520.8188412,
-    "seen": 1792557909.539131,
-    "ast_hash": "a0aea35917f805341d1cb0e36518b8bc",
-    "semantic_hash": "a0aea35917f805341d1cb0e36518b8bc"
+    "mtime": 1792559312.3155022,
+    "seen": 1792559505.8584058,
+    "ast_hash": "c9b1a351a8ebbe143a1cd8d948245d61",
+    "semantic_hash": "c9b1a351a8ebbe143a1cd8d948245d61"
   },
   "docs/adr/0001-public-workspace-without-accounts.md": {
     "mtime": 1792073376.6843567,
@@ -1182,10 +1182,10 @@
     "semantic_hash": "b3cfa8ad839c0b3e2e2db33db48dae73"
   },
   "docs/architecture.md": {
-    "mtime": 1792557520.8183,
-    "seen": 1792557909.539139,
-    "ast_hash": "e49f52386d55539d2b25ab5eaf5480c8",
-    "semantic_hash": "e49f52386d55539d2b25ab5eaf5480c8"
+    "mtime": 1792559362.2025898,
+    "seen": 1792559505.8584142,
+    "ast_hash": "887cdc62e612d39b1ba9185e6b6dbc49",
+    "semantic_hash": "887cdc62e612d39b1ba9185e6b6dbc49"
   },
   "docs/charts.md": {
     "mtime": 1792155999.748274,

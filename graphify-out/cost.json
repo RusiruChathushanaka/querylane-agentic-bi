@@ -138,6 +138,16 @@
       "output_tokens": 0,
       "host_input_tokens": null,
       "host_output_tokens": null
+    },
+    {
+      "date": "2026-10-21T05:11:45.867940+00:00",
+      "files": 294,
+      "reextracted_documents": 3,
+      "cached_documents": 65,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "host_input_tokens": null,
+      "host_output_tokens": null
     }
   ],
   "total_input_tokens": 0,
