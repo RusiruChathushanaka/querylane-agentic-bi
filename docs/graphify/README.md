@@ -113,3 +113,14 @@ The [21 October report/dropdown release](../evaluation/report-dropdown-release-2
 ### Documentation synchronization after publication
 
 The documentation follow-up indexes the published report/dropdown implementation in commit [`82e9f7a`](https://github.com/RusiruChathushanaka/querylane-agentic-bi/commit/82e9f7a538a684acf2bf061661e45de5d2aa553b). README now identifies frontend `00023-hsg`, API `00025-8ml` and private worker `00014-kgl` as the latest recorded release, retaining earlier releases as history. AGENTS and architecture describe immutable new-version exports, complete future-point/scenario evidence, the 36-control shared dropdown adapter and focused regression checks. This follow-up refreshes document semantics and graph hashes only; it performs no deployment, source/model operation or new runtime verification. The two architecture Mermaid flows remain unchanged and synchronized.
+
+
+## Startup resource lifecycle (local preparation)
+
+The application diagram adds the browser-only independent read/loading/retry boundary. Code/document semantics include `useReadResource`, `ResourceFeedback`, initial GET retry limits, parallel source checks and the warm-API release policy. See [startup loading](../startup-loading.md) and its [local assessment](../evaluation/startup-loading-local-20261021.md). Graph generation and local tests neither deploy a warm instance nor establish production latency improvement. Landing-page isolation, mutation/inference boundaries, data/TimesFM settings and historical release evidence remain authoritative.
+
+## Viewport workspace and nearby saved charts
+
+The local workspace update contains header/sidebar/composer within the viewport and directs automatic scrolling only to the conversation. Positioned chart figures contain hidden accessibility instructions. Nearby saved conversation cards use IntersectionObserver and the bounded shared saved-result loader; unchanged JSON reads preserve React identity. The warm-service policy is prepared for frontend and API, with worker scaling preserved. See [startup behavior](../startup-loading.md) and [local verification](../evaluation/workspace-layout-local-20261022.md). Graph refresh does not deploy these changes or rerun analytics.
+
+The [22 October UTC workspace/loading release](../evaluation/workspace-loading-release-20261022.md) verifies frontend/API service minima one, viewport scroll ownership, nearby saved-chart reads and a narrow Skills header correction. Source-hashed knowledge-graph generation is separate from hosted runtime acceptance.

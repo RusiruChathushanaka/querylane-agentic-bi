@@ -1,10 +1,12 @@
 "use client";
+import { useReadResource } from "@/hooks/use-read-resource";
+import { ResourceFeedback } from "./resource-feedback";
 
 import { AppSelect, AppSelectItem } from "@/components/ui/app-select";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { workspacePath } from "@/lib/workspace-links";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ArrowLeft,
   Download,
@@ -74,41 +76,21 @@ export function ReportWorkspace({
     window.addEventListener("scroll", update, { passive: true });
     return () => window.removeEventListener("scroll", update);
   }, [revision]);
-  const load = useCallback(
-    async (signal?: AbortSignal) => {
-      try {
-        const value = await api<Report>(`/reports/${id}`, { signal });
-        if (signal?.aborted) return;
-        setReport(value);
-        const selected = version ?? value.latest_version;
-        if (selected) {
-          const saved = await api<ReportRevision>(
-            `/reports/${id}/revisions/${selected}`,
-            { signal },
-          );
-          const values = await Promise.all(
-            saved.document.artifact_ids.map((a) =>
-              api<Artifact>(`/artifacts/${a}?metadata_only=true`, { signal }),
-            ),
-          );
-          if (signal?.aborted) return;
-          setRevision(saved);
-          setArtifacts(Object.fromEntries(values.map((a) => [a.id, a])));
-        }
-        setError("");
-      } catch (e) {
-        if (!signal?.aborted) setError((e as Error).message);
-      }
-    },
-    [id, version],
-  );
-  useEffect(() => {
-    const controller = new AbortController();
-    void Promise.resolve().then(() => {
-      if (!controller.signal.aborted) return load(controller.signal);
-    });
-    return () => controller.abort();
-  }, [load, tick]);
+  const resource = useReadResource(`report:${id}:${tick}`, (signal) => api<Report>(`/reports/${id}`, { signal }), (v) => { setReport(v); setError(""); });
+  const selectedRevision = version ?? report?.latest_version;
+  const revisionResource = useReadResource(`report-version:${id}:${selectedRevision}:${tick}`, (signal) => selectedRevision ? api<ReportRevision>(`/reports/${id}/revisions/${selectedRevision}`, { signal }) : Promise.resolve(null), (v) => { if (v) setRevision(v); });
+  const evidenceResource = useReadResource(`report-evidence:${id}:${revision?.version}:${tick}`, async (signal) => {
+    if (!revision) return [] as Artifact[];
+    // Settle each saved card independently; a missing card cannot hide report text or other cards.
+    const values: Artifact[] = [];
+    const results = await Promise.allSettled(revision.document.artifact_ids.map(async (a) => {
+      const value = await api<Artifact>(`/artifacts/${a}?metadata_only=true`, { signal });
+      if (!signal.aborted) { values.push(value); setArtifacts((previous) => ({ ...previous, [value.id]: value })); }
+    }));
+    const failed = results.find((v) => v.status === "rejected");
+    if (failed?.status === "rejected") throw failed.reason;
+    return values;
+  }, () => {});
   async function download(format: string) {
     if (!revision) return;
     setExporting(format);
@@ -150,6 +132,9 @@ export function ReportWorkspace({
       </a>
       <DashboardHeader />
       <main className="reports-main" id="report-reader" tabIndex={-1}>
+        <ResourceFeedback resource={resource} label="Loading saved report" />
+        <ResourceFeedback resource={revisionResource} label="Loading saved report version" />
+        <ResourceFeedback resource={evidenceResource} label="Loading saved report charts" />
         <Button asChild variant="ghost" size="sm">
           <Link href="/reports">
             <ArrowLeft aria-hidden />
@@ -165,7 +150,7 @@ export function ReportWorkspace({
           </div>
         )}
         {!report ? (
-          !error && <Skeleton className="h-64 mt-8" />
+          resource.pending && !error && <Skeleton aria-hidden="true" className="h-64 mt-8" />
         ) : (
           <>
             <div className="reports-hero mt-6">
@@ -476,7 +461,7 @@ export function ReportWorkspace({
                         </MarkdownContent>
                         {s.artifact_ids.map(
                           (a) =>
-                            artifacts[a] && (
+                            artifacts[a] ? (
                               <div key={a} className="report-result-section">
                                 {artifacts[a].prediction && (
                                   <ReportPrediction artifact={artifacts[a]} />
@@ -486,7 +471,7 @@ export function ReportWorkspace({
                                   showPredictionEvidence={false}
                                 />
                               </div>
-                            ),
+                            ) : <div key={a} className="report-result-section" aria-busy={evidenceResource.pending}><p role="status">{evidenceResource.error ? "Saved chart unavailable. Retry loading saved report charts above." : "Loading saved chart…"}</p>{evidenceResource.pending && <Skeleton aria-hidden="true" className="h-64" />}</div>,
                         )}
                       </section>
                     ))}
@@ -797,18 +782,8 @@ function ResearchPanel() {
   const [value, setValue] = useState<ResearchResult | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
-  useEffect(() => {
-    let cancelled = false;
-    void api<{ research_enabled: boolean }>("/reports/config")
-      .then((c) => {
-        if (!cancelled) setEnabled(c.research_enabled);
-      })
-      .catch(() => {});
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-  if (!enabled) return null;
+  const researchConfig = useReadResource("report-research-configuration", (signal) => api<{ research_enabled: boolean }>("/reports/config", { signal }), (v) => setEnabled(v.research_enabled));
+  if (!enabled) return <ResourceFeedback resource={researchConfig} label="Loading research configuration" />;
   async function search() {
     setBusy(true);
     setError("");

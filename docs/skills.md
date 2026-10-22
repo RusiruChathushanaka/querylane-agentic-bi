@@ -89,3 +89,7 @@ Limits: three new interviews per guest/hour and twelve workspace/day; six live c
 Expired sessions are rejected, not automatically erased. An operator can remove expired, inactive author documents and only their scoped ADK sessions with `uv run python -m app.admin cleanup-skill-authors` from `Backend/`. Published skills and revisions are preserved. Shared-history reset also clears author interviews while retaining published skills. Neither maintenance command has a public endpoint.
 
 See the [detailed plan and contracts](voice-skill-author-plan.md) and [validation](validation.md#conversational-voice-skill-author--2026-10-16). The default fixture backend reports that Gemini is required; it never simulates a real interview. For an isolated real-model preview use `app.cloud_preview` with the documented operator credentials and a matching frontend origin. This feature has not been deployed as part of its implementation.
+
+## Narrow-screen library navigation
+
+The Skills header and its navigation wrap below 640px so every link remains reachable at 390px and 320px. This layout correction is recorded in the [workspace/loading release](evaluation/workspace-loading-release-20261022.md); it changes no authoring, selection, publication or saved preferences.

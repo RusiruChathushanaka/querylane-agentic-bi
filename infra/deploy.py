@@ -7,7 +7,7 @@ import time
 from pathlib import Path
 
 from provision import PROJECT, REGION, gcloud
-from runtime_settings import preserve_analysis_settings
+from runtime_settings import preserve_analysis_settings, release_scaling
 
 
 def main():
@@ -27,6 +27,12 @@ def main():
     if args.service == "frontend" and not args.backend_url:
         parser.error("--backend-url is required for frontend deployment.")
     existing_env = {}
+    existing_service = {}
+    inspected = gcloud("run", "services", "describe", f"agentic-bi-{args.service}", "--region", REGION, "--format", "json", check=False)
+    if inspected.returncode == 0:
+        existing_service = json.loads(inspected.stdout)
+    elif "NOT_FOUND" not in inspected.stderr.upper():
+        parser.error("Cannot inspect existing service configuration; resolve the cloud read error first.")
     if args.service == "backend":
         flags = [
             args.reports_worker_url,
@@ -35,27 +41,12 @@ def main():
         ]
         if any(flags) and not all(flags):
             parser.error("Supply all three --reports-* options together.")
-        current = gcloud(
-            "run",
-            "services",
-            "describe",
-            "agentic-bi-backend",
-            "--region",
-            REGION,
-            "--format",
-            "json",
-            check=False,
-        )
-        if current.returncode == 0:
+        if existing_service:
             existing_env = {
                 entry["name"]: entry["value"]
-                for entry in json.loads(current.stdout)["spec"]["template"]["spec"]["containers"][0].get(
-                    "env", []
-                )
+                for entry in existing_service["spec"]["template"]["spec"]["containers"][0].get("env", [])
                 if "value" in entry
             }
-        elif "NOT_FOUND" not in current.stderr.upper():
-            parser.error("Cannot inspect existing backend configuration; resolve the cloud read error first.")
         elif args.data_profile is None:
             parser.error("Cannot inspect the active profile. Supply --data-profile explicitly.")
         args.data_profile = args.data_profile or existing_env.get("DATA_PROFILE", "legacy")
@@ -105,11 +96,8 @@ def main():
         "--allow-unauthenticated",
         "--port",
         "8080",
-        "--max-instances",
-        "2",
-        "--min-instances",
-        "0",
     ]
+    deploy += release_scaling(args.service, existing_service)
     if args.service == "backend":
         if not args.frontend_url:
             parser.error(

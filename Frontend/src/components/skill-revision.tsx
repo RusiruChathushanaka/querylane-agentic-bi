@@ -1,6 +1,8 @@
 "use client";
+import { useReadResource } from "@/hooks/use-read-resource";
+import { ResourceFeedback } from "./resource-feedback";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, BookOpen } from "lucide-react";
 import { api } from "@/lib/api";
@@ -17,22 +19,7 @@ export function SkillRevision({
   revision: string;
 }) {
   const [skill, setSkill] = useState<Skill>();
-  const [error, setError] = useState("");
-  useEffect(() => {
-    let current = true;
-    api<Skill>(
-      `/skills/${encodeURIComponent(id)}/revisions/${encodeURIComponent(revision)}`,
-    )
-      .then((value) => {
-        if (current) setSkill(value);
-      })
-      .catch((error) => {
-        if (current) setError(error.message);
-      });
-    return () => {
-      current = false;
-    };
-  }, [id, revision]);
+  const resource = useReadResource(`${id}:${revision}`, (signal) => api<Skill>(`/skills/${encodeURIComponent(id)}/revisions/${encodeURIComponent(revision)}`, { signal }), setSkill);
   return (
     <div className="skills-shell">
       <a className="skip-link" href="#skill-version">
@@ -54,10 +41,9 @@ export function SkillRevision({
         className="skills-main skill-version"
       >
         <p className="welcome-eyebrow">IMMUTABLE SKILL VERSION</p>
-        {error ? (
-          <p role="alert">{error}</p>
-        ) : !skill ? (
-          <Skeleton className="h-40" />
+        <ResourceFeedback resource={resource} label="Loading saved skill version" />
+        {!skill ? (
+          resource.pending ? <Skeleton aria-hidden="true" className="h-40" /> : null
         ) : (
           <>
             <h1>

@@ -21,3 +21,15 @@ def preserve_analysis_settings(values, existing):
     ):
         values["SOURCE_ROW_LIMIT"] = existing["SOURCE_ROW_LIMIT"]
     return values
+
+
+def release_scaling(service, existing):
+    """Prepare the approved warm frontend/API policy; preserve existing ceilings and other services."""
+    flags = [] if existing else ["--max-instances", "2"]
+    if service in {"backend", "frontend"}:
+        annotations = existing.get("metadata", {}).get("annotations", {})
+        revision = existing.get("spec", {}).get("template", {}).get("metadata", {}).get("annotations", {})
+        if int(revision.get("autoscaling.knative.dev/minScale", "0")) > 0:
+            raise ValueError("Resolve revision-level minimum instances before applying the service-level warm-service policy.")
+        flags += ["--min", str(max(1, int(annotations.get("run.googleapis.com/minScale", "0"))))]
+    return flags

@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useId, useState } from "react";
-import { api } from "@/lib/api";
+import { ResourceFeedback } from "./resource-feedback";
+import { initialRead, api } from "@/lib/api";
 import type { SkillSummary } from "@/lib/types";
 
 /** Attachments remain local until the application captures an immutable job brief. */
@@ -19,11 +20,12 @@ export function PlanningSkills({
   const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState("");
   const hintId = useId();
+  const [attempt, setAttempt] = useState(0);
   useEffect(() => {
     const controller = new AbortController();
-    void api<{ skills: SkillSummary[] }>("/skills", {
+    void initialRead(() => api<{ skills: SkillSummary[] }>("/skills", {
       signal: controller.signal,
-    })
+    }), controller.signal)
       .then((v) => {
         if (!controller.signal.aborted) setSkills(v.skills);
       })
@@ -34,7 +36,7 @@ export function PlanningSkills({
         if (!controller.signal.aborted) setLoading(false);
       });
     return () => controller.abort();
-  }, []);
+  }, [attempt]);
   const matchingSkills = skills.filter((skill) =>
     skill.name.toLowerCase().includes(query.trim().toLowerCase()),
   );
@@ -47,12 +49,7 @@ export function PlanningSkills({
         Optional. Choose up to three skills. The agent can also discover relevant
         skills. Versions are captured when you submit.
       </p>
-      {error && <p role="alert">{error}</p>}
-      {loading && (
-        <p className="bi-note" role="status">
-          Loading shared skills…
-        </p>
-      )}
+      <ResourceFeedback resource={{ pending: loading, loaded: !loading && !error, error, refresh: () => { setError(""); setLoading(true); setAttempt((v) => v + 1); } }} label="Loading shared skills" skeleton />
       {!loading && !error && !skills.length && (
         <p className="bi-note">No shared skills available.</p>
       )}

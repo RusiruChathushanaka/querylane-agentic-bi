@@ -1,6 +1,8 @@
 "use client";
+import { useReadResource } from "@/hooks/use-read-resource";
+import { ResourceFeedback } from "./resource-feedback";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { api } from "@/lib/api";
 import type { MetricDefinition } from "@/lib/planning-types";
 import { DashboardHeader } from "./dashboard-shared";
@@ -17,18 +19,7 @@ export function MetricRevision({
     version: number;
     dependencies: unknown;
   } | null>(null);
-  const [error, setError] = useState("");
-  useEffect(() => {
-    const controller = new AbortController();
-    void api<NonNullable<typeof saved>>(`/metrics/${id}/revisions/${version}`, {
-      signal: controller.signal,
-    })
-      .then(setSaved)
-      .catch((e) => {
-        if (!controller.signal.aborted) setError(e.message);
-      });
-    return () => controller.abort();
-  }, [id, version]);
+  const resource = useReadResource(`${id}:${version}`, (signal) => api<NonNullable<typeof saved>>(`/metrics/${id}/revisions/${version}`, { signal }), setSaved);
   return (
     <>
       <DashboardHeader />
@@ -36,11 +27,7 @@ export function MetricRevision({
         <Link href="/metrics" className="underline">
           Metrics library
         </Link>
-        {error && (
-          <p className="bi-error" role="alert">
-            {error}
-          </p>
-        )}
+        <ResourceFeedback resource={resource} label="Loading saved metric definition" skeleton />
         {saved ? (
           <>
             <header className="bi-hero">
@@ -73,7 +60,7 @@ export function MetricRevision({
             </Link>
           </>
         ) : (
-          !error && <p role="status">Loading saved definition…</p>
+          null
         )}
       </main>
     </>

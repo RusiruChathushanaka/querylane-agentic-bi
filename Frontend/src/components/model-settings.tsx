@@ -1,10 +1,12 @@
 "use client";
+import { useReadResource } from "@/hooks/use-read-resource";
+import { ResourceFeedback } from "./resource-feedback";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Check } from "lucide-react";
 import { api } from "@/lib/api";
 import { TEXT_MODEL_CHOICES, type Preferences } from "@/lib/preferences";
-import { Button } from "@/components/ui/button";
+
 import { Field, FieldDescription, FieldTitle } from "@/components/ui/field";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
@@ -25,24 +27,7 @@ export function ModelSettings({
   onChange: (value: Preferences["textModel"]) => void;
 }) {
   const [catalog, setCatalog] = useState<Catalog | null>(null);
-  const [error, setError] = useState("");
-  const [attempt, setAttempt] = useState(0);
-  useEffect(() => {
-    let active = true;
-    void api<Catalog>("/models")
-      .then((result) => {
-        if (active) setCatalog(result);
-      })
-      .catch(() => {
-        if (active)
-          setError(
-            "Model choices are unavailable. Your saved preference is unchanged.",
-          );
-      });
-    return () => {
-      active = false;
-    };
-  }, [attempt]);
+  const resource = useReadResource("model-options", (signal) => api<Catalog>("/models", { signal }), setCatalog);
 
   return (
     <Field>
@@ -52,6 +37,7 @@ export function ModelSettings({
         analysis. Saved for this browser; work already in progress keeps its
         model.
       </FieldDescription>
+      <ResourceFeedback resource={resource} label="Loading model choices" />
       {catalog ? (
         <>
           <ToggleGroup
@@ -106,22 +92,7 @@ export function ModelSettings({
             </FieldDescription>
           )}
         </>
-      ) : error ? (
-        <>
-          <p role="status">{error}</p>
-          <Button
-            variant="outline"
-            onClick={() => {
-              setError("");
-              setAttempt((previous) => previous + 1);
-            }}
-          >
-            Retry model choices
-          </Button>
-        </>
-      ) : (
-        <p role="status">Loading model choices…</p>
-      )}
+      ) : null}
     </Field>
   );
 }

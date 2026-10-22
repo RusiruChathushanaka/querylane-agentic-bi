@@ -9,6 +9,8 @@ export class ApiError extends Error {
     message: string,
     public status: number,
     public code?: string,
+    public retryAfter?: number,
+    public retryableRead = true,
   ) {
     super(message);
     this.name = "ApiError";
@@ -35,9 +37,9 @@ async function jsonRequest(url: string, init: RequestInit = {}) {
     return { response, body };
   } catch (error) {
     if (init.signal?.aborted) throw error;
-    if (timedOut) throw new ApiError("The request timed out. Check saved history before retrying a change.", 504, "request_timeout");
+    if (timedOut) throw new ApiError("The request timed out. Check saved history before retrying a change.", 504, "request_timeout", undefined, (init.method ?? "GET").toUpperCase() === "GET");
     if (error instanceof ApiError) throw error;
-    throw new ApiError("The service connection was interrupted. Check saved history before retrying a change.", 0, "connection_failed");
+    throw new ApiError("The service connection was interrupted. Check saved history before retrying a change.", 0, "connection_failed", undefined, (init.method ?? "GET").toUpperCase() === "GET");
   } finally {
     clearTimeout(timer);
     init.signal?.removeEventListener("abort", abort);
@@ -47,7 +49,7 @@ async function jsonRequest(url: string, init: RequestInit = {}) {
 export function backendUrl(): Promise<string> {
   basePromise ??= jsonRequest("/api/config", { cache: "no-store" })
     .then(({ response, body }) => {
-      if (!response.ok || typeof body?.backend_url !== "string")
+      if (!response.ok || typeof body?.backend_url !== "string" || !/^https?:\/\/[^\s]+$/.test(body.backend_url))
         throw new ApiError("Application configuration is unavailable.", response.status, "configuration_unavailable");
       return body.backend_url.replace(/\/$/, "") as string;
     })
@@ -78,7 +80,7 @@ export async function guestToken(): Promise<string> {
   guestPromise ??= (async () => {
     const {response, body} = await jsonRequest(`${await backendUrl()}/api/v1/guest-sessions`, {method: "POST"});
     if (!response.ok || typeof body?.token !== "string" || !body.token || !Number.isFinite(body.expires_in) || body.expires_in <= 60)
-      throw new ApiError(body?.error?.message ?? "Could not start a guest session. Try again.", response.status, body?.error?.code);
+      throw new ApiError(body?.error?.message ?? "Could not start a guest session. Try again.", response.status, body?.error?.code, undefined, false);
     guestCache = {token: body.token, expires: Date.now() + (body.expires_in - 60) * 1000};
     try { sessionStorage.setItem("bi-guest", JSON.stringify(guestCache)); } catch { /* Retain the in-memory token. */ }
     return body.token as string;
@@ -115,6 +117,8 @@ export async function api<T>(
       body?.error?.message ?? "Request failed. Please try again.",
       response.status,
       body?.error?.code,
+      retryDelay(response.headers.get("Retry-After")),
+      (init.method ?? "GET").toUpperCase() === "GET",
     );
   return body as T;
 }
@@ -214,5 +218,30 @@ export async function streamRun(
       data: { message: "Reconnecting to the saved analysis…" },
     });
     await new Promise((resolve) => setTimeout(resolve, 1000 * (attempt + 1)));
+  }
+}
+
+/** Retry-After supports seconds and HTTP dates; never shorten a server deadline. */
+export function retryDelay(value: string | null): number | undefined {
+  if (!value) return undefined;
+  const seconds = Number(value);
+  const delay = Number.isFinite(seconds) ? seconds * 1000 : Date.parse(value) - Date.now();
+  return Number.isFinite(delay) ? Math.max(0, delay) : undefined;
+}
+
+/** Only bootstrap GETs use this policy. Mutations and execution streams are unchanged. */
+export async function initialRead<T>(read: () => Promise<T>, signal: AbortSignal): Promise<T> {
+  try { return await read(); }
+  catch (error) {
+    if (signal.aborted || !(error instanceof ApiError) || !error.retryableRead ||
+        ![0, 408, 502, 503, 504].includes(error.status) ||
+        error.code === "invalid_response") throw error;
+    await new Promise<void>((resolve, reject) => {
+      const abort = () => { clearTimeout(timer); reject(signal.reason ?? new DOMException("Aborted", "AbortError")); };
+      const timer = setTimeout(() => { signal.removeEventListener("abort", abort); resolve(); }, Math.max(1000, error.retryAfter ?? 0));
+      signal.addEventListener("abort", abort, { once: true });
+    });
+    if (signal.aborted) throw signal.reason;
+    return read();
   }
 }

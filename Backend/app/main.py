@@ -216,6 +216,7 @@ def create_app(settings: Settings | None = None, store_override=None, credential
     @app.get("/api/v1/connections")
     async def connections(request: Request):
         services = request.app.state.services
+        checks = await asyncio.gather(*(services.connectors.test(source) for source in SOURCE_TABLES))
         return {
             "mode": ("local-fixtures" if settings.ai_backend == "fixture" else "gemini-fixtures")
             if settings.data_backend == "fixture"
@@ -228,9 +229,9 @@ def create_app(settings: Settings | None = None, store_override=None, credential
                     "name": "Retail warehouse" if source == "bigquery" else "Business operations",
                     "engine": "BigQuery" if source == "bigquery" else "PostgreSQL",
                     "tables": len(services.connectors.source_tables[source]),
-                    **await services.connectors.test(source),
+                    **result,
                 }
-                for source in SOURCE_TABLES
+                for source, result in zip(SOURCE_TABLES, checks, strict=True)
             ],
         }
 

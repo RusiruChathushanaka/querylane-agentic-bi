@@ -1,0 +1,1050 @@
+{
+  "generated_at": "2026-10-22T18:02:57.028672+00:00",
+  "scope": "Local implementation and release preparation only",
+  "base_commit": "221b825399f7859dc585e3a0cd4760530744015a",
+  "source_is_working_tree": true,
+  "deployment_performed": false,
+  "github_publication_performed": false,
+  "cloud_mutations": false,
+  "analytical_or_model_calls": 0,
+  "fixture": "Isolated MemoryStore with 20 distinct local saved-chart copies of recorded synthetic 45-month monthly evidence; no source writes",
+  "tests": {
+    "backend_passed": 450,
+    "backend_existing_skips": 1,
+    "frontend_passed": 81,
+    "ruff": "pass",
+    "eslint": "pass",
+    "typescript": "pass",
+    "production_build": "pass",
+    "existing_warning": "Starlette TestClient/httpx deprecation"
+  },
+  "browser_checks": [
+    {
+      "check": "viewport-contained desktop",
+      "status": "pass",
+      "evidence": "1280x900 and normal desktop; document matches viewport, conversation scrolls independently"
+    },
+    {
+      "check": "mobile containment",
+      "status": "pass",
+      "evidence": "320x568, 390x844; no horizontal or extra document vertical scrolling; composer remains visible"
+    },
+    {
+      "check": "short landscape",
+      "status": "pass",
+      "evidence": "844x390; all six desktop navigation links finish at or before y=382; sidebar/document height 390"
+    },
+    {
+      "check": "compact reflow",
+      "status": "pass",
+      "evidence": "640x450; document 450, composer bottom 450; this is responsive reflow, not confirmed browser zoom"
+    },
+    {
+      "check": "chart instruction containment",
+      "status": "pass",
+      "evidence": "Shared chart figures are positioned; hidden keyboard instructions retained; baseline root overflow reproduced"
+    },
+    {
+      "check": "nearby saved cards",
+      "status": "pass",
+      "evidence": "20-chart fixture: 2 nearby charts initially load after change; baseline eagerly loads all 20 after settling; shared queue caps reads at 2"
+    },
+    {
+      "check": "reading position and draft",
+      "status": "pass",
+      "evidence": "Upward scroll pauses following; anchor remained at y=262.445 and scrollTop 11587 across subsequent polling observations; draft retained"
+    },
+    {
+      "check": "keyboard navigation",
+      "status": "pass",
+      "evidence": "Jump to latest activated by Enter; skip link focuses main-content; PageUp changes conversation scrollTop and document remains at zero"
+    },
+    {
+      "check": "dropdown",
+      "status": "pass",
+      "evidence": "Line to Bar via Home/ArrowDown/Enter; chart control regains focus and choice survives background polls"
+    },
+    {
+      "check": "mobile sheet",
+      "status": "pass",
+      "evidence": "320px sheet includes six links, Settings bottom y=474 within 568px; Close returns focus to navigation trigger"
+    },
+    {
+      "check": "themes and reduced motion",
+      "status": "pass",
+      "evidence": "Dark and Light observed; Reduce motion preference true verified on workspace"
+    },
+    {
+      "check": "source loading recovery",
+      "status": "pass",
+      "evidence": "Controlled 7-second source delay; source-dependent actions disabled while pending, then enabled; typed draft retained"
+    },
+    {
+      "check": "saved dashboard",
+      "status": "pass",
+      "evidence": "Local three-card saved dashboard renders charts; positioned figures and retained chart instructions; body remains scrollable"
+    },
+    {
+      "check": "report shell reflow",
+      "status": "pass-limited",
+      "evidence": "Copied saved report shell/title renders at desktop and 390px without horizontal overflow; full report/worker/download acceptance is historical, not repeated"
+    },
+    {
+      "check": "csv evidence",
+      "status": "pass-limited",
+      "evidence": "Browser request and independent HTTP export 200; all 45 rows with original columns/dates verified. Browser download watcher timed out; no saved-file confirmation"
+    },
+    {
+      "check": "keyboard viewport lifecycle",
+      "status": "pass",
+      "evidence": "Unit tests simulate Visual Viewport height/offset changes, zoom-scale escape and cleanup"
+    },
+    {
+      "check": "physical keyboard and 200% zoom",
+      "status": "manual-check-required",
+      "evidence": "Physical mobile keyboard unavailable. Native browser zoom shortcuts did not establish a measurable zoom change; compact reflow is not claimed as actual 200% verification"
+    }
+  ],
+  "browser_timing_method": "Ten warm samples per version at 1280x900 on the same tab and local fixture, unthrottled. Timings include browser-control round trips; shell/text/source-action/last-chart SVG readiness are observed milestones, not Performance API paint metrics. Nearest-rank p95 at n=10 is the maximum. Cold starts were not forced.",
+  "browser_timing_samples": [
+    {
+      "label": "before",
+      "sample": 0,
+      "shell_observed_ms": 229,
+      "first_readable_observed_ms": 604,
+      "first_usable_observed_ms": 620,
+      "visible_chart_observed_ms": 1415
+    },
+    {
+      "label": "before",
+      "sample": 1,
+      "shell_observed_ms": 256,
+      "first_readable_observed_ms": 589,
+      "first_usable_observed_ms": 605,
+      "visible_chart_observed_ms": 1428
+    },
+    {
+      "label": "before",
+      "sample": 2,
+      "shell_observed_ms": 159,
+      "first_readable_observed_ms": 399,
+      "first_usable_observed_ms": 415,
+      "visible_chart_observed_ms": 1221
+    },
+    {
+      "label": "before",
+      "sample": 3,
+      "shell_observed_ms": 259,
+      "first_readable_observed_ms": 534,
+      "first_usable_observed_ms": 692,
+      "visible_chart_observed_ms": 1359
+    },
+    {
+      "label": "before",
+      "sample": 4,
+      "shell_observed_ms": 301,
+      "first_readable_observed_ms": 651,
+      "first_usable_observed_ms": 669,
+      "visible_chart_observed_ms": 1504
+    },
+    {
+      "label": "before",
+      "sample": 5,
+      "shell_observed_ms": 287,
+      "first_readable_observed_ms": 696,
+      "first_usable_observed_ms": 715,
+      "visible_chart_observed_ms": 1472
+    },
+    {
+      "label": "before",
+      "sample": 6,
+      "shell_observed_ms": 240,
+      "first_readable_observed_ms": 621,
+      "first_usable_observed_ms": 635,
+      "visible_chart_observed_ms": 1603
+    },
+    {
+      "label": "before",
+      "sample": 7,
+      "shell_observed_ms": 212,
+      "first_readable_observed_ms": 540,
+      "first_usable_observed_ms": 554,
+      "visible_chart_observed_ms": 1412
+    },
+    {
+      "label": "before",
+      "sample": 8,
+      "shell_observed_ms": 183,
+      "first_readable_observed_ms": 523,
+      "first_usable_observed_ms": 555,
+      "visible_chart_observed_ms": 1395
+    },
+    {
+      "label": "before",
+      "sample": 9,
+      "shell_observed_ms": 270,
+      "first_readable_observed_ms": 504,
+      "first_usable_observed_ms": 523,
+      "visible_chart_observed_ms": 1258
+    },
+    {
+      "label": "after",
+      "sample": 0,
+      "shell_observed_ms": 335,
+      "first_readable_observed_ms": 574,
+      "first_usable_observed_ms": 640,
+      "visible_chart_observed_ms": 1379
+    },
+    {
+      "label": "after",
+      "sample": 1,
+      "shell_observed_ms": 188,
+      "first_readable_observed_ms": 459,
+      "first_usable_observed_ms": 471,
+      "visible_chart_observed_ms": 1015
+    },
+    {
+      "label": "after",
+      "sample": 2,
+      "shell_observed_ms": 254,
+      "first_readable_observed_ms": 543,
+      "first_usable_observed_ms": 556,
+      "visible_chart_observed_ms": 1090
+    },
+    {
+      "label": "after",
+      "sample": 3,
+      "shell_observed_ms": 154,
+      "first_readable_observed_ms": 495,
+      "first_usable_observed_ms": 507,
+      "visible_chart_observed_ms": 649
+    },
+    {
+      "label": "after",
+      "sample": 4,
+      "shell_observed_ms": 158,
+      "first_readable_observed_ms": 521,
+      "first_usable_observed_ms": 544,
+      "visible_chart_observed_ms": 700
+    },
+    {
+      "label": "after",
+      "sample": 5,
+      "shell_observed_ms": 172,
+      "first_readable_observed_ms": 529,
+      "first_usable_observed_ms": 545,
+      "visible_chart_observed_ms": 1132
+    },
+    {
+      "label": "after",
+      "sample": 6,
+      "shell_observed_ms": 180,
+      "first_readable_observed_ms": 461,
+      "first_usable_observed_ms": 478,
+      "visible_chart_observed_ms": 632
+    },
+    {
+      "label": "after",
+      "sample": 7,
+      "shell_observed_ms": 178,
+      "first_readable_observed_ms": 519,
+      "first_usable_observed_ms": 537,
+      "visible_chart_observed_ms": 683
+    },
+    {
+      "label": "after",
+      "sample": 8,
+      "shell_observed_ms": 157,
+      "first_readable_observed_ms": 501,
+      "first_usable_observed_ms": 515,
+      "visible_chart_observed_ms": 1109
+    },
+    {
+      "label": "after",
+      "sample": 9,
+      "shell_observed_ms": 135,
+      "first_readable_observed_ms": 479,
+      "first_usable_observed_ms": 497,
+      "visible_chart_observed_ms": 650
+    }
+  ],
+  "browser_timing_summary": {
+    "before": {
+      "shell_observed_ms": {
+        "median": 248.0,
+        "p95_nearest_rank": 301
+      },
+      "first_readable_observed_ms": {
+        "median": 564.5,
+        "p95_nearest_rank": 696
+      },
+      "first_usable_observed_ms": {
+        "median": 612.5,
+        "p95_nearest_rank": 715
+      },
+      "visible_chart_observed_ms": {
+        "median": 1413.5,
+        "p95_nearest_rank": 1603
+      }
+    },
+    "after": {
+      "shell_observed_ms": {
+        "median": 175.0,
+        "p95_nearest_rank": 335
+      },
+      "first_readable_observed_ms": {
+        "median": 510.0,
+        "p95_nearest_rank": 574
+      },
+      "first_usable_observed_ms": {
+        "median": 526.0,
+        "p95_nearest_rank": 640
+      },
+      "visible_chart_observed_ms": {
+        "median": 857.5,
+        "p95_nearest_rank": 1379
+      }
+    }
+  },
+  "preliminary_control_only_samples": [
+    {
+      "label": "before",
+      "sample": 0,
+      "first_readable_observed_ms": 583,
+      "chart_control_observed_ms": 862,
+      "cards": 20,
+      "docHeight": 11524,
+      "viewport": 900
+    },
+    {
+      "label": "before",
+      "sample": 1,
+      "first_readable_observed_ms": 592,
+      "chart_control_observed_ms": 618,
+      "cards": 18,
+      "docHeight": 900,
+      "viewport": 900
+    },
+    {
+      "label": "before",
+      "sample": 2,
+      "first_readable_observed_ms": 560,
+      "chart_control_observed_ms": 693,
+      "cards": 18,
+      "docHeight": 900,
+      "viewport": 900
+    },
+    {
+      "label": "before",
+      "sample": 3,
+      "first_readable_observed_ms": 524,
+      "chart_control_observed_ms": 671,
+      "cards": 19,
+      "docHeight": 9452,
+      "viewport": 900
+    },
+    {
+      "label": "before",
+      "sample": 4,
+      "first_readable_observed_ms": 568,
+      "chart_control_observed_ms": 589,
+      "cards": 19,
+      "docHeight": 900,
+      "viewport": 900
+    },
+    {
+      "label": "before",
+      "sample": 5,
+      "first_readable_observed_ms": 528,
+      "chart_control_observed_ms": 684,
+      "cards": 18,
+      "docHeight": 9947,
+      "viewport": 900
+    },
+    {
+      "label": "before",
+      "sample": 6,
+      "first_readable_observed_ms": 578,
+      "chart_control_observed_ms": 730,
+      "cards": 17,
+      "docHeight": 900,
+      "viewport": 900
+    },
+    {
+      "label": "before",
+      "sample": 7,
+      "first_readable_observed_ms": 612,
+      "chart_control_observed_ms": 937,
+      "cards": 20,
+      "docHeight": 7081,
+      "viewport": 900
+    },
+    {
+      "label": "before",
+      "sample": 8,
+      "first_readable_observed_ms": 658,
+      "chart_control_observed_ms": 808,
+      "cards": 14,
+      "docHeight": 900,
+      "viewport": 900
+    },
+    {
+      "label": "before",
+      "sample": 9,
+      "first_readable_observed_ms": 574,
+      "chart_control_observed_ms": 862,
+      "cards": 19,
+      "docHeight": 5009,
+      "viewport": 900
+    },
+    {
+      "label": "after",
+      "sample": 0,
+      "first_readable_observed_ms": 724,
+      "chart_control_observed_ms": 1099,
+      "cards": 2,
+      "docHeight": 900,
+      "viewport": 900
+    },
+    {
+      "label": "after",
+      "sample": 1,
+      "first_readable_observed_ms": 506,
+      "chart_control_observed_ms": 874,
+      "cards": 2,
+      "docHeight": 900,
+      "viewport": 900
+    },
+    {
+      "label": "after",
+      "sample": 2,
+      "first_readable_observed_ms": 492,
+      "chart_control_observed_ms": 639,
+      "cards": 2,
+      "docHeight": 900,
+      "viewport": 900
+    },
+    {
+      "label": "after",
+      "sample": 3,
+      "first_readable_observed_ms": 480,
+      "chart_control_observed_ms": 628,
+      "cards": 2,
+      "docHeight": 900,
+      "viewport": 900
+    },
+    {
+      "label": "after",
+      "sample": 4,
+      "first_readable_observed_ms": 481,
+      "chart_control_observed_ms": 651,
+      "cards": 2,
+      "docHeight": 900,
+      "viewport": 900
+    },
+    {
+      "label": "after",
+      "sample": 5,
+      "first_readable_observed_ms": 481,
+      "chart_control_observed_ms": 647,
+      "cards": 2,
+      "docHeight": 900,
+      "viewport": 900
+    },
+    {
+      "label": "after",
+      "sample": 6,
+      "first_readable_observed_ms": 474,
+      "chart_control_observed_ms": 962,
+      "cards": 2,
+      "docHeight": 900,
+      "viewport": 900
+    },
+    {
+      "label": "after",
+      "sample": 7,
+      "first_readable_observed_ms": 486,
+      "chart_control_observed_ms": 838,
+      "cards": 2,
+      "docHeight": 900,
+      "viewport": 900
+    },
+    {
+      "label": "after",
+      "sample": 8,
+      "first_readable_observed_ms": 501,
+      "chart_control_observed_ms": 851,
+      "cards": 2,
+      "docHeight": 900,
+      "viewport": 900
+    },
+    {
+      "label": "after",
+      "sample": 9,
+      "first_readable_observed_ms": 491,
+      "chart_control_observed_ms": 841,
+      "cards": 2,
+      "docHeight": 900,
+      "viewport": 900
+    }
+  ],
+  "control_only_caveat": "Early control-ready observations exclude actual plot completion; full-readiness samples above are the decision basis.",
+  "http_timing": {
+    "before": {
+      "samples": [
+        {
+          "html": {
+            "ms": 1.3425829820334911,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 1.7821249784901738,
+            "bytes": 39
+          },
+          "history": {
+            "ms": 2.379957993980497,
+            "bytes": 271
+          },
+          "sources": {
+            "ms": 2.464791003149003,
+            "bytes": 328
+          },
+          "conversation": {
+            "ms": 2.345333981793374,
+            "bytes": 14542
+          }
+        },
+        {
+          "html": {
+            "ms": 1.7180829891003668,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 2.1820419933646917,
+            "bytes": 39
+          },
+          "history": {
+            "ms": 2.3321660119108856,
+            "bytes": 271
+          },
+          "sources": {
+            "ms": 2.5609160074964166,
+            "bytes": 328
+          },
+          "conversation": {
+            "ms": 2.270249999128282,
+            "bytes": 14542
+          }
+        },
+        {
+          "html": {
+            "ms": 1.1625000042840838,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 1.5631249989382923,
+            "bytes": 39
+          },
+          "history": {
+            "ms": 1.6352920210920274,
+            "bytes": 271
+          },
+          "sources": {
+            "ms": 1.762416970450431,
+            "bytes": 328
+          },
+          "conversation": {
+            "ms": 1.707791001535952,
+            "bytes": 14542
+          }
+        },
+        {
+          "html": {
+            "ms": 1.0810830281116068,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 1.5092919929884374,
+            "bytes": 39
+          },
+          "history": {
+            "ms": 1.4889169833622873,
+            "bytes": 271
+          },
+          "sources": {
+            "ms": 2.131959015969187,
+            "bytes": 328
+          },
+          "conversation": {
+            "ms": 2.0293749985285103,
+            "bytes": 14542
+          }
+        },
+        {
+          "html": {
+            "ms": 1.392791047692299,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 1.972709025721997,
+            "bytes": 39
+          },
+          "history": {
+            "ms": 3.154542006086558,
+            "bytes": 271
+          },
+          "sources": {
+            "ms": 3.477416990790516,
+            "bytes": 328
+          },
+          "conversation": {
+            "ms": 2.783667005132884,
+            "bytes": 14542
+          }
+        },
+        {
+          "html": {
+            "ms": 2.1393329952843487,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 2.5998750352300704,
+            "bytes": 39
+          },
+          "history": {
+            "ms": 2.4952919920906425,
+            "bytes": 271
+          },
+          "sources": {
+            "ms": 2.4061250151135027,
+            "bytes": 328
+          },
+          "conversation": {
+            "ms": 2.1950419759377837,
+            "bytes": 14542
+          }
+        },
+        {
+          "html": {
+            "ms": 1.2122499756515026,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 1.7161249998025596,
+            "bytes": 39
+          },
+          "history": {
+            "ms": 2.493959036655724,
+            "bytes": 271
+          },
+          "sources": {
+            "ms": 2.4972499813884497,
+            "bytes": 328
+          },
+          "conversation": {
+            "ms": 2.2294159862212837,
+            "bytes": 14542
+          }
+        },
+        {
+          "html": {
+            "ms": 1.8915829714387655,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 1.15258403820917,
+            "bytes": 39
+          },
+          "history": {
+            "ms": 1.9977500196546316,
+            "bytes": 271
+          },
+          "sources": {
+            "ms": 1.9854159909300506,
+            "bytes": 328
+          },
+          "conversation": {
+            "ms": 1.733749988488853,
+            "bytes": 14542
+          }
+        },
+        {
+          "html": {
+            "ms": 1.038125017657876,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 1.4216669951565564,
+            "bytes": 39
+          },
+          "history": {
+            "ms": 1.4458749792538583,
+            "bytes": 271
+          },
+          "sources": {
+            "ms": 1.6744589665904641,
+            "bytes": 328
+          },
+          "conversation": {
+            "ms": 1.5718750073574483,
+            "bytes": 14542
+          }
+        },
+        {
+          "html": {
+            "ms": 1.2456250260584056,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 1.543416001368314,
+            "bytes": 39
+          },
+          "history": {
+            "ms": 1.582792028784752,
+            "bytes": 271
+          },
+          "sources": {
+            "ms": 1.96433300152421,
+            "bytes": 328
+          },
+          "conversation": {
+            "ms": 1.7051249742507935,
+            "bytes": 14542
+          }
+        }
+      ],
+      "summary_ms": {
+        "html": {
+          "median": 1.2941040040459484,
+          "p95": 2.1393329952843487
+        },
+        "runtime_config": {
+          "median": 1.639624999370426,
+          "p95": 2.5998750352300704
+        },
+        "history": {
+          "median": 2.1649580157827586,
+          "p95": 3.154542006086558
+        },
+        "sources": {
+          "median": 2.269042015541345,
+          "p95": 3.477416990790516
+        },
+        "conversation": {
+          "median": 2.112208487233147,
+          "p95": 2.783667005132884
+        }
+      },
+      "initial_js": {
+        "assets": 18,
+        "bytes": 1171516,
+        "gzip_bytes": 373380
+      }
+    },
+    "after": {
+      "samples": [
+        {
+          "html": {
+            "ms": 5.080167029518634,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 3.6069590132683516,
+            "bytes": 39
+          },
+          "history": {
+            "ms": 3.184208006132394,
+            "bytes": 271
+          },
+          "sources": {
+            "ms": 4.107707994990051,
+            "bytes": 328
+          },
+          "conversation": {
+            "ms": 3.1123749795369804,
+            "bytes": 14542
+          }
+        },
+        {
+          "html": {
+            "ms": 2.1225829841569066,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 1.1677920119836926,
+            "bytes": 39
+          },
+          "history": {
+            "ms": 2.229499979875982,
+            "bytes": 271
+          },
+          "sources": {
+            "ms": 2.5305829476565123,
+            "bytes": 328
+          },
+          "conversation": {
+            "ms": 2.300709020346403,
+            "bytes": 14542
+          }
+        },
+        {
+          "html": {
+            "ms": 2.510292048100382,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 1.6348750214092433,
+            "bytes": 39
+          },
+          "history": {
+            "ms": 1.9689170294441283,
+            "bytes": 271
+          },
+          "sources": {
+            "ms": 2.253208018373698,
+            "bytes": 328
+          },
+          "conversation": {
+            "ms": 1.9409590167924762,
+            "bytes": 14542
+          }
+        },
+        {
+          "html": {
+            "ms": 1.7799999914132059,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 2.0151250064373016,
+            "bytes": 39
+          },
+          "history": {
+            "ms": 2.728500054217875,
+            "bytes": 271
+          },
+          "sources": {
+            "ms": 3.0617499724030495,
+            "bytes": 328
+          },
+          "conversation": {
+            "ms": 2.8474589926190674,
+            "bytes": 14542
+          }
+        },
+        {
+          "html": {
+            "ms": 3.4907080116681755,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 1.9959590281359851,
+            "bytes": 39
+          },
+          "history": {
+            "ms": 3.3808749867603183,
+            "bytes": 271
+          },
+          "sources": {
+            "ms": 3.6381250247359276,
+            "bytes": 328
+          },
+          "conversation": {
+            "ms": 3.6046250024810433,
+            "bytes": 14542
+          }
+        },
+        {
+          "html": {
+            "ms": 3.419457993004471,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 2.129875007085502,
+            "bytes": 39
+          },
+          "history": {
+            "ms": 3.335541987325996,
+            "bytes": 271
+          },
+          "sources": {
+            "ms": 3.3030000049620867,
+            "bytes": 328
+          },
+          "conversation": {
+            "ms": 3.2479590154252946,
+            "bytes": 14542
+          }
+        },
+        {
+          "html": {
+            "ms": 1.78620801307261,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 2.238999994006008,
+            "bytes": 39
+          },
+          "history": {
+            "ms": 2.3207080084830523,
+            "bytes": 271
+          },
+          "sources": {
+            "ms": 2.7051669894717634,
+            "bytes": 328
+          },
+          "conversation": {
+            "ms": 2.39837501430884,
+            "bytes": 14542
+          }
+        },
+        {
+          "html": {
+            "ms": 2.036582969594747,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 2.760583010967821,
+            "bytes": 39
+          },
+          "history": {
+            "ms": 3.3338750363327563,
+            "bytes": 271
+          },
+          "sources": {
+            "ms": 3.8809579564258456,
+            "bytes": 328
+          },
+          "conversation": {
+            "ms": 3.3866669982671738,
+            "bytes": 14542
+          }
+        },
+        {
+          "html": {
+            "ms": 3.605332982260734,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 2.3519580136053264,
+            "bytes": 39
+          },
+          "history": {
+            "ms": 3.6575840204022825,
+            "bytes": 271
+          },
+          "sources": {
+            "ms": 3.795708005782217,
+            "bytes": 328
+          },
+          "conversation": {
+            "ms": 3.5770420217886567,
+            "bytes": 14542
+          }
+        },
+        {
+          "html": {
+            "ms": 2.618667029310018,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 1.4432079624384642,
+            "bytes": 39
+          },
+          "history": {
+            "ms": 1.884375000372529,
+            "bytes": 271
+          },
+          "sources": {
+            "ms": 2.1155410213395953,
+            "bytes": 328
+          },
+          "conversation": {
+            "ms": 2.004500012844801,
+            "bytes": 14542
+          }
+        }
+      ],
+      "summary_ms": {
+        "html": {
+          "median": 2.5644795387052,
+          "p95": 5.080167029518634
+        },
+        "runtime_config": {
+          "median": 2.072500006761402,
+          "p95": 3.6069590132683516
+        },
+        "history": {
+          "median": 2.9563540301751345,
+          "p95": 3.6575840204022825
+        },
+        "sources": {
+          "median": 3.182374988682568,
+          "p95": 4.107707994990051
+        },
+        "conversation": {
+          "median": 2.979916986078024,
+          "p95": 3.6046250024810433
+        }
+      },
+      "initial_js": {
+        "assets": 18,
+        "bytes": 1175220,
+        "gzip_bytes": 374653
+      }
+    }
+  },
+  "csv": {
+    "status": 200,
+    "rows": 45,
+    "columns": [
+      "month",
+      "revenue",
+      "order_count"
+    ],
+    "first_month": "2023-01-01",
+    "last_month": "2026-09-01",
+    "browser_download_observer": "timed out; HTTP export 200 verified independently; no file-save claim"
+  },
+  "warm_policy": {
+    "frontend_service_min": 1,
+    "api_service_min": 1,
+    "worker_scaling": "unchanged",
+    "higher_minima_and_ceilings": "preserved",
+    "applied": false,
+    "pricing_date": "2026-10-22",
+    "region": "asia-southeast1",
+    "monthly_idle_estimate_usd": 82.04,
+    "estimate_assumptions": "30 days; API 1vCPU/2GiB instance billing; frontend 1vCPU/0.5GiB request billing; no free tier/credits; excludes requests, active premium, other services/tax"
+  },
+  "preservation": {
+    "dataset": "No cloud data operations performed; larger source data not recounted in this local task",
+    "flags": "Release-preservation tests retain timeseries/30000 and both TimesFM flags true; no cloud settings changed",
+    "submission_folders": "Both excluded from graph/Git/build scope; no publication performed",
+    "historical_evidence": "Existing evaluation files and deployment.json retained; no rewritten release records",
+    "unrelated_work": "Pre-existing startup work retained; pre-existing final-reports-dropdowns-20261021 artifacts untouched"
+  },
+  "source_sha256": {
+    "Frontend/src/components/workspace.tsx": "de85e7de5546292b295dcc10d4c093c7e15251801f6217a1ff8538a42c61bf41",
+    "Frontend/src/hooks/use-workspace-scroll.ts": "011000f323e93e8e1f5ff0a72932beb4dcc1ee49c6835c33c3be7ecae1aaaef9",
+    "Frontend/src/lib/read-equality.ts": "d6ef4ae47a96929af6e48377b50ea283a54c04f60bf714c7e5bdeafc00dd3b57",
+    "Frontend/src/app/globals.css": "ffac82c03d4c3c88285da4331fd44928e08f4d6543111d748dcfc0c0fdb6765f",
+    "Frontend/tests/workspace-scroll.test.mjs": "bdd7988a01778e377df846fe4646244d8172cafbfa054ff3a4427b47829425dd",
+    "infra/runtime_settings.py": "b1473ea163211accfa86a165c97aa63cb1f4884a112a812695a38701de2b7616",
+    "infra/deploy.py": "b8fd9abc4fe8c4c9dfda73a7c5e21a984a5b74f498057b85a12222fc8a871cd4",
+    "Backend/tests/test_startup_release.py": "7c96c378bd439509d39d062a6d34e63af16afb8659c36ff4ede3924b66fea379"
+  },
+  "screenshots": [
+    "workspace-layout-local-20261022-desktop.png",
+    "workspace-layout-local-20261022-mobile320.png",
+    "workspace-layout-local-20261022-mobile390.png"
+  ],
+  "limitations": [
+    "No deployed performance claim or applied warm-instance setting.",
+    "Physical mobile keyboards, actual 200% browser zoom, screen-reader announcements and comprehensive contrast review remain manual checks.",
+    "Whole-conversation print/export is not a new feature; chart exports resolve saved evidence independently.",
+    "Browser CSV download observer timed out although full export HTTP content passed.",
+    "Warm local timing differences are machine/network specific; shell p95 increased 34ms despite lower median; no blanket percentile improvement claimed.",
+    "Initial JavaScript increased by approximately 1.3KB gzip; this change reduces unnecessary chart requests, not bundle size.",
+    "No fresh model-backed analytics, voice, report generation or planning-worker acceptance was repeated."
+  ]
+}

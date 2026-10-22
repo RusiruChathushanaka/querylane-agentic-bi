@@ -13,7 +13,13 @@ flowchart LR
     Preview --> Fixture[Packaged verified values / cutoff / model scores]
     Preview -->|Explicit evidence link / no prefetch| Version[Saved report version / no inference]
     Legacy[Legacy root chat links] -->|307 /app with query preserved| Browser
-    Browser -->|HTTP and SSE| API[Public FastAPI on Cloud Run]
+    Browser --> Runtime[Shared runtime configuration /api/config]
+    Runtime --> Startup[Independent cancellable reads / loading and retry feedback]
+    Startup -->|GET resources| API[Public FastAPI on Cloud Run]
+    Browser -->|Mutations and SSE / unchanged| API
+    Warm[Frontend and API service minima one / verified 22 Oct UTC] -.-> API
+    Warm -.-> Browser
+    Browser --> Scroll[Viewport shell / conversation-only scrolling / nearby saved cards]
     Browser --> Choices[Shared Radix choice controls / portal and keyboard focus]
     Browser --> Sources[Header Sources sheet / schema inspection]
     Sources -->|Existing connection and schema reads| API
@@ -65,6 +71,14 @@ The voice bridge and skill author are handlers within the public backend, not ad
 
 The latest recorded report/dropdown release was published in [commit `82e9f7a`](https://github.com/RusiruChathushanaka/querylane-agentic-bi/commit/82e9f7a538a684acf2bf061661e45de5d2aa553b): frontend `00023-hsg`, API `00025-8ml`, private worker `00014-kgl`. These are the recorded 21 October revisions, not a live discovery by this document. Its two presentation-only worker runs used zero source queries, scan bytes or fits, preserving the existing TimesFM outputs. Runtime specifications, IAM, the `timeseries` profile and 30,000-row cap were preserved.
 
+## Workspace scrolling and visible saved content
+
+The `/app` shell owns the dynamic viewport height. Header and composer are reserved flex rows, while the conversation and sidebar history own independent scroll regions. Positioned chart figures contain hidden keyboard instructions; no global document overflow lock is imposed on libraries or readers. `useWorkspaceScroll` directs scrolling to the conversation element, coalesces resize callbacks with animation frames and stops following when a visitor reads older messages. A keyboard-accessible Jump to latest resumes following. Narrow unzoomed layouts follow the Visual Viewport for keyboard resizing, with safe-area padding and bounded textarea height.
+
+Saved conversation cards observe the conversation viewport with a 150px prefetch margin. Metadata uses the existing two-request shared saved-result loader; placeholders reserve space and messages remain readable before charts. Unchanged conversation JSON preserves React identities during polling. Individual chart exports still resolve their full saved evidence through existing export paths; lazy browser rendering does not change saved report/dashboard exports. This does not introduce a whole-conversation print/export format.
+
+The [22 October local assessment](evaluation/workspace-layout-local-20261022.md) separates local production-build checks from hosted release evidence. The subsequent [hosted release](evaluation/workspace-loading-release-20261022.md) verified frontend and API service minima one; worker scaling and analytical settings are preserved.
+
 ## Shared dropdown presentation
 
 `ui/app-select.tsx` adapts existing native-choice values to the shared shadcn/Radix Select primitive. Reports, chart exploration, dashboard libraries/builders/editors/pinning, metric authoring and Forecast Plans use the same trigger and portaled menu. Settings, workspace and skills retain their existing Radix controls and receive the shared presentation correction. Action menus remain DropdownMenu components; multi-selection remains checkboxes.
@@ -79,6 +93,7 @@ The [report/dropdown release](evaluation/report-dropdown-release-20261021.md) ve
 | --- | --- | --- |
 | Public landing and guided preview | `Frontend/src/app/page.tsx`, `Frontend/src/components/landing/`, `Frontend/src/lib/landing-preview-data.json` | [Landing page](landing-page.md), [ADR 0008](adr/0008-landing-workspace-routes.md) |
 | Workspace route compatibility | `Frontend/src/app/app/page.tsx`, `Frontend/next.config.ts`, `Frontend/src/lib/workspace-links.ts` | [Landing page](landing-page.md) |
+| Startup resource lifecycle | `Frontend/src/hooks/use-read-resource.ts`, `Frontend/src/components/resource-feedback.tsx`, `Frontend/src/lib/api.ts`, `infra/runtime_settings.py` | [Startup loading](startup-loading.md) |
 | Workspace, history and source inspection | `Frontend/src/components/workspace.tsx`, `Frontend/src/app/globals.css` | [Workspace navigation](#workspace-navigation-and-source-inspection), [setup](setup.md) |
 | Shared dropdown controls | `Frontend/src/components/ui/app-select.tsx`, `ui/select.tsx` | [Dropdown presentation](#shared-dropdown-presentation) |
 | Runtime API configuration | `Frontend/src/lib/api.ts`, `Frontend/src/app/api/config/route.ts` | [Setup](setup.md), [settings](settings.md) |
@@ -99,6 +114,14 @@ The [report/dropdown release](evaluation/report-dropdown-release-20261021.md) ve
 | Persistence, maintenance and data publication | `Backend/app/storage.py`, `adk_sessions.py`, `maintenance.py`, `retail_generator.py`, `retail_upload.py` | [Data workflow](retail-timeseries.md), [deployment runbook](deployment-guide.md) |
 
 Paths shortened after the first entry in a cell use that entry's directory. Source files define behavior; feature guides explain its invariants. The graph references provide navigation, not an exhaustive dependency graph.
+
+## Application startup and resource loading
+
+The frontend shell renders before API data and does not perform a server-side readiness gate. The browser resolves the shared runtime configuration once, then starts independent GETs. `useReadResource` owns per-resource pending/success/error state, cancellation, stale-response checks and non-overlapping polling. `ResourceFeedback` announces pending/slow/error states and offers local retry; successful content survives refresh failure. Resource emptiness is established only after success. See [startup behavior](startup-loading.md) and its [local verification](evaluation/startup-loading-local-20261021.md).
+
+Workspace history, analytical-source availability and report configuration load independently. Valid deep-linked conversations load in parallel and reveal text before cards. Report metadata, document versions and chart evidence have separate reads; one unavailable card does not hide the narrative or other cards. Libraries, builder proposals, saved readers and backend model settings use the same lifecycle while preserving local inputs. Initial GETs can retry once after one second for transient transport/408/502/503/504 errors; Retry-After bounds rate-limit recovery. Initial failure stops polling until deliberate retry. Mutations, credentials, streams and inference policies are unchanged.
+
+API connection inspection runs the two existing source checks concurrently and retains stable source ordering and individual failures. No new endpoint/schema/readiness hop is introduced. The routine-release policy keeps one frontend and one API instance warm at service level while preserving worker scaling and existing ceilings. The API retains instance-based billing and the frontend retains request-based billing; idle charges apply according to each mode; the [22 October UTC release](evaluation/workspace-loading-release-20261022.md) verified both service minima at one, with worker scaling unchanged. Future operators must inspect live state.
 
 ## Workspace navigation and source inspection
 
@@ -280,3 +303,7 @@ The larger source profile and verified enabled TimesFM gates remain unchanged, a
 After the normal quota reset, [fresh TimesFM acceptance](evaluation/final-e2e-20261018-fresh.md) passed 31 checks covering newly dispatched forecast and explicit conditional-scenario reports, numerical comparison, immutable presentation reuse, downloads, event replay and dashboard pins. The [aggregate final assessment](evaluation/final-e2e-20261018.md) retains the earlier 119 successful checks and quota-denied attempt alongside this later result. The selected monthly and daily conditional methods were TimesFM based on measured backtests, rather than agent preference. This closes the ordinary advanced-report generation gap; it does not establish fresh execution of the separate dashboard-build or hierarchical-plan workflows.
 
 The fresh test recorded frontend `00018-kd4`, API `00024-rnd` and worker `00013-sm4` without deployment or configuration changes. Before/after BigQuery counts and content fingerprints matched. The larger data profile, 30,000-row limit and enabled/verified TimesFM gates were preserved. Browser verification covered the new saved readers and dashboard at mobile width; physical microphone/speaker quality, full screen-reader use and cross-browser coverage were not repeated, and SVG contrast checks retained manual-review limits. A documentation/Graphify refresh adds no new runtime acceptance.
+
+## Workspace/loading release record
+
+The [22 October UTC hosted assessment](evaluation/workspace-loading-release-20261022.md) records frontend `00025-5cz`, API `00026-9r5` and worker `00015-d4h`. Desktop and 320px/390px/landscape layouts, independent delayed-source loading and saved readers passed. A narrow Skills header now wraps links. Six saved report downloads and 24 configuration/data preservation checks passed; this is not fresh analytical-worker acceptance. Warm HTTP measurements are mixed and remain separate from local visible-chart measurements.

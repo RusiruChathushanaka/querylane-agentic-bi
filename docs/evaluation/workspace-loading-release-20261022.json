@@ -1,0 +1,2130 @@
+{
+  "verified_at": "2026-10-22T18:31:23.908616+00:00",
+  "date_basis": "22 October UTC; client local date 23 October Asia/Colombo",
+  "scope": "Workspace scroll containment, independent startup loading, nearby saved charts and warm service release",
+  "services": {
+    "frontend": {
+      "previous_revision": "agentic-bi-frontend-00023-hsg",
+      "revision": "agentic-bi-frontend-00025-5cz",
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:98f41b4cc593617e795ad3ddc39b89a00cfaa418cada28ab5a8291c833f5a6ce",
+      "build_id": "3c76082d-b4ef-47e1-9532-0a7e0fbf3b3d",
+      "minimum_before": 0,
+      "minimum_after": 1,
+      "runtime_hash_before": "46896c4dae6fc331a712c9e3629b2fb3d358e59d9cbaebf8a32a0f473e427abb",
+      "runtime_hash_after": "46896c4dae6fc331a712c9e3629b2fb3d358e59d9cbaebf8a32a0f473e427abb",
+      "revision_settings_hash_before": "c426ee37f6ec27cd5879023c114f760bffd79ee2992e07def44a4ab5f8b5520e",
+      "revision_settings_hash_after": "c426ee37f6ec27cd5879023c114f760bffd79ee2992e07def44a4ab5f8b5520e",
+      "settings": {},
+      "traffic": [
+        {
+          "percent": 100,
+          "revisionName": "agentic-bi-frontend-00025-5cz"
+        }
+      ]
+    },
+    "backend": {
+      "previous_revision": "agentic-bi-backend-00025-8ml",
+      "revision": "agentic-bi-backend-00026-9r5",
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:cdb5c9aba779306b0e66db0a7b54acf845b5835a67b00c8ea73f954083fd9990",
+      "build_id": "832a5871-aca0-4711-82e3-150cff6f300a",
+      "minimum_before": 0,
+      "minimum_after": 1,
+      "runtime_hash_before": "bb9129afe01cbec3a5546f2d794f865bb52d1735e5bf10823d43dfdb8856507f",
+      "runtime_hash_after": "bb9129afe01cbec3a5546f2d794f865bb52d1735e5bf10823d43dfdb8856507f",
+      "revision_settings_hash_before": "ad59c4ea70bdf75d83b1e6894a4d4f708ab4b20c18e12c25a5cefee931c24805",
+      "revision_settings_hash_after": "ad59c4ea70bdf75d83b1e6894a4d4f708ab4b20c18e12c25a5cefee931c24805",
+      "settings": {
+        "DATA_PROFILE": "timeseries",
+        "SOURCE_ROW_LIMIT": "30000",
+        "REPORT_TIMESFM_ENABLED": "true",
+        "REPORT_TIMESFM_VERIFIED": "true"
+      },
+      "traffic": [
+        {
+          "percent": 100,
+          "revisionName": "agentic-bi-backend-00026-9r5"
+        }
+      ]
+    },
+    "report-worker": {
+      "previous_revision": "agentic-bi-report-worker-00014-kgl",
+      "revision": "agentic-bi-report-worker-00015-d4h",
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:cdb5c9aba779306b0e66db0a7b54acf845b5835a67b00c8ea73f954083fd9990",
+      "build_id": "832a5871-aca0-4711-82e3-150cff6f300a",
+      "minimum_before": 0,
+      "minimum_after": 0,
+      "runtime_hash_before": "5dbd8b0a2ae5ee8957f987d2d3bffbb814dd32792c0b6b2a1314b769336c8139",
+      "runtime_hash_after": "5dbd8b0a2ae5ee8957f987d2d3bffbb814dd32792c0b6b2a1314b769336c8139",
+      "revision_settings_hash_before": "c426ee37f6ec27cd5879023c114f760bffd79ee2992e07def44a4ab5f8b5520e",
+      "revision_settings_hash_after": "c426ee37f6ec27cd5879023c114f760bffd79ee2992e07def44a4ab5f8b5520e",
+      "settings": {
+        "DATA_PROFILE": "timeseries",
+        "SOURCE_ROW_LIMIT": "30000",
+        "REPORT_TIMESFM_ENABLED": "true",
+        "REPORT_TIMESFM_VERIFIED": "true"
+      },
+      "traffic": [
+        {
+          "percent": 100,
+          "revisionName": "agentic-bi-report-worker-00015-d4h"
+        }
+      ]
+    }
+  },
+  "tests": {
+    "backend_passed": 450,
+    "backend_existing_skips": 1,
+    "frontend_passed": 81,
+    "ruff": "pass",
+    "eslint": "pass",
+    "typescript": "pass",
+    "cloud_production_builds": "pass"
+  },
+  "browser_checks": [
+    {
+      "name": "desktop_scroll",
+      "before": {
+        "cards": 1,
+        "document": {
+          "height": 900,
+          "top": 0,
+          "width": 1280
+        },
+        "regions": [
+          {
+            "bottom": 900,
+            "height": 900,
+            "s": ".app-shell",
+            "scrollHeight": 900,
+            "scrollTop": 0,
+            "top": 0
+          },
+          {
+            "bottom": 900,
+            "height": 900,
+            "s": ".desktop-sidebar",
+            "scrollHeight": 900,
+            "scrollTop": 0,
+            "top": 0
+          },
+          {
+            "bottom": 68,
+            "height": 68,
+            "s": ".topbar",
+            "scrollHeight": 67,
+            "scrollTop": 0,
+            "top": 0
+          },
+          {
+            "bottom": 900,
+            "height": 204,
+            "s": ".composer-area",
+            "scrollHeight": 204,
+            "scrollTop": 0,
+            "top": 696
+          },
+          {
+            "bottom": 696,
+            "height": 628,
+            "s": "main",
+            "scrollHeight": 3553,
+            "scrollTop": 2925.5,
+            "top": 68
+          }
+        ],
+        "viewport": {
+          "height": 900,
+          "width": 1280
+        }
+      },
+      "after": {
+        "cards": 1,
+        "document": {
+          "height": 900,
+          "top": 0,
+          "width": 1280
+        },
+        "regions": [
+          {
+            "bottom": 900,
+            "height": 900,
+            "s": ".app-shell",
+            "scrollHeight": 900,
+            "scrollTop": 0,
+            "top": 0
+          },
+          {
+            "bottom": 900,
+            "height": 900,
+            "s": ".desktop-sidebar",
+            "scrollHeight": 900,
+            "scrollTop": 0,
+            "top": 0
+          },
+          {
+            "bottom": 68,
+            "height": 68,
+            "s": ".topbar",
+            "scrollHeight": 67,
+            "scrollTop": 0,
+            "top": 0
+          },
+          {
+            "bottom": 900,
+            "height": 204,
+            "s": ".composer-area",
+            "scrollHeight": 204,
+            "scrollTop": 0,
+            "top": 696
+          },
+          {
+            "bottom": 696,
+            "height": 628,
+            "s": "main",
+            "scrollHeight": 3553,
+            "scrollTop": 2542,
+            "top": 68
+          }
+        ],
+        "viewport": {
+          "height": 900,
+          "width": 1280
+        }
+      }
+    },
+    {
+      "name": "deferred_card_loaded_on_approach",
+      "geometry": {
+        "cards": 2,
+        "document": {
+          "height": 900,
+          "top": 0,
+          "width": 1280
+        },
+        "regions": [
+          {
+            "bottom": 900,
+            "height": 900,
+            "s": ".app-shell",
+            "scrollHeight": 900,
+            "scrollTop": 0,
+            "top": 0
+          },
+          {
+            "bottom": 900,
+            "height": 900,
+            "s": ".desktop-sidebar",
+            "scrollHeight": 900,
+            "scrollTop": 0,
+            "top": 0
+          },
+          {
+            "bottom": 68,
+            "height": 68,
+            "s": ".topbar",
+            "scrollHeight": 67,
+            "scrollTop": 0,
+            "top": 0
+          },
+          {
+            "bottom": 900,
+            "height": 204,
+            "s": ".composer-area",
+            "scrollHeight": 204,
+            "scrollTop": 0,
+            "top": 696
+          },
+          {
+            "bottom": 696,
+            "height": 628,
+            "s": "main",
+            "scrollHeight": 4311,
+            "scrollTop": 1035,
+            "top": 68
+          }
+        ],
+        "viewport": {
+          "height": 900,
+          "width": 1280
+        }
+      }
+    },
+    {
+      "name": "mobile390_sheet",
+      "bounds": {
+        "h": 844,
+        "links": [
+          {
+            "bottom": 79.7109375,
+            "label": "QuerylaneAgentic business intelligenceDEMO"
+          },
+          {
+            "bottom": 458.1484375,
+            "label": " Dashboards"
+          },
+          {
+            "bottom": 514.1484375,
+            "label": " Reports"
+          },
+          {
+            "bottom": 570.1484375,
+            "label": " Business metrics"
+          },
+          {
+            "bottom": 626.1484375,
+            "label": " Forecast plans"
+          },
+          {
+            "bottom": 682.1484375,
+            "label": " Skills library"
+          },
+          {
+            "bottom": 738.1484375,
+            "label": "Settings"
+          }
+        ]
+      }
+    },
+    {
+      "name": "mobile390",
+      "geometry": {
+        "cards": 2,
+        "document": {
+          "height": 844,
+          "top": 0,
+          "width": 390
+        },
+        "regions": [
+          {
+            "bottom": 844,
+            "height": 844,
+            "s": ".app-shell",
+            "scrollHeight": 844,
+            "scrollTop": 0,
+            "top": 0
+          },
+          {
+            "bottom": 0,
+            "height": 0,
+            "s": ".desktop-sidebar",
+            "scrollHeight": 0,
+            "scrollTop": 0,
+            "top": 0
+          },
+          {
+            "bottom": 58,
+            "height": 58,
+            "s": ".topbar",
+            "scrollHeight": 57,
+            "scrollTop": 0,
+            "top": 0
+          },
+          {
+            "bottom": 844,
+            "height": 224.5,
+            "s": ".composer-area",
+            "scrollHeight": 225,
+            "scrollTop": 0,
+            "top": 619.5
+          },
+          {
+            "bottom": 619.5,
+            "height": 561.5,
+            "s": "main",
+            "scrollHeight": 5539,
+            "scrollTop": 4057,
+            "top": 58
+          }
+        ],
+        "viewport": {
+          "height": 844,
+          "width": 390
+        }
+      }
+    },
+    {
+      "name": "mobile320",
+      "geometry": {
+        "cards": 2,
+        "document": {
+          "height": 568,
+          "top": 0,
+          "width": 320
+        },
+        "regions": [
+          {
+            "bottom": 568,
+            "height": 568,
+            "s": ".app-shell",
+            "scrollHeight": 568,
+            "scrollTop": 0,
+            "top": 0
+          },
+          {
+            "bottom": 0,
+            "height": 0,
+            "s": ".desktop-sidebar",
+            "scrollHeight": 0,
+            "scrollTop": 0,
+            "top": 0
+          },
+          {
+            "bottom": 58,
+            "height": 58,
+            "s": ".topbar",
+            "scrollHeight": 57,
+            "scrollTop": 0,
+            "top": 0
+          },
+          {
+            "bottom": 568,
+            "height": 240.5,
+            "s": ".composer-area",
+            "scrollHeight": 241,
+            "scrollTop": 0,
+            "top": 327.5
+          },
+          {
+            "bottom": 327.5,
+            "height": 269.5,
+            "s": "main",
+            "scrollHeight": 6314,
+            "scrollTop": 4643,
+            "top": 58
+          }
+        ],
+        "viewport": {
+          "height": 568,
+          "width": 320
+        }
+      }
+    },
+    {
+      "name": "landscape844",
+      "geometry": {
+        "cards": 2,
+        "document": {
+          "height": 390,
+          "top": 0,
+          "width": 844
+        },
+        "regions": [
+          {
+            "bottom": 390,
+            "height": 390,
+            "s": ".app-shell",
+            "scrollHeight": 390,
+            "scrollTop": 0,
+            "top": 0
+          },
+          {
+            "bottom": 390,
+            "height": 390,
+            "s": ".desktop-sidebar",
+            "scrollHeight": 390,
+            "scrollTop": 0,
+            "top": 0
+          },
+          {
+            "bottom": 68,
+            "height": 68,
+            "s": ".topbar",
+            "scrollHeight": 67,
+            "scrollTop": 0,
+            "top": 0
+          },
+          {
+            "bottom": 390,
+            "height": 165,
+            "s": ".composer-area",
+            "scrollHeight": 165,
+            "scrollTop": 0,
+            "top": 225
+          },
+          {
+            "bottom": 225,
+            "height": 157,
+            "s": "main",
+            "scrollHeight": 4789,
+            "scrollTop": 4429,
+            "top": 68
+          }
+        ],
+        "viewport": {
+          "height": 390,
+          "width": 844
+        }
+      },
+      "links": [
+        {
+          "bottom": 242,
+          "label": " Dashboards"
+        },
+        {
+          "bottom": 270,
+          "label": " Reports"
+        },
+        {
+          "bottom": 298,
+          "label": " Business metrics"
+        },
+        {
+          "bottom": 326,
+          "label": " Forecast plans"
+        },
+        {
+          "bottom": 354,
+          "label": " Skills library"
+        },
+        {
+          "bottom": 382,
+          "label": "Settings"
+        }
+      ]
+    },
+    {
+      "name": "isolated_delayed_source",
+      "readableHistoryAndConversation": true,
+      "slowFeedback": true,
+      "draft": "retained",
+      "scope": "Test-tab Fetch interception only; live backend unchanged"
+    },
+    {
+      "name": "injection_harness_limit",
+      "scope": "Attempted 503 browser injection did not establish a response because interception IDs expired; interception cleared, ordinary reads recovered. Not an application failure or a passed 503 test."
+    },
+    {
+      "name": "report_mobile",
+      "details": {
+        "bodyOverflow": "visible",
+        "docWidth": 375,
+        "downloadLinks": [],
+        "sections": 7,
+        "viewportWidth": 390
+      }
+    },
+    {
+      "name": "saved_dashboard_mobile",
+      "details": {
+        "bodyOverflow": "visible",
+        "cards": 1,
+        "overflowX": false,
+        "positionedFigures": true,
+        "title": "TimesFM verification \u2014 saved predictions"
+      }
+    },
+    {
+      "name": "library/dashboards",
+      "details": {
+        "errors": 0,
+        "overflowX": false,
+        "title": "Dashboards."
+      }
+    },
+    {
+      "name": "library/reports",
+      "details": {
+        "errors": 0,
+        "overflowX": false,
+        "title": "Reports library."
+      }
+    },
+    {
+      "name": "library/metrics",
+      "details": {
+        "errors": 0,
+        "overflowX": false,
+        "title": "Business metrics."
+      }
+    },
+    {
+      "name": "library/forecast-plans",
+      "details": {
+        "errors": 0,
+        "overflowX": false,
+        "title": "Forecast plans."
+      }
+    },
+    {
+      "name": "library/skills",
+      "details": {
+        "errors": 0,
+        "overflowX": true,
+        "title": "Skills library."
+      }
+    },
+    {
+      "name": "skills_mobile390_final",
+      "details": {
+        "docWidth": 375,
+        "headerWrap": "wrap",
+        "links": [
+          {
+            "bottom": 81,
+            "label": " Workspace",
+            "right": 112.0546875
+          },
+          {
+            "bottom": 81,
+            "label": "Dashboards",
+            "right": 190.2578125
+          },
+          {
+            "bottom": 77,
+            "label": "Reports",
+            "right": 246.8046875
+          },
+          {
+            "bottom": 77,
+            "label": " Settings",
+            "right": 323.5078125
+          }
+        ],
+        "width": 390
+      }
+    },
+    {
+      "name": "skills_mobile320_final",
+      "details": {
+        "docWidth": 305,
+        "links": [
+          {
+            "bottom": 81,
+            "label": " Workspace",
+            "right": 112.0546875
+          },
+          {
+            "bottom": 81,
+            "label": "Dashboards",
+            "right": 190.2578125
+          },
+          {
+            "bottom": 77,
+            "label": "Reports",
+            "right": 246.8046875
+          },
+          {
+            "bottom": 109,
+            "label": " Settings",
+            "right": 92.703125
+          }
+        ],
+        "width": 320
+      }
+    },
+    {
+      "name": "workspace390_final",
+      "geometry": {
+        "cards": 0,
+        "document": {
+          "height": 844,
+          "top": 0,
+          "width": 390
+        },
+        "regions": [
+          {
+            "bottom": 844,
+            "height": 844,
+            "s": ".app-shell",
+            "scrollHeight": 844,
+            "scrollTop": 0,
+            "top": 0
+          },
+          {
+            "bottom": 0,
+            "height": 0,
+            "s": ".desktop-sidebar",
+            "scrollHeight": 0,
+            "scrollTop": 0,
+            "top": 0
+          },
+          {
+            "bottom": 58,
+            "height": 58,
+            "s": ".topbar",
+            "scrollHeight": 57,
+            "scrollTop": 0,
+            "top": 0
+          },
+          {
+            "bottom": 844,
+            "height": 224.5,
+            "s": ".composer-area",
+            "scrollHeight": 225,
+            "scrollTop": 0,
+            "top": 619.5
+          },
+          {
+            "bottom": 619.5,
+            "height": 561.5,
+            "s": "main",
+            "scrollHeight": 3825,
+            "scrollTop": 3278,
+            "top": 58
+          }
+        ],
+        "viewport": {
+          "height": 844,
+          "width": 390
+        }
+      }
+    },
+    {
+      "name": "workspace320_final",
+      "geometry": {
+        "cards": 0,
+        "document": {
+          "height": 568,
+          "top": 0,
+          "width": 320
+        },
+        "regions": [
+          {
+            "bottom": 568,
+            "height": 568,
+            "s": ".app-shell",
+            "scrollHeight": 568,
+            "scrollTop": 0,
+            "top": 0
+          },
+          {
+            "bottom": 0,
+            "height": 0,
+            "s": ".desktop-sidebar",
+            "scrollHeight": 0,
+            "scrollTop": 0,
+            "top": 0
+          },
+          {
+            "bottom": 58,
+            "height": 58,
+            "s": ".topbar",
+            "scrollHeight": 57,
+            "scrollTop": 0,
+            "top": 0
+          },
+          {
+            "bottom": 568,
+            "height": 240.5,
+            "s": ".composer-area",
+            "scrollHeight": 241,
+            "scrollTop": 0,
+            "top": 327.5
+          },
+          {
+            "bottom": 327.5,
+            "height": 269.5,
+            "s": "main",
+            "scrollHeight": 4331,
+            "scrollTop": 4077,
+            "top": 58
+          }
+        ],
+        "viewport": {
+          "height": 568,
+          "width": 320
+        }
+      }
+    },
+    {
+      "name": "workspace_mobile_charts_final",
+      "geometry": {
+        "cards": 1,
+        "document": {
+          "height": 568,
+          "top": 0,
+          "width": 320
+        },
+        "regions": [
+          {
+            "bottom": 568,
+            "height": 568,
+            "s": ".app-shell",
+            "scrollHeight": 568,
+            "scrollTop": 0,
+            "top": 0
+          },
+          {
+            "bottom": 0,
+            "height": 0,
+            "s": ".desktop-sidebar",
+            "scrollHeight": 0,
+            "scrollTop": 0,
+            "top": 0
+          },
+          {
+            "bottom": 58,
+            "height": 58,
+            "s": ".topbar",
+            "scrollHeight": 57,
+            "scrollTop": 0,
+            "top": 0
+          },
+          {
+            "bottom": 568,
+            "height": 240.5,
+            "s": ".composer-area",
+            "scrollHeight": 241,
+            "scrollTop": 0,
+            "top": 327.5
+          },
+          {
+            "bottom": 327.5,
+            "height": 269.5,
+            "s": "main",
+            "scrollHeight": 5129,
+            "scrollTop": 4874,
+            "top": 58
+          }
+        ],
+        "viewport": {
+          "height": 568,
+          "width": 320
+        }
+      },
+      "sendEnabled": true
+    },
+    {
+      "name": "workspace_desktop_final",
+      "geometry": {
+        "cards": 1,
+        "document": {
+          "height": 900,
+          "top": 0,
+          "width": 1280
+        },
+        "regions": [
+          {
+            "bottom": 900,
+            "height": 900,
+            "s": ".app-shell",
+            "scrollHeight": 900,
+            "scrollTop": 0,
+            "top": 0
+          },
+          {
+            "bottom": 900,
+            "height": 900,
+            "s": ".desktop-sidebar",
+            "scrollHeight": 900,
+            "scrollTop": 0,
+            "top": 0
+          },
+          {
+            "bottom": 68,
+            "height": 68,
+            "s": ".topbar",
+            "scrollHeight": 67,
+            "scrollTop": 0,
+            "top": 0
+          },
+          {
+            "bottom": 900,
+            "height": 204,
+            "s": ".composer-area",
+            "scrollHeight": 204,
+            "scrollTop": 0,
+            "top": 696
+          },
+          {
+            "bottom": 696,
+            "height": 628,
+            "s": "main",
+            "scrollHeight": 3553,
+            "scrollTop": 2793.5,
+            "top": 68
+          }
+        ],
+        "viewport": {
+          "height": 900,
+          "width": 1280
+        }
+      }
+    },
+    {
+      "name": "landing_backend_free",
+      "observedBackendCalls": []
+    },
+    {
+      "name": "clean_console_final",
+      "errors": []
+    }
+  ],
+  "http_timings": {
+    "before": {
+      "environment": "deployed public Cloud Run; 10 warm observations after one captured warm-up; no forced cold starts",
+      "captured_at": 1792692595.9765198,
+      "warmup": {
+        "frontend_html": {
+          "ms": 4221.23,
+          "status": 200,
+          "bytes": 51863
+        },
+        "runtime_config": {
+          "ms": 4493.32,
+          "status": 200,
+          "bytes": 68
+        },
+        "history": {
+          "ms": 19529.81,
+          "status": 200,
+          "bytes": 32706
+        },
+        "connections": {
+          "ms": 14635.51,
+          "status": 200,
+          "bytes": 310
+        },
+        "conversation": {
+          "ms": 19522.13,
+          "status": 200,
+          "bytes": 8023
+        },
+        "report_config": {
+          "ms": 13675.96,
+          "status": 200,
+          "bytes": 151
+        }
+      },
+      "samples": [
+        {
+          "frontend_html": {
+            "ms": 539.63,
+            "status": 200,
+            "bytes": 51863
+          },
+          "runtime_config": {
+            "ms": 369.9,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 600.64,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 949.85,
+            "status": 200,
+            "bytes": 310
+          },
+          "conversation": {
+            "ms": 503.51,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 368.89,
+            "status": 200,
+            "bytes": 151
+          }
+        },
+        {
+          "frontend_html": {
+            "ms": 553.98,
+            "status": 200,
+            "bytes": 51863
+          },
+          "runtime_config": {
+            "ms": 350.06,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 510.89,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 1038.52,
+            "status": 200,
+            "bytes": 310
+          },
+          "conversation": {
+            "ms": 460.61,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 334.66,
+            "status": 200,
+            "bytes": 151
+          }
+        },
+        {
+          "frontend_html": {
+            "ms": 587.44,
+            "status": 200,
+            "bytes": 51863
+          },
+          "runtime_config": {
+            "ms": 434.41,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 519.17,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 1237.99,
+            "status": 200,
+            "bytes": 310
+          },
+          "conversation": {
+            "ms": 489.92,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 408.89,
+            "status": 200,
+            "bytes": 151
+          }
+        },
+        {
+          "frontend_html": {
+            "ms": 548.45,
+            "status": 200,
+            "bytes": 51863
+          },
+          "runtime_config": {
+            "ms": 423.36,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 591.97,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 1010.76,
+            "status": 200,
+            "bytes": 310
+          },
+          "conversation": {
+            "ms": 397.61,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 357.26,
+            "status": 200,
+            "bytes": 151
+          }
+        },
+        {
+          "frontend_html": {
+            "ms": 516.81,
+            "status": 200,
+            "bytes": 51863
+          },
+          "runtime_config": {
+            "ms": 320.88,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 478.69,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 979.31,
+            "status": 200,
+            "bytes": 310
+          },
+          "conversation": {
+            "ms": 374.98,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 325.34,
+            "status": 200,
+            "bytes": 151
+          }
+        },
+        {
+          "frontend_html": {
+            "ms": 471.2,
+            "status": 200,
+            "bytes": 51863
+          },
+          "runtime_config": {
+            "ms": 395.42,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 490.1,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 918.8,
+            "status": 200,
+            "bytes": 310
+          },
+          "conversation": {
+            "ms": 380.92,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 334.97,
+            "status": 200,
+            "bytes": 151
+          }
+        },
+        {
+          "frontend_html": {
+            "ms": 516.79,
+            "status": 200,
+            "bytes": 51863
+          },
+          "runtime_config": {
+            "ms": 321.57,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 459.2,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 955.21,
+            "status": 200,
+            "bytes": 310
+          },
+          "conversation": {
+            "ms": 418.73,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 372.99,
+            "status": 200,
+            "bytes": 151
+          }
+        },
+        {
+          "frontend_html": {
+            "ms": 545.58,
+            "status": 200,
+            "bytes": 51863
+          },
+          "runtime_config": {
+            "ms": 351.96,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 596.63,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 966.5,
+            "status": 200,
+            "bytes": 310
+          },
+          "conversation": {
+            "ms": 387.3,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 420.94,
+            "status": 200,
+            "bytes": 151
+          }
+        },
+        {
+          "frontend_html": {
+            "ms": 851.66,
+            "status": 200,
+            "bytes": 51863
+          },
+          "runtime_config": {
+            "ms": 375.67,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 806.03,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 933.19,
+            "status": 200,
+            "bytes": 310
+          },
+          "conversation": {
+            "ms": 385.22,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 335.58,
+            "status": 200,
+            "bytes": 151
+          }
+        },
+        {
+          "frontend_html": {
+            "ms": 621.12,
+            "status": 200,
+            "bytes": 51863
+          },
+          "runtime_config": {
+            "ms": 406.72,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 570.95,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 996.99,
+            "status": 200,
+            "bytes": 310
+          },
+          "conversation": {
+            "ms": 507.25,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 406.43,
+            "status": 200,
+            "bytes": 151
+          }
+        }
+      ],
+      "summary": {
+        "frontend_html": {
+          "median_ms": 547.0150000000001,
+          "p95_nearest_rank_ms": 851.66
+        },
+        "runtime_config": {
+          "median_ms": 372.78499999999997,
+          "p95_nearest_rank_ms": 434.41
+        },
+        "history": {
+          "median_ms": 545.06,
+          "p95_nearest_rank_ms": 806.03
+        },
+        "connections": {
+          "median_ms": 972.905,
+          "p95_nearest_rank_ms": 1237.99
+        },
+        "conversation": {
+          "median_ms": 408.17,
+          "p95_nearest_rank_ms": 507.25
+        },
+        "report_config": {
+          "median_ms": 363.075,
+          "p95_nearest_rank_ms": 420.94
+        }
+      }
+    },
+    "intermediate": {
+      "environment": "deployed public Cloud Run; 10 warm observations after one captured warm-up; no forced cold starts",
+      "captured_at": 1792693052.4310331,
+      "warmup": {
+        "frontend_html": {
+          "ms": 805.81,
+          "status": 200,
+          "bytes": 52690
+        },
+        "runtime_config": {
+          "ms": 611.52,
+          "status": 200,
+          "bytes": 68
+        },
+        "history": {
+          "ms": 668.28,
+          "status": 200,
+          "bytes": 32706
+        },
+        "connections": {
+          "ms": 1318.19,
+          "status": 200,
+          "bytes": 310
+        },
+        "conversation": {
+          "ms": 564.69,
+          "status": 200,
+          "bytes": 8023
+        },
+        "report_config": {
+          "ms": 511.2,
+          "status": 200,
+          "bytes": 151
+        }
+      },
+      "samples": [
+        {
+          "frontend_html": {
+            "ms": 500.31,
+            "status": 200,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 317.37,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 546.04,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 1011.29,
+            "status": 200,
+            "bytes": 310
+          },
+          "conversation": {
+            "ms": 370.61,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 312.85,
+            "status": 200,
+            "bytes": 151
+          }
+        },
+        {
+          "frontend_html": {
+            "ms": 694.08,
+            "status": 200,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 360.78,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 563.69,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 959.28,
+            "status": 200,
+            "bytes": 310
+          },
+          "conversation": {
+            "ms": 490.64,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 337.5,
+            "status": 200,
+            "bytes": 151
+          }
+        },
+        {
+          "frontend_html": {
+            "ms": 587.52,
+            "status": 200,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 502.64,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 577.27,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 1020.47,
+            "status": 200,
+            "bytes": 310
+          },
+          "conversation": {
+            "ms": 538.12,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 435.63,
+            "status": 200,
+            "bytes": 151
+          }
+        },
+        {
+          "frontend_html": {
+            "ms": 643.78,
+            "status": 200,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 337.5,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 791.44,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 3241.01,
+            "status": 200,
+            "bytes": 310
+          },
+          "conversation": {
+            "ms": 457.05,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 442.46,
+            "status": 200,
+            "bytes": 151
+          }
+        },
+        {
+          "frontend_html": {
+            "ms": 566.82,
+            "status": 200,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 362.43,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 562.68,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 957.07,
+            "status": 200,
+            "bytes": 310
+          },
+          "conversation": {
+            "ms": 473.76,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 406.37,
+            "status": 200,
+            "bytes": 151
+          }
+        },
+        {
+          "frontend_html": {
+            "ms": 513.09,
+            "status": 200,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 390.4,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 486.78,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 803.64,
+            "status": 200,
+            "bytes": 310
+          },
+          "conversation": {
+            "ms": 369.51,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 313.91,
+            "status": 200,
+            "bytes": 151
+          }
+        },
+        {
+          "frontend_html": {
+            "ms": 581.96,
+            "status": 200,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 365.77,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 547.0,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 876.96,
+            "status": 200,
+            "bytes": 310
+          },
+          "conversation": {
+            "ms": 448.07,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 409.25,
+            "status": 200,
+            "bytes": 151
+          }
+        },
+        {
+          "frontend_html": {
+            "ms": 570.15,
+            "status": 200,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 436.76,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 589.48,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 891.42,
+            "status": 200,
+            "bytes": 310
+          },
+          "conversation": {
+            "ms": 426.33,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 368.31,
+            "status": 200,
+            "bytes": 151
+          }
+        },
+        {
+          "frontend_html": {
+            "ms": 612.56,
+            "status": 200,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 642.88,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 726.19,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 1137.38,
+            "status": 200,
+            "bytes": 310
+          },
+          "conversation": {
+            "ms": 638.51,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 561.96,
+            "status": 200,
+            "bytes": 151
+          }
+        },
+        {
+          "frontend_html": {
+            "ms": 522.18,
+            "status": 200,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 348.43,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 566.1,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 801.96,
+            "status": 200,
+            "bytes": 310
+          },
+          "conversation": {
+            "ms": 449.1,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 299.99,
+            "status": 200,
+            "bytes": 151
+          }
+        }
+      ],
+      "summary": {
+        "frontend_html": {
+          "median_ms": 576.0550000000001,
+          "p95_nearest_rank_ms": 694.08
+        },
+        "runtime_config": {
+          "median_ms": 364.1,
+          "p95_nearest_rank_ms": 642.88
+        },
+        "history": {
+          "median_ms": 564.895,
+          "p95_nearest_rank_ms": 791.44
+        },
+        "connections": {
+          "median_ms": 958.175,
+          "p95_nearest_rank_ms": 3241.01
+        },
+        "conversation": {
+          "median_ms": 453.07500000000005,
+          "p95_nearest_rank_ms": 638.51
+        },
+        "report_config": {
+          "median_ms": 387.34000000000003,
+          "p95_nearest_rank_ms": 561.96
+        }
+      }
+    },
+    "after": {
+      "environment": "deployed public Cloud Run; 10 warm observations after one captured warm-up; no forced cold starts",
+      "captured_at": 1792693891.089101,
+      "warmup": {
+        "frontend_html": {
+          "ms": 637.79,
+          "status": 200,
+          "bytes": 52690
+        },
+        "runtime_config": {
+          "ms": 487.5,
+          "status": 200,
+          "bytes": 68
+        },
+        "history": {
+          "ms": 656.07,
+          "status": 200,
+          "bytes": 32706
+        },
+        "connections": {
+          "ms": 1228.58,
+          "status": 200,
+          "bytes": 310
+        },
+        "conversation": {
+          "ms": 525.82,
+          "status": 200,
+          "bytes": 8023
+        },
+        "report_config": {
+          "ms": 525.83,
+          "status": 200,
+          "bytes": 151
+        }
+      },
+      "samples": [
+        {
+          "frontend_html": {
+            "ms": 557.53,
+            "status": 200,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 338.99,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 616.85,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 935.98,
+            "status": 200,
+            "bytes": 310
+          },
+          "conversation": {
+            "ms": 461.71,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 382.78,
+            "status": 200,
+            "bytes": 151
+          }
+        },
+        {
+          "frontend_html": {
+            "ms": 607.5,
+            "status": 200,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 350.05,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 540.78,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 962.8,
+            "status": 200,
+            "bytes": 310
+          },
+          "conversation": {
+            "ms": 449.35,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 349.68,
+            "status": 200,
+            "bytes": 151
+          }
+        },
+        {
+          "frontend_html": {
+            "ms": 1099.42,
+            "status": 200,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 409.35,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 580.98,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 957.83,
+            "status": 200,
+            "bytes": 310
+          },
+          "conversation": {
+            "ms": 1070.62,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 923.36,
+            "status": 200,
+            "bytes": 151
+          }
+        },
+        {
+          "frontend_html": {
+            "ms": 535.24,
+            "status": 200,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 374.07,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 562.39,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 848.38,
+            "status": 200,
+            "bytes": 310
+          },
+          "conversation": {
+            "ms": 383.3,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 338.82,
+            "status": 200,
+            "bytes": 151
+          }
+        },
+        {
+          "frontend_html": {
+            "ms": 1107.13,
+            "status": 200,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 371.23,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 580.08,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 1520.41,
+            "status": 200,
+            "bytes": 310
+          },
+          "conversation": {
+            "ms": 371.14,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 845.69,
+            "status": 200,
+            "bytes": 151
+          }
+        },
+        {
+          "frontend_html": {
+            "ms": 476.64,
+            "status": 200,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 394.11,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 475.79,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 983.41,
+            "status": 200,
+            "bytes": 310
+          },
+          "conversation": {
+            "ms": 367.59,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 323.63,
+            "status": 200,
+            "bytes": 151
+          }
+        },
+        {
+          "frontend_html": {
+            "ms": 2033.58,
+            "status": 200,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 1217.36,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 1965.42,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 1848.62,
+            "status": 200,
+            "bytes": 310
+          },
+          "conversation": {
+            "ms": 1243.99,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 1203.76,
+            "status": 200,
+            "bytes": 151
+          }
+        },
+        {
+          "frontend_html": {
+            "ms": 533.95,
+            "status": 200,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 310.65,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 535.77,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 829.39,
+            "status": 200,
+            "bytes": 310
+          },
+          "conversation": {
+            "ms": 393.84,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 328.44,
+            "status": 200,
+            "bytes": 151
+          }
+        },
+        {
+          "frontend_html": {
+            "ms": 633.93,
+            "status": 200,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 391.92,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 525.31,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 878.33,
+            "status": 200,
+            "bytes": 310
+          },
+          "conversation": {
+            "ms": 427.72,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 390.38,
+            "status": 200,
+            "bytes": 151
+          }
+        },
+        {
+          "frontend_html": {
+            "ms": 614.32,
+            "status": 200,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 456.01,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 585.81,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 816.46,
+            "status": 200,
+            "bytes": 310
+          },
+          "conversation": {
+            "ms": 439.94,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 393.63,
+            "status": 200,
+            "bytes": 151
+          }
+        }
+      ],
+      "summary": {
+        "frontend_html": {
+          "median_ms": 610.9100000000001,
+          "p95_nearest_rank_ms": 2033.58
+        },
+        "runtime_config": {
+          "median_ms": 382.995,
+          "p95_nearest_rank_ms": 1217.36
+        },
+        "history": {
+          "median_ms": 571.235,
+          "p95_nearest_rank_ms": 1965.42
+        },
+        "connections": {
+          "median_ms": 946.905,
+          "p95_nearest_rank_ms": 1848.62
+        },
+        "conversation": {
+          "median_ms": 433.83000000000004,
+          "p95_nearest_rank_ms": 1243.99
+        },
+        "report_config": {
+          "median_ms": 386.58,
+          "p95_nearest_rank_ms": 1203.76
+        }
+      }
+    }
+  },
+  "saved_downloads": {
+    "forecast": {
+      "report_id": "9ef66a621f51ebe08d597f8380fecb18",
+      "version": 3,
+      "artifacts": [
+        "1b6ed07fcc1db242ac2673749b70c7e2",
+        "015ff83eb73acde71edc024fdc7e938b"
+      ],
+      "downloads": {
+        "pdf": {
+          "sha256": "2e0a67023a0710d7b2bb40d976b59e741367a24ed6094f59599f20f8f7f87e6f",
+          "bytes": 152628,
+          "mime": "application/pdf"
+        },
+        "docx": {
+          "sha256": "b4b23fe726e7c0de223a322f3b33f30c2370e06c78b27453e506d93540df9efa",
+          "bytes": 135061,
+          "mime": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        },
+        "data": {
+          "sha256": "ad0bc4f97f2d4c57db3146d8388af37824c9f5b34a5cddedc97f779eb377c12f",
+          "bytes": 9875,
+          "mime": "application/zip"
+        }
+      },
+      "dataset_count": 2
+    },
+    "scenario": {
+      "report_id": "e4112a63cba9d6886594cb89988ac4c5",
+      "version": 2,
+      "artifacts": [
+        "74369204b67027065eb9300fa7896343",
+        "267d39bf46e5d67786edb4468b1770d8",
+        "c5a0ad566f2b322fbb11b0571182a20e"
+      ],
+      "downloads": {
+        "pdf": {
+          "sha256": "6409c40beaf08f4fa180cccf6bc5bd7e9bafc1287ba4bd927ade34e2097df719",
+          "bytes": 406106,
+          "mime": "application/pdf"
+        },
+        "docx": {
+          "sha256": "266868a2d8ec6f6f3d7e0b6243d0c75354b598bc6acde047f66db5c4c1a9bec1",
+          "bytes": 367697,
+          "mime": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        },
+        "data": {
+          "sha256": "d6d796992615703568c43fd824bc96ec77a9c78afa6e49a27651de83e6bae4c1",
+          "bytes": 44951,
+          "mime": "application/zip"
+        }
+      },
+      "dataset_count": 3
+    }
+  },
+  "download_bytes_identical_before_after": true,
+  "preservation_checks": {
+    "frontend_runtime_preserved": true,
+    "frontend_revision_annotations_preserved": true,
+    "frontend_iam_preserved": true,
+    "frontend_candidate_serving": true,
+    "frontend_scaling_preserved_or_authorized": true,
+    "backend_runtime_preserved": true,
+    "backend_revision_annotations_preserved": true,
+    "backend_iam_preserved": true,
+    "backend_candidate_serving": true,
+    "backend_scaling_preserved_or_authorized": true,
+    "backend_DATA_PROFILE": true,
+    "backend_SOURCE_ROW_LIMIT": true,
+    "backend_REPORT_TIMESFM_ENABLED": true,
+    "backend_REPORT_TIMESFM_VERIFIED": true,
+    "report-worker_runtime_preserved": true,
+    "report-worker_revision_annotations_preserved": true,
+    "report-worker_iam_preserved": true,
+    "report-worker_candidate_serving": true,
+    "report-worker_scaling_preserved_or_authorized": true,
+    "report-worker_DATA_PROFILE": true,
+    "report-worker_SOURCE_ROW_LIMIT": true,
+    "report-worker_REPORT_TIMESFM_ENABLED": true,
+    "report-worker_REPORT_TIMESFM_VERIFIED": true,
+    "bigquery_metadata_unchanged": true
+  },
+  "fresh_analytical_or_model_execution": false,
+  "limitations": [
+    "Emulated mobile widths; no physical mobile keyboard or complete screen-reader/contrast/200% zoom certification.",
+    "Live theme preference changes skipped after automatic approval review rejected an un-restored theme test; existing local theme checks retained.",
+    "A controlled source delay verified independent history/deep-link loading, slow feedback, retained draft and timeout recovery. Hosted HTTP503 injection failed in the harness; unit/local recovery coverage is separate.",
+    "Warm HTTP latency is mixed, including retained intermediate and final tail outliers; this release does not establish a general network speedup.",
+    "BigQuery metadata preservation verified for five tables; no source content scan or PostgreSQL customer recount.",
+    "No fresh TimesFM, scenario, dashboard-builder or forecast-plan worker execution during this UI/startup release."
+  ],
+  "health_checks": {
+    "/health/live": {
+      "status": 200,
+      "ms": 368.09
+    },
+    "/health/ready": {
+      "status": 200,
+      "ms": 1012.89
+    },
+    "/api/v1/connections": {
+      "status": 200,
+      "ms": 979.49,
+      "connections": [
+        {
+          "id": "bigquery",
+          "connected": true
+        },
+        {
+          "id": "postgres",
+          "connected": true
+        }
+      ]
+    },
+    "/api/v1/reports/config": {
+      "status": 200,
+      "ms": 291.36
+    }
+  },
+  "worker_access_check": {
+    "anonymous_status": 403,
+    "private": true
+  }
+}

@@ -1,4 +1,10 @@
 "use client";
+import { useReadResource } from "@/hooks/use-read-resource";
+import { ResourceFeedback } from "./resource-feedback";
+import { initialRead } from "@/lib/api";
+import { savedResult } from "@/lib/saved-result-loader";
+import { retainEqualRead } from "@/lib/read-equality";
+import { useWorkspaceScroll } from "@/hooks/use-workspace-scroll";
 
 import dynamic from "next/dynamic";
 import Link from "next/link";
@@ -182,17 +188,7 @@ export default function Workspace() {
   const [reportsEnabled, setReportsEnabled] = useState(false);
   const [reportRefresh, setReportRefresh] = useState(0);
   const reportRequest = useRef<{ signature: string; key: string } | null>(null);
-  useEffect(() => {
-    let cancelled = false;
-    void api<{ enabled: boolean }>("/reports/config")
-      .then((v) => {
-        if (!cancelled) setReportsEnabled(v.enabled);
-      })
-      .catch(() => {});
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+  const reportConfig = useReadResource("report-configuration", (signal) => api<{ enabled: boolean }>("/reports/config", { signal }), (v) => setReportsEnabled(v.enabled));
   const [sourceOverride, setSource] = useState<string | null>(null);
   const source = sourceOverride ?? preferences.defaultSource;
   const [runId, setRunId] = useState<string | null>(null);
@@ -200,7 +196,7 @@ export default function Workspace() {
   const [stage, setStage] = useState("");
   const [draftArtifact, setDraftArtifact] = useState<string | null>(null);
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(true);
+
   const [starting, setStarting] = useState(false);
   const [forking, setForking] = useState(false);
   const [stopping, setStopping] = useState(false);
@@ -226,36 +222,22 @@ export default function Workspace() {
   const controller = useRef<AbortController | null>(null);
   const artifactCache = useRef<Record<string, Artifact>>({});
   const voice = useRef<LiveVoice | null>(null);
-  const bottom = useRef<HTMLDivElement>(null);
   const input = useRef<HTMLTextAreaElement>(null);
   const activeConversation = useRef<string | null>(null);
   const analysisToast = useRef<string | null>(null);
-  const followLatest = useRef(true);
-  const contentResize = useRef<ResizeObserver | null>(null);
-  const registerBottom = useCallback(
-    (node: HTMLDivElement | null) => {
-      contentResize.current?.disconnect();
-      bottom.current = node;
-      if (node && preferences.autoScroll && followLatest.current)
-        node.scrollIntoView({ behavior: "instant", block: "end" });
-      if (node?.parentElement && preferences.autoScroll) {
-        const observer = new ResizeObserver(() => {
-          if (followLatest.current && node.isConnected)
-            node.scrollIntoView({ behavior: "instant", block: "end" });
-        });
-        observer.observe(node.parentElement);
-        contentResize.current = observer;
-      }
-    },
-    [preferences.autoScroll],
-  );
+  const { shell, scroller, registerBottom, resetFollowing, jumpToLatest, showJump, onScroll, pauseFollowing } = useWorkspaceScroll(preferences.autoScroll);
 
-  const refreshList = useCallback(async () => {
-    const result = await api<{ conversations: Conversation[] }>(
-      "/conversations",
-    );
-    setConversations(result.conversations);
-  }, []);
+  const historyResource = useReadResource("public-explorations", (signal) => api<{ conversations: Conversation[] }>("/conversations", { signal }), (v) => setConversations(v.conversations), 8000);
+  const refreshList = historyResource.refresh;
+  const sourcesResource = useReadResource("analytical-sources", (signal) => api<{ mode: string; period?: string; connections: Connection[] }>("/connections", { signal }), (v) => {
+    setConnections(v.connections);
+    setMode(v.mode);
+    setDataPeriod(v.period ?? "SYNTHETIC RETAIL");
+  });
+  const loading = !sourcesResource.loaded;
+  const chatRead = useRef<AbortController | null>(null);
+  const chatPending = useRef(false);
+  const [chatState, setChatState] = useState({ pending: false, loaded: true, error: "" });
 
   const loadArtifact = useCallback(async (id: string) => {
     if (artifactCache.current[id]) return;
@@ -265,22 +247,17 @@ export default function Workspace() {
   }, []);
 
   const loadMessages = useCallback(
-    async (id: string) => {
+    async (id: string, signal?: AbortSignal) => {
       const result = await api<{
         conversation: Conversation;
         messages: Message[];
-      }>(`/conversations/${id}`);
-      if (activeConversation.current !== id) return result;
-      setConversation(result.conversation);
-      setMessages(result.messages);
-      await Promise.all(
-        result.messages
-          .filter((message) => message.artifact_id)
-          .map((message) => loadArtifact(message.artifact_id!)),
-      );
+      }>(`/conversations/${id}`, { signal });
+      if (signal?.aborted || activeConversation.current !== id) return result;
+      setConversation((previous) => retainEqualRead(previous, result.conversation));
+      setMessages((previous) => retainEqualRead(previous, result.messages));
       return result;
     },
-    [loadArtifact],
+    [],
   );
 
   const followRun = useCallback(
@@ -386,8 +363,13 @@ export default function Workspace() {
 
   const selectConversation = useCallback(
     async (id: string) => {
+      chatRead.current?.abort();
+      const readController = new AbortController();
+      chatRead.current = readController;
+      chatPending.current = true;
+      setChatState({ pending: true, loaded: false, error: "" });
       setAdvanced(false);
-      followLatest.current = true;
+      resetFollowing();
       controller.current?.abort();
       if (analysisToast.current) toast.dismiss(analysisToast.current);
       voice.current?.stop();
@@ -399,7 +381,7 @@ export default function Workspace() {
       activeConversation.current = id;
       history.replaceState(null, "", workspacePath(id, window.location.search));
       try {
-        const result = await loadMessages(id);
+        const result = await initialRead(() => loadMessages(id, readController.signal), readController.signal);
         if (activeConversation.current === id) {
           setSource(result.conversation.source);
           if (
@@ -409,52 +391,25 @@ export default function Workspace() {
             void followRun(result.conversation.active_run, id);
         }
       } catch (error) {
-        setError(
-          error instanceof Error
-            ? error.message
-            : "Could not load this conversation.",
-        );
-        toast.error("Conversation could not open", {
-          id: "conversation-load",
-          description: "Try opening it again from the public history.",
-        });
+        if (!readController.signal.aborted && activeConversation.current === id)
+          setChatState({ pending: false, loaded: false, error: error instanceof Error ? error.message : "Could not load this conversation." });
+      } finally {
+        if (chatRead.current === readController) {
+          chatPending.current = false;
+          if (!readController.signal.aborted) setChatState((v) => ({ ...v, pending: false, loaded: !v.error }));
+        }
       }
     },
-    [followRun, loadMessages, setSource, setVoiceState],
+    [followRun, loadMessages, setSource, setVoiceState, resetFollowing],
   );
 
   useEffect(() => {
-    let cancelled = false;
-    Promise.all([
-      api<{ mode: string; period?: string; connections: Connection[] }>(
-        "/connections",
-      ),
-      api<{ conversations: Conversation[] }>("/conversations"),
-    ])
-      .then(([sources, chats]) => {
-        if (cancelled) return;
-        setConnections(sources.connections);
-        setMode(sources.mode);
-        setDataPeriod(sources.period ?? "SYNTHETIC RETAIL");
-        setConversations(chats.conversations);
-        setLoading(false);
-        const chatId = new URLSearchParams(window.location.search).get("chat");
-        if (chatId && /^[a-f0-9]{32}$/.test(chatId))
-          void selectConversation(chatId);
-      })
-      .catch((error) => {
-        if (!cancelled) {
-          setError(error.message);
-          toast.error("Workspace could not connect", {
-            id: "workspace-load",
-            description: error.message,
-            action: { label: "Retry", onClick: () => window.location.reload() },
-          });
-          setLoading(false);
-        }
-      });
+    const chatId = new URLSearchParams(window.location.search).get("chat");
+    let active = true;
+    if (chatId && /^[a-f0-9]{32}$/.test(chatId)) void Promise.resolve().then(() => { if (active) return selectConversation(chatId); });
     return () => {
-      cancelled = true;
+      active = false;
+      chatRead.current?.abort();
       controller.current?.abort();
       if (analysisToast.current) toast.dismiss(analysisToast.current);
       toast.dismiss("voice-session");
@@ -463,27 +418,29 @@ export default function Workspace() {
   }, [selectConversation]);
 
   useEffect(() => {
+    let pending = false;
+    const pollController = new AbortController();
     const interval = setInterval(() => {
-      if (document.visibilityState !== "visible") return;
-      void refreshList().catch(() => {});
-      if (activeConversation.current && !runId && voiceState === "off")
-        void loadMessages(activeConversation.current).catch(() => {});
+      if (document.hidden || pending || chatPending.current) return;
+      if (activeConversation.current && !runId && voiceState === "off") {
+        pending = true;
+        void loadMessages(activeConversation.current, pollController.signal).catch(() => {}).finally(() => { pending = false; });
+      }
     }, 8000);
-    return () => clearInterval(interval);
-  }, [runId, voiceState, loadMessages, refreshList]);
+    return () => { clearInterval(interval); pollController.abort(); };
+  }, [runId, voiceState, loadMessages]);
 
   useEffect(() => {
-    if (
-      preferences.autoScroll &&
-      followLatest.current &&
-      (messages.length || progress || draftArtifact)
-    )
-      bottom.current?.scrollIntoView({ behavior: "instant", block: "end" });
-  }, [messages.length, progress, draftArtifact, preferences.autoScroll]);
+    if (preferences.autoScroll && (messages.length || progress || draftArtifact))
+      jumpToLatest(false);
+  }, [messages.length, progress, draftArtifact, preferences.autoScroll, jumpToLatest]);
 
   function newConversation() {
+    chatRead.current?.abort();
+    chatPending.current = false;
+    setChatState({ pending: false, loaded: true, error: "" });
     setAdvanced(false);
-    followLatest.current = true;
+    resetFollowing();
     controller.current?.abort();
     if (analysisToast.current) toast.dismiss(analysisToast.current);
     toast.dismiss("voice-session");
@@ -549,8 +506,10 @@ export default function Workspace() {
     });
   }
 
+  const canUseSource = (selected: string) => sourcesResource.loaded && connections.filter((c) => selected === "all" || c.id === selected).length > 0 && connections.filter((c) => selected === "all" || c.id === selected).every((c) => c.connected);
   async function ask(text = question, requestedSource?: string) {
     if (
+      !canUseSource(requestedSource ?? conversation?.source ?? source) ||
       !text.trim() ||
       updatingSkills ||
       starting ||
@@ -560,7 +519,7 @@ export default function Workspace() {
     )
       return;
     setStarting(true);
-    followLatest.current = true;
+    resetFollowing();
     setError("");
     setQuestion("");
     setDraftArtifact(null);
@@ -831,7 +790,7 @@ export default function Workspace() {
         New exploration<kbd>↗</kbd>
       </Button>
       <div className="sidebar-label history-label">
-        PUBLIC EXPLORATIONS<span>{conversations.length}</span>
+        PUBLIC EXPLORATIONS<span>{historyResource.loaded ? conversations.length : "…"}</span>
       </div>
       <div className="history-search">
         <Search aria-hidden />
@@ -842,7 +801,8 @@ export default function Workspace() {
           onChange={(event) => setSearch(event.target.value)}
         />
       </div>
-      <nav className="conversation-list" aria-label="Public conversations">
+      <ResourceFeedback resource={historyResource} label="Loading public explorations" skeleton />
+      <nav className="conversation-list" aria-label="Public conversations" aria-busy={historyResource.pending}>
         {conversations
           .filter((chat) =>
             chat.title.toLowerCase().includes(search.toLowerCase()),
@@ -858,7 +818,7 @@ export default function Workspace() {
               {chat.active_run && <span className="connection-dot" />}
             </Button>
           ))}
-        {!loading && !conversations.length && (
+        {historyResource.loaded && !conversations.length && (
           <p>Your first question starts a new exploration.</p>
         )}
       </nav>
@@ -913,7 +873,7 @@ export default function Workspace() {
   );
 
   return (
-    <div className="app-shell">
+    <div className="app-shell" ref={shell}>
       <a className="skip-link" href="#main-content">
         Skip to conversation
       </a>
@@ -1161,26 +1121,18 @@ export default function Workspace() {
         <main
           id="main-content"
           tabIndex={0}
-          onPointerDown={() => {
-            followLatest.current = false;
-          }}
-          onWheel={(event) => {
-            if (event.deltaY < 0) followLatest.current = false;
-          }}
-          onTouchStart={() => {
-            followLatest.current = false;
-          }}
+          ref={scroller}
+          onWheel={(event) => { if (event.deltaY < 0) pauseFollowing(); }}
+          onTouchStart={pauseFollowing}
           onKeyDown={(event) => {
-            if (["ArrowUp", "PageUp", "Home"].includes(event.key))
-              followLatest.current = false;
+            if (["ArrowUp", "PageUp", "Home"].includes(event.key)) pauseFollowing();
           }}
-          onScroll={(event) => {
-            const node = event.currentTarget;
-            followLatest.current =
-              node.scrollHeight - node.scrollTop - node.clientHeight < 40;
-          }}
+          onScroll={onScroll}
         >
           <div className="workspace-content">
+          <ResourceFeedback resource={sourcesResource} label="Connecting to Querylane" />
+          <ResourceFeedback resource={reportConfig} label="Loading report configuration" />
+          {(chatState.pending || chatState.error) && <ResourceFeedback resource={{ ...chatState, refresh: () => activeConversation.current && selectConversation(activeConversation.current) }} label="Loading saved conversation" skeleton />}
             {mode.includes("fixtures") && (
               <div className="local-mode">
                 <Radio aria-hidden />
@@ -1257,7 +1209,7 @@ export default function Workspace() {
                       <motion.button
                         key={suggestion.title}
                         className="suggestion-card"
-                        disabled={busy || loading}
+                        disabled={busy || !canUseSource(suggestion.sourceId)}
                         onClick={() =>
                           void ask(suggestion.question, suggestion.sourceId)
                         }
@@ -1357,12 +1309,12 @@ export default function Workspace() {
                           warnings={message.skill_warnings}
                         />
                         {message.artifact_id &&
-                          artifacts[message.artifact_id] && (
+                          (artifacts[message.artifact_id] ? (
                             <ResultCard
                               artifact={artifacts[message.artifact_id]}
                               onExplore={draftChartQuestion}
                             />
-                          )}
+                          ) : <SavedConversationCard id={message.artifact_id} />)}
                         {preferences.followups &&
                           Boolean(message.followups?.length) && (
                             <div className="followups">
@@ -1421,6 +1373,7 @@ export default function Workspace() {
           </div>
         </main>
         <footer className="composer-area">
+          {showJump && <Button variant="outline" size="sm" className="jump-to-latest" onClick={() => jumpToLatest()}><ArrowDown aria-hidden />Jump to latest</Button>}
           <SkillAttachments
             conversation={conversation}
             source={conversation?.source ?? source}
@@ -1613,7 +1566,7 @@ export default function Workspace() {
                   <InputGroupButton
                     size="sm"
                     aria-label="Start live voice conversation"
-                    disabled={busy || loading}
+                    disabled={busy || !canUseSource(conversation?.source ?? source)}
                     onClick={() => void startVoice()}
                   >
                     <AudioLines data-icon="inline-start" />
@@ -1638,7 +1591,7 @@ export default function Workspace() {
                       variant="default"
                       type="submit"
                       aria-label={advanced ? "Create report" : "Send question"}
-                      disabled={busy || !question.trim() || loading}
+                      disabled={busy || !question.trim() || !canUseSource(conversation?.source ?? source) || (advanced && !reportConfig.loaded)}
                     >
                       {starting ? (
                         <LoaderCircle className="spin" />
@@ -1678,4 +1631,27 @@ export default function Workspace() {
 
 function TableIcon() {
   return <Database aria-hidden />;
+}
+
+function SavedConversationCard({ id }: { id: string }) {
+  const root = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+  const [artifact, setArtifact] = useState<Artifact | null>(null);
+  useEffect(() => {
+    const node = root.current;
+    if (!node) return;
+    if (!window.IntersectionObserver) { const frame = requestAnimationFrame(() => setVisible(true)); return () => cancelAnimationFrame(frame); }
+    const observer = new IntersectionObserver((entries) => {
+      if (entries.some((entry) => entry.isIntersecting)) {
+        setVisible(true);
+        observer.disconnect();
+      }
+    }, { root: node.closest("main"), rootMargin: "150px" });
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [id]);
+  const resource = useReadResource(`conversation-card:${id}:${visible}`, (signal) => visible ? savedResult<Artifact>(`/artifacts/${id}?metadata_only=true`, signal) : Promise.resolve(null), (value) => { if (value) setArtifact(value); });
+  return <div ref={root} className="saved-conversation-card" aria-label="Saved chart">
+    {artifact ? <ResultCard artifact={artifact} /> : visible ? <ResourceFeedback resource={resource} label="Loading saved result" skeleton /> : <div className="saved-card-placeholder"><span>Saved chart · loads when nearby</span><Skeleton className="result-loading" /></div>}
+  </div>;
 }

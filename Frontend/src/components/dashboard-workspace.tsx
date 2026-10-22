@@ -1,11 +1,13 @@
 "use client";
+import { useReadResource } from "@/hooks/use-read-resource";
+import { ResourceFeedback } from "./resource-feedback";
 
 import { AppSelect, AppSelectItem } from "@/components/ui/app-select";
 import Link from "next/link";
 import { workspacePath } from "@/lib/workspace-links";
 import dynamic from "next/dynamic";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ArrowDown,
   ArrowUp,
@@ -105,8 +107,7 @@ function DashboardWidget({
   const root = useRef<HTMLElement>(null);
   const [visible, setVisible] = useState(false);
   const [artifact, setArtifact] = useState<Artifact | null>(null);
-  const [error, setError] = useState("");
-  const [retry, setRetry] = useState(0);
+
   const [capture, setCapture] = useState<ChartCapture | null>(null);
   const [editing, setEditing] = useState(false);
   const [title, setTitle] = useState(item.title);
@@ -128,24 +129,7 @@ function DashboardWidget({
     if (root.current) observer.observe(root.current);
     return () => observer.disconnect();
   }, []);
-  useEffect(() => {
-    if (!visible) return;
-    const controller = new AbortController();
-    savedResult<Artifact>(
-      `/artifacts/${item.artifact_id}?metadata_only=true`,
-      controller.signal,
-    )
-      .then((value) => {
-        if (!controller.signal.aborted) {
-          setArtifact(value);
-          setError("");
-        }
-      })
-      .catch((e) => {
-        if (!controller.signal.aborted) setError(e.message);
-      });
-    return () => controller.abort();
-  }, [item.artifact_id, visible, retry]);
+  const cardResource = useReadResource(`dashboard-card:${item.artifact_id}:${visible}`, (signal) => visible ? savedResult<Artifact>(`/artifacts/${item.artifact_id}?metadata_only=true`, signal) : Promise.resolve(null), (v) => { if (v) setArtifact(v); });
   const dirty =
     title !== item.title ||
     note !== item.note ||
@@ -251,18 +235,11 @@ function DashboardWidget({
         </div>
       )}
       {item.note && <p className="dash-note">{item.note}</p>}
-      {!visible || (!artifact && !error) ? (
-        <div role="status" aria-label={`Loading ${item.title}`}>
-          <Skeleton className="h-80 w-full" />
+      {!artifact ? (
+        <div aria-busy={visible && cardResource.pending}>
+          {visible && <ResourceFeedback resource={cardResource} label={`Loading ${item.title}`} />}
+          {!cardResource.error && <Skeleton aria-hidden="true" className="h-80 w-full" />}
         </div>
-      ) : error ? (
-        <Alert variant="destructive">
-          <AlertTitle>Saved chart unavailable</AlertTitle>
-          <AlertDescription>{error}</AlertDescription>
-          <Button variant="outline" onClick={() => setRetry((r) => r + 1)}>
-            Retry chart
-          </Button>
-        </Alert>
       ) : (
         artifact && (
           <>
@@ -441,25 +418,8 @@ export function DashboardWorkspace({
   const [showRemoved, setShowRemoved] = useState(false);
   const [loadTick, setLoadTick] = useState(0);
   const send = useDashboardMutation();
-  const load = useCallback(async () => {
-    try {
-      const value = await api<Dashboard>(`/dashboards/${id}`);
-      setBoard(value);
-      setError("");
-      setNotice("");
-    } catch (e) {
-      setError((e as Error).message);
-    }
-  }, [id]);
-  useEffect(() => {
-    let cancelled = false;
-    void Promise.resolve().then(() => {
-      if (!cancelled) return load();
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, [load, loadTick]);
+  const resource = useReadResource(`dashboard:${id}:${loadTick}`, (signal) => api<Dashboard>(`/dashboards/${id}`, { signal }), (v) => { setBoard(v); setError(""); setNotice(""); });
+  const load = resource.refresh;
   useEffect(() => {
     if (!board) return;
     const focus = () => {
@@ -610,6 +570,7 @@ export function DashboardWorkspace({
       </a>
       <DashboardHeader />
       <main className="dash-main" id="dashboard-main" tabIndex={-1}>
+        <ResourceFeedback resource={resource} label="Loading saved dashboard" />
         <Button asChild variant="ghost" size="sm">
           <Link href="/dashboards">
             <ArrowLeft data-icon="inline-start" />
@@ -625,7 +586,7 @@ export function DashboardWorkspace({
             </Button>
           </Alert>
         )}
-        {!board && !error && (
+        {!board && resource.pending && !error && (
           <div role="status" aria-label="Loading dashboard">
             <Skeleton className="h-72 w-full" />
           </div>

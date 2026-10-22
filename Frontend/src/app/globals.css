@@ -107,8 +107,11 @@
 }
 .app-shell {
   display: flex;
-  height: 100dvh;
-  min-height: 550px;
+  height: var(--workspace-viewport-height, 100dvh);
+  min-height: 0;
+  min-width: 0;
+  position: relative;
+  top: var(--workspace-viewport-offset, 0px);
   overflow: hidden;
 }
 .skip-link {
@@ -336,8 +339,9 @@
 .conversation-list {
   display: flex;
   flex: 1;
-  min-height: 40px;
+  min-height: 0;
   overflow: auto;
+  overscroll-behavior: contain;
   flex-direction: column;
   gap: 3px;
 }
@@ -407,6 +411,8 @@
   flex-direction: column;
   min-width: 0;
   height: 100%;
+  min-height: 0;
+  overflow: hidden;
   background: var(--background);
 }
 .topbar {
@@ -458,6 +464,9 @@
   flex: 1;
   min-height: 0;
   overflow: auto;
+  position: relative;
+  overscroll-behavior-y: contain;
+  overflow-anchor: auto;
   scrollbar-gutter: stable;
 }
 .workspace-content {
@@ -658,7 +667,9 @@
   flex-shrink: 0;
   max-width: 1040px;
   width: 100%;
-  margin: auto;
+  margin: 0 auto;
+  position: relative;
+  padding-bottom: max(15px, env(safe-area-inset-bottom));
   background: var(--background);
 }
 .composer {
@@ -4081,3 +4092,45 @@
 [data-slot="select-value"] { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 [data-slot="select-content"] { max-width: calc(100vw - 24px); }
 [data-slot="select-item"] { overflow-wrap: anywhere; }
+
+/* Non-blocking resource feedback shares the application theme and preserves layout. */
+.resource-feedback { min-width: 0; padding: .75rem; margin-block: .5rem; border: 1px solid var(--border); border-radius: .75rem; font-size: .875rem; overflow-wrap: anywhere; }
+.resource-feedback-note { color: var(--muted-foreground); margin-top: .5rem; }
+.resource-feedback button { margin-top: .5rem; }
+.resource-skeletons { display: grid; gap: .75rem; margin-top: 1rem; }
+@media (prefers-reduced-motion: reduce) { .resource-skeletons * { animation: none !important; } }
+
+.resource-no-motion [data-slot="skeleton"] { animation: none !important; }
+
+/* Workspace scroll ownership; library/document routes retain document scrolling. */
+.desktop-sidebar { min-height: 0; overflow: hidden; }
+.sidebar-footer { flex-shrink: 0; }
+.composer textarea { max-height: min(160px, 22dvh); overflow-y: auto; }
+.saved-conversation-card { min-height: 340px; position: relative; }
+.saved-card-placeholder { min-height: 340px; color: var(--muted-foreground); font-size: 12px; padding: 16px; }
+.chart-export-surface figure { position: relative; min-width: 0; }
+.jump-to-latest { position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%); z-index: 5; box-shadow: 0 2px 8px color-mix(in oklab, var(--foreground) 10%, transparent); }
+.mobile-sidebar { min-height: 0; overflow: hidden; }
+@media (max-width: 800px) {
+  .composer-area { padding-bottom: max(12px, env(safe-area-inset-bottom)); }
+}
+@media (max-height: 700px) {
+  .desktop-sidebar { padding-top: 12px; padding-bottom: 8px; }
+  .desktop-sidebar .brand { margin-bottom: 10px; }
+  .desktop-sidebar .sidebar-label { margin-top: 12px; }
+  .desktop-sidebar .sidebar-footer { padding-top: 6px; }
+  .desktop-sidebar .sidebar-footer > div:not([data-slot="separator"]) { padding: 5px 6px; }
+  :is(.desktop-sidebar, .mobile-sidebar) .sidebar-footer > a { min-height: 28px; height: 28px; padding-block: 3px; margin-block: 0; }
+  .composer-area { padding-top: 6px; }
+  .composer textarea { min-height: 38px; }
+  .composer-hint { margin-top: 5px; }
+}
+
+@media (max-height: 500px) {
+  :is(.desktop-sidebar, .mobile-sidebar) .sidebar-footer > div:not([data-slot="separator"]),
+  :is(.desktop-sidebar, .mobile-sidebar) .footer-note { display: none; }
+  .mobile-sidebar { padding-block: 12px; }
+  .mobile-sidebar > .brand { margin-top: 10px; margin-bottom: 10px; }
+  .mobile-sidebar .sidebar-label { margin-top: 8px; }
+  .mobile-sidebar .sidebar-footer { padding-top: 6px; }
+}

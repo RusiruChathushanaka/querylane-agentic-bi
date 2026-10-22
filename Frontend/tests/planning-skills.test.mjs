@@ -19,14 +19,14 @@ const skills = [
 ];
 
 function picker({ selected = [], source = 'all', query = '', loading = false, error = '', available = skills } = {}) {
-  const values = [available, error, loading, query];
+  const values = [available, error, loading, query, 0];
   const loadedModule = { exports: {} };
   let changed;
   vm.runInNewContext(compiled, {
     module: loadedModule, exports: loadedModule.exports,
     require: key => key === 'react' ? {
       useState: () => [values.shift(), () => {}], useEffect: () => {}, useId: () => 'skills-hint',
-    } : key === '@/lib/api' ? {} : require(key),
+    } : key === '@/lib/api' ? {} : key === './resource-feedback' ? { ResourceFeedback: ({resource, label}) => require('react').createElement('p', {role: resource.error ? 'alert' : 'status'}, resource.error || (resource.pending ? label : '')) } : require(key),
   });
   const tree = loadedModule.exports.PlanningSkills({ source, selected, onChange: ids => { changed = [...ids]; } });
   const inputs = [];

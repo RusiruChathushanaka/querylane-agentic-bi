@@ -4,7 +4,13 @@ flowchart LR
     Preview --> Fixture[Packaged verified values / cutoff / model scores]
     Preview -->|Explicit evidence link / no prefetch| Version[Saved report version / no inference]
     Legacy[Legacy root chat links] -->|307 /app with query preserved| Browser
-    Browser -->|HTTP and SSE| API[Public FastAPI on Cloud Run]
+    Browser --> Runtime[Shared runtime configuration /api/config]
+    Runtime --> Startup[Independent cancellable reads / loading and retry feedback]
+    Startup -->|GET resources| API[Public FastAPI on Cloud Run]
+    Browser -->|Mutations and SSE / unchanged| API
+    Warm[Frontend and API service minima one / verified 22 Oct UTC] -.-> API
+    Warm -.-> Browser
+    Browser --> Scroll[Viewport shell / conversation-only scrolling / nearby saved cards]
     Browser --> Choices[Shared Radix choice controls / portal and keyboard focus]
     Browser --> Sources[Header Sources sheet / schema inspection]
     Sources -->|Existing connection and schema reads| API

@@ -1,9 +1,11 @@
 "use client";
+import { useReadResource } from "@/hooks/use-read-resource";
+import { ResourceFeedback } from "./resource-feedback";
 
 import { AppSelect, AppSelectItem } from "@/components/ui/app-select";
 import Link from "next/link";
 import { workspacePath } from "@/lib/workspace-links";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import {
   LayoutDashboard,
   Plus,
@@ -54,48 +56,15 @@ export function DashboardsLibrary() {
   const [deleted, setDeleted] = useState(false);
   const [query, setQuery] = useState("");
   const [sort, setSort] = useState("updated");
-  const [loading, setLoading] = useState(true);
+
   const [error, setError] = useState("");
   const [editor, setEditor] = useState<Dashboard | "new" | null>(null);
   const [busy, setBusy] = useState("");
   const [tick, setTick] = useState(0);
   const send = useDashboardMutation();
-  const loadGeneration = useRef(0);
-  const invalidateLoads = useCallback(() => {
-    loadGeneration.current++;
-  }, []);
-  const load = useCallback(async () => {
-    const generation = ++loadGeneration.current;
-    try {
-      const result = await api<{ dashboards: Dashboard[] }>(
-        `/dashboards?deleted=${deleted}`,
-      );
-      if (generation !== loadGeneration.current) return;
-      setBoards(result.dashboards);
-      setError("");
-    } catch (e) {
-      if (generation === loadGeneration.current) setError((e as Error).message);
-    } finally {
-      if (generation === loadGeneration.current) setLoading(false);
-    }
-  }, [deleted]);
-  useEffect(() => {
-    let cancelled = false;
-    void Promise.resolve().then(() => {
-      if (!cancelled) return load();
-    });
-    return () => {
-      cancelled = true;
-      invalidateLoads();
-    };
-  }, [load, tick, invalidateLoads]);
-  useEffect(() => {
-    const focus = () => {
-      void load();
-    };
-    window.addEventListener("focus", focus);
-    return () => window.removeEventListener("focus", focus);
-  }, [load]);
+  const resource = useReadResource(`dashboards:${deleted}:${tick}`, (signal) => api<{ dashboards: Dashboard[] }>(`/dashboards?deleted=${deleted}`, { signal }), (v) => { setBoards(v.dashboards); setError(""); });
+  const load = resource.refresh;
+  const loading = !resource.loaded && resource.pending;
   async function change(board: Dashboard, restore = false) {
     if (
       !restore &&
@@ -148,6 +117,7 @@ export function DashboardsLibrary() {
       </a>
       <DashboardHeader />
       <main className="dash-main" id="dashboards-main" tabIndex={-1}>
+        <ResourceFeedback resource={resource} label="Loading public dashboards" />
         <Reveal>
           <header className="dash-hero">
             <div>
@@ -181,7 +151,7 @@ export function DashboardsLibrary() {
             onValueChange={(v) => {
               if (!v) return;
               setDeleted(v === "deleted");
-              setLoading(true);
+
             }}
           >
             <ToggleGroupItem value="active">Dashboards</ToggleGroupItem>
@@ -206,7 +176,7 @@ export function DashboardsLibrary() {
             variant="outline"
             size="sm"
             onClick={() => {
-              setLoading(true);
+
               setTick((t) => t + 1);
             }}
           >
@@ -233,7 +203,7 @@ export function DashboardsLibrary() {
               <Skeleton key={n} className="h-52 w-full" />
             ))}
           </div>
-        ) : !shown.length ? (
+        ) : !resource.loaded ? null : !shown.length ? (
           <Card>
             <CardContent>
               <Empty>

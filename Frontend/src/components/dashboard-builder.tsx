@@ -1,4 +1,6 @@
 "use client";
+import { useReadResource } from "@/hooks/use-read-resource";
+import { ResourceFeedback } from "./resource-feedback";
 
 import { AppSelect, AppSelectItem } from "@/components/ui/app-select";
 import Link from "next/link";
@@ -8,7 +10,7 @@ import { useUnsavedNavigation } from "@/hooks/use-unsaved-navigation";
 import { usePreferences } from "@/hooks/use-preferences";
 import { usePendingRequest } from "@/hooks/use-pending-request";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { api, guestApi } from "@/lib/api";
 import type {
@@ -37,22 +39,9 @@ export function SavedArtifactPreview({
   onUseView?: (view: ProposedCard["view"]) => void;
 }) {
   const [artifact, setArtifact] = useState<Artifact | null>(null);
-  const [error, setError] = useState("");
   const [capture, setCapture] = useState<ChartCapture | null>(null);
-  useEffect(() => {
-    const controller = new AbortController();
-    void api<Artifact>(`/artifacts/${id}`, { signal: controller.signal })
-      .then(setArtifact)
-      .catch((e) => {
-        if (!controller.signal.aborted) setError(e.message);
-      });
-    return () => controller.abort();
-  }, [id]);
-  return error ? (
-    <p className="bi-error" role="alert">
-      {error}
-    </p>
-  ) : artifact ? (
+  const resource = useReadResource(`saved-preview:${id}`, (signal) => api<Artifact>(`/artifacts/${id}`, { signal }), setArtifact);
+  return artifact ? (
     <>
       <ResultCard
         key={id}
@@ -72,7 +61,7 @@ export function SavedArtifactPreview({
       )}
     </>
   ) : (
-    <p>Loading saved chart…</p>
+    <ResourceFeedback resource={resource} label="Loading saved chart" skeleton />
   );
 }
 
@@ -210,40 +199,12 @@ export function DashboardBuilder({
   const [runId, setRunId] = useState(buildId ?? "");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
-  const load = useCallback(async () => {
-    if (!runId) return;
-    const value = await guestApi<DashboardBuild>(`/dashboard-builds/${runId}`);
-    if (!dirty) setBuild(value);
-    return value;
-  }, [runId, dirty]);
-  useEffect(() => {
-    void guestApi<{ builds: JobRun[] }>("/dashboard-builds")
-      .then((v) => setRecent(v.builds))
-      .catch((e) => setError(e.message));
-    void api<{ models: { id: string; label?: string; name?: string }[] }>(
-      "/models",
-    )
-      .then((v) => setModels(v.models))
-      .catch(() => {});
-  }, []);
-  useEffect(() => {
-    let active = true;
-    const refresh = () => {
-      void load()
-        .then((value) => {
-          if (active && value && !dirty) setProposal(value.proposal);
-        })
-        .catch((e) => {
-          if (active) setError(e.message);
-        });
-    };
-    refresh();
-    const timer = setInterval(refresh, 5000);
-    return () => {
-      active = false;
-      clearInterval(timer);
-    };
-  }, [load, dirty]);
+  const recentResource = useReadResource("dashboard-build-history", (signal) => guestApi<{ builds: JobRun[] }>("/dashboard-builds", { signal }), (v) => setRecent(v.builds));
+  const modelResource = useReadResource("dashboard-build-models", (signal) => api<{ models: { id: string; label?: string; name?: string }[] }>("/models", { signal }), (v) => setModels(v.models));
+  const resource = useReadResource(`dashboard-build:${runId}`, (signal) => runId ? guestApi<DashboardBuild>(`/dashboard-builds/${runId}`, { signal }) : Promise.resolve(null), (v) => {
+    if (v && !dirty) { setBuild(v); setProposal(v.proposal); }
+  }, 5000);
+  const load = resource.refresh;
   useEffect(() => {
     const warn = (e: BeforeUnloadEvent) => {
       if (dirty) e.preventDefault();
@@ -412,6 +373,9 @@ export function DashboardBuilder({
       </a>
       <DashboardHeader />
       <main id="builder-main" className="bi-main" tabIndex={-1}>
+        <ResourceFeedback resource={resource} label="Loading dashboard proposal" />
+        <ResourceFeedback resource={recentResource} label="Loading your dashboard builds" />
+        <ResourceFeedback resource={modelResource} label="Loading dashboard model choices" />
         <header className="bi-hero">
           <div>
             <span className="bi-kicker">

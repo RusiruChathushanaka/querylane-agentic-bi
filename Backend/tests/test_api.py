@@ -175,3 +175,30 @@ def test_voice_setup_storage_failure_returns_safe_error(client, monkeypatch):
         event = socket.receive_json()
         assert event["type"] == "error" and event["code"] == "voice_unavailable"
         assert "private" not in event["message"]
+
+
+def test_source_checks_overlap_and_keep_individual_results_and_order(client, monkeypatch):
+    import asyncio
+
+    entered = []
+    both_started = None
+
+    async def check(source):
+        nonlocal both_started
+        if both_started is None:
+            both_started = asyncio.Event()
+        entered.append(source)
+        if len(entered) == 2:
+            both_started.set()
+        # Sequential checks cannot pass this barrier.
+        await asyncio.wait_for(both_started.wait(), timeout=1)
+        return {"connected": source == "bigquery", "mode": "cloud", **({"error": "Source unavailable"} if source == "postgres" else {})}
+
+    monkeypatch.setattr(client.app.state.services.connectors, "test", check)
+    response = client.get("/api/v1/connections")
+    assert response.status_code == 200
+    values = response.json()["connections"]
+    assert [v["id"] for v in values] == ["bigquery", "postgres"]
+    assert values[0]["connected"] is True
+    assert values[1]["connected"] is False
+    assert values[1]["error"] == "Source unavailable"

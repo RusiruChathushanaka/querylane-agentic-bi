@@ -1,10 +1,13 @@
 "use client";
+import { useReadResource } from "@/hooks/use-read-resource";
+import { ResourceFeedback } from "./resource-feedback";
 
 import { AppSelect, AppSelectItem } from "@/components/ui/app-select";
 import Link from "next/link";
+import { Skeleton } from "./ui/skeleton";
 import { usePendingRequest } from "@/hooks/use-pending-request";
 import { useUnsavedNavigation } from "@/hooks/use-unsaved-navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { api } from "@/lib/api";
 import type { Metric, MetricDefinition, MetricRef } from "@/lib/planning-types";
@@ -61,40 +64,21 @@ export function MetricsWorkspace({ id }: { id?: string }) {
   const [filter, setFilter] = useState("active");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
-  const [loading, setLoading] = useState(true);
+
   const [validation, setValidation] = useState("");
   const [historical, setHistorical] = useState("");
   const [start, setStart] = useState("2023-01-01");
   const [end, setEnd] = useState("2026-09-30");
   const [preview, setPreview] = useState("");
-  const load = useCallback(async () => {
-    const result = await api<{ metrics: Metric[] }>("/metrics");
-    setMetrics(result.metrics);
-    return result.metrics;
-  }, []);
-  useEffect(() => {
-    let active = true;
-    void Promise.resolve()
-      .then(load)
-      .then((values) => {
-        if (active && id) {
-          const metric = values.find((m) => m.id === id);
-          if (metric) {
-            setSelected(metric);
-            setDraft(structuredClone(metric.draft));
-          }
-        }
-      })
-      .catch((e) => {
-        if (active) setError(e.message);
-      })
-      .finally(() => {
-        if (active) setLoading(false);
-      });
-    return () => {
-      active = false;
-    };
-  }, [load, id]);
+  const resource = useReadResource(`metrics:${id ?? "library"}`, (signal) => api<{ metrics: Metric[] }>("/metrics", { signal }), (v) => {
+    setMetrics(v.metrics);
+    if (id && !dirty && !draft) {
+      const metric = v.metrics.find((m) => m.id === id);
+      if (metric) { setSelected(metric); setDraft(structuredClone(metric.draft)); }
+    }
+  });
+  const load = async () => (await resource.refresh())?.metrics ?? metrics;
+  const loading = !resource.loaded && resource.pending;
   useEffect(() => {
     const warn = (e: BeforeUnloadEvent) => {
       if (dirty) e.preventDefault();
@@ -353,6 +337,7 @@ export function MetricsWorkspace({ id }: { id?: string }) {
       </a>
       <DashboardHeader />
       <main className="bi-main" id="metrics-main" tabIndex={-1}>
+        <ResourceFeedback resource={resource} label="Loading business metrics" />
         <header className="bi-hero">
           <div>
             <span className="bi-kicker">
@@ -756,8 +741,8 @@ export function MetricsWorkspace({ id }: { id?: string }) {
           </Button>
         </div>
         {loading ? (
-          <p role="status">Loading definitions…</p>
-        ) : !shown.length ? (
+          <Skeleton aria-hidden="true" className="h-40 w-full" />
+        ) : !resource.loaded ? null : !shown.length ? (
           <div className="bi-empty">
             No matching definitions. Create a metric, or ask an operator to add
             the packaged retail examples.

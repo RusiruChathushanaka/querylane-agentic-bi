@@ -1,7 +1,9 @@
 "use client";
+import { useReadResource } from "@/hooks/use-read-resource";
+import { ResourceFeedback } from "./resource-feedback";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   FileChartColumn,
   LoaderCircle,
@@ -260,38 +262,14 @@ export function ConversationReports({
   refreshKey?: number;
 }) {
   const [reports, setReports] = useState<Report[]>([]);
-  const [error, setError] = useState("");
-  const load = useCallback(async () => {
-    const result = await api<{ reports: Report[] }>(
-      `/reports?conversation_id=${conversationId}`,
-    );
-    setReports(result.reports);
-    setError("");
-  }, [conversationId]);
-  useEffect(() => {
-    let cancelled = false;
-    void api<{ reports: Report[] }>(
-      `/reports?conversation_id=${conversationId}`,
-    )
-      .then((v) => {
-        if (!cancelled) {
-          setReports(v.reports);
-          setError("");
-        }
-      })
-      .catch((e) => {
-        if (!cancelled && e.code !== "reports_disabled") setError(e.message);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [conversationId, refreshKey]);
+  const resource = useReadResource(`conversation-reports:${conversationId}:${refreshKey}`, (signal) => api<{ reports: Report[] }>(`/reports?conversation_id=${conversationId}`, { signal }), (v) => setReports(v.reports));
+  const load = resource.refresh;
   return (
     <section
       aria-label="Reports from this exploration"
       className="conversation-reports"
     >
-      {error && <p role="alert">Reports could not load: {error}</p>}
+      <ResourceFeedback resource={resource} label="Loading reports from this exploration" />
       {reports.map((r) => (
         <div key={r.id}>
           {["running", "queued", "waiting_input"].includes(r.status) ? (

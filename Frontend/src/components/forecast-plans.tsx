@@ -1,12 +1,15 @@
 "use client";
+import { useReadResource } from "@/hooks/use-read-resource";
+import { ResourceFeedback } from "./resource-feedback";
 
 import { AppSelect, AppSelectItem } from "@/components/ui/app-select";
 import Link from "next/link";
+import { Skeleton } from "./ui/skeleton";
 import { PlanningSkills } from "./planning-skills";
 import { usePreferences } from "@/hooks/use-preferences";
 import { usePendingRequest } from "@/hooks/use-pending-request";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { toast } from "sonner";
 import { api, backendUrl } from "@/lib/api";
 import type {
@@ -72,7 +75,7 @@ export function ForecastPlans({
   const [end, setEnd] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
-  const [loading, setLoading] = useState(true);
+
   const [adjustValue, setAdjustValue] = useState("");
   const [operation, setOperation] = useState("percent");
   const [reportStyle, setReportStyle] = useState("business");
@@ -81,80 +84,24 @@ export function ForecastPlans({
   const [comparison, setComparison] = useState<ForecastDocument | null>(null);
   const previousStatus = useRef<string | null>(null);
   const reportChats = useRef<Record<string, string>>({});
-  const load = useCallback(async () => {
-    if (id) {
-      const value = await api<ForecastPlan>(`/forecast-plans/${id}`);
-      setRoot(value);
-      const current = value.run?.status ?? value.status;
-      if (
-        previousStatus.current &&
-        previousStatus.current !== "complete" &&
-        current === "complete"
-      )
-        toast.success("Forecast plan ready", {
-          description:
-            "Saved evidence, predictions and downloads are available.",
-        });
+  const resource = useReadResource(`forecast-plans:${id ?? "library"}:${deleted}`, async (signal) => {
+    if (id) return { root: await api<ForecastPlan>(`/forecast-plans/${id}`, { signal }), plans: null };
+    return { root: null, plans: (await api<{ plans: ForecastPlan[] }>(`/forecast-plans?deleted=${deleted}`, { signal })).plans };
+  }, (v) => {
+    if (v.root) {
+      setRoot(v.root);
+      const current = v.root.run?.status ?? v.root.status;
+      if (previousStatus.current && previousStatus.current !== "complete" && current === "complete") toast.success("Forecast plan ready");
       previousStatus.current = current;
-      return value;
-    }
-    const result = await api<{ plans: ForecastPlan[] }>(
-      `/forecast-plans?deleted=${deleted}`,
-    );
-    setPlans(result.plans);
-    return null;
-  }, [id, deleted]);
-  useEffect(() => {
-    let active = true;
-    const refresh = () => {
-      void load()
-        .catch((e) => {
-          if (active) setError(e.message);
-        })
-        .finally(() => {
-          if (active) setLoading(false);
-        });
-    };
-    refresh();
-    const timer = setInterval(refresh, 7000);
-    return () => {
-      active = false;
-      clearInterval(timer);
-    };
-  }, [load]);
-  useEffect(() => {
-    if (!id)
-      void api<{ metrics: Metric[] }>("/metrics")
-        .then((v) =>
-          setMetrics(
-            v.metrics.filter(
-              (m) =>
-                !m.archived &&
-                m.published_version &&
-                m.published_definition?.formula.measure === "revenue" &&
-                m.published_definition.time_basis === "order_date",
-            ),
-          ),
-        )
-        .catch((e) => setError(e.message));
-  }, [id]);
-  useEffect(() => {
-    const version = selectedVersion ?? root?.latest_version;
-    if (!id || !version) return;
-    const controller = new AbortController();
-    void api<ForecastRevision>(`/forecast-plans/${id}/revisions/${version}`, {
-      signal: controller.signal,
-    })
-      .then((value) => {
-        setRevision(value);
-        setChart(value.document.company_artifact_id ?? null);
-        setSelectedNode("company");
-      })
-      .catch((e) => {
-        if (!controller.signal.aborted) setError(e.message);
-      });
-    return () => controller.abort();
-  }, [id, selectedVersion, root?.latest_version]);
+    } else if (v.plans) setPlans(v.plans);
+  }, 7000);
+  const load = async () => (await resource.refresh())?.root;
+  const loading = !resource.loaded && resource.pending;
+  const metricResource = useReadResource(`plan-metrics:${!!id}`, async (signal) => id ? { metrics: [] as Metric[] } : api<{ metrics: Metric[] }>("/metrics", { signal }), (v) => setMetrics(v.metrics.filter((m) => !m.archived && m.published_version && m.published_definition?.formula.measure === "revenue" && m.published_definition.time_basis === "order_date")));
+  const revisionNumber = selectedVersion ?? root?.latest_version;
+  const revisionResource = useReadResource(`plan-revision:${id}:${revisionNumber}`, async (signal) => id && revisionNumber ? api<ForecastRevision>(`/forecast-plans/${id}/revisions/${revisionNumber}`, { signal }) : null, (v) => {
+    if (v) { setRevision(v); setChart(v.document.company_artifact_id ?? null); setSelectedNode("company"); }
+  });
   async function create() {
     const metric = metrics.find((m) => m.id === metricId);
     if (!metric) return;
@@ -492,6 +439,9 @@ export function ForecastPlans({
       </a>
       <DashboardHeader />
       <main className="bi-main" id="plans-main" tabIndex={-1}>
+        <ResourceFeedback resource={resource} label="Loading forecast plans" />
+        <ResourceFeedback resource={metricResource} label="Loading published revenue definitions" />
+        {id && <ResourceFeedback resource={revisionResource} label="Loading saved plan version" />}
         <header className="bi-hero">
           <div>
             <span className="bi-kicker">
@@ -627,7 +577,7 @@ export function ForecastPlans({
                 selected view controls initial exploration. Uses the shared
                 advanced-analysis allowance.
               </p>
-              {!metrics.length && (
+              {metricResource.loaded && !metrics.length && (
                 <p className="bi-note">
                   Publish an order-date merchandise revenue metric in the{" "}
                   <Link href="/metrics" className="underline">
@@ -691,8 +641,8 @@ export function ForecastPlans({
               </label>
             </div>
             {loading ? (
-              <p role="status">Loading forecast plans…</p>
-            ) : !shown.length ? (
+              <Skeleton aria-hidden="true" className="h-40 w-full" />
+            ) : !resource.loaded ? null : !shown.length ? (
               <div className="bi-empty">
                 No matching plans. Start with a business objective and a
                 published revenue definition.

@@ -148,6 +148,72 @@
       "output_tokens": 0,
       "host_input_tokens": null,
       "host_output_tokens": null
+    },
+    {
+      "date": "2026-10-21T07:12:49.219520+00:00",
+      "files": 300,
+      "reextracted_documents": 5,
+      "cached_documents": 64,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "host_input_tokens": null,
+      "host_output_tokens": null,
+      "host_extraction_note": "One host semantic extraction was reused across this task\u2019s graph export passes; no additional model API calls."
+    },
+    {
+      "date": "2026-10-21T07:17:58.419070+00:00",
+      "files": 300,
+      "reextracted_documents": 0,
+      "cached_documents": 64,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "host_input_tokens": null,
+      "host_output_tokens": null,
+      "host_extraction_note": "One host semantic extraction was reused across this task\u2019s graph export passes; no additional model API calls.",
+      "reused_host_semantic_sidecar_documents": 5
+    },
+    {
+      "date": "2026-10-21T07:25:50.752656+00:00",
+      "files": 300,
+      "reextracted_documents": 0,
+      "cached_documents": 64,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "host_input_tokens": null,
+      "host_output_tokens": null,
+      "host_extraction_note": "One host semantic extraction was reused across this task\u2019s graph export passes; no additional model API calls.",
+      "reused_host_semantic_sidecar_documents": 5
+    },
+    {
+      "date": "2026-10-22T17:54:51.727379+00:00",
+      "files": 303,
+      "reextracted_documents": 5,
+      "cached_documents": 64,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "host_input_tokens": null,
+      "host_output_tokens": null
+    },
+    {
+      "date": "2026-10-22T18:00:43.397251+00:00",
+      "files": 303,
+      "reextracted_documents": 5,
+      "cached_documents": 64,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "host_input_tokens": null,
+      "host_output_tokens": null,
+      "note": "Final export reuses the same five-document host-agent extraction and semantic sidecar; no second semantic-agent/model invocation. Host token usage unavailable, not zero."
+    },
+    {
+      "date": "2026-10-22T18:40:45.202477+00:00",
+      "files": 303,
+      "reextracted_documents": 7,
+      "cached_documents": 62,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "host_input_tokens": null,
+      "host_output_tokens": null
     }
   ],
   "total_input_tokens": 0,

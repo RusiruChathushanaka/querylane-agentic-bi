@@ -1,7 +1,8 @@
 "use client";
+import { useReadResource } from "@/hooks/use-read-resource";
+import { ResourceFeedback } from "./resource-feedback";
 
 import {
-  useCallback,
   useEffect,
   useRef,
   useState,
@@ -93,8 +94,7 @@ const sourceLabel = (value: string) =>
 export function SkillsWorkspace() {
   const [skills, setSkills] = useState<SkillSummary[]>([]);
   const [deleted, setDeleted] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+
   const [search, setSearch] = useState("");
   const [voiceAuthor, setVoiceAuthor] = useState(false);
   const [source, setSource] = useState("all");
@@ -118,27 +118,9 @@ export function SkillsWorkspace() {
   const dirty = Boolean(
     editor && JSON.stringify(draft) !== JSON.stringify(editor.initial),
   );
-  const refresh = useCallback(async () => {
-    setLoading(true);
-    setError("");
-    try {
-      setSkills(
-        (await api<{ skills: SkillSummary[] }>(`/skills?deleted=${deleted}`))
-          .skills,
-      );
-    } catch (err) {
-      setError(
-        err instanceof Error
-          ? err.message
-          : "The skills library is unavailable.",
-      );
-    } finally {
-      setLoading(false);
-    }
-  }, [deleted]);
-  useEffect(() => {
-    void refresh();
-  }, [refresh]);
+  const resource = useReadResource(`skills:${deleted}`, (signal) => api<{ skills: SkillSummary[] }>(`/skills?deleted=${deleted}`, { signal }), (v) => setSkills(v.skills));
+  const refresh = resource.refresh;
+  const loading = !resource.loaded && resource.pending;
   useEffect(() => {
     if (!dirty) return;
     const prevent = (event: BeforeUnloadEvent) => {
@@ -398,6 +380,7 @@ export function SkillsWorkspace() {
         </nav>
       </header>
       <main className="skills-main" id="skills-main" tabIndex={-1}>
+        <ResourceFeedback resource={resource} label="Loading skills library" />
         <Reveal className="skills-heading">
           <div>
             <p className="welcome-eyebrow">KNOWLEDGE THAT GOES FURTHER</p>
@@ -483,13 +466,7 @@ export function SkillsWorkspace() {
             </Button>
           </div>
         </div>
-        {error ? (
-          <div className="skills-empty">
-            <h2>Library unavailable</h2>
-            <p role="alert">{error}</p>
-            <Button onClick={() => void refresh()}>Try again</Button>
-          </div>
-        ) : loading ? (
+        {loading ? (
           <div
             className="skills-grid"
             role="status"
@@ -499,7 +476,7 @@ export function SkillsWorkspace() {
               <Skeleton key={key} className="h-64 rounded-xl" />
             ))}
           </div>
-        ) : !filtered.length ? (
+        ) : !resource.loaded ? null : !filtered.length ? (
           <Reveal className="skills-empty">
             <BookOpen aria-hidden />
             <h2>

@@ -1,0 +1,280 @@
+{
+  "date": "2026-10-21",
+  "recorded_at": "2026-10-21T07:20:03.465257+00:00",
+  "scope": "Local implementation and release preparation only",
+  "source_base_commit": "221b825399f7859dc585e3a0cd4760530744015a",
+  "checks": {
+    "backend_pytest": {
+      "passed": 450,
+      "skipped": 1,
+      "note": "Existing skip and existing Starlette/httpx deprecation warning."
+    },
+    "backend_ruff": "passed",
+    "frontend_tests": {
+      "passed": 76
+    },
+    "frontend_lint": "passed",
+    "typescript": "passed",
+    "production_build": "passed",
+    "ssr_shell_and_loading_markup": "passed"
+  },
+  "browser_checks": [
+    {
+      "check": "History before slow sources",
+      "result": "passed",
+      "evidence": "History button visible while source feedback remained pending/slow."
+    },
+    {
+      "check": "Sources ready with failed initial history/configuration",
+      "result": "passed",
+      "evidence": "Send question enabled for typed draft; resource-specific errors and Retry controls remained visible; no fake zero history count."
+    },
+    {
+      "check": "Manual retry preserves draft",
+      "result": "passed",
+      "evidence": "Report-configuration Retry restored Advanced Analysis; draft text remained unchanged."
+    },
+    {
+      "check": "Background history failure",
+      "result": "passed",
+      "evidence": "Previously loaded conversation and typed draft retained with refresh warning."
+    },
+    {
+      "check": "Deep-linked conversation independence",
+      "result": "passed",
+      "evidence": "Saved conversation text visible while both history and sources remained pending."
+    },
+    {
+      "check": "Report narrative before charts",
+      "result": "passed",
+      "evidence": "Title and narrative visible with two chart placeholders and slow chart-loading feedback."
+    },
+    {
+      "check": "Final standalone partial chart failure and keyboard retry",
+      "result": "passed",
+      "evidence": "One failed chart, one successful card and report narrative retained; Enter on Retry restored both cards."
+    },
+    {
+      "check": "320px/390px/1280px layouts",
+      "result": "passed",
+      "evidence": "Document scrollWidth equaled viewport width for checked loading/reader states."
+    },
+    {
+      "check": "Settings independence and dark/reduced-motion preferences",
+      "result": "passed",
+      "evidence": "Dark mode and Reduce motion changed successfully while model catalog remained pending; saved preferences retained on navigation."
+    },
+    {
+      "check": "Landing isolation",
+      "result": "passed",
+      "evidence": "Local optimized landing resource timing contained no /api/config or /api/v1 requests; no production-preview console errors observed."
+    }
+  ],
+  "automated_failure_cases": [
+    "one transient initial GET retry",
+    "HTTP 408/502/503/504 policy",
+    "initial timeout classification",
+    "no rate-limit/permission/invalid-body retry",
+    "Retry-After seconds/date cooldown",
+    "no ambiguous guest-session POST replay",
+    "invalid runtime configuration",
+    "polling skips initial/pending reads",
+    "manual replacement aborts old reads",
+    "stale/unmounted reads cannot commit",
+    "initial failure stops polling",
+    "background failure retains successful content",
+    "empty versus pending",
+    "SSR status and decorative reduced-motion placeholders",
+    "parallel backend source-check barrier and stable individual results",
+    "pure warm-API and TimesFM/data-setting preservation"
+  ],
+  "timings": {
+    "environment": "local optimized frontend and isolated fixture proxy; warm samples, not deployed latency",
+    "runs": [
+      {
+        "html": {
+          "milliseconds": 141.601,
+          "status": 200,
+          "bytes": 52690
+        },
+        "runtime_config": {
+          "milliseconds": 135.922,
+          "status": 200,
+          "bytes": 39
+        },
+        "history": {
+          "milliseconds": 128.321,
+          "status": 200,
+          "bytes": 230
+        },
+        "sources": {
+          "milliseconds": 130.813,
+          "status": 200,
+          "bytes": 328
+        },
+        "report_configuration": {
+          "milliseconds": 129.951,
+          "status": 200,
+          "bytes": 156
+        }
+      },
+      {
+        "html": {
+          "milliseconds": 8.113,
+          "status": 200,
+          "bytes": 52690
+        },
+        "runtime_config": {
+          "milliseconds": 6.411,
+          "status": 200,
+          "bytes": 39
+        },
+        "history": {
+          "milliseconds": 1.998,
+          "status": 200,
+          "bytes": 230
+        },
+        "sources": {
+          "milliseconds": 3.247,
+          "status": 200,
+          "bytes": 328
+        },
+        "report_configuration": {
+          "milliseconds": 3.103,
+          "status": 200,
+          "bytes": 156
+        }
+      },
+      {
+        "html": {
+          "milliseconds": 1.818,
+          "status": 200,
+          "bytes": 52690
+        },
+        "runtime_config": {
+          "milliseconds": 2.776,
+          "status": 200,
+          "bytes": 39
+        },
+        "history": {
+          "milliseconds": 1.759,
+          "status": 200,
+          "bytes": 230
+        },
+        "sources": {
+          "milliseconds": 2.998,
+          "status": 200,
+          "bytes": 328
+        },
+        "report_configuration": {
+          "milliseconds": 2.989,
+          "status": 200,
+          "bytes": 156
+        }
+      },
+      {
+        "html": {
+          "milliseconds": 2.816,
+          "status": 200,
+          "bytes": 52690
+        },
+        "runtime_config": {
+          "milliseconds": 1.661,
+          "status": 200,
+          "bytes": 39
+        },
+        "history": {
+          "milliseconds": 1.445,
+          "status": 200,
+          "bytes": 230
+        },
+        "sources": {
+          "milliseconds": 2.222,
+          "status": 200,
+          "bytes": 328
+        },
+        "report_configuration": {
+          "milliseconds": 2.344,
+          "status": 200,
+          "bytes": 156
+        }
+      },
+      {
+        "html": {
+          "milliseconds": 1.668,
+          "status": 200,
+          "bytes": 52690
+        },
+        "runtime_config": {
+          "milliseconds": 2.588,
+          "status": 200,
+          "bytes": 39
+        },
+        "history": {
+          "milliseconds": 1.157,
+          "status": 200,
+          "bytes": 230
+        },
+        "sources": {
+          "milliseconds": 2.062,
+          "status": 200,
+          "bytes": 328
+        },
+        "report_configuration": {
+          "milliseconds": 2.193,
+          "status": 200,
+          "bytes": 156
+        }
+      }
+    ],
+    "median_ms": {
+      "html": 2.816,
+      "runtime_config": 2.776,
+      "history": 1.759,
+      "sources": 2.998,
+      "report_configuration": 2.989
+    }
+  },
+  "timing_limits": "Five local warm HTTP completion samples, not production latency or browser first-content percentiles. First usable content versus full readiness verified by DOM ordering and controlled delayed responses. No forced production cold start or new hosted latency comparison.",
+  "preservation": {
+    "cloud_mutations": 0,
+    "deployments": 0,
+    "github_publication": false,
+    "source_queries_or_uploads": 0,
+    "model_or_voice_calls": 0,
+    "quotas_reset": false,
+    "dataset_and_timesfm": "No live settings or analytical source data changed. Existing profile/row-limit/gates retained by release-preservation tests. No fresh cloud recount/configuration inspection in this local assessment.",
+    "submission_folders": "Submision/ and Submission/ untouched/excluded; no Git staging or push."
+  },
+  "limitations": [
+    "Physical mobile devices and screen-reader speech output were not tested.",
+    "Automated contrast/SVG checks and complete browser matrix were not repeated.",
+    "Earlier report highlights definition-list accessibility finding remains outside this startup change.",
+    "Development hot reload initially exposed stale-attribute hydration warnings while editing; separately built production previews reported no current-origin errors.",
+    "The first sandboxed build stalled and was stopped; separate permitted production builds passed.",
+    "Warm API minimum is prepared, not deployed; no hosted speedup is claimed.",
+    "A later default-output build failed with an OS port-binding restriction; the final isolated-output production build passed."
+  ],
+  "screenshots": [
+    "startup-loading-local-20261021-desktop.png",
+    "startup-loading-local-20261021-mobile-320.png"
+  ],
+  "documentation_validation": {
+    "graph_source_hashes": 300,
+    "native_endpoints_valid": true,
+    "mermaid_synced": 2,
+    "local_document_links_checked": 272,
+    "json_and_diff": "passed",
+    "submission_paths_tracked": false
+  },
+  "graph": {
+    "nodes": 2492,
+    "edges": 6495,
+    "communities": 178,
+    "directed": false,
+    "corpus_files": 300,
+    "semantic_documents": 69,
+    "host_semantic_extractions": 1,
+    "external_model_api_calls": 0
+  }
+}

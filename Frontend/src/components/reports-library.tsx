@@ -1,9 +1,11 @@
 "use client";
+import { useReadResource } from "@/hooks/use-read-resource";
+import { ResourceFeedback } from "./resource-feedback";
 
 import { AppSelect, AppSelectItem } from "@/components/ui/app-select";
 import Link from "next/link";
 import { workspacePath } from "@/lib/workspace-links";
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import {
   ArrowUpRight,
   FileChartColumn,
@@ -28,45 +30,12 @@ export function ReportsLibrary() {
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState("all");
   const [sort, setSort] = useState("updated");
-  const [loading, setLoading] = useState(true);
+
   const [error, setError] = useState("");
   const [busy, setBusy] = useState("");
   const [tick, setTick] = useState(0);
-  const load = useCallback(
-    async (signal?: AbortSignal) => {
-      try {
-        const result = await api<{ reports: Report[] }>(
-          `/reports?deleted=${deleted}`,
-          { signal },
-        );
-        if (!signal?.aborted) {
-          setReports(result.reports);
-          setError("");
-        }
-      } catch (e) {
-        if (!signal?.aborted) setError((e as Error).message);
-      } finally {
-        if (!signal?.aborted) setLoading(false);
-      }
-    },
-    [deleted],
-  );
-  useEffect(() => {
-    const controller = new AbortController();
-    void Promise.resolve().then(() => {
-      if (!controller.signal.aborted) return load(controller.signal);
-    });
-    const interval = setInterval(() => {
-      if (!document.hidden)
-        void Promise.resolve().then(() => {
-          if (!controller.signal.aborted) return load(controller.signal);
-        });
-    }, 5000);
-    return () => {
-      controller.abort();
-      clearInterval(interval);
-    };
-  }, [load, tick]);
+  const resource = useReadResource(`reports:${deleted}:${tick}`, (signal) => api<{ reports: Report[] }>(`/reports?deleted=${deleted}`, { signal }), (v) => { setReports(v.reports); setError(""); }, 5000);
+  const loading = !resource.loaded && resource.pending;
   async function restore(report: Report) {
     const result = await api<Report>(`/reports/${report.id}/restore`, {
       method: "POST",
@@ -122,6 +91,7 @@ export function ReportsLibrary() {
       </a>
       <DashboardHeader />
       <main className="reports-main" id="report-content" tabIndex={-1}>
+        <ResourceFeedback resource={resource} label="Loading public reports" />
         <div className="reports-hero">
           <div>
             <div className="reports-eyebrow">A deeper understanding</div>
@@ -148,23 +118,23 @@ export function ReportsLibrary() {
         </div>
         <div className="report-library-overview" aria-label="Reports overview">
           <div>
-            <strong>{reports.length}</strong>
+            <strong>{resource.loaded ? reports.length : "…"}</strong>
             <span>{deleted ? "Recoverable reports" : "Public reports"}</span>
           </div>
           <div>
             <strong>
-              {reports.filter((report) => report.status === "complete").length}
+              {resource.loaded ? reports.filter((report) => report.status === "complete").length : "…"}
             </strong>
             <span>Ready to read</span>
           </div>
           <div>
             <strong>
               {
-                reports.filter((report) =>
+                resource.loaded ? reports.filter((report) =>
                   ["running", "queued", "waiting_input"].includes(
                     report.status,
                   ),
-                ).length
+                ).length : "…"
               }
             </strong>
             <span>In progress / awaiting input</span>
@@ -205,7 +175,7 @@ export function ReportsLibrary() {
             variant={deleted ? "secondary" : "outline"}
             onClick={() => {
               setDeleted((v) => !v);
-              setLoading(true);
+
             }}
           >
             {deleted ? "Active reports" : "Recently deleted"}
@@ -304,7 +274,7 @@ export function ReportsLibrary() {
               ))}
           </div>
         ) : (
-          !error && (
+          !error && resource.loaded && (
             <div className="report-empty">
               <FileChartColumn className="mx-auto mb-4" aria-hidden />
               <h2>

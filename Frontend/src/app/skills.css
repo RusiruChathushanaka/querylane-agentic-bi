@@ -404,9 +404,12 @@
     padding: 14px 16px;
     min-height: 72px;
     gap: 8px;
+    flex-wrap: wrap;
   }
   .skills-header nav {
     gap: 0;
+    flex-wrap: wrap;
+    width: 100%;
   }
   .skills-header nav a {
     font-size: 11px;
