@@ -10,6 +10,7 @@ from collections.abc import Callable
 from typing import Any
 
 from app.errors import AppError
+from app.read_performance import record_read
 
 Key = tuple[str, str]
 Mutation = Callable[[dict[Key, dict | None]], tuple[dict[Key, dict | None], Any]]
@@ -92,8 +93,12 @@ class FirestoreStore:
         self.client = firestore.Client(project=project, database=database, credentials=credentials)
 
     async def get(self, collection: str, key: str) -> dict | None:
-        snapshot = await asyncio.to_thread(self.client.collection(collection).document(key).get)
-        return snapshot.to_dict() if snapshot.exists else None
+        started = time.perf_counter()
+        try:
+            snapshot = await asyncio.to_thread(self.client.collection(collection).document(key).get)
+            return snapshot.to_dict() if snapshot.exists else None
+        finally:
+            record_read("firestore", time.perf_counter() - started)
 
     async def put(self, collection: str, key: str, value: dict) -> None:
         await asyncio.to_thread(self.client.collection(collection).document(key).set, value)
@@ -140,9 +145,13 @@ class FirestoreStore:
             query = query.order_by(
                 order_by, direction=firestore.Query.DESCENDING if descending else firestore.Query.ASCENDING
             )
-        return await asyncio.to_thread(
-            lambda: [snapshot.to_dict() for snapshot in query.limit(limit).stream()]
-        )
+        started = time.perf_counter()
+        try:
+            return await asyncio.to_thread(
+                lambda: [snapshot.to_dict() for snapshot in query.limit(limit).stream()]
+            )
+        finally:
+            record_read("firestore", time.perf_counter() - started)
 
     async def atomic(self, keys: list[Key], mutate: Mutation):
         from google.api_core.exceptions import Aborted

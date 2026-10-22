@@ -1,6 +1,8 @@
 "use client";
 import { useReadResource } from "@/hooks/use-read-resource";
 import { ResourceFeedback } from "./resource-feedback";
+import { useNearViewport } from "@/hooks/use-near-viewport";
+import { savedResult } from "@/lib/saved-result-loader";
 
 import { AppSelect, AppSelectItem } from "@/components/ui/app-select";
 import dynamic from "next/dynamic";
@@ -59,6 +61,7 @@ export function ReportWorkspace({
   const [dialog, setDialog] = useState<"rename" | "revise" | null>(null);
   const [tick, setTick] = useState(0);
   const [exporting, setExporting] = useState("");
+  const { ref: setEvidenceNode, near: evidenceNear } = useNearViewport<HTMLElement>();
   const [activeSection, setActiveSection] = useState("executive-summary");
   const pendingSectionFocus = useRef<HTMLElement | null>(null);
   useEffect(() => {
@@ -79,12 +82,12 @@ export function ReportWorkspace({
   const resource = useReadResource(`report:${id}:${tick}`, (signal) => api<Report>(`/reports/${id}`, { signal }), (v) => { setReport(v); setError(""); });
   const selectedRevision = version ?? report?.latest_version;
   const revisionResource = useReadResource(`report-version:${id}:${selectedRevision}:${tick}`, (signal) => selectedRevision ? api<ReportRevision>(`/reports/${id}/revisions/${selectedRevision}`, { signal }) : Promise.resolve(null), (v) => { if (v) setRevision(v); });
-  const evidenceResource = useReadResource(`report-evidence:${id}:${revision?.version}:${tick}`, async (signal) => {
-    if (!revision) return [] as Artifact[];
+  const evidenceResource = useReadResource(`report-evidence:${id}:${revision?.version}:${tick}:${evidenceNear}`, async (signal) => {
+    if (!revision || !evidenceNear) return [] as Artifact[];
     // Settle each saved card independently; a missing card cannot hide report text or other cards.
     const values: Artifact[] = [];
-    const results = await Promise.allSettled(revision.document.artifact_ids.map(async (a) => {
-      const value = await api<Artifact>(`/artifacts/${a}?metadata_only=true`, { signal });
+    const results = await Promise.allSettled(revision.document.artifact_ids.filter(a => !artifacts[a]).map(async (a) => {
+      const value = await savedResult<Artifact>(`/artifacts/${a}?metadata_only=true&initial_chart=true`, signal);
       if (!signal.aborted) { values.push(value); setArtifacts((previous) => ({ ...previous, [value.id]: value })); }
     }));
     const failed = results.find((v) => v.status === "rejected");
@@ -459,28 +462,20 @@ export function ReportWorkspace({
                         <MarkdownContent>
                           {s.markdown.replace(/^\s*•\s+/gm, "- ")}
                         </MarkdownContent>
-                        {s.artifact_ids.map(
-                          (a) =>
-                            artifacts[a] ? (
-                              <div key={a} className="report-result-section">
-                                {artifacts[a].prediction && (
-                                  <ReportPrediction artifact={artifacts[a]} />
-                                )}
-                                <ResultCard
-                                  artifact={artifacts[a]}
-                                  showPredictionEvidence={false}
-                                />
-                              </div>
-                            ) : <div key={a} className="report-result-section" aria-busy={evidenceResource.pending}><p role="status">{evidenceResource.error ? "Saved chart unavailable. Retry loading saved report charts above." : "Loading saved chart…"}</p>{evidenceResource.pending && <Skeleton aria-hidden="true" className="h-64" />}</div>,
-                        )}
+                        {s.artifact_ids.map(a => (
+                          <SavedReportCard key={`${revision.version}:${a}:${tick}`} id={a}
+                            onLoaded={artifact => setArtifacts(previous => previous[a] === artifact ? previous : ({ ...previous, [a]: artifact }))} />
+                        ))}
                       </section>
                     ))}
                     <section
+                      ref={setEvidenceNode}
                       id="report-evidence"
                       tabIndex={-1}
                       className="report-section"
                     >
                       <h2>Evidence & limitations</h2>
+                      <ResourceFeedback resource={evidenceResource} label="Loading saved evidence details" />
                       <div className="report-note">
                         <ul>
                           {doc.limitations.map((l, i) => (
@@ -525,7 +520,7 @@ export function ReportWorkspace({
                       <details className="report-source-times">
                         <summary>Independent source timestamps</summary>
                         <ul>
-                          {Object.values(artifacts).flatMap((artifact) =>
+                          {doc.artifact_ids.map(a => artifacts[a]).filter((artifact): artifact is Artifact => Boolean(artifact)).flatMap((artifact) =>
                             artifact.provenance.map((source, index) => (
                               <li key={`${artifact.id}-${index}`}>
                                 <strong>{source.source}</strong> ·{" "}
@@ -1047,4 +1042,18 @@ export function ReportPrediction({ artifact }: { artifact: Artifact }) {
       </details>
     </div>
   );
+}
+
+
+function SavedReportCard({ id, onLoaded }: { id: string; onLoaded: (artifact: Artifact) => void }) {
+  const { ref: setCardNode, near } = useNearViewport<HTMLDivElement>();
+  const [artifact, setArtifact] = useState<Artifact | null>(null);
+  const resource = useReadResource(`saved-report-card:${id}:${near}`, signal => near
+    ? savedResult<Artifact>(`/artifacts/${id}?metadata_only=true&initial_chart=true`, signal)
+    : Promise.resolve(null), value => { if (value) { setArtifact(value); onLoaded(value); } });
+  return <div ref={setCardNode} className="report-result-section" style={{ minHeight: 320 }}>
+    {artifact ? <>{artifact.prediction && <ReportPrediction artifact={artifact} />}<ResultCard artifact={artifact} showPredictionEvidence={false} /></>
+      : near ? <ResourceFeedback resource={resource} label="Loading saved report chart" skeleton />
+      : <><p>Saved chart · loads when nearby</p><Skeleton aria-hidden="true" className="h-64" /></>}
+  </div>;
 }

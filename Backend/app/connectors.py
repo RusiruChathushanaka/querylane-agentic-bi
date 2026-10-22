@@ -13,6 +13,7 @@ from app.config import Settings
 from app.errors import AppError
 from app.fixtures import DESCRIPTIONS, SOURCE_TABLES, retail_data
 from app.models import QueryResult
+from app.read_performance import record_read
 from app.sql_guard import validate_sql
 
 
@@ -32,6 +33,8 @@ def json_rows(rows: list[dict]) -> list[dict]:
 
 class Connectors:
     def __init__(self, settings: Settings, credentials=None, *, catalog_only=False):
+        self._status_cache = {}
+        self._status_pending = {}
         self.settings = settings
         self.credentials = credentials
         self.jobs: dict[str, list[Any]] = {}
@@ -93,6 +96,10 @@ class Connectors:
                 self.pg_pool = await asyncpg.create_pool(self.settings.postgres_dsn, min_size=0, max_size=3)
 
     async def close(self):
+        pending = list(self._status_pending.values())
+        for task in pending:
+            task.cancel()
+        await asyncio.gather(*pending, return_exceptions=True)
         if self.pg_pool:
             await self.pg_pool.close()
         if self.sql_connector:
@@ -152,6 +159,32 @@ class Connectors:
                 503,
                 "data_not_ready",
             ) from exc
+
+    async def status(self, source: str):
+        """UI-only, 15-second successful status reuse; execution/readiness always call fresh checks."""
+        cached = self._status_cache.get(source)
+        if cached and time.monotonic() - cached[0] < 15:
+            return cached[1] | {"cached": True}
+        task = self._status_pending.get(source)
+        if task is None:
+            async def check():
+                started = time.perf_counter()
+                try:
+                    result = await self.test(source)
+                finally:
+                    record_read(f"{source}_status", time.perf_counter() - started)
+                result = result | {"checked_at": time.time(), "cached": False}
+                if result["connected"]:
+                    self._status_cache[source] = (time.monotonic(), result)
+                return result
+            task = asyncio.create_task(check())
+            self._status_pending[source] = task
+            def finished(done):
+                self._status_pending.pop(source, None)
+                if not done.cancelled():
+                    done.exception()
+            task.add_done_callback(finished)
+        return await asyncio.shield(task)
 
     async def test(self, source: str) -> dict:
         if self.settings.data_backend == "fixture":

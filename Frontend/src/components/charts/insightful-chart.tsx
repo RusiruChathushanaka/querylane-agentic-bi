@@ -51,6 +51,7 @@ import {
 } from "@/lib/chart-format";
 import { downloadBlob, exportChartPng } from "@/lib/chart-export";
 import { savedResult } from "@/lib/saved-result-loader";
+import { loadingMark } from "@/lib/loading-performance";
 import type { ChartCapture, ChartViewState } from "@/lib/dashboard-types";
 import { usePreferences } from "@/hooks/use-preferences";
 import type { Artifact, ChartData, ChartMeasure, ChartRow } from "@/lib/types";
@@ -544,27 +545,32 @@ export default function InsightfulChart({
     ...(primary ? { primary } : {}),
   });
   const key = `${artifact.id}?${params}&retry=${retry}`;
+  const prepared = retry === 0 && artifact.initial_chart?.query === params.toString() ? artifact.initial_chart.data : undefined;
   useEffect(() => {
     const controller = new AbortController();
     const query = key.split("?")[1];
+    if (prepared) {
+      loadingMark("visible-chart-ready");
+      return () => controller.abort();
+    }
     savedResult<ChartData>(
       `/artifacts/${artifact.id}/chart-data?${query}`,
       controller.signal,
     )
-      .then((data) => setLoaded({ key, data }))
+      .then((data) => { setLoaded({ key, data }); loadingMark("visible-chart-ready"); })
       .catch((error) => {
         if (!controller.signal.aborted)
           setLoaded({ key, error: error.message });
       });
     return () => controller.abort();
-  }, [artifact.id, key]);
+  }, [artifact.id, key, prepared]);
   useEffect(
     () => () => {
       if (brushTimer.current) clearTimeout(brushTimer.current);
     },
     [],
   );
-  const data = loaded?.key === key ? loaded.data : undefined;
+  const data = loaded?.key === key ? loaded.data : prepared;
   const error = loaded?.key === key ? loaded.error : undefined;
   const measures = data?.visualization.measures ?? [];
   const current = data?.primary ?? "";

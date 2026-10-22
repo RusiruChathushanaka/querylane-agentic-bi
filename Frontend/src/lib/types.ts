@@ -22,6 +22,8 @@ export type Message = {
   skill_warnings?: string[];
 };
 export type Connection = {
+  checked_at?: number;
+  cached?: boolean;
   id: string;
   name: string;
   engine: string;
@@ -115,6 +117,7 @@ export type Visualization = {
   measures?: ChartMeasure[];
 };
 export type Artifact = {
+  initial_chart?: { query: string; data: ChartData };
   metric_resolution?: "catalog" | "ad_hoc";
   metric_snapshots?: { id: string; version: number; definition: { name: string; description: string } }[];
   forecast_plan_id?: string;

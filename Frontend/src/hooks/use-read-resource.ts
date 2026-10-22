@@ -52,10 +52,19 @@ export function useReadResource<T>(
     const resource = { key, loaded: false, retryAt: 0, controller: undefined as AbortController | undefined };
     current.current = resource;
     void refresh();
-    const timer = interval ? setInterval(() => {
-      if (!document.hidden) void refresh(false);
-    }, interval) : undefined;
-    return () => { resource.controller?.abort(); clearInterval(timer); };
+    const revalidate = () => { if (!document.hidden) void refresh(false); };
+    const timer = interval ? setInterval(revalidate, interval) : undefined;
+    if (interval && typeof window !== "undefined") {
+      window.addEventListener("focus", revalidate);
+      document.addEventListener("visibilitychange", revalidate);
+    }
+    return () => {
+      resource.controller?.abort(); clearInterval(timer);
+      if (interval && typeof window !== "undefined") {
+        window.removeEventListener("focus", revalidate);
+        document.removeEventListener("visibilitychange", revalidate);
+      }
+    };
   }, [key, interval, refresh]);
   return { ...state, refresh };
 }

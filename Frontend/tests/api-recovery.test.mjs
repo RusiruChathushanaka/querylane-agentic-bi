@@ -10,7 +10,7 @@ function harness(handler, cached, configuration = {backend_url:'https://backend.
   const requests = [];
   const context = {
     module: compiledModule, exports: compiledModule.exports,
-    require: () => ({}), Headers, Response, TextDecoder, AbortSignal, AbortController, DOMException,
+    require: () => ({ loadingMark() {}, loadingMeasure() {} }), URL, Headers, Response, TextDecoder, AbortSignal, AbortController, DOMException,
     sessionStorage: { getItem: k => values.get(k), setItem: (k,v) => values.set(k,v), removeItem: k => values.delete(k) },
     fetch: async (url, init) => {
       requests.push({url,init});
@@ -159,4 +159,31 @@ test('initial timeout uses the single retry while caller cancellation prevents a
   const controller=new AbortController();calls=0;
   await assert.rejects(h.initialRead(async()=>{calls++;controller.abort();throw new h.ApiError('Timed out',504);},controller.signal));
   assert.equal(calls,1);
+});
+
+
+test('runtime bootstrap starts public reads without a configuration round trip', async () => {
+  const h=harness(() => Response.json({ok:true}));
+  assert.equal(h.configureBackend('https://runtime.test'),true);
+  assert.equal(h.configureBackend('https://user:secret@invalid.test'),false);
+  await h.api('/conversations');
+  assert.equal(h.requests.some(r=>r.url==='/api/config'),false);
+  assert.equal(h.requests[0].url,'https://runtime.test/api/v1/conversations');
+});
+
+test('conditional reads retain a body only after a fresh 304; changes and errors remain visible',async()=>{
+  let calls=0;
+  const h=harness((url,init)=>{
+    calls++;
+    if(calls===1)return Response.json({messages:['first']},{headers:{ETag:'W/"one"'}});
+    assert.equal(init.headers.get('If-None-Match'),'W/"one"');
+    if(calls===2)return new Response(null,{status:304});
+    if(calls===3)return new Response('{}',{status:503});
+    return Response.json({messages:['new']},{headers:{ETag:'W/"two"'}});
+  });
+  const first=await h.revalidatedRead('/conversations');
+  assert.equal(await h.revalidatedRead('/conversations'),first);
+  await assert.rejects(h.revalidatedRead('/conversations'),error=>error.status===503);
+  assert.deepEqual((await h.revalidatedRead('/conversations')).messages,['new']);
+  assert.throws(()=>h.revalidatedRead('/reports'),/scope/);
 });

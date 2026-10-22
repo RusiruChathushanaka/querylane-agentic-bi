@@ -38,3 +38,7 @@ Composition requires 2–6 unique categories, one nonnegative additive measure, 
 Backend tests cover full histories, calendar gaps, partial results/buckets, rate scales, targets, sampling, compound category labels, invalid parameters, missing pages, and CSV injection. Frontend tests cover formatting, comparison labels, coverage notes, follow-up drafts, and preference migration. Browser verification checks the generated retail dataset, exports, keyboard access, draft preservation, range controls, themes, and narrow layouts.
 
 Follow the [deployment guide](deployment-guide.md) for a requested release, explicitly preserving the intended data profile. This feature does not authorize data uploads, history reset, Cloud Run deployment, or GitHub publication.
+
+## Bounded saved-view reuse (local implementation)
+
+[The 23 October local assessment](evaluation/loading-speed-local-20261023.md) records an optional `initial_chart=true` metadata preview for at most 500 rows/two pages. Existing presenter validation and full selected rows still determine the view; clients reuse only matching parameters. Larger artifacts retain separate chart-data reads. Cache keys include live artifact metadata, all view parameters and presentation version; thirty-second/32-entry/8-MiB bounds and existing two-render/two-client-slot limits remain. Deleted artifacts are checked before cache access. No source query, inference, persistent browser cache or export regeneration is introduced.

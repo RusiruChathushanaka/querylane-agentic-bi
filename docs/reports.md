@@ -104,3 +104,7 @@ PYTHONPATH=. uv run python scripts/smoke_reports.py --gemini --output ../docs/ev
 The helper explicitly uses memory storage and the existing generated Parquet bundle. It cannot deploy, upload data, invoke production report dispatch, or persist Search responses. Use `--model gemini-3.5-flash-lite` to check the second configured text model.
 
 The [21 October hosted release](evaluation/report-dropdown-release-20261021.md) verifies forecast version 3 and scenario version 2 through private-worker presentation revisions. Their PDF, Word and ZIP files use the new design; previous versions retain their original bytes. All 45 future point values match the saved evidence. Report version/style/mode/model filters, mobile section navigation and chart controls now share bounded, keyboard-operable Radix dropdowns with the rest of the application.
+
+## Nearby reader evidence (local implementation)
+
+The reader now admits chart metadata/rendering within 200px of the document viewport through the shared two-request loader. Text and version downloads are independent. Each failed chart has a local retry; entering Evidence & limitations resolves remaining metadata so source timestamps remain complete. Only current-version artifact IDs appear in provenance. The saved PDF/Word/data endpoints still read immutable stored bytes, independent of browser placeholders; see [local verification](evaluation/loading-speed-local-20261023.md). This change is not new worker or numerical acceptance.

@@ -19,31 +19,31 @@
   "data_profile": "timeseries",
   "postgres_schema": "retail_timeseries",
   "date": "2026-10-22",
-  "verified_at": "2026-10-22T18:31:23.908616+00:00",
-  "release": "Viewport-contained workspace and independent startup loading",
+  "verified_at": "2026-10-22T19:59:07.590635+00:00",
+  "release": "Loading-speed optimizations: runtime bootstrap, conditional reads and saved charts",
   "services": {
     "agentic-bi-frontend": {
       "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app",
-      "ready_revision": "agentic-bi-frontend-00025-5cz",
-      "previous_revision": "agentic-bi-frontend-00023-hsg",
+      "ready_revision": "agentic-bi-frontend-00026-g5t",
+      "previous_revision": "agentic-bi-frontend-00025-5cz",
       "service_account": "agentic-bi-frontend@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
-      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:98f41b4cc593617e795ad3ddc39b89a00cfaa418cada28ab5a8291c833f5a6ce",
-      "image_digest": "sha256:98f41b4cc593617e795ad3ddc39b89a00cfaa418cada28ab5a8291c833f5a6ce",
-      "build_id": "3c76082d-b4ef-47e1-9532-0a7e0fbf3b3d",
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:6e79dbd5adb5d80b14d0cae5d3470f52d04c0655c7d18f230f6546a2e2e799a6",
+      "image_digest": "sha256:6e79dbd5adb5d80b14d0cae5d3470f52d04c0655c7d18f230f6546a2e2e799a6",
+      "build_id": "4f97194f-5590-435b-ad71-75d07115a52c",
       "build_source": {
         "storageSource": {
           "bucket": "project-e8b1593d-009a-4822-abf-agentic-bi-build",
-          "generation": "1792693586071323",
-          "object": "source/1792693578.91967-6aa53b043fb7475c92343e1bcb3db4af.tgz"
+          "generation": "1792698371295915",
+          "object": "source/1792698359.824711-ca768a2ca9e84664a0b5482293392afa.tgz"
         }
       },
-      "source_base_commit": "221b825399f7859dc585e3a0cd4760530744015a",
+      "source_base_commit": "7db9c58fa7641b48094480f6c0fd4c3d46072828",
       "source_is_working_tree": true,
       "ready": true,
       "traffic": [
         {
           "percent": 100,
-          "revisionName": "agentic-bi-frontend-00025-5cz"
+          "revisionName": "agentic-bi-frontend-00026-g5t"
         }
       ],
       "runtime_environment": [
@@ -60,31 +60,31 @@
       },
       "container_concurrency": 40,
       "timeout_seconds": 300,
-      "source_verification_manifest": "evaluation/workspace-loading-release-20261022-source.json",
+      "source_verification_manifest": "evaluation/loading-speed-release-20261023-source.json",
       "service_minimum_instances": 1
     },
     "agentic-bi-backend": {
       "url": "https://agentic-bi-backend-wekihucn7q-as.a.run.app",
-      "ready_revision": "agentic-bi-backend-00026-9r5",
-      "previous_revision": "agentic-bi-backend-00025-8ml",
+      "ready_revision": "agentic-bi-backend-00027-cgw",
+      "previous_revision": "agentic-bi-backend-00026-9r5",
       "service_account": "agentic-bi-backend@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
-      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:cdb5c9aba779306b0e66db0a7b54acf845b5835a67b00c8ea73f954083fd9990",
-      "image_digest": "sha256:cdb5c9aba779306b0e66db0a7b54acf845b5835a67b00c8ea73f954083fd9990",
-      "build_id": "832a5871-aca0-4711-82e3-150cff6f300a",
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:50de61f0b41d924fba6013069fead67b30578664afe1f8cd26f84998782cdf44",
+      "image_digest": "sha256:50de61f0b41d924fba6013069fead67b30578664afe1f8cd26f84998782cdf44",
+      "build_id": "06c0b571-4981-406f-a93f-4b60fcb1d83b",
       "build_source": {
         "storageSource": {
           "bucket": "project-e8b1593d-009a-4822-abf-agentic-bi-build",
-          "generation": "1792692544644242",
-          "object": "source/1792692532.270791-5629580330f24aa5ba630eaca8ead37f.tgz"
+          "generation": "1792698375654115",
+          "object": "source/1792698362.370203-cfb6667987a942378d347023e209b550.tgz"
         }
       },
-      "source_base_commit": "221b825399f7859dc585e3a0cd4760530744015a",
+      "source_base_commit": "7db9c58fa7641b48094480f6c0fd4c3d46072828",
       "source_is_working_tree": true,
       "ready": true,
       "traffic": [
         {
           "percent": 100,
-          "revisionName": "agentic-bi-backend-00026-9r5"
+          "revisionName": "agentic-bi-backend-00027-cgw"
         }
       ],
       "runtime_environment": [
@@ -219,31 +219,31 @@
       },
       "container_concurrency": 8,
       "timeout_seconds": 3600,
-      "source_verification_manifest": "evaluation/workspace-loading-release-20261022-source.json",
+      "source_verification_manifest": "evaluation/loading-speed-release-20261023-source.json",
       "service_minimum_instances": 1
     },
     "agentic-bi-report-worker": {
       "url": "https://agentic-bi-report-worker-wekihucn7q-as.a.run.app",
-      "ready_revision": "agentic-bi-report-worker-00015-d4h",
-      "previous_revision": "agentic-bi-report-worker-00014-kgl",
+      "ready_revision": "agentic-bi-report-worker-00016-477",
+      "previous_revision": "agentic-bi-report-worker-00015-d4h",
       "service_account": "agentic-bi-report-worker@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
-      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:cdb5c9aba779306b0e66db0a7b54acf845b5835a67b00c8ea73f954083fd9990",
-      "image_digest": "sha256:cdb5c9aba779306b0e66db0a7b54acf845b5835a67b00c8ea73f954083fd9990",
-      "build_id": "832a5871-aca0-4711-82e3-150cff6f300a",
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:50de61f0b41d924fba6013069fead67b30578664afe1f8cd26f84998782cdf44",
+      "image_digest": "sha256:50de61f0b41d924fba6013069fead67b30578664afe1f8cd26f84998782cdf44",
+      "build_id": "06c0b571-4981-406f-a93f-4b60fcb1d83b",
       "build_source": {
         "storageSource": {
           "bucket": "project-e8b1593d-009a-4822-abf-agentic-bi-build",
-          "generation": "1792692544644242",
-          "object": "source/1792692532.270791-5629580330f24aa5ba630eaca8ead37f.tgz"
+          "generation": "1792698375654115",
+          "object": "source/1792698362.370203-cfb6667987a942378d347023e209b550.tgz"
         }
       },
-      "source_base_commit": "221b825399f7859dc585e3a0cd4760530744015a",
+      "source_base_commit": "7db9c58fa7641b48094480f6c0fd4c3d46072828",
       "source_is_working_tree": true,
       "ready": true,
       "traffic": [
         {
           "percent": 100,
-          "revisionName": "agentic-bi-report-worker-00015-d4h"
+          "revisionName": "agentic-bi-report-worker-00016-477"
         }
       ],
       "runtime_environment": [
@@ -378,25 +378,25 @@
       },
       "container_concurrency": 1,
       "timeout_seconds": 660,
-      "source_verification_manifest": "evaluation/workspace-loading-release-20261022-source.json",
+      "source_verification_manifest": "evaluation/loading-speed-release-20261023-source.json",
       "service_minimum_instances": 0
     }
   },
   "analytical_seed_or_history_reset": false,
-  "configuration_changes": "Verified image-only rollout plus authorized frontend/API service-level minima one; worker scaling, runtime specifications, IAM and analytical settings preserved.",
+  "configuration_changes": "Image-only rollout; existing warm frontend/API minima, worker scaling, all runtime specifications/IAM and analytical settings preserved.",
   "verification_reports": [
-    "evaluation/workspace-loading-release-20261022.md",
-    "evaluation/workspace-loading-release-20261022.json",
-    "evaluation/workspace-loading-release-20261022-source.json",
-    "evaluation/workspace-loading-release-20261022-preservation.json"
+    "evaluation/loading-speed-release-20261023.md",
+    "evaluation/loading-speed-release-20261023.json",
+    "evaluation/loading-speed-release-20261023-source.json",
+    "evaluation/loading-speed-release-20261023-preservation.json"
   ],
-  "source_verification_manifest": "evaluation/workspace-loading-release-20261022-source.json",
+  "source_verification_manifest": "evaluation/loading-speed-release-20261023-source.json",
   "github": {
     "repository": "https://github.com/RusiruChathushanaka/querylane-agentic-bi",
     "branch": "main",
     "publication_note": "Code and documentation published after hosted verification; identify commit through Git history. Both Submission spellings excluded."
   },
-  "previous_release": "evaluation/report-dropdown-release-20261021.md",
+  "previous_release": "evaluation/workspace-loading-release-20261022.md",
   "latest_verified_reports": [
     {
       "kind": "forecast",
@@ -433,13 +433,12 @@
   ],
   "runtime_configuration_preserved": true,
   "known_interface_limits": [
-    "Emulated mobile widths; no physical mobile keyboard or complete screen-reader/contrast/200% zoom certification.",
-    "Live theme preference changes skipped after automatic approval review rejected an un-restored theme test; existing local theme checks retained.",
-    "A controlled source delay verified independent history/deep-link loading, slow feedback, retained draft and timeout recovery. Hosted HTTP503 injection failed in the harness; unit/local recovery coverage is separate.",
-    "Warm HTTP latency is mixed, including retained intermediate and final tail outliers; this release does not establish a general network speedup.",
-    "BigQuery metadata preservation verified for five tables; no source content scan or PostgreSQL customer recount.",
-    "No fresh TimesFM, scenario, dashboard-builder or forecast-plan worker execution during this UI/startup release."
+    "Emulated desktop/mobile widths; no physical keyboard, microphone, complete screen-reader, contrast or 200% zoom certification.",
+    "Ten warm samples are a small observational comparison; chart-data response is not first paint or a guaranteed speedup. One retained candidate chart-data outlier increases browser p95 from 1.65s to 4.52s despite a lower median.",
+    "Report/chart tests reused immutable saved evidence; no fresh analytical/model, TimesFM, scenario, dashboard-builder or forecast-plan worker execution.",
+    "Five BigQuery tables were compared by row/byte/schema/modification metadata; no content scans or PostgreSQL customer recount.",
+    "An initial scenario chart wait used a scroll offset before the actual chart; explicit section/placeholder navigation passed. Dropdown checks required waiting for transition completion; stale snapshot references were not counted as product failures."
   ],
-  "fresh_planning_acceptance": "Not exercised by this presentation/dropdown release; use separately dated worker acceptance evidence.",
+  "fresh_planning_acceptance": "Not exercised by this loading-speed release; use separately dated worker acceptance evidence.",
   "latest_verified_reports_scope": "Prior presentation versions; this release reread six immutable downloads without generating new reports."
 }

@@ -1,4 +1,9 @@
 import type { StreamEvent } from "./types";
+import { loadingMark, loadingMeasure } from "./loading-performance";
+
+let bootstrapUrl: string | undefined;
+const validatedReads = new Map<string, { etag: string; value: unknown; bytes: number }>();
+let validatedBytes = 0;
 
 let basePromise: Promise<string> | undefined;
 let guestPromise: Promise<string> | undefined;
@@ -19,6 +24,7 @@ export class ApiError extends Error {
 
 /** Bound JSON requests, including body reads; caller cancellation always wins. */
 async function jsonRequest(url: string, init: RequestInit = {}) {
+  const started = typeof performance !== "undefined" ? performance.now() : 0;
   const controller = new AbortController();
   const abort = () => controller.abort(init.signal?.reason);
   if (init.signal?.aborted) abort();
@@ -27,6 +33,7 @@ async function jsonRequest(url: string, init: RequestInit = {}) {
   const timer = setTimeout(() => { timedOut = true; controller.abort(); }, 30000);
   try {
     const response = await fetch(url, { ...init, signal: controller.signal });
+    if (response.status === 304) return { response, body: undefined };
     let body;
     try { body = await response.json(); }
     catch (error) {
@@ -41,12 +48,28 @@ async function jsonRequest(url: string, init: RequestInit = {}) {
     if (error instanceof ApiError) throw error;
     throw new ApiError("The service connection was interrupted. Check saved history before retrying a change.", 0, "connection_failed", undefined, (init.method ?? "GET").toUpperCase() === "GET");
   } finally {
+    const route = url.replace(/^https?:\/\/[^/]+/, "").split("?")[0].replace(/\/[a-f0-9]{32}(?=\/|$)/g, "/:id");
+    loadingMeasure(`read:${route}`, started);
     clearTimeout(timer);
     init.signal?.removeEventListener("abort", abort);
   }
 }
 
+/** Installed before descendant read effects, from request-time application layouts only. */
+export function configureBackend(value: string) {
+  if (!/^https?:\/\/[^\s]+$/.test(value)) return false;
+  try {
+    const url = new URL(value);
+    if (url.username || url.password || url.search || url.hash) return false;
+  } catch { return false; }
+  bootstrapUrl = value.replace(/\/$/, "");
+  basePromise = Promise.resolve(bootstrapUrl);
+  loadingMark("runtime-config-ready");
+  return true;
+}
+
 export function backendUrl(): Promise<string> {
+  if (bootstrapUrl) return Promise.resolve(bootstrapUrl);
   basePromise ??= jsonRequest("/api/config", { cache: "no-store" })
     .then(({ response, body }) => {
       if (!response.ok || typeof body?.backend_url !== "string" || !/^https?:\/\/[^\s]+$/.test(body.backend_url))
@@ -92,8 +115,11 @@ export async function api<T>(
   path: string,
   init: RequestInit = {},
   retry = true,
+  conditional = false,
 ): Promise<T> {
   const headers = new Headers(init.headers);
+  const saved = conditional ? validatedReads.get(path) : undefined;
+  if (saved) headers.set("If-None-Match", saved.etag);
   if (
     ["POST", "PATCH", "PUT", "DELETE"].includes(
       (init.method ?? "GET").toUpperCase(),
@@ -108,6 +134,7 @@ export async function api<T>(
     headers,
     cache: "no-store",
   });
+  if (response.status === 304 && saved) return saved.value as T;
   if (response.status === 401 && retry) {
     forgetGuest(headers.get("Authorization")?.replace(/^Bearer /, ""));
     return api(path, init, false);
@@ -120,7 +147,26 @@ export async function api<T>(
       retryDelay(response.headers.get("Retry-After")),
       (init.method ?? "GET").toUpperCase() === "GET",
     );
+  if (conditional && response.headers.get("ETag")) {
+    const bytes = JSON.stringify(body).length * 2;
+    if (saved) { validatedBytes -= saved.bytes; validatedReads.delete(path); }
+    if (bytes <= 256 * 1024) {
+      while (validatedReads.size >= 8 || validatedBytes + bytes > 1024 * 1024) {
+        const first = validatedReads.keys().next().value!;
+        validatedBytes -= validatedReads.get(first)!.bytes;
+        validatedReads.delete(first);
+      }
+      validatedReads.set(path, { etag: response.headers.get("ETag")!, value: body, bytes });
+      validatedBytes += bytes;
+    }
+  }
   return body as T;
+}
+
+/** Only public conversation reads may reuse a body, and only after a fresh 304 response. */
+export function revalidatedRead<T>(path: string, signal?: AbortSignal) {
+  if (!/^\/conversations(?:\/[a-f0-9]{32})?$/.test(path)) throw new Error("Conditional read scope is invalid.");
+  return api<T>(path, { signal }, true, true);
 }
 
 /** Guest-scoped resources (such as unpublished author interviews) require authenticated reads. */

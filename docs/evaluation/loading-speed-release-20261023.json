@@ -1,0 +1,2589 @@
+{
+  "verified_at": "2026-10-22T19:59:07.590635+00:00",
+  "date_basis": "23 October Asia/Colombo; rollout/verification occurred 22 October UTC",
+  "scope": "Hosted runtime bootstrap, conditional public reads, scoped gzip/timing, short UI source snapshots, bounded saved-chart reuse and nearby report charts",
+  "services": {
+    "frontend": {
+      "previous_revision": "agentic-bi-frontend-00025-5cz",
+      "revision": "agentic-bi-frontend-00026-g5t",
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:6e79dbd5adb5d80b14d0cae5d3470f52d04c0655c7d18f230f6546a2e2e799a6",
+      "build_id": "4f97194f-5590-435b-ad71-75d07115a52c",
+      "minimum_before": 1,
+      "minimum_after": 1,
+      "runtime_hash_before": "46896c4dae6fc331a712c9e3629b2fb3d358e59d9cbaebf8a32a0f473e427abb",
+      "runtime_hash_after": "46896c4dae6fc331a712c9e3629b2fb3d358e59d9cbaebf8a32a0f473e427abb",
+      "revision_settings_hash_before": "c426ee37f6ec27cd5879023c114f760bffd79ee2992e07def44a4ab5f8b5520e",
+      "revision_settings_hash_after": "c426ee37f6ec27cd5879023c114f760bffd79ee2992e07def44a4ab5f8b5520e",
+      "settings": {},
+      "traffic": [
+        {
+          "percent": 100,
+          "revisionName": "agentic-bi-frontend-00026-g5t"
+        }
+      ]
+    },
+    "backend": {
+      "previous_revision": "agentic-bi-backend-00026-9r5",
+      "revision": "agentic-bi-backend-00027-cgw",
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:50de61f0b41d924fba6013069fead67b30578664afe1f8cd26f84998782cdf44",
+      "build_id": "06c0b571-4981-406f-a93f-4b60fcb1d83b",
+      "minimum_before": 1,
+      "minimum_after": 1,
+      "runtime_hash_before": "bb9129afe01cbec3a5546f2d794f865bb52d1735e5bf10823d43dfdb8856507f",
+      "runtime_hash_after": "bb9129afe01cbec3a5546f2d794f865bb52d1735e5bf10823d43dfdb8856507f",
+      "revision_settings_hash_before": "ad59c4ea70bdf75d83b1e6894a4d4f708ab4b20c18e12c25a5cefee931c24805",
+      "revision_settings_hash_after": "ad59c4ea70bdf75d83b1e6894a4d4f708ab4b20c18e12c25a5cefee931c24805",
+      "settings": {
+        "DATA_PROFILE": "timeseries",
+        "SOURCE_ROW_LIMIT": "30000",
+        "REPORT_TIMESFM_ENABLED": "true",
+        "REPORT_TIMESFM_VERIFIED": "true"
+      },
+      "traffic": [
+        {
+          "percent": 100,
+          "revisionName": "agentic-bi-backend-00027-cgw"
+        }
+      ]
+    },
+    "report-worker": {
+      "previous_revision": "agentic-bi-report-worker-00015-d4h",
+      "revision": "agentic-bi-report-worker-00016-477",
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:50de61f0b41d924fba6013069fead67b30578664afe1f8cd26f84998782cdf44",
+      "build_id": "06c0b571-4981-406f-a93f-4b60fcb1d83b",
+      "minimum_before": 0,
+      "minimum_after": 0,
+      "runtime_hash_before": "5dbd8b0a2ae5ee8957f987d2d3bffbb814dd32792c0b6b2a1314b769336c8139",
+      "runtime_hash_after": "5dbd8b0a2ae5ee8957f987d2d3bffbb814dd32792c0b6b2a1314b769336c8139",
+      "revision_settings_hash_before": "c426ee37f6ec27cd5879023c114f760bffd79ee2992e07def44a4ab5f8b5520e",
+      "revision_settings_hash_after": "c426ee37f6ec27cd5879023c114f760bffd79ee2992e07def44a4ab5f8b5520e",
+      "settings": {
+        "DATA_PROFILE": "timeseries",
+        "SOURCE_ROW_LIMIT": "30000",
+        "REPORT_TIMESFM_ENABLED": "true",
+        "REPORT_TIMESFM_VERIFIED": "true"
+      },
+      "traffic": [
+        {
+          "percent": 100,
+          "revisionName": "agentic-bi-report-worker-00016-477"
+        }
+      ]
+    }
+  },
+  "tests": {
+    "backend_passed": 455,
+    "backend_existing_skips": 1,
+    "frontend_passed": 84,
+    "basis": "Full local implementation suites on unchanged runtime source; targeted five backend tests rerun for release; both Cloud production builds succeeded",
+    "ruff": "pass",
+    "eslint": "pass",
+    "typescript": "pass"
+  },
+  "hosted_http": {
+    "checks": {
+      "/health/live": true,
+      "/health/ready": true,
+      "gzip": true,
+      "etag": true,
+      "server_timing": true,
+      "cors_expose": true,
+      "conditional_304": true,
+      "cors_conditional_preflight": true,
+      "source_status": true,
+      "initial_chart_present": true,
+      "initial_chart_matches": true,
+      "missing_artifact_404": true,
+      "forecast_pdf_download": true,
+      "forecast_docx_download": true,
+      "forecast_data_download": true,
+      "scenario_pdf_download": true,
+      "scenario_docx_download": true,
+      "scenario_data_download": true,
+      "six_downloads_identical": true,
+      "runtime_bootstrap_in_html": true,
+      "private_worker": true,
+      "sse_not_gzipped": true,
+      "sse_replay": true
+    },
+    "downloads": {
+      "forecast_pdf": {
+        "bytes": 152628,
+        "sha256": "2e0a67023a0710d7b2bb40d976b59e741367a24ed6094f59599f20f8f7f87e6f"
+      },
+      "forecast_docx": {
+        "bytes": 135061,
+        "sha256": "b4b23fe726e7c0de223a322f3b33f30c2370e06c78b27453e506d93540df9efa"
+      },
+      "forecast_data": {
+        "bytes": 9875,
+        "sha256": "ad0bc4f97f2d4c57db3146d8388af37824c9f5b34a5cddedc97f779eb377c12f"
+      },
+      "scenario_pdf": {
+        "bytes": 406106,
+        "sha256": "6409c40beaf08f4fa180cccf6bc5bd7e9bafc1287ba4bd927ade34e2097df719"
+      },
+      "scenario_docx": {
+        "bytes": 367697,
+        "sha256": "266868a2d8ec6f6f3d7e0b6243d0c75354b598bc6acde047f66db5c4c1a9bec1"
+      },
+      "scenario_data": {
+        "bytes": 44951,
+        "sha256": "d6d796992615703568c43fd824bc96ec77a9c78afa6e49a27651de83e6bae4c1"
+      }
+    },
+    "history": {
+      "gzip_bytes": 5755,
+      "json_bytes": 32706,
+      "server_timing": "app;dur=46.06, firestore;dur=41.97"
+    },
+    "connections": [
+      {
+        "mode": "cloud",
+        "data_profile": "timeseries",
+        "period": "DAILY \u00b7 MULTI-YEAR",
+        "connections": [
+          {
+            "id": "bigquery",
+            "name": "Retail warehouse",
+            "engine": "BigQuery",
+            "tables": 5,
+            "connected": true,
+            "mode": "cloud",
+            "checked_at": 1792698746.1036046,
+            "cached": true
+          },
+          {
+            "id": "postgres",
+            "name": "Business operations",
+            "engine": "PostgreSQL",
+            "tables": 6,
+            "connected": true,
+            "mode": "cloud",
+            "checked_at": 1792698745.5144658,
+            "cached": true
+          }
+        ]
+      },
+      {
+        "mode": "cloud",
+        "data_profile": "timeseries",
+        "period": "DAILY \u00b7 MULTI-YEAR",
+        "connections": [
+          {
+            "id": "bigquery",
+            "name": "Retail warehouse",
+            "engine": "BigQuery",
+            "tables": 5,
+            "connected": true,
+            "mode": "cloud",
+            "checked_at": 1792698746.1036046,
+            "cached": true
+          },
+          {
+            "id": "postgres",
+            "name": "Business operations",
+            "engine": "PostgreSQL",
+            "tables": 6,
+            "connected": true,
+            "mode": "cloud",
+            "checked_at": 1792698745.5144658,
+            "cached": true
+          }
+        ]
+      }
+    ],
+    "sse": {
+      "first_line_ms": 350.63,
+      "bytes": 6079,
+      "completed_saved_run": true
+    }
+  },
+  "browser_checks": {
+    "layout-desktop": {
+      "document": {
+        "width": 1280,
+        "height": 900
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "composer": {
+        "x": 307,
+        "y": 749,
+        "width": 920,
+        "height": 63,
+        "top": 749,
+        "right": 1227,
+        "bottom": 812,
+        "left": 307
+      },
+      "header": {
+        "x": 254,
+        "y": 0,
+        "width": 1026,
+        "height": 68,
+        "top": 0,
+        "right": 1280,
+        "bottom": 68,
+        "left": 254
+      },
+      "milestones": {
+        "accent": "cobalt",
+        "density": "comfortable",
+        "reduceMotion": "false",
+        "querylaneRuntimeConfigReady": "209.90",
+        "querylaneSourcesReady": "416.50",
+        "querylaneHistoryReady": "452.50",
+        "querylaneConversationTextReady": "457.80",
+        "querylaneVisibleChartReady": "1231.00"
+      },
+      "api": [
+        "/api/v1/reports/config",
+        "/api/v1/connections",
+        "/api/v1/conversations",
+        "/api/v1/conversations/8edbd2f328da48d0ab71534e0645839d",
+        "/api/v1/reports?conversation_id=8edbd2f328da48d0ab71534e0645839d",
+        "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa?metadata_only=true&initial_chart=true",
+        "/api/v1/conversations",
+        "/api/v1/conversations/8edbd2f328da48d0ab71534e0645839d"
+      ]
+    },
+    "mobile320": {
+      "width": 320,
+      "height": 568,
+      "scrollWidth": 320,
+      "scrollHeight": 568,
+      "composer": {
+        "x": 19,
+        "y": 372.5,
+        "width": 282,
+        "height": 38,
+        "top": 372.5,
+        "right": 301,
+        "bottom": 410.5,
+        "left": 19
+      },
+      "mainScroll": 3395,
+      "draftRetained": true
+    },
+    "focus": {
+      "sourceFocusRestored": true,
+      "draftRetained": true
+    },
+    "navigation": {
+      "navigationFocusRestored": true,
+      "bodyLocked": false
+    },
+    "report-initial": {
+      "width": 320,
+      "scrollWidth": 320,
+      "title": "Monthly Merchandise Revenue Forecast and Model Evaluation (Oct\u2013Dec 2026)",
+      "charts": 0,
+      "artifactRequests": [],
+      "text": true
+    },
+    "report-nearby": {
+      "width": 320,
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "charts": 1,
+      "focusId": "section-forecast_evaluation",
+      "cutoff": true,
+      "artifactRequests": [
+        "/api/v1/artifacts/1b6ed07fcc1db242ac2673749b70c7e2",
+        "/api/v1/artifacts/015ff83eb73acde71edc024fdc7e938b"
+      ]
+    },
+    "scenario-final": {
+      "width": 390,
+      "scrollWidth": 390,
+      "title": "Technical 14-Day Conditional Revenue Forecast and Promotion Scenario Analysis",
+      "charts": 2,
+      "conditional": true,
+      "causal": true,
+      "cutoff": true
+    },
+    "provenance-final": {
+      "focusId": "report-evidence",
+      "evidenceText": "Evidence & limitations\nHistorical predictive associations are not causal effects or guaranteed future performance.\nValidated prediction intervals are unavailable for this bounded backtest; point predictions carry unquantified uncertainty.\nSaved observations end at 2026-09-30; predictions start after that cutoff, rather than assuming data reaches the report request date 2026-10-18.\nSynthetic retail data supports implementation evaluation, not a claim of real-world forecasting reliability.\nGrouped rates and averages are not averaged into population-wide ratios without their original denominators; request a source-calculated overall ratio when needed.\nDefinitions, assumptions & numerical evidence\nIndependent source timestamps\nSkills used\nConditional driver and promotion scenarios\nv1 \u00b7 Automatic\nTimesFM candidate comparison and evidence\nv1 \u00b7 Automatic\nForecast validation and uncertainty\nv1 \u00b7 Automatic"
+    },
+    "dashboard": {
+      "width": 390,
+      "scrollWidth": 390,
+      "charts": 1,
+      "title": "TimesFM verification \u2014 saved predictions"
+    },
+    "table-final": {
+      "width": 390,
+      "scrollWidth": 390,
+      "table": "Published business metrics. Page 1 of 1.\nDimension\tValue\nEast\t$88,442,586.77\nNorth\t$89,290,218.08\nSouth\t$88,888,411.61\nWest\t$87,803,895.74"
+    },
+    "landing": {
+      "title": "From business questions to evidence-backed decisions.",
+      "apiRequests": []
+    }
+  },
+  "browser_console_errors": "",
+  "browser_warm_timings": {
+    "before": {
+      "scope": "Hosted Chrome 1280x900; one warmup plus ten repeated samples; saved artifact only; no forced cold starts; chart-data response is not first paint",
+      "warmup": {
+        "api": [
+          {
+            "path": "/api/config",
+            "query": "",
+            "start": 426.19999998807907,
+            "end": 600.3000000119209
+          },
+          {
+            "path": "/api/v1/reports/config",
+            "query": "",
+            "start": 600.8999999761581,
+            "end": 805.0999999642372
+          },
+          {
+            "path": "/api/v1/conversations",
+            "query": "",
+            "start": 600.8999999761581,
+            "end": 807
+          },
+          {
+            "path": "/api/v1/conversations/8edbd2f328da48d0ab71534e0645839d",
+            "query": "",
+            "start": 600.8999999761581,
+            "end": 853.0999999642372
+          },
+          {
+            "path": "/api/v1/connections",
+            "query": "",
+            "start": 600.8999999761581,
+            "end": 1329.800000011921
+          },
+          {
+            "path": "/api/v1/reports",
+            "query": "?conversation_id=8edbd2f328da48d0ab71534e0645839d",
+            "start": 1112.699999988079,
+            "end": 1293.800000011921
+          },
+          {
+            "path": "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa",
+            "query": "?metadata_only=true",
+            "start": 1124.5,
+            "end": 1341.5999999642372
+          },
+          {
+            "path": "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa/chart-data",
+            "query": "?view=bar&order=value_desc&top=10&retry=0",
+            "start": 1652.199999988079,
+            "end": 1823.3999999761581
+          }
+        ],
+        "chart": true,
+        "milestones": {
+          "accent": "cobalt",
+          "density": "comfortable",
+          "reduceMotion": "false"
+        },
+        "document": {
+          "width": 1280,
+          "height": 900
+        },
+        "viewport": {
+          "width": 1280,
+          "height": 900
+        },
+        "first_visible_chart_data_ms": 1823.3999999761581,
+        "initial_api_requests": 8
+      },
+      "samples": [
+        {
+          "api": [
+            {
+              "path": "/api/config",
+              "query": "",
+              "start": 212.39999997615814,
+              "end": 424.10000002384186
+            },
+            {
+              "path": "/api/v1/reports/config",
+              "query": "",
+              "start": 426.69999998807907,
+              "end": 561.6999999880791
+            },
+            {
+              "path": "/api/v1/conversations",
+              "query": "",
+              "start": 426.69999998807907,
+              "end": 693.1999999880791
+            },
+            {
+              "path": "/api/v1/conversations/8edbd2f328da48d0ab71534e0645839d",
+              "query": "",
+              "start": 426.80000001192093,
+              "end": 658.3999999761581
+            },
+            {
+              "path": "/api/v1/connections",
+              "query": "",
+              "start": 426.80000001192093,
+              "end": 1082.300000011921
+            },
+            {
+              "path": "/api/v1/reports",
+              "query": "?conversation_id=8edbd2f328da48d0ab71534e0645839d",
+              "start": 927.5,
+              "end": 1114.1000000238419
+            },
+            {
+              "path": "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa",
+              "query": "?metadata_only=true",
+              "start": 939.8999999761581,
+              "end": 1173
+            },
+            {
+              "path": "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa/chart-data",
+              "query": "?view=bar&order=value_desc&top=10&retry=0",
+              "start": 1481.3999999761581,
+              "end": 1646.5
+            }
+          ],
+          "chart": true,
+          "milestones": {
+            "accent": "cobalt",
+            "density": "comfortable",
+            "reduceMotion": "false"
+          },
+          "document": {
+            "width": 1280,
+            "height": 900
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 900
+          },
+          "first_visible_chart_data_ms": 1646.5,
+          "initial_api_requests": 8
+        },
+        {
+          "api": [
+            {
+              "path": "/api/config",
+              "query": "",
+              "start": 187.80000001192093,
+              "end": 326.19999998807907
+            },
+            {
+              "path": "/api/v1/reports/config",
+              "query": "",
+              "start": 328.69999998807907,
+              "end": 467
+            },
+            {
+              "path": "/api/v1/conversations/8edbd2f328da48d0ab71534e0645839d",
+              "query": "",
+              "start": 328.80000001192093,
+              "end": 587.1000000238419
+            },
+            {
+              "path": "/api/v1/conversations",
+              "query": "",
+              "start": 328.80000001192093,
+              "end": 609.1000000238419
+            },
+            {
+              "path": "/api/v1/connections",
+              "query": "",
+              "start": 328.80000001192093,
+              "end": 1052.800000011921
+            },
+            {
+              "path": "/api/v1/reports",
+              "query": "?conversation_id=8edbd2f328da48d0ab71534e0645839d",
+              "start": 861.8999999761581,
+              "end": 1031.1000000238419
+            },
+            {
+              "path": "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa",
+              "query": "?metadata_only=true",
+              "start": 865.8999999761581,
+              "end": 1077
+            },
+            {
+              "path": "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa/chart-data",
+              "query": "?view=bar&order=value_desc&top=10&retry=0",
+              "start": 1387,
+              "end": 1542.6000000238419
+            }
+          ],
+          "chart": true,
+          "milestones": {
+            "accent": "cobalt",
+            "density": "comfortable",
+            "reduceMotion": "false"
+          },
+          "document": {
+            "width": 1280,
+            "height": 900
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 900
+          },
+          "first_visible_chart_data_ms": 1542.6000000238419,
+          "initial_api_requests": 8
+        },
+        {
+          "api": [
+            {
+              "path": "/api/config",
+              "query": "",
+              "start": 195.60000002384186,
+              "end": 330
+            },
+            {
+              "path": "/api/v1/reports/config",
+              "query": "",
+              "start": 330.80000001192093,
+              "end": 500.60000002384186
+            },
+            {
+              "path": "/api/v1/conversations",
+              "query": "",
+              "start": 330.9000000357628,
+              "end": 636.7000000476837
+            },
+            {
+              "path": "/api/v1/connections",
+              "query": "",
+              "start": 330.9000000357628,
+              "end": 1024.6000000238419
+            },
+            {
+              "path": "/api/v1/conversations/8edbd2f328da48d0ab71534e0645839d",
+              "query": "",
+              "start": 331,
+              "end": 614.9000000357628
+            },
+            {
+              "path": "/api/v1/reports",
+              "query": "?conversation_id=8edbd2f328da48d0ab71534e0645839d",
+              "start": 880.6000000238419,
+              "end": 1038.9000000357628
+            },
+            {
+              "path": "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa",
+              "query": "?metadata_only=true",
+              "start": 896.5,
+              "end": 1092.4000000357628
+            },
+            {
+              "path": "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa/chart-data",
+              "query": "?view=bar&order=value_desc&top=10&retry=0",
+              "start": 1403.5,
+              "end": 1600
+            }
+          ],
+          "chart": true,
+          "milestones": {
+            "accent": "cobalt",
+            "density": "comfortable",
+            "reduceMotion": "false"
+          },
+          "document": {
+            "width": 1280,
+            "height": 900
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 900
+          },
+          "first_visible_chart_data_ms": 1600,
+          "initial_api_requests": 8
+        },
+        {
+          "api": [
+            {
+              "path": "/api/config",
+              "query": "",
+              "start": 196.30000001192093,
+              "end": 334.80000001192093
+            },
+            {
+              "path": "/api/v1/reports/config",
+              "query": "",
+              "start": 335.4000000357628,
+              "end": 488.5
+            },
+            {
+              "path": "/api/v1/conversations",
+              "query": "",
+              "start": 335.4000000357628,
+              "end": 620.6999999880791
+            },
+            {
+              "path": "/api/v1/conversations/8edbd2f328da48d0ab71534e0645839d",
+              "query": "",
+              "start": 335.5,
+              "end": 593.3000000119209
+            },
+            {
+              "path": "/api/v1/connections",
+              "query": "",
+              "start": 335.5,
+              "end": 943.3000000119209
+            },
+            {
+              "path": "/api/v1/reports",
+              "query": "?conversation_id=8edbd2f328da48d0ab71534e0645839d",
+              "start": 857.1999999880791,
+              "end": 1001.9000000357628
+            },
+            {
+              "path": "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa",
+              "query": "?metadata_only=true",
+              "start": 868.1000000238419,
+              "end": 1060.300000011921
+            },
+            {
+              "path": "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa/chart-data",
+              "query": "?view=bar&order=value_desc&top=10&retry=0",
+              "start": 1371,
+              "end": 1518.699999988079
+            }
+          ],
+          "chart": true,
+          "milestones": {
+            "accent": "cobalt",
+            "density": "comfortable",
+            "reduceMotion": "false"
+          },
+          "document": {
+            "width": 1280,
+            "height": 900
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 900
+          },
+          "first_visible_chart_data_ms": 1518.699999988079,
+          "initial_api_requests": 8
+        },
+        {
+          "api": [
+            {
+              "path": "/api/config",
+              "query": "",
+              "start": 186.80000001192093,
+              "end": 337
+            },
+            {
+              "path": "/api/v1/reports/config",
+              "query": "",
+              "start": 338.10000002384186,
+              "end": 474.10000002384186
+            },
+            {
+              "path": "/api/v1/conversations",
+              "query": "",
+              "start": 338.19999998807907,
+              "end": 610.3999999761581
+            },
+            {
+              "path": "/api/v1/connections",
+              "query": "",
+              "start": 338.19999998807907,
+              "end": 1093.6000000238419
+            },
+            {
+              "path": "/api/v1/conversations/8edbd2f328da48d0ab71534e0645839d",
+              "query": "",
+              "start": 338.30000001192093,
+              "end": 597.3000000119209
+            },
+            {
+              "path": "/api/v1/reports",
+              "query": "?conversation_id=8edbd2f328da48d0ab71534e0645839d",
+              "start": 863.3999999761581,
+              "end": 1006.8000000119209
+            },
+            {
+              "path": "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa",
+              "query": "?metadata_only=true",
+              "start": 874.1000000238419,
+              "end": 1026
+            },
+            {
+              "path": "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa/chart-data",
+              "query": "?view=bar&order=value_desc&top=10&retry=0",
+              "start": 1099.300000011921,
+              "end": 1275.5
+            }
+          ],
+          "chart": true,
+          "milestones": {
+            "accent": "cobalt",
+            "density": "comfortable",
+            "reduceMotion": "false"
+          },
+          "document": {
+            "width": 1280,
+            "height": 900
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 900
+          },
+          "first_visible_chart_data_ms": 1275.5,
+          "initial_api_requests": 8
+        },
+        {
+          "api": [
+            {
+              "path": "/api/config",
+              "query": "",
+              "start": 186.0999999642372,
+              "end": 339.19999998807907
+            },
+            {
+              "path": "/api/v1/reports/config",
+              "query": "",
+              "start": 340.89999997615814,
+              "end": 479.69999998807907
+            },
+            {
+              "path": "/api/v1/conversations/8edbd2f328da48d0ab71534e0645839d",
+              "query": "",
+              "start": 341,
+              "end": 507.39999997615814
+            },
+            {
+              "path": "/api/v1/conversations",
+              "query": "",
+              "start": 341,
+              "end": 553.1999999880791
+            },
+            {
+              "path": "/api/v1/connections",
+              "query": "",
+              "start": 341,
+              "end": 894.7999999523163
+            },
+            {
+              "path": "/api/v1/reports",
+              "query": "?conversation_id=8edbd2f328da48d0ab71534e0645839d",
+              "start": 762.6999999880791,
+              "end": 912.2999999523163
+            },
+            {
+              "path": "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa",
+              "query": "?metadata_only=true",
+              "start": 776.7999999523163,
+              "end": 930.1999999880791
+            },
+            {
+              "path": "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa/chart-data",
+              "query": "?view=bar&order=value_desc&top=10&retry=0",
+              "start": 1234.5,
+              "end": 1408.7999999523163
+            }
+          ],
+          "chart": true,
+          "milestones": {
+            "accent": "cobalt",
+            "density": "comfortable",
+            "reduceMotion": "false"
+          },
+          "document": {
+            "width": 1280,
+            "height": 900
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 900
+          },
+          "first_visible_chart_data_ms": 1408.7999999523163,
+          "initial_api_requests": 8
+        },
+        {
+          "api": [
+            {
+              "path": "/api/config",
+              "query": "",
+              "start": 189.9000000357628,
+              "end": 323.5
+            },
+            {
+              "path": "/api/v1/reports/config",
+              "query": "",
+              "start": 324.30000001192093,
+              "end": 460.5
+            },
+            {
+              "path": "/api/v1/conversations",
+              "query": "",
+              "start": 324.4000000357628,
+              "end": 535.1000000238419
+            },
+            {
+              "path": "/api/v1/connections",
+              "query": "",
+              "start": 324.4000000357628,
+              "end": 939.5
+            },
+            {
+              "path": "/api/v1/conversations/8edbd2f328da48d0ab71534e0645839d",
+              "query": "",
+              "start": 324.5,
+              "end": 499.7000000476837
+            },
+            {
+              "path": "/api/v1/reports",
+              "query": "?conversation_id=8edbd2f328da48d0ab71534e0645839d",
+              "start": 782.5,
+              "end": 939.2000000476837
+            },
+            {
+              "path": "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa",
+              "query": "?metadata_only=true",
+              "start": 794.1000000238419,
+              "end": 958.5
+            },
+            {
+              "path": "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa/chart-data",
+              "query": "?view=bar&order=value_desc&top=10&retry=0",
+              "start": 1264.300000011921,
+              "end": 1434
+            }
+          ],
+          "chart": true,
+          "milestones": {
+            "accent": "cobalt",
+            "density": "comfortable",
+            "reduceMotion": "false"
+          },
+          "document": {
+            "width": 1280,
+            "height": 900
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 900
+          },
+          "first_visible_chart_data_ms": 1434,
+          "initial_api_requests": 8
+        },
+        {
+          "api": [
+            {
+              "path": "/api/config",
+              "query": "",
+              "start": 176.70000004768372,
+              "end": 318.4000000357628
+            },
+            {
+              "path": "/api/v1/reports/config",
+              "query": "",
+              "start": 319.30000001192093,
+              "end": 467.9000000357628
+            },
+            {
+              "path": "/api/v1/conversations",
+              "query": "",
+              "start": 319.30000001192093,
+              "end": 544.1000000238419
+            },
+            {
+              "path": "/api/v1/conversations/8edbd2f328da48d0ab71534e0645839d",
+              "query": "",
+              "start": 319.4000000357628,
+              "end": 521.9000000357628
+            },
+            {
+              "path": "/api/v1/connections",
+              "query": "",
+              "start": 319.4000000357628,
+              "end": 941
+            },
+            {
+              "path": "/api/v1/reports",
+              "query": "?conversation_id=8edbd2f328da48d0ab71534e0645839d",
+              "start": 787.6000000238419,
+              "end": 928.6000000238419
+            },
+            {
+              "path": "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa",
+              "query": "?metadata_only=true",
+              "start": 800.6000000238419,
+              "end": 949.2000000476837
+            },
+            {
+              "path": "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa/chart-data",
+              "query": "?view=bar&order=value_desc&top=10&retry=0",
+              "start": 1263,
+              "end": 1424.4000000357628
+            }
+          ],
+          "chart": true,
+          "milestones": {
+            "accent": "cobalt",
+            "density": "comfortable",
+            "reduceMotion": "false"
+          },
+          "document": {
+            "width": 1280,
+            "height": 900
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 900
+          },
+          "first_visible_chart_data_ms": 1424.4000000357628,
+          "initial_api_requests": 8
+        },
+        {
+          "api": [
+            {
+              "path": "/api/config",
+              "query": "",
+              "start": 173.80000001192093,
+              "end": 320.80000001192093
+            },
+            {
+              "path": "/api/v1/reports/config",
+              "query": "",
+              "start": 322.80000001192093,
+              "end": 452.30000001192093
+            },
+            {
+              "path": "/api/v1/conversations",
+              "query": "",
+              "start": 322.89999997615814,
+              "end": 524
+            },
+            {
+              "path": "/api/v1/connections",
+              "query": "",
+              "start": 322.89999997615814,
+              "end": 906.3000000119209
+            },
+            {
+              "path": "/api/v1/conversations/8edbd2f328da48d0ab71534e0645839d",
+              "query": "",
+              "start": 323,
+              "end": 483
+            },
+            {
+              "path": "/api/v1/reports",
+              "query": "?conversation_id=8edbd2f328da48d0ab71534e0645839d",
+              "start": 744.6999999880791,
+              "end": 890.3000000119209
+            },
+            {
+              "path": "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa",
+              "query": "?metadata_only=true",
+              "start": 757,
+              "end": 920.6999999880791
+            },
+            {
+              "path": "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa/chart-data",
+              "query": "?view=bar&order=value_desc&top=10&retry=0",
+              "start": 1230.800000011921,
+              "end": 1377.300000011921
+            }
+          ],
+          "chart": true,
+          "milestones": {
+            "accent": "cobalt",
+            "density": "comfortable",
+            "reduceMotion": "false"
+          },
+          "document": {
+            "width": 1280,
+            "height": 900
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 900
+          },
+          "first_visible_chart_data_ms": 1377.300000011921,
+          "initial_api_requests": 8
+        },
+        {
+          "api": [
+            {
+              "path": "/api/config",
+              "query": "",
+              "start": 188.69999998807907,
+              "end": 324.7999999523163
+            },
+            {
+              "path": "/api/v1/reports/config",
+              "query": "",
+              "start": 325.5999999642372,
+              "end": 459
+            },
+            {
+              "path": "/api/v1/conversations",
+              "query": "",
+              "start": 325.69999998807907,
+              "end": 546.7999999523163
+            },
+            {
+              "path": "/api/v1/connections",
+              "query": "",
+              "start": 325.69999998807907,
+              "end": 873
+            },
+            {
+              "path": "/api/v1/conversations/8edbd2f328da48d0ab71534e0645839d",
+              "query": "",
+              "start": 325.7999999523163,
+              "end": 561.5
+            },
+            {
+              "path": "/api/v1/reports",
+              "query": "?conversation_id=8edbd2f328da48d0ab71534e0645839d",
+              "start": 839.6999999880791,
+              "end": 996.5999999642372
+            },
+            {
+              "path": "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa",
+              "query": "?metadata_only=true",
+              "start": 852.0999999642372,
+              "end": 995.7999999523163
+            },
+            {
+              "path": "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa/chart-data",
+              "query": "?view=bar&order=value_desc&top=10&retry=0",
+              "start": 1302.8999999761581,
+              "end": 1467.199999988079
+            }
+          ],
+          "chart": true,
+          "milestones": {
+            "accent": "cobalt",
+            "density": "comfortable",
+            "reduceMotion": "false"
+          },
+          "document": {
+            "width": 1280,
+            "height": 900
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 900
+          },
+          "first_visible_chart_data_ms": 1467.199999988079,
+          "initial_api_requests": 8
+        }
+      ],
+      "summary": {
+        "first_visible_chart_data_ms": {
+          "median": 1450.5999999940395,
+          "p95_nearest_rank": 1646.5
+        },
+        "initial_api_requests": {
+          "median": 8.0,
+          "p95_nearest_rank": 8
+        }
+      }
+    },
+    "after": {
+      "scope": "Hosted Chrome 1280x900; one warmup plus ten repeated samples; saved artifact only; no forced cold starts; chart-data response is not first paint",
+      "warmup": {
+        "api": [
+          {
+            "path": "/api/v1/reports/config",
+            "query": "",
+            "start": 194.5,
+            "end": 335.30000001192093
+          },
+          {
+            "path": "/api/v1/connections",
+            "query": "",
+            "start": 194.5,
+            "end": 396.10000002384186
+          },
+          {
+            "path": "/api/v1/conversations",
+            "query": "",
+            "start": 194.5,
+            "end": 530.6999999880791
+          },
+          {
+            "path": "/api/v1/conversations/8edbd2f328da48d0ab71534e0645839d",
+            "query": "",
+            "start": 194.80000001192093,
+            "end": 502.30000001192093
+          },
+          {
+            "path": "/api/v1/reports",
+            "query": "?conversation_id=8edbd2f328da48d0ab71534e0645839d",
+            "start": 766.8000000119209,
+            "end": 967.1999999880791
+          },
+          {
+            "path": "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa",
+            "query": "?metadata_only=true&initial_chart=true",
+            "start": 775.1999999880791,
+            "end": 1017.3000000119209
+          }
+        ],
+        "chart": true,
+        "milestones": {
+          "accent": "cobalt",
+          "density": "comfortable",
+          "reduceMotion": "false",
+          "querylaneRuntimeConfigReady": "189.80",
+          "querylaneSourcesReady": "396.60",
+          "querylaneConversationTextReady": "502.60",
+          "querylaneHistoryReady": "531.00",
+          "querylaneVisibleChartReady": "1512.70"
+        },
+        "document": {
+          "width": 1280,
+          "height": 900
+        },
+        "viewport": {
+          "width": 1280,
+          "height": 900
+        },
+        "first_visible_chart_data_ms": 1017.3000000119209,
+        "initial_api_requests": 6
+      },
+      "samples": [
+        {
+          "api": [
+            {
+              "path": "/api/v1/reports/config",
+              "query": "",
+              "start": 216.5,
+              "end": 351.69999998807907
+            },
+            {
+              "path": "/api/v1/connections",
+              "query": "",
+              "start": 216.69999998807907,
+              "end": 439.5
+            },
+            {
+              "path": "/api/v1/conversations",
+              "query": "",
+              "start": 216.69999998807907,
+              "end": 470.89999997615814
+            },
+            {
+              "path": "/api/v1/conversations/8edbd2f328da48d0ab71534e0645839d",
+              "query": "",
+              "start": 217.0999999642372,
+              "end": 457.69999998807907
+            },
+            {
+              "path": "/api/v1/reports",
+              "query": "?conversation_id=8edbd2f328da48d0ab71534e0645839d",
+              "start": 728.2999999523163,
+              "end": 904.6999999880791
+            },
+            {
+              "path": "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa",
+              "query": "?metadata_only=true&initial_chart=true",
+              "start": 736.5,
+              "end": 963.3999999761581
+            }
+          ],
+          "chart": true,
+          "milestones": {
+            "accent": "cobalt",
+            "density": "comfortable",
+            "reduceMotion": "false",
+            "querylaneRuntimeConfigReady": "210.50",
+            "querylaneSourcesReady": "440.00",
+            "querylaneConversationTextReady": "458.00",
+            "querylaneHistoryReady": "471.30",
+            "querylaneVisibleChartReady": "1270.60"
+          },
+          "document": {
+            "width": 1280,
+            "height": 900
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 900
+          },
+          "first_visible_chart_data_ms": 963.3999999761581,
+          "initial_api_requests": 6
+        },
+        {
+          "api": [
+            {
+              "path": "/api/v1/reports/config",
+              "query": "",
+              "start": 180.4000000357628,
+              "end": 314.60000002384186
+            },
+            {
+              "path": "/api/v1/connections",
+              "query": "",
+              "start": 180.5,
+              "end": 377.80000001192093
+            },
+            {
+              "path": "/api/v1/conversations",
+              "query": "",
+              "start": 180.5,
+              "end": 414.7000000476837
+            },
+            {
+              "path": "/api/v1/conversations/8edbd2f328da48d0ab71534e0645839d",
+              "query": "",
+              "start": 180.80000001192093,
+              "end": 403.9000000357628
+            },
+            {
+              "path": "/api/v1/reports",
+              "query": "?conversation_id=8edbd2f328da48d0ab71534e0645839d",
+              "start": 663.6000000238419,
+              "end": 814.9000000357628
+            },
+            {
+              "path": "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa",
+              "query": "?metadata_only=true&initial_chart=true",
+              "start": 675.8000000119209,
+              "end": 874.7000000476837
+            }
+          ],
+          "chart": true,
+          "milestones": {
+            "accent": "cobalt",
+            "density": "comfortable",
+            "reduceMotion": "false",
+            "querylaneRuntimeConfigReady": "174.60",
+            "querylaneSourcesReady": "378.30",
+            "querylaneConversationTextReady": "404.30",
+            "querylaneHistoryReady": "415.00",
+            "querylaneVisibleChartReady": "1189.20"
+          },
+          "document": {
+            "width": 1280,
+            "height": 900
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 900
+          },
+          "first_visible_chart_data_ms": 874.7000000476837,
+          "initial_api_requests": 6
+        },
+        {
+          "api": [
+            {
+              "path": "/api/v1/reports/config",
+              "query": "",
+              "start": 187.80000001192093,
+              "end": 317.5
+            },
+            {
+              "path": "/api/v1/conversations",
+              "query": "",
+              "start": 187.89999997615814,
+              "end": 419.89999997615814
+            },
+            {
+              "path": "/api/v1/connections",
+              "query": "",
+              "start": 188,
+              "end": 391.69999998807907
+            },
+            {
+              "path": "/api/v1/conversations/8edbd2f328da48d0ab71534e0645839d",
+              "query": "",
+              "start": 188.30000001192093,
+              "end": 417.5
+            },
+            {
+              "path": "/api/v1/reports",
+              "query": "?conversation_id=8edbd2f328da48d0ab71534e0645839d",
+              "start": 678.8999999761581,
+              "end": 813.1999999880791
+            },
+            {
+              "path": "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa",
+              "query": "?metadata_only=true&initial_chart=true",
+              "start": 694.8000000119209,
+              "end": 869
+            }
+          ],
+          "chart": true,
+          "milestones": {
+            "accent": "cobalt",
+            "density": "comfortable",
+            "reduceMotion": "false",
+            "querylaneRuntimeConfigReady": "180.70",
+            "querylaneSourcesReady": "392.20",
+            "querylaneConversationTextReady": "417.80",
+            "querylaneHistoryReady": "420.10",
+            "querylaneVisibleChartReady": "1182.50"
+          },
+          "document": {
+            "width": 1280,
+            "height": 900
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 900
+          },
+          "first_visible_chart_data_ms": 869,
+          "initial_api_requests": 6
+        },
+        {
+          "api": [
+            {
+              "path": "/api/v1/reports/config",
+              "query": "",
+              "start": 193.19999998807907,
+              "end": 327.7999999523163
+            },
+            {
+              "path": "/api/v1/conversations",
+              "query": "",
+              "start": 193.29999995231628,
+              "end": 442.19999998807907
+            },
+            {
+              "path": "/api/v1/connections",
+              "query": "",
+              "start": 193.39999997615814,
+              "end": 922.1999999880791
+            },
+            {
+              "path": "/api/v1/conversations/8edbd2f328da48d0ab71534e0645839d",
+              "query": "",
+              "start": 193.69999998807907,
+              "end": 421.0999999642372
+            },
+            {
+              "path": "/api/v1/reports",
+              "query": "?conversation_id=8edbd2f328da48d0ab71534e0645839d",
+              "start": 691.5999999642372,
+              "end": 838.1999999880791
+            },
+            {
+              "path": "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa",
+              "query": "?metadata_only=true&initial_chart=true",
+              "start": 703.0999999642372,
+              "end": 900.5
+            }
+          ],
+          "chart": true,
+          "milestones": {
+            "accent": "cobalt",
+            "density": "comfortable",
+            "reduceMotion": "false",
+            "querylaneRuntimeConfigReady": "187.10",
+            "querylaneConversationTextReady": "421.40",
+            "querylaneHistoryReady": "442.50",
+            "querylaneSourcesReady": "924.10",
+            "querylaneVisibleChartReady": "938.00"
+          },
+          "document": {
+            "width": 1280,
+            "height": 900
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 900
+          },
+          "first_visible_chart_data_ms": 900.5,
+          "initial_api_requests": 6
+        },
+        {
+          "api": [
+            {
+              "path": "/api/v1/reports/config",
+              "query": "",
+              "start": 178.10000002384186,
+              "end": 313.19999998807907
+            },
+            {
+              "path": "/api/v1/conversations",
+              "query": "",
+              "start": 178.19999998807907,
+              "end": 420.19999998807907
+            },
+            {
+              "path": "/api/v1/connections",
+              "query": "",
+              "start": 178.30000001192093,
+              "end": 373.10000002384186
+            },
+            {
+              "path": "/api/v1/conversations/8edbd2f328da48d0ab71534e0645839d",
+              "query": "",
+              "start": 178.69999998807907,
+              "end": 402.5
+            },
+            {
+              "path": "/api/v1/reports",
+              "query": "?conversation_id=8edbd2f328da48d0ab71534e0645839d",
+              "start": 662.6000000238419,
+              "end": 846.8999999761581
+            },
+            {
+              "path": "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa",
+              "query": "?metadata_only=true&initial_chart=true",
+              "start": 675.3000000119209,
+              "end": 883.3000000119209
+            }
+          ],
+          "chart": true,
+          "milestones": {
+            "accent": "cobalt",
+            "density": "comfortable",
+            "reduceMotion": "false",
+            "querylaneRuntimeConfigReady": "172.90",
+            "querylaneSourcesReady": "373.50",
+            "querylaneConversationTextReady": "403.00",
+            "querylaneHistoryReady": "420.80",
+            "querylaneVisibleChartReady": "1198.50"
+          },
+          "document": {
+            "width": 1280,
+            "height": 900
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 900
+          },
+          "first_visible_chart_data_ms": 883.3000000119209,
+          "initial_api_requests": 6
+        },
+        {
+          "api": [
+            {
+              "path": "/api/v1/reports/config",
+              "query": "",
+              "start": 173.89999997615814,
+              "end": 331.69999998807907
+            },
+            {
+              "path": "/api/v1/connections",
+              "query": "",
+              "start": 174.0999999642372,
+              "end": 392.7999999523163
+            },
+            {
+              "path": "/api/v1/conversations",
+              "query": "",
+              "start": 174.0999999642372,
+              "end": 450.39999997615814
+            },
+            {
+              "path": "/api/v1/conversations/8edbd2f328da48d0ab71534e0645839d",
+              "query": "",
+              "start": 174.39999997615814,
+              "end": 430.7999999523163
+            },
+            {
+              "path": "/api/v1/reports",
+              "query": "?conversation_id=8edbd2f328da48d0ab71534e0645839d",
+              "start": 691.6999999880791,
+              "end": 848.3999999761581
+            },
+            {
+              "path": "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa",
+              "query": "?metadata_only=true&initial_chart=true",
+              "start": 704.5999999642372,
+              "end": 908.3999999761581
+            }
+          ],
+          "chart": true,
+          "milestones": {
+            "accent": "cobalt",
+            "density": "comfortable",
+            "reduceMotion": "false",
+            "querylaneRuntimeConfigReady": "167.30",
+            "querylaneSourcesReady": "393.30",
+            "querylaneConversationTextReady": "431.20",
+            "querylaneHistoryReady": "450.90",
+            "querylaneVisibleChartReady": "1220.90"
+          },
+          "document": {
+            "width": 1280,
+            "height": 900
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 900
+          },
+          "first_visible_chart_data_ms": 908.3999999761581,
+          "initial_api_requests": 6
+        },
+        {
+          "api": [
+            {
+              "path": "/api/v1/reports/config",
+              "query": "",
+              "start": 200,
+              "end": 336.80000001192093
+            },
+            {
+              "path": "/api/v1/connections",
+              "query": "",
+              "start": 200.19999998807907,
+              "end": 396.60000002384186
+            },
+            {
+              "path": "/api/v1/conversations",
+              "query": "",
+              "start": 200.19999998807907,
+              "end": 441.30000001192093
+            },
+            {
+              "path": "/api/v1/conversations/8edbd2f328da48d0ab71534e0645839d",
+              "query": "",
+              "start": 200.60000002384186,
+              "end": 456.80000001192093
+            },
+            {
+              "path": "/api/v1/reports",
+              "query": "?conversation_id=8edbd2f328da48d0ab71534e0645839d",
+              "start": 713.6999999880791,
+              "end": 1075.800000011921
+            },
+            {
+              "path": "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa",
+              "query": "?metadata_only=true&initial_chart=true",
+              "start": 727,
+              "end": 1112.3999999761581
+            }
+          ],
+          "chart": true,
+          "milestones": {
+            "accent": "cobalt",
+            "density": "comfortable",
+            "reduceMotion": "false",
+            "querylaneRuntimeConfigReady": "194.50",
+            "querylaneSourcesReady": "397.60",
+            "querylaneHistoryReady": "441.60",
+            "querylaneConversationTextReady": "459.30",
+            "querylaneVisibleChartReady": "1424.90"
+          },
+          "document": {
+            "width": 1280,
+            "height": 900
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 900
+          },
+          "first_visible_chart_data_ms": 1112.3999999761581,
+          "initial_api_requests": 6
+        },
+        {
+          "api": [
+            {
+              "path": "/api/v1/reports/config",
+              "query": "",
+              "start": 432.9000000357628,
+              "end": 805.1999999880791
+            },
+            {
+              "path": "/api/v1/connections",
+              "query": "",
+              "start": 433,
+              "end": 881.6999999880791
+            },
+            {
+              "path": "/api/v1/conversations",
+              "query": "",
+              "start": 433,
+              "end": 908.6999999880791
+            },
+            {
+              "path": "/api/v1/conversations/8edbd2f328da48d0ab71534e0645839d",
+              "query": "",
+              "start": 433.4000000357628,
+              "end": 891.1000000238419
+            },
+            {
+              "path": "/api/v1/reports",
+              "query": "?conversation_id=8edbd2f328da48d0ab71534e0645839d",
+              "start": 1159.1000000238419,
+              "end": 4501.300000011921
+            },
+            {
+              "path": "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa",
+              "query": "?metadata_only=true&initial_chart=true",
+              "start": 1171,
+              "end": 4517.800000011921
+            }
+          ],
+          "chart": true,
+          "milestones": {
+            "accent": "cobalt",
+            "density": "comfortable",
+            "reduceMotion": "false",
+            "querylaneRuntimeConfigReady": "427.20",
+            "querylaneSourcesReady": "882.40",
+            "querylaneConversationTextReady": "891.30",
+            "querylaneHistoryReady": "909.10",
+            "querylaneVisibleChartReady": "4835.20"
+          },
+          "document": {
+            "width": 1280,
+            "height": 900
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 900
+          },
+          "first_visible_chart_data_ms": 4517.800000011921,
+          "initial_api_requests": 6
+        },
+        {
+          "api": [
+            {
+              "path": "/api/v1/reports/config",
+              "query": "",
+              "start": 188.60000002384186,
+              "end": 340
+            },
+            {
+              "path": "/api/v1/connections",
+              "query": "",
+              "start": 188.80000001192093,
+              "end": 396.80000001192093
+            },
+            {
+              "path": "/api/v1/conversations",
+              "query": "",
+              "start": 188.80000001192093,
+              "end": 434.69999998807907
+            },
+            {
+              "path": "/api/v1/conversations/8edbd2f328da48d0ab71534e0645839d",
+              "query": "",
+              "start": 189.10000002384186,
+              "end": 444
+            },
+            {
+              "path": "/api/v1/reports",
+              "query": "?conversation_id=8edbd2f328da48d0ab71534e0645839d",
+              "start": 708.6000000238419,
+              "end": 913.8000000119209
+            },
+            {
+              "path": "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa",
+              "query": "?metadata_only=true&initial_chart=true",
+              "start": 723.1000000238419,
+              "end": 961.3999999761581
+            }
+          ],
+          "chart": true,
+          "milestones": {
+            "accent": "cobalt",
+            "density": "comfortable",
+            "reduceMotion": "false",
+            "querylaneRuntimeConfigReady": "183.30",
+            "querylaneSourcesReady": "397.60",
+            "querylaneHistoryReady": "435.10",
+            "querylaneConversationTextReady": "444.30",
+            "querylaneVisibleChartReady": "1275.80"
+          },
+          "document": {
+            "width": 1280,
+            "height": 900
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 900
+          },
+          "first_visible_chart_data_ms": 961.3999999761581,
+          "initial_api_requests": 6
+        },
+        {
+          "api": [
+            {
+              "path": "/api/v1/reports/config",
+              "query": "",
+              "start": 215.69999998807907,
+              "end": 351
+            },
+            {
+              "path": "/api/v1/connections",
+              "query": "",
+              "start": 215.89999997615814,
+              "end": 415.89999997615814
+            },
+            {
+              "path": "/api/v1/conversations",
+              "query": "",
+              "start": 215.89999997615814,
+              "end": 452.0999999642372
+            },
+            {
+              "path": "/api/v1/conversations/8edbd2f328da48d0ab71534e0645839d",
+              "query": "",
+              "start": 216.19999998807907,
+              "end": 452.2999999523163
+            },
+            {
+              "path": "/api/v1/reports",
+              "query": "?conversation_id=8edbd2f328da48d0ab71534e0645839d",
+              "start": 721.5999999642372,
+              "end": 860.5
+            },
+            {
+              "path": "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa",
+              "query": "?metadata_only=true&initial_chart=true",
+              "start": 733.2999999523163,
+              "end": 918.5
+            }
+          ],
+          "chart": true,
+          "milestones": {
+            "accent": "cobalt",
+            "density": "comfortable",
+            "reduceMotion": "false",
+            "querylaneRuntimeConfigReady": "209.90",
+            "querylaneSourcesReady": "416.50",
+            "querylaneHistoryReady": "452.50",
+            "querylaneConversationTextReady": "457.80",
+            "querylaneVisibleChartReady": "1231.00"
+          },
+          "document": {
+            "width": 1280,
+            "height": 900
+          },
+          "viewport": {
+            "width": 1280,
+            "height": 900
+          },
+          "first_visible_chart_data_ms": 918.5,
+          "initial_api_requests": 6
+        }
+      ],
+      "summary": {
+        "first_visible_chart_data_ms": {
+          "median": 913.4499999880791,
+          "p95_nearest_rank": 4517.800000011921
+        },
+        "initial_api_requests": {
+          "median": 6.0,
+          "p95_nearest_rank": 6
+        }
+      }
+    }
+  },
+  "http_warm_timings": {
+    "before": {
+      "environment": "deployed public Cloud Run; 10 warm observations after one captured warm-up; no forced cold starts",
+      "captured_at": 1792698399.4148428,
+      "warmup": {
+        "frontend_html": {
+          "ms": 892.11,
+          "status": 200,
+          "bytes": 52690
+        },
+        "runtime_config": {
+          "ms": 549.94,
+          "status": 200,
+          "bytes": 68
+        },
+        "history": {
+          "ms": 809.44,
+          "status": 200,
+          "bytes": 32706
+        },
+        "connections": {
+          "ms": 1234.72,
+          "status": 200,
+          "bytes": 310
+        },
+        "conversation": {
+          "ms": 707.96,
+          "status": 200,
+          "bytes": 8023
+        },
+        "report_config": {
+          "ms": 556.68,
+          "status": 200,
+          "bytes": 151
+        }
+      },
+      "samples": [
+        {
+          "frontend_html": {
+            "ms": 686.67,
+            "status": 200,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 471.92,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 681.28,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 1250.99,
+            "status": 200,
+            "bytes": 310
+          },
+          "conversation": {
+            "ms": 558.11,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 482.65,
+            "status": 200,
+            "bytes": 151
+          }
+        },
+        {
+          "frontend_html": {
+            "ms": 616.04,
+            "status": 200,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 480.54,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 615.6,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 1257.41,
+            "status": 200,
+            "bytes": 310
+          },
+          "conversation": {
+            "ms": 523.69,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 471.02,
+            "status": 200,
+            "bytes": 151
+          }
+        },
+        {
+          "frontend_html": {
+            "ms": 1706.88,
+            "status": 200,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 1122.28,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 1503.48,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 1526.44,
+            "status": 200,
+            "bytes": 310
+          },
+          "conversation": {
+            "ms": 1328.15,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 1312.0,
+            "status": 200,
+            "bytes": 151
+          }
+        },
+        {
+          "frontend_html": {
+            "ms": 913.52,
+            "status": 200,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 712.45,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 980.47,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 1495.74,
+            "status": 200,
+            "bytes": 310
+          },
+          "conversation": {
+            "ms": 815.47,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 707.35,
+            "status": 200,
+            "bytes": 151
+          }
+        },
+        {
+          "frontend_html": {
+            "ms": 1674.05,
+            "status": 200,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 884.69,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 1284.99,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 1370.95,
+            "status": 200,
+            "bytes": 310
+          },
+          "conversation": {
+            "ms": 1051.92,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 893.39,
+            "status": 200,
+            "bytes": 151
+          }
+        },
+        {
+          "frontend_html": {
+            "ms": 1340.44,
+            "status": 200,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 814.13,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 1219.88,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 1322.12,
+            "status": 200,
+            "bytes": 310
+          },
+          "conversation": {
+            "ms": 892.17,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 823.49,
+            "status": 200,
+            "bytes": 151
+          }
+        },
+        {
+          "frontend_html": {
+            "ms": 753.82,
+            "status": 200,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 530.32,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 697.3,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 970.5,
+            "status": 200,
+            "bytes": 310
+          },
+          "conversation": {
+            "ms": 610.24,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 534.87,
+            "status": 200,
+            "bytes": 151
+          }
+        },
+        {
+          "frontend_html": {
+            "ms": 749.08,
+            "status": 200,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 397.5,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 719.08,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 1075.65,
+            "status": 200,
+            "bytes": 310
+          },
+          "conversation": {
+            "ms": 559.75,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 503.55,
+            "status": 200,
+            "bytes": 151
+          }
+        },
+        {
+          "frontend_html": {
+            "ms": 604.74,
+            "status": 200,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 360.49,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 511.06,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 894.29,
+            "status": 200,
+            "bytes": 310
+          },
+          "conversation": {
+            "ms": 470.09,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 359.97,
+            "status": 200,
+            "bytes": 151
+          }
+        },
+        {
+          "frontend_html": {
+            "ms": 463.91,
+            "status": 200,
+            "bytes": 52690
+          },
+          "runtime_config": {
+            "ms": 343.22,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 458.82,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 808.85,
+            "status": 200,
+            "bytes": 310
+          },
+          "conversation": {
+            "ms": 327.38,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 329.65,
+            "status": 200,
+            "bytes": 151
+          }
+        }
+      ],
+      "summary": {
+        "frontend_html": {
+          "median_ms": 751.45,
+          "p95_nearest_rank_ms": 1706.88
+        },
+        "runtime_config": {
+          "median_ms": 505.43000000000006,
+          "p95_nearest_rank_ms": 1122.28
+        },
+        "history": {
+          "median_ms": 708.19,
+          "p95_nearest_rank_ms": 1503.48
+        },
+        "connections": {
+          "median_ms": 1254.2,
+          "p95_nearest_rank_ms": 1526.44
+        },
+        "conversation": {
+          "median_ms": 584.995,
+          "p95_nearest_rank_ms": 1328.15
+        },
+        "report_config": {
+          "median_ms": 519.21,
+          "p95_nearest_rank_ms": 1312.0
+        }
+      }
+    },
+    "after": {
+      "environment": "deployed public Cloud Run; 10 warm observations after one captured warm-up; no forced cold starts",
+      "captured_at": 1792698751.597484,
+      "warmup": {
+        "frontend_html": {
+          "ms": 1404.27,
+          "status": 200,
+          "bytes": 52694
+        },
+        "runtime_config": {
+          "ms": 892.97,
+          "status": 200,
+          "bytes": 68
+        },
+        "history": {
+          "ms": 952.66,
+          "status": 200,
+          "bytes": 32706
+        },
+        "connections": {
+          "ms": 1322.66,
+          "status": 200,
+          "bytes": 404
+        },
+        "conversation": {
+          "ms": 875.3,
+          "status": 200,
+          "bytes": 8023
+        },
+        "report_config": {
+          "ms": 727.3,
+          "status": 200,
+          "bytes": 151
+        }
+      },
+      "samples": [
+        {
+          "frontend_html": {
+            "ms": 527.38,
+            "status": 200,
+            "bytes": 52694
+          },
+          "runtime_config": {
+            "ms": 342.02,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 525.52,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 290.82,
+            "status": 200,
+            "bytes": 402
+          },
+          "conversation": {
+            "ms": 375.34,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 347.85,
+            "status": 200,
+            "bytes": 151
+          }
+        },
+        {
+          "frontend_html": {
+            "ms": 559.63,
+            "status": 200,
+            "bytes": 52694
+          },
+          "runtime_config": {
+            "ms": 324.21,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 558.36,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 323.39,
+            "status": 200,
+            "bytes": 402
+          },
+          "conversation": {
+            "ms": 412.83,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 336.33,
+            "status": 200,
+            "bytes": 151
+          }
+        },
+        {
+          "frontend_html": {
+            "ms": 563.24,
+            "status": 200,
+            "bytes": 52694
+          },
+          "runtime_config": {
+            "ms": 401.3,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 554.62,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 394.63,
+            "status": 200,
+            "bytes": 402
+          },
+          "conversation": {
+            "ms": 391.47,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 289.4,
+            "status": 200,
+            "bytes": 151
+          }
+        },
+        {
+          "frontend_html": {
+            "ms": 487.15,
+            "status": 200,
+            "bytes": 52694
+          },
+          "runtime_config": {
+            "ms": 291.19,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 472.26,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 332.25,
+            "status": 200,
+            "bytes": 402
+          },
+          "conversation": {
+            "ms": 329.96,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 369.6,
+            "status": 200,
+            "bytes": 151
+          }
+        },
+        {
+          "frontend_html": {
+            "ms": 475.91,
+            "status": 200,
+            "bytes": 52694
+          },
+          "runtime_config": {
+            "ms": 381.76,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 531.54,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 325.37,
+            "status": 200,
+            "bytes": 402
+          },
+          "conversation": {
+            "ms": 343.56,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 392.01,
+            "status": 200,
+            "bytes": 151
+          }
+        },
+        {
+          "frontend_html": {
+            "ms": 580.51,
+            "status": 200,
+            "bytes": 52694
+          },
+          "runtime_config": {
+            "ms": 401.68,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 507.18,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 396.03,
+            "status": 200,
+            "bytes": 402
+          },
+          "conversation": {
+            "ms": 390.96,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 400.14,
+            "status": 200,
+            "bytes": 151
+          }
+        },
+        {
+          "frontend_html": {
+            "ms": 443.01,
+            "status": 200,
+            "bytes": 52694
+          },
+          "runtime_config": {
+            "ms": 330.41,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 450.4,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 386.33,
+            "status": 200,
+            "bytes": 402
+          },
+          "conversation": {
+            "ms": 362.39,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 356.38,
+            "status": 200,
+            "bytes": 151
+          }
+        },
+        {
+          "frontend_html": {
+            "ms": 525.45,
+            "status": 200,
+            "bytes": 52694
+          },
+          "runtime_config": {
+            "ms": 439.71,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 520.49,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 342.72,
+            "status": 200,
+            "bytes": 402
+          },
+          "conversation": {
+            "ms": 430.65,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 377.55,
+            "status": 200,
+            "bytes": 151
+          }
+        },
+        {
+          "frontend_html": {
+            "ms": 545.04,
+            "status": 200,
+            "bytes": 52694
+          },
+          "runtime_config": {
+            "ms": 413.44,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 470.62,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 328.19,
+            "status": 200,
+            "bytes": 402
+          },
+          "conversation": {
+            "ms": 359.19,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 382.17,
+            "status": 200,
+            "bytes": 151
+          }
+        },
+        {
+          "frontend_html": {
+            "ms": 562.82,
+            "status": 200,
+            "bytes": 52694
+          },
+          "runtime_config": {
+            "ms": 325.26,
+            "status": 200,
+            "bytes": 68
+          },
+          "history": {
+            "ms": 485.12,
+            "status": 200,
+            "bytes": 32706
+          },
+          "connections": {
+            "ms": 405.45,
+            "status": 200,
+            "bytes": 402
+          },
+          "conversation": {
+            "ms": 399.94,
+            "status": 200,
+            "bytes": 8023
+          },
+          "report_config": {
+            "ms": 343.82,
+            "status": 200,
+            "bytes": 151
+          }
+        }
+      ],
+      "summary": {
+        "frontend_html": {
+          "median_ms": 536.21,
+          "p95_nearest_rank_ms": 580.51
+        },
+        "runtime_config": {
+          "median_ms": 361.89,
+          "p95_nearest_rank_ms": 439.71
+        },
+        "history": {
+          "median_ms": 513.835,
+          "p95_nearest_rank_ms": 558.36
+        },
+        "connections": {
+          "median_ms": 337.485,
+          "p95_nearest_rank_ms": 405.45
+        },
+        "conversation": {
+          "median_ms": 383.15,
+          "p95_nearest_rank_ms": 430.65
+        },
+        "report_config": {
+          "median_ms": 362.99,
+          "p95_nearest_rank_ms": 400.14
+        }
+      }
+    }
+  },
+  "server_log_latency_observation": {
+    "request_count": 148,
+    "maximum_latency_seconds": 0.599132308,
+    "note": "Read-only request-log samples from the new API revision. No exact distributed trace attribution; client/browser outlier remains in the sample."
+  },
+  "preservation_checks": {
+    "frontend_runtime_preserved": true,
+    "frontend_revision_annotations_preserved": true,
+    "frontend_iam_preserved": true,
+    "frontend_candidate_serving": true,
+    "frontend_scaling_preserved": true,
+    "backend_runtime_preserved": true,
+    "backend_revision_annotations_preserved": true,
+    "backend_iam_preserved": true,
+    "backend_candidate_serving": true,
+    "backend_scaling_preserved": true,
+    "backend_DATA_PROFILE": true,
+    "backend_SOURCE_ROW_LIMIT": true,
+    "backend_REPORT_TIMESFM_ENABLED": true,
+    "backend_REPORT_TIMESFM_VERIFIED": true,
+    "report-worker_runtime_preserved": true,
+    "report-worker_revision_annotations_preserved": true,
+    "report-worker_iam_preserved": true,
+    "report-worker_candidate_serving": true,
+    "report-worker_scaling_preserved": true,
+    "report-worker_DATA_PROFILE": true,
+    "report-worker_SOURCE_ROW_LIMIT": true,
+    "report-worker_REPORT_TIMESFM_ENABLED": true,
+    "report-worker_REPORT_TIMESFM_VERIFIED": true,
+    "bigquery_metadata_unchanged": true
+  },
+  "fresh_analytical_or_model_execution": false,
+  "limitations": [
+    "Emulated desktop/mobile widths; no physical keyboard, microphone, complete screen-reader, contrast or 200% zoom certification.",
+    "Ten warm samples are a small observational comparison; chart-data response is not first paint or a guaranteed speedup. One retained candidate chart-data outlier increases browser p95 from 1.65s to 4.52s despite a lower median.",
+    "Report/chart tests reused immutable saved evidence; no fresh analytical/model, TimesFM, scenario, dashboard-builder or forecast-plan worker execution.",
+    "Five BigQuery tables were compared by row/byte/schema/modification metadata; no content scans or PostgreSQL customer recount.",
+    "An initial scenario chart wait used a scroll offset before the actual chart; explicit section/placeholder navigation passed. Dropdown checks required waiting for transition completion; stale snapshot references were not counted as product failures."
+  ]
+}

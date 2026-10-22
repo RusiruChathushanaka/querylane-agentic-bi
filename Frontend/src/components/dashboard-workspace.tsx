@@ -129,7 +129,7 @@ function DashboardWidget({
     if (root.current) observer.observe(root.current);
     return () => observer.disconnect();
   }, []);
-  const cardResource = useReadResource(`dashboard-card:${item.artifact_id}:${visible}`, (signal) => visible ? savedResult<Artifact>(`/artifacts/${item.artifact_id}?metadata_only=true`, signal) : Promise.resolve(null), (v) => { if (v) setArtifact(v); });
+  const cardResource = useReadResource(`dashboard-card:${item.artifact_id}:${visible}`, (signal) => visible ? savedResult<Artifact>(`/artifacts/${item.artifact_id}?metadata_only=true&initial_chart=true`, signal) : Promise.resolve(null), (v) => { if (v) setArtifact(v); });
   const dirty =
     title !== item.title ||
     note !== item.note ||

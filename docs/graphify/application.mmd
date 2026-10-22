@@ -4,9 +4,10 @@ flowchart LR
     Preview --> Fixture[Packaged verified values / cutoff / model scores]
     Preview -->|Explicit evidence link / no prefetch| Version[Saved report version / no inference]
     Legacy[Legacy root chat links] -->|307 /app with query preserved| Browser
-    Browser --> Runtime[Shared runtime configuration /api/config]
+    Browser --> Runtime[Request-time public config in application HTML / api config fallback]
     Runtime --> Startup[Independent cancellable reads / loading and retry feedback]
-    Startup -->|GET resources| API[Public FastAPI on Cloud Run]
+    Startup --> Transport[Conditional public reads / JSON gzip / timing]
+    Transport -->|GET resources| API[Public FastAPI on Cloud Run]
     Browser -->|Mutations and SSE / unchanged| API
     Warm[Frontend and API service minima one / verified 22 Oct UTC] -.-> API
     Warm -.-> Browser
@@ -41,7 +42,9 @@ flowchart LR
     Coherent --> TimesFM
     Coherent --> Saved
     API --> Saved[Saved-result charts and dashboards]
-    Saved -->|Read immutable pages and checked revisions| Store
+    Saved -->|Read live metadata and checked revisions| Store
+    Saved --> Views[Bounded immutable chart views / 30s / two render slots]
+    Views -->|Miss: complete saved pages only| Store
     Saved --> Export[Isolated dashboard renderer / full CSV and JSON]
     API --> Reports[Report admission and versioned library]
     Reports --> Store

@@ -1,0 +1,644 @@
+{
+  "date": "2026-10-23",
+  "timezone": "Asia/Colombo",
+  "scope": "Local production builds and isolated in-memory mirror of existing public saved evidence; not deployed",
+  "base_commit": "7db9c58fa7641b48094480f6c0fd4c3d46072828",
+  "tests": {
+    "backend_passed": 455,
+    "existing_backend_skips": 1,
+    "frontend_passed": 84,
+    "ruff": "pass",
+    "eslint": "pass",
+    "typescript": "pass",
+    "production_build": "pass"
+  },
+  "browser_checks": [
+    {
+      "name": "optimized-desktop",
+      "data": {
+        "charts": 1,
+        "composer": {
+          "bottom": 1183,
+          "height": 204,
+          "left": 767,
+          "right": 1807,
+          "top": 979,
+          "width": 1040,
+          "x": 767,
+          "y": 979
+        },
+        "document": {
+          "height": 1183,
+          "width": 2320
+        },
+        "errors": [],
+        "marks": [
+          {
+            "name": "data-querylane-runtime-config-ready",
+            "time": "442.50"
+          },
+          {
+            "name": "data-querylane-history-ready",
+            "time": "497.60"
+          },
+          {
+            "name": "data-querylane-conversation-text-ready",
+            "time": "523.70"
+          },
+          {
+            "name": "data-querylane-sources-ready",
+            "time": "523.70"
+          },
+          {
+            "name": "data-querylane-visible-chart-ready",
+            "time": "1182.10"
+          }
+        ],
+        "shell": {
+          "bottom": 1183,
+          "height": 1183,
+          "left": 0,
+          "right": 2320,
+          "top": 0,
+          "width": 2320,
+          "x": 0,
+          "y": 0
+        }
+      }
+    },
+    {
+      "name": "mobile390",
+      "data": {
+        "charts": 1,
+        "composer": {
+          "bottom": 844,
+          "height": 224.5,
+          "left": 0,
+          "right": 390,
+          "top": 619.5,
+          "width": 390,
+          "x": 0,
+          "y": 619.5
+        },
+        "document": {
+          "height": 844,
+          "width": 390
+        },
+        "errors": [],
+        "marks": [
+          {
+            "name": "data-querylane-runtime-config-ready",
+            "time": "68.10"
+          },
+          {
+            "name": "data-querylane-history-ready",
+            "time": "125.50"
+          },
+          {
+            "name": "data-querylane-conversation-text-ready",
+            "time": "125.60"
+          },
+          {
+            "name": "data-querylane-sources-ready",
+            "time": "125.60"
+          },
+          {
+            "name": "data-querylane-visible-chart-ready",
+            "time": "777.30"
+          }
+        ],
+        "shell": {
+          "bottom": 844,
+          "height": 844,
+          "left": 0,
+          "right": 390,
+          "top": 0,
+          "width": 390,
+          "x": 0,
+          "y": 0
+        }
+      }
+    },
+    {
+      "name": "source-sheet",
+      "data": {
+        "draft": "Local loading verification \u2014 do not send",
+        "focus": "View data sources"
+      }
+    },
+    {
+      "name": "mobile320",
+      "data": {
+        "charts": 1,
+        "composer": {
+          "bottom": 568,
+          "height": 240.5,
+          "left": 0,
+          "right": 320,
+          "top": 327.5,
+          "width": 320,
+          "x": 0,
+          "y": 327.5
+        },
+        "document": {
+          "height": 568,
+          "width": 320
+        },
+        "errors": [],
+        "marks": [
+          {
+            "name": "data-querylane-runtime-config-ready",
+            "time": "68.10"
+          },
+          {
+            "name": "data-querylane-history-ready",
+            "time": "125.50"
+          },
+          {
+            "name": "data-querylane-conversation-text-ready",
+            "time": "125.60"
+          },
+          {
+            "name": "data-querylane-sources-ready",
+            "time": "125.60"
+          },
+          {
+            "name": "data-querylane-visible-chart-ready",
+            "time": "777.30"
+          }
+        ],
+        "shell": {
+          "bottom": 568,
+          "height": 568,
+          "left": 0,
+          "right": 320,
+          "top": 0,
+          "width": 320,
+          "x": 0,
+          "y": 0
+        }
+      }
+    },
+    {
+      "name": "chart-controls-mobile",
+      "passed": true
+    },
+    {
+      "name": "report-mobile-initial",
+      "requests": [
+        "/api/v1/reports/9ef66a621f51ebe08d597f8380fecb18",
+        "/api/v1/reports/9ef66a621f51ebe08d597f8380fecb18/revisions/3",
+        "/api/v1/reports/config"
+      ],
+      "data": {
+        "charts": 0,
+        "placeholders": 2,
+        "title": "Monthly Merchandise Revenue Forecast and Model Evaluation (Oct\u2013Dec 2026)",
+        "viewport": 305,
+        "width": 305
+      }
+    },
+    {
+      "name": "report-chart-on-approach",
+      "data": {
+        "charts": 1,
+        "cutoffs": [
+          true,
+          true
+        ],
+        "focus": "section-forecast_evaluation",
+        "viewport": 305,
+        "width": 305
+      }
+    },
+    {
+      "name": "report-evidence-completeness",
+      "data": {
+        "focus": "Independent source timestamps",
+        "timestamps": [
+          "bigquery \u00b7 18/10/2026, 05:37:41Monthly Merchandise Revenue and Completed Order Count (Jan 2023 - Sep 2026)",
+          "bigquery \u00b7 18/10/2026, 05:37:41Revenue \u2014 observed and predicted"
+        ],
+        "viewport": 305,
+        "width": 305
+      }
+    },
+    {
+      "name": "scenario-mobile",
+      "data": {
+        "assumptions": true,
+        "charts": 2,
+        "cutoff": true,
+        "title": "Technical 14-Day Conditional Revenue Forecast and Promotion Scenario Analysis",
+        "viewport": 375,
+        "width": 375
+      }
+    },
+    {
+      "name": "landing-backend-free",
+      "backendRequests": []
+    }
+  ],
+  "warm_browser_samples": {
+    "baseline": [
+      {
+        "apiPaths": [
+          "/api/config",
+          "/api/v1/reports/config",
+          "/api/v1/conversations",
+          "/api/v1/connections",
+          "/api/v1/conversations/8edbd2f328da48d0ab71534e0645839d",
+          "/api/v1/reports?conversation_id=8edbd2f328da48d0ab71534e0645839d",
+          "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa?metadata_only=true",
+          "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa/chart-data?view=bar&order=value_desc&top=10&retry=0"
+        ],
+        "chartResponseMs": 1051.5610000002198,
+        "htmlResponseMs": 74.84100002329797,
+        "scriptRequests": 34,
+        "routePrefetches": 20
+      },
+      {
+        "apiPaths": [
+          "/api/config",
+          "/api/v1/reports/config",
+          "/api/v1/conversations",
+          "/api/v1/connections",
+          "/api/v1/conversations/8edbd2f328da48d0ab71534e0645839d",
+          "/api/v1/reports?conversation_id=8edbd2f328da48d0ab71534e0645839d",
+          "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa?metadata_only=true",
+          "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa/chart-data?view=bar&order=value_desc&top=10&retry=0"
+        ],
+        "chartResponseMs": 979.3130000471137,
+        "htmlResponseMs": 31.101000029593706,
+        "scriptRequests": 34,
+        "routePrefetches": 20
+      },
+      {
+        "apiPaths": [
+          "/api/config",
+          "/api/v1/reports/config",
+          "/api/v1/conversations",
+          "/api/v1/connections",
+          "/api/v1/conversations/8edbd2f328da48d0ab71534e0645839d",
+          "/api/v1/reports?conversation_id=8edbd2f328da48d0ab71534e0645839d",
+          "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa?metadata_only=true",
+          "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa/chart-data?view=bar&order=value_desc&top=10&retry=0"
+        ],
+        "chartResponseMs": 785.9750000061467,
+        "htmlResponseMs": 6.865000003017485,
+        "scriptRequests": 34,
+        "routePrefetches": 20
+      },
+      {
+        "apiPaths": [
+          "/api/config",
+          "/api/v1/reports/config",
+          "/api/v1/conversations",
+          "/api/v1/connections",
+          "/api/v1/conversations/8edbd2f328da48d0ab71534e0645839d",
+          "/api/v1/reports?conversation_id=8edbd2f328da48d0ab71534e0645839d",
+          "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa?metadata_only=true",
+          "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa/chart-data?view=bar&order=value_desc&top=10&retry=0"
+        ],
+        "chartResponseMs": 822.6439999998547,
+        "htmlResponseMs": 8.260999980848283,
+        "scriptRequests": 34,
+        "routePrefetches": 20
+      },
+      {
+        "apiPaths": [
+          "/api/config",
+          "/api/v1/reports/config",
+          "/api/v1/conversations",
+          "/api/v1/connections",
+          "/api/v1/conversations/8edbd2f328da48d0ab71534e0645839d",
+          "/api/v1/reports?conversation_id=8edbd2f328da48d0ab71534e0645839d",
+          "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa?metadata_only=true",
+          "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa/chart-data?view=bar&order=value_desc&top=10&retry=0"
+        ],
+        "chartResponseMs": 938.945000001695,
+        "htmlResponseMs": 16.843999968841672,
+        "scriptRequests": 34,
+        "routePrefetches": 20
+      },
+      {
+        "apiPaths": [
+          "/api/config",
+          "/api/v1/reports/config",
+          "/api/v1/conversations",
+          "/api/v1/connections",
+          "/api/v1/conversations/8edbd2f328da48d0ab71534e0645839d",
+          "/api/v1/reports?conversation_id=8edbd2f328da48d0ab71534e0645839d",
+          "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa?metadata_only=true",
+          "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa/chart-data?view=bar&order=value_desc&top=10&retry=0"
+        ],
+        "chartResponseMs": 815.1559999678284,
+        "htmlResponseMs": 10.55199996335432,
+        "scriptRequests": 34,
+        "routePrefetches": 20
+      },
+      {
+        "apiPaths": [
+          "/api/config",
+          "/api/v1/reports/config",
+          "/api/v1/conversations",
+          "/api/v1/connections",
+          "/api/v1/conversations/8edbd2f328da48d0ab71534e0645839d",
+          "/api/v1/reports?conversation_id=8edbd2f328da48d0ab71534e0645839d",
+          "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa?metadata_only=true",
+          "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa/chart-data?view=bar&order=value_desc&top=10&retry=0"
+        ],
+        "chartResponseMs": 792.4559999955818,
+        "htmlResponseMs": 5.953999992925674,
+        "scriptRequests": 34,
+        "routePrefetches": 20
+      },
+      {
+        "apiPaths": [
+          "/api/config",
+          "/api/v1/reports/config",
+          "/api/v1/conversations",
+          "/api/v1/connections",
+          "/api/v1/conversations/8edbd2f328da48d0ab71534e0645839d",
+          "/api/v1/reports?conversation_id=8edbd2f328da48d0ab71534e0645839d",
+          "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa?metadata_only=true",
+          "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa/chart-data?view=bar&order=value_desc&top=10&retry=0"
+        ],
+        "chartResponseMs": 838.6489999829791,
+        "htmlResponseMs": 15.878000005614012,
+        "scriptRequests": 34,
+        "routePrefetches": 20
+      },
+      {
+        "apiPaths": [
+          "/api/config",
+          "/api/v1/reports/config",
+          "/api/v1/conversations",
+          "/api/v1/connections",
+          "/api/v1/conversations/8edbd2f328da48d0ab71534e0645839d",
+          "/api/v1/reports?conversation_id=8edbd2f328da48d0ab71534e0645839d",
+          "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa?metadata_only=true",
+          "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa/chart-data?view=bar&order=value_desc&top=10&retry=0"
+        ],
+        "chartResponseMs": 809.9069999880157,
+        "htmlResponseMs": 9.269999980460852,
+        "scriptRequests": 34,
+        "routePrefetches": 20
+      },
+      {
+        "apiPaths": [
+          "/api/config",
+          "/api/v1/reports/config",
+          "/api/v1/conversations",
+          "/api/v1/connections",
+          "/api/v1/conversations/8edbd2f328da48d0ab71534e0645839d",
+          "/api/v1/reports?conversation_id=8edbd2f328da48d0ab71534e0645839d",
+          "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa?metadata_only=true",
+          "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa/chart-data?view=bar&order=value_desc&top=10&retry=0"
+        ],
+        "chartResponseMs": 812.5959999742918,
+        "htmlResponseMs": 8.002999995369464,
+        "scriptRequests": 34,
+        "routePrefetches": 20
+      }
+    ],
+    "improved": [
+      {
+        "apiPaths": [
+          "/api/v1/reports/config",
+          "/api/v1/conversations",
+          "/api/v1/connections",
+          "/api/v1/conversations/8edbd2f328da48d0ab71534e0645839d",
+          "/api/v1/reports?conversation_id=8edbd2f328da48d0ab71534e0645839d",
+          "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa?metadata_only=true&initial_chart=true"
+        ],
+        "chartResponseMs": 544.5509999990463,
+        "htmlResponseMs": 41.265000007115304,
+        "scriptRequests": 20,
+        "routePrefetches": 17
+      },
+      {
+        "apiPaths": [
+          "/api/v1/reports/config",
+          "/api/v1/conversations",
+          "/api/v1/connections",
+          "/api/v1/conversations/8edbd2f328da48d0ab71534e0645839d",
+          "/api/v1/reports?conversation_id=8edbd2f328da48d0ab71534e0645839d",
+          "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa?metadata_only=true&initial_chart=true"
+        ],
+        "chartResponseMs": 481.63799999747425,
+        "htmlResponseMs": 16.507000022102147,
+        "scriptRequests": 20,
+        "routePrefetches": 20
+      },
+      {
+        "apiPaths": [
+          "/api/v1/reports/config",
+          "/api/v1/conversations",
+          "/api/v1/connections",
+          "/api/v1/conversations/8edbd2f328da48d0ab71534e0645839d",
+          "/api/v1/reports?conversation_id=8edbd2f328da48d0ab71534e0645839d",
+          "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa?metadata_only=true&initial_chart=true"
+        ],
+        "chartResponseMs": 512.1419999632053,
+        "htmlResponseMs": 18.233000009786338,
+        "scriptRequests": 20,
+        "routePrefetches": 19
+      },
+      {
+        "apiPaths": [
+          "/api/v1/reports/config",
+          "/api/v1/conversations",
+          "/api/v1/connections",
+          "/api/v1/conversations/8edbd2f328da48d0ab71534e0645839d",
+          "/api/v1/reports?conversation_id=8edbd2f328da48d0ab71534e0645839d",
+          "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa?metadata_only=true&initial_chart=true"
+        ],
+        "chartResponseMs": 458.58099998440593,
+        "htmlResponseMs": 10.387999995145947,
+        "scriptRequests": 20,
+        "routePrefetches": 18
+      },
+      {
+        "apiPaths": [
+          "/api/v1/reports/config",
+          "/api/v1/conversations",
+          "/api/v1/connections",
+          "/api/v1/conversations/8edbd2f328da48d0ab71534e0645839d",
+          "/api/v1/reports?conversation_id=8edbd2f328da48d0ab71534e0645839d",
+          "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa?metadata_only=true&initial_chart=true"
+        ],
+        "chartResponseMs": 453.6609999486245,
+        "htmlResponseMs": 10.383999964687973,
+        "scriptRequests": 20,
+        "routePrefetches": 17
+      },
+      {
+        "apiPaths": [
+          "/api/v1/reports/config",
+          "/api/v1/conversations",
+          "/api/v1/connections",
+          "/api/v1/conversations/8edbd2f328da48d0ab71534e0645839d",
+          "/api/v1/reports?conversation_id=8edbd2f328da48d0ab71534e0645839d",
+          "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa?metadata_only=true&initial_chart=true"
+        ],
+        "chartResponseMs": 476.57399997115135,
+        "htmlResponseMs": 21.674000017810613,
+        "scriptRequests": 20,
+        "routePrefetches": 17
+      },
+      {
+        "apiPaths": [
+          "/api/v1/reports/config",
+          "/api/v1/conversations",
+          "/api/v1/connections",
+          "/api/v1/conversations/8edbd2f328da48d0ab71534e0645839d",
+          "/api/v1/reports?conversation_id=8edbd2f328da48d0ab71534e0645839d",
+          "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa?metadata_only=true&initial_chart=true"
+        ],
+        "chartResponseMs": 494.02600002940744,
+        "htmlResponseMs": 22.960999980568886,
+        "scriptRequests": 20,
+        "routePrefetches": 17
+      },
+      {
+        "apiPaths": [
+          "/api/v1/reports/config",
+          "/api/v1/conversations",
+          "/api/v1/connections",
+          "/api/v1/conversations/8edbd2f328da48d0ab71534e0645839d",
+          "/api/v1/reports?conversation_id=8edbd2f328da48d0ab71534e0645839d",
+          "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa?metadata_only=true&initial_chart=true"
+        ],
+        "chartResponseMs": 455.2860000403598,
+        "htmlResponseMs": 14.383000030647963,
+        "scriptRequests": 20,
+        "routePrefetches": 17
+      },
+      {
+        "apiPaths": [
+          "/api/v1/reports/config",
+          "/api/v1/conversations",
+          "/api/v1/connections",
+          "/api/v1/conversations/8edbd2f328da48d0ab71534e0645839d",
+          "/api/v1/reports?conversation_id=8edbd2f328da48d0ab71534e0645839d",
+          "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa?metadata_only=true&initial_chart=true"
+        ],
+        "chartResponseMs": 462.45799999451265,
+        "htmlResponseMs": 18.599000002723187,
+        "scriptRequests": 20,
+        "routePrefetches": 17
+      },
+      {
+        "apiPaths": [
+          "/api/v1/reports/config",
+          "/api/v1/conversations",
+          "/api/v1/connections",
+          "/api/v1/conversations/8edbd2f328da48d0ab71534e0645839d",
+          "/api/v1/reports?conversation_id=8edbd2f328da48d0ab71534e0645839d",
+          "/api/v1/artifacts/1ff7d5acd32040c89d12d2f0328831fa?metadata_only=true&initial_chart=true"
+        ],
+        "chartResponseMs": 449.4110000086948,
+        "htmlResponseMs": 12.637000007089227,
+        "scriptRequests": 20,
+        "routePrefetches": 17
+      }
+    ]
+  },
+  "warm_summary": {
+    "baseline": {
+      "chart_data_response_median_ms": 818.8999999838416,
+      "chart_data_response_p95_ms": 1051.5610000002198,
+      "initial_api_requests": 8,
+      "script_requests_before_chart_response": 34
+    },
+    "improved": {
+      "chart_data_response_median_ms": 469.515999982832,
+      "chart_data_response_p95_ms": 544.5509999990463,
+      "initial_api_requests": 6,
+      "script_requests_before_chart_response": 20
+    }
+  },
+  "http_and_download_checks": {
+    "forecast_pdf": {
+      "bytes": 152628,
+      "sha256": "2e0a67023a0710d7b2bb40d976b59e741367a24ed6094f59599f20f8f7f87e6f"
+    },
+    "forecast_docx": {
+      "bytes": 135061,
+      "sha256": "b4b23fe726e7c0de223a322f3b33f30c2370e06c78b27453e506d93540df9efa"
+    },
+    "forecast_data": {
+      "bytes": 9875,
+      "sha256": "ad0bc4f97f2d4c57db3146d8388af37824c9f5b34a5cddedc97f779eb377c12f"
+    },
+    "scenario_pdf": {
+      "bytes": 406106,
+      "sha256": "6409c40beaf08f4fa180cccf6bc5bd7e9bafc1287ba4bd927ade34e2097df719"
+    },
+    "scenario_docx": {
+      "bytes": 367697,
+      "sha256": "266868a2d8ec6f6f3d7e0b6243d0c75354b598bc6acde047f66db5c4c1a9bec1"
+    },
+    "scenario_data": {
+      "bytes": 44951,
+      "sha256": "d6d796992615703568c43fd824bc96ec77a9c78afa6e49a27651de83e6bae4c1"
+    },
+    "history": {
+      "gzip_bytes": 5895,
+      "json_bytes": 32706,
+      "etag": "W/\"6de45215a982993ec29025d34ae7c894802ba9f56fcc3772ef3638fc147f2e03\"",
+      "server_timing": "app;dur=2.61"
+    },
+    "history_304": true,
+    "3130": {
+      "samples_ms": [
+        1.9498750334605575,
+        2.0432909950613976,
+        12.468166998587549,
+        1.6192080220207572,
+        0.9940000018104911,
+        0.9233340388163924,
+        2.2290830384008586,
+        1.3408749946393073,
+        0.9497079881839454,
+        2.3501249961555004
+      ],
+      "median_ms": 1.7845415277406573,
+      "p95_nearest_rank_ms": 12.468166998587549,
+      "html_bytes": 52690,
+      "bootstrap_in_html": false
+    },
+    "3131": {
+      "samples_ms": [
+        6.975541997235268,
+        8.804999990388751,
+        13.202834001276642,
+        5.493000033311546,
+        4.3510840041562915,
+        4.31300001218915,
+        6.212207954376936,
+        4.3355830130167305,
+        4.823584051337093,
+        4.2592090321704745
+      ],
+      "median_ms": 5.1582920423243195,
+      "p95_nearest_rank_ms": 13.202834001276642,
+      "html_bytes": 52665,
+      "bootstrap_in_html": true
+    }
+  },
+  "cloud_mutations": false,
+  "analytical_or_model_calls": false,
+  "dataset_or_history_writes": false,
+  "limits": [
+    "Local fixture backend, not real Firestore/BigQuery/Cloud SQL latency. Public saved metadata/pages were copied read-only for reader verification.",
+    "Baseline frontend is commit 7db9c58 with the same optimized fixture API as the candidate; transport savings are verified separately.",
+    "Ten warm Chrome network traces per frontend measure first visible-chart data response, not first chart paint or production speed.",
+    "The first baseline trace was captured before repeated warm reloads; no artificial cold starts or cache clearing.",
+    "Browser automation had long event-wait delays before timeoutMs:0 was used; event timestamps, not tool duration, are used.",
+    "Emulated mobile widths, not physical-device keyboard or complete screen-reader/contrast certification.",
+    "No new TimesFM, forecast/scenario, dashboard-builder or forecast-plan execution.",
+    "Warm-service settings and dated deployment records are unchanged. PostgreSQL pooling/resources were not changed."
+  ]
+}

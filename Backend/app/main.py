@@ -20,7 +20,7 @@ from starlette.websockets import WebSocketDisconnect
 from app.adk_sessions import FirestoreSessionService
 from app.ai import AI
 from app.analysis import AnalysisService
-from app.chart_presentation import csv_line, present, saved_rows
+from app.chart_presentation import csv_line, saved_rows
 from app.config import Settings, get_settings
 from app.connectors import Connectors
 from app.dashboards import Dashboards, dashboard_router
@@ -31,12 +31,14 @@ from app.model_selection import TEXT_MODELS, resolve_text_model
 from app.models import ConversationCreate, TurnCreate
 from app.planning import Planning, planning_router
 from app.planning_engine import PlanningEngine
+from app.read_performance import ReadPerformanceMiddleware
 from app.report_dispatch import ReportDispatcher
 from app.report_engine import ReportEngine
 from app.report_exports import ExportStorage
 from app.report_repository import ReportRepository
 from app.reports import report_router
 from app.repository import Repository
+from app.saved_chart_cache import SavedChartCache
 from app.skill_author import author_router
 from app.skill_author_voice import skill_author_voice
 from app.skills import skill_router
@@ -62,6 +64,7 @@ def create_app(settings: Settings | None = None, store_override=None, credential
             if settings.storage_backend == "firestore"
             else MemoryStore()
         )
+        charts = SavedChartCache(store, chart_slots)
         repo = Repository(store, settings)
         connectors = Connectors(settings, credentials=credentials)
         await connectors.start()
@@ -69,6 +72,7 @@ def create_app(settings: Settings | None = None, store_override=None, credential
         ai = AI(settings, sessions, connectors, store, credentials=credentials)
         analysis = AnalysisService(repo, connectors, ai, settings)
         app.state.services = SimpleNamespace(
+            charts=charts,
             settings=settings,
             store=store,
             repo=repo,
@@ -96,6 +100,7 @@ def create_app(settings: Settings | None = None, store_override=None, credential
             await services.report_exports.close()
             await analysis.close()
             await ai.close()
+            await charts.close()
             await connectors.close()
             await store.close()
 
@@ -104,8 +109,8 @@ def create_app(settings: Settings | None = None, store_override=None, credential
         CORSMiddleware,
         allow_origins=settings.origins,
         allow_methods=["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
-        allow_headers=["Authorization", "Content-Type", "Last-Event-ID"],
-        expose_headers=["X-Request-ID"],
+        allow_headers=["Authorization", "Content-Type", "Last-Event-ID", "If-None-Match"],
+        expose_headers=["X-Request-ID", "ETag", "Server-Timing"],
     )
 
     @app.middleware("http")
@@ -127,6 +132,8 @@ def create_app(settings: Settings | None = None, store_override=None, credential
         response.headers["X-Content-Type-Options"] = "nosniff"
         response.headers["Cache-Control"] = "no-store"
         return response
+
+    app.add_middleware(ReadPerformanceMiddleware)
 
     @app.exception_handler(AppError)
     async def app_error(request, exc):
@@ -216,7 +223,7 @@ def create_app(settings: Settings | None = None, store_override=None, credential
     @app.get("/api/v1/connections")
     async def connections(request: Request):
         services = request.app.state.services
-        checks = await asyncio.gather(*(services.connectors.test(source) for source in SOURCE_TABLES))
+        checks = await asyncio.gather(*(services.connectors.status(source) for source in SOURCE_TABLES))
         return {
             "mode": ("local-fixtures" if settings.ai_backend == "fixture" else "gemini-fixtures")
             if settings.data_backend == "fixture"
@@ -342,13 +349,22 @@ def create_app(settings: Settings | None = None, store_override=None, credential
         )
 
     @app.get("/api/v1/artifacts/{artifact_id}")
-    async def artifact(artifact_id: str, request: Request, metadata_only: bool = False):
+    async def artifact(artifact_id: str, request: Request, metadata_only: bool = False, initial_chart: bool = False):
         store = request.app.state.services.store
         artifact = await store.get("artifacts", artifact_id)
         if not artifact:
             raise AppError("Result not found.", 404, "not_found")
         if metadata_only:
-            return artifact | {"rows": []}
+            value = artifact | {"rows": []}
+            view = artifact["visualization"]["type"]
+            if initial_chart and artifact["row_count"] <= 500 and artifact["page_count"] <= 2 and view in {"line", "area", "bar", "pie", "scatter"}:
+                try:
+                    data = await request.app.state.services.charts.get(artifact, view=view, order="value_desc", top=10)
+                    value["initial_chart"] = {"query": f"view={view}&order=value_desc&top=10", "data": data}
+                except Exception:
+                    # Metadata remains available; the normal chart path reports validation failures.
+                    pass
+            return value
         rows = []
         for index in range(artifact["page_count"]):
             page = await store.get(f"artifacts/{artifact_id}/pages", str(index))
@@ -374,19 +390,9 @@ def create_app(settings: Settings | None = None, store_override=None, credential
             raise AppError("Result not found.", 404, "not_found")
         if top not in {5, 10, 20}:
             raise AppError("Choose Top 5, 10, or 20.", 422)
-        async with chart_slots:
-            rows = [row async for row in saved_rows(store, artifact)]
-            return await asyncio.to_thread(
-                present,
-                artifact,
-                rows,
-                start=start,
-                end=end,
-                primary=primary,
-                order=order,
-                top=top,
-                view=view,
-            )
+        return await request.app.state.services.charts.get(
+            artifact, start=start, end=end, primary=primary, order=order, top=top, view=view,
+        )
 
     @app.get("/api/v1/artifacts/{artifact_id}/export.csv")
     async def export_csv(artifact_id: str, request: Request):

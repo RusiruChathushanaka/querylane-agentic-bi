@@ -18,9 +18,12 @@ function harness() {
     useEffect:(fn,deps)=>{const i=index++;if(!effects[i]||!same(effects[i].deps,deps))pending.push(()=>{effects[i]?.cleanup?.();effects[i]={deps,cleanup:fn()};});},
   };
   class ApiError extends Error {constructor(message,retryAfter){super(message);this.retryAfter=retryAfter;}}
+  const listeners=new Map();
+  const doc={hidden:false,addEventListener:(k,f)=>listeners.set(k,f),removeEventListener:k=>listeners.delete(k)};
+  const win={addEventListener:(k,f)=>listeners.set(k,f),removeEventListener:k=>listeners.delete(k)};
   const m={exports:{}};
-  vm.runInNewContext(compiled,{module:m,exports:m.exports,require:k=>k==='react'?react:{ApiError,initialRead:task=>task()},AbortController,Date,Error,document:{hidden:false},setInterval:fn=>(interval=fn,1),clearInterval:()=>{interval=undefined;}});
-  return {ApiError,render(key,read,commit=()=>{},poll=0){index=0;const v=m.exports.useReadResource(key,read,commit,poll);const tasks=pending;pending=[];tasks.forEach(fn=>fn());return v;},poll:()=>interval?.(),unmount:()=>effects.forEach(e=>e?.cleanup?.())};
+  vm.runInNewContext(compiled,{module:m,exports:m.exports,require:k=>k==='react'?react:{ApiError,initialRead:task=>task()},AbortController,Date,Error,document:doc,window:win,setInterval:fn=>(interval=fn,1),clearInterval:()=>{interval=undefined;}});
+  return {ApiError,focus:()=>listeners.get("focus")?.(),listeners,render(key,read,commit=()=>{},poll=0){index=0;const v=m.exports.useReadResource(key,read,commit,poll);const tasks=pending;pending=[];tasks.forEach(fn=>fn());return v;},poll:()=>interval?.(),unmount:()=>effects.forEach(e=>e?.cleanup?.())};
 }
 
 test('independent resources reveal whichever finishes first and distinguish pending from empty',async()=>{
@@ -72,4 +75,13 @@ test('an initial failure stops automatic polling until a deliberate retry',async
   const read=async()=>{calls++;throw new Error('offline');};
   h.render('failed',read,()=>{},5000);await flush();h.poll();h.poll();await flush();assert.equal(calls,1);
   h.render('failed',read,()=>{},5000).refresh();await flush();assert.equal(calls,2);h.unmount();
+});
+
+
+test('focus revalidates a loaded resource once and cleanup removes listeners',async()=>{
+  const h=harness(),first=deferred(),second=deferred();let calls=0;
+  const read=()=>[first,second][calls++].promise;
+  h.render('history',read,()=>{},30000);h.focus();assert.equal(calls,1);
+  first.resolve(['saved']);await flush();h.focus();h.focus();assert.equal(calls,2);
+  second.resolve(['updated']);await flush();h.unmount();assert.equal(h.listeners.size,0);
 });

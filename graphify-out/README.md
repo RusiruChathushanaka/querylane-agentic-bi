@@ -1,26 +1,22 @@
 # Querylane knowledge graph
 
-Refreshed **22 October 2026 UTC** with the [project Graphify skill](../.agents/skills/graphify/SKILL.md), Graphify 0.9.51, for the deployed workspace/loading implementation; hosted verification is recorded separately. Per-file SHA-256 hashes in [VALIDATION.json](VALIDATION.json) identify the indexed working tree over `221b8253`.
+Refreshed **23 October 2026** using the [Graphify skill](../.agents/skills/graphify/SKILL.md), Graphify 0.9.51. This is the deployed loading-speed implementation over `7db9c58fa7641b48094480f6c0fd4c3d46072828`; actual Cloud Run release evidence is recorded separately and GitHub publication follows verification. [VALIDATION.json](VALIDATION.json) records exact working-tree source hashes.
 
-- [graph.html](graph.html): interactive graph; its pinned vis-network viewer loads from a CDN.
-- [graph.json](graph.json): 2,395 nodes, 6,488 edges and 158 named communities.
-- [GRAPH_REPORT.md](GRAPH_REPORT.md): hubs, cohesion, relationships and scope limitations.
-- [cost.json](cost.json): separate model-API accounting; host semantic-token usage is unknown.
+- [graph.html](graph.html): interactive viewer, with a pinned CDN dependency.
+- [graph.json](graph.json): 2,462 nodes, 6,614 edges and 160 named communities.
+- [GRAPH_REPORT.md](GRAPH_REPORT.md): relationships, extraction scope and limitations.
+- [cost.json](cost.json): separate model-API accounting; host semantic-token usage is unavailable, not zero.
 
-Scope: 234 code files and 69 documents, approximately 227,332 words. One host-session agent refreshed 7 changed documents; 62 unchanged document extractions were reused. Both Submission spellings, credentials, dependencies, generated data/media, historical evaluation files and graph output stay excluded through [`.graphifyignore`](../.graphifyignore).
+Scope: 248 code files and 69 documents, approximately 230,890 words. One host-session semantic agent refreshed 6 changed documents; 63 unchanged document extractions were reused. [`.graphifyignore`](../.graphifyignore) excludes both Submission spellings, credentials, dependencies, generated data/media, historical assessments and graph output.
 
-## Independent startup loading and warm services
+## Current deployed implementation
 
-The map includes viewport-owned conversation/history scrolling, nearby saved charts, unchanged-read identity and independent workspace history/source/report configuration reads, immediate deep-linked conversation text, saved report/card placeholders, shared slow/error/retry feedback and backend source-check concurrency. Initial GETs have one transient retry; initial failure stops polling until manual retry, background failures retain content and Retry-After bounds recovery. Mutations, guest-session POSTs and inference remain outside this policy. The release helper enforces service-level frontend and API minima one without resetting worker scaling or existing ceilings. The [hosted workspace/loading assessment](../docs/evaluation/workspace-loading-release-20261022.md) verifies service minima one on frontend and API. See [startup behavior](../docs/startup-loading.md) and [local verification](../docs/evaluation/startup-loading-local-20261021.md).
+The map includes application-only runtime HTML configuration, bounded conditional public reads, non-overlapping idle/focus refreshes, gzip/timing for eligible JSON, short successful source-status snapshots and saved-chart reuse with live artifact checks. Nearby report charts load independently from narrative and immutable downloads. Initial bootstrap retry, cancellation, stale-response and retained-content behavior remain intact. Fresh execution/readiness checks, analytical limits and TimesFM gates are preserved. See [startup lifecycle](../docs/startup-loading.md), [architecture](../docs/architecture.md) and [local verification](../docs/evaluation/loading-speed-local-20261023.md).
 
-## Existing report design and shared dropdowns
-
-The map covers bordered report sections, saved-document titles, responsive navigation, complete future-point tables, explicit scenario paths and structured forecast diagnostics. PDF/Word/data ZIP rendering occurs at new-version publication, with original exported bytes and full-precision CSV/prediction provenance retained. Shared `AppSelect`/Radix dropdowns unify 36 controls across reports, dashboards, metrics, planning and charts, preserving empty/numeric values, portaled scrolling, themes and keyboard focus. Action menus and multi-select checkboxes keep their distinct behavior.
-
-The [recorded release](../docs/evaluation/report-dropdown-release-20261021.md) served frontend `00023-hsg`, API `00025-8ml` and private worker `00014-kgl`, preserving the larger dataset and verified enabled TimesFM gates. Two presentation-only worker runs and six exports passed; this is saved-evidence reuse, not fresh numerical forecasting. [README](../README.md), [AGENTS](../AGENTS.md) and [architecture](../docs/architecture.md) distinguish that historical release from the later workspace/loading release. The startup implementation changes browser loading and availability-check concurrency; graph generation itself changes no cloud service, analytical dataset or model. The later hosted workspace/loading release is recorded separately.
+The [23 October local-date loading-speed release](../docs/evaluation/loading-speed-release-20261023.md) records frontend `00026-g5t`, API `00027-cgw` and worker `00016-477`, with unchanged minima 1/1/0. Its 23 hosted HTTP checks, 24 preservation checks, desktop/mobile checks and six identical downloads are separate from graph extraction. Ten-sample median/request counts improved; a retained browser p95 outlier prevents a universal latency claim. No fresh forecasting or planning-worker acceptance is implied. The [prior release](../docs/evaluation/workspace-loading-release-20261022.md) remains historical.
 
 ## Refresh and limits
 
-Use `$graphify .` for code plus changed-document semantics. The [curated Mermaid views](../docs/graphify/README.md) remain synchronized with the authoritative architecture. Compare hashes as well as the base commit for freshness; graph relationships are navigation evidence, not runtime proof.
+Use the Graphify skill for AST extraction plus changed-document semantics. The [curated Mermaid diagrams](../docs/graphify/README.md) remain derived from authoritative architecture blocks. Compare source hashes as well as the base commit for freshness.
 
-The AST parser reports a potentially partial parse of `Frontend/src/components/workspace.tsx` at line 1101 (14 symbols). The undirected projection reports 1016 unresolved endpoint references and 585 collapsed same-endpoint relationships. External imports are not fabricated as project entities. Host semantic-token counts remain unavailable, not zero.
+The AST parser reports potentially partial extraction of `Frontend/src/components/workspace.tsx` at line 1112 (14 symbols). The undirected projection reports 1079 unresolved endpoint references and 589 collapsed relationships. External imports are not fabricated as project entities; graph navigation does not prove runtime behavior.

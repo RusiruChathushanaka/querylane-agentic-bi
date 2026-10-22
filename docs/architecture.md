@@ -13,9 +13,10 @@ flowchart LR
     Preview --> Fixture[Packaged verified values / cutoff / model scores]
     Preview -->|Explicit evidence link / no prefetch| Version[Saved report version / no inference]
     Legacy[Legacy root chat links] -->|307 /app with query preserved| Browser
-    Browser --> Runtime[Shared runtime configuration /api/config]
+    Browser --> Runtime[Request-time public config in application HTML / api config fallback]
     Runtime --> Startup[Independent cancellable reads / loading and retry feedback]
-    Startup -->|GET resources| API[Public FastAPI on Cloud Run]
+    Startup --> Transport[Conditional public reads / JSON gzip / timing]
+    Transport -->|GET resources| API[Public FastAPI on Cloud Run]
     Browser -->|Mutations and SSE / unchanged| API
     Warm[Frontend and API service minima one / verified 22 Oct UTC] -.-> API
     Warm -.-> Browser
@@ -50,7 +51,9 @@ flowchart LR
     Coherent --> TimesFM
     Coherent --> Saved
     API --> Saved[Saved-result charts and dashboards]
-    Saved -->|Read immutable pages and checked revisions| Store
+    Saved -->|Read live metadata and checked revisions| Store
+    Saved --> Views[Bounded immutable chart views / 30s / two render slots]
+    Views -->|Miss: complete saved pages only| Store
     Saved --> Export[Isolated dashboard renderer / full CSV and JSON]
     API --> Reports[Report admission and versioned library]
     Reports --> Store
@@ -111,13 +114,14 @@ The [report/dropdown release](evaluation/report-dropdown-release-20261021.md) ve
 | Forecast selection and managed inference | `Backend/app/report_forecasting.py`, `timesfm.py` | [TimesFM](timesfm.md), [ADR 0009](adr/0009-managed-timesfm-comparison.md) |
 | Statistics, files and isolated research | `Backend/app/report_statistics.py`, `report_exports.py`, `report_research.py` | [Reports](reports.md), [ADR 0007](adr/0007-public-report-evidence.md) |
 | Report library/reader | `Frontend/src/components/reports-library.tsx`, `report-workspace.tsx`, `report-run-card.tsx` | `Frontend/src/lib/report-types.ts` |
+| Read performance and runtime bootstrap | `Backend/app/read_performance.py`, `saved_chart_cache.py`, `Frontend/src/components/runtime-config.tsx`, `runtime-bootstrap.tsx`, `Frontend/src/lib/loading-performance.ts` | [Startup loading](startup-loading.md), [local performance verification](evaluation/loading-speed-local-20261023.md) |
 | Persistence, maintenance and data publication | `Backend/app/storage.py`, `adk_sessions.py`, `maintenance.py`, `retail_generator.py`, `retail_upload.py` | [Data workflow](retail-timeseries.md), [deployment runbook](deployment-guide.md) |
 
 Paths shortened after the first entry in a cell use that entry's directory. Source files define behavior; feature guides explain its invariants. The graph references provide navigation, not an exhaustive dependency graph.
 
 ## Application startup and resource loading
 
-The frontend shell renders before API data and does not perform a server-side readiness gate. The browser resolves the shared runtime configuration once, then starts independent GETs. `useReadResource` owns per-resource pending/success/error state, cancellation, stale-response checks and non-overlapping polling. `ResourceFeedback` announces pending/slow/error states and offers local retry; successful content survives refresh failure. Resource emptiness is established only after success. See [startup behavior](startup-loading.md) and its [local verification](evaluation/startup-loading-local-20261021.md).
+The frontend shell renders before API data and does not perform a server-side readiness gate. Application layouts deliver the public runtime URL before browser read effects; `/api/config` remains the shared fallback. Independent GETs start without a backend readiness hop. `useReadResource` owns per-resource pending/success/error state, cancellation, stale-response checks and non-overlapping polling. `ResourceFeedback` announces pending/slow/error states and offers local retry; successful content survives refresh failure. Resource emptiness is established only after success. See [startup behavior](startup-loading.md) and its [local verification](evaluation/startup-loading-local-20261021.md).
 
 Workspace history, analytical-source availability and report configuration load independently. Valid deep-linked conversations load in parallel and reveal text before cards. Report metadata, document versions and chart evidence have separate reads; one unavailable card does not hide the narrative or other cards. Libraries, builder proposals, saved readers and backend model settings use the same lifecycle while preserving local inputs. Initial GETs can retry once after one second for transient transport/408/502/503/504 errors; Retry-After bounds rate-limit recovery. Initial failure stops polling until deliberate retry. Mutations, credentials, streams and inference policies are unchanged.
 
@@ -307,3 +311,11 @@ The fresh test recorded frontend `00018-kd4`, API `00024-rnd` and worker `00013-
 ## Workspace/loading release record
 
 The [22 October UTC hosted assessment](evaluation/workspace-loading-release-20261022.md) records frontend `00025-5cz`, API `00026-9r5` and worker `00015-d4h`. Desktop and 320px/390px/landscape layouts, independent delayed-source loading and saved readers passed. A narrow Skills header now wraps links. Six saved report downloads and 24 configuration/data preservation checks passed; this is not fresh analytical-worker acceptance. Warm HTTP measurements are mixed and remain separate from local visible-chart measurements.
+
+## Further loading optimization — local implementation
+
+Application-only `RuntimeConfig` layouts and `RuntimeBootstrap` deliver the public backend URL before read effects, without awaiting backend data. `/api/config` remains a fallback; `/` stays static and backend-free. History/conversation reads use bounded memory-only conditional bodies and thirty-second idle polling with focus/visibility revalidation. Current state is read before 304 responses, so validators reduce transfer while slower polling reduces database work.
+
+`ReadPerformanceMiddleware` bounds JSON buffering to 1 MiB, adds gzip, eligible ETags and Server-Timing, and leaves execution streams and saved download bytes unchanged. `FirestoreStore` records request-local read spans without changing persistence. Successful UI source status has a fifteen-second checked-at snapshot; execution and readiness guards stay fresh.
+
+`SavedChartCache` binds deterministic views to live-read artifact metadata, all view parameters and presentation version. Thirty-second, 32-entry/8-MiB limits, one-MiB values and existing two chart slots bound reuse. Optional small initial previews eliminate a second request only when parameters match. Report evidence uses nearby admission, with all provenance resolved on entering the evidence section. No new public endpoint, data schema, source/model workflow or cloud setting changes. See [the local verification](evaluation/loading-speed-local-20261023.md) for measured request reductions, the small HTML rendering tradeoff and verification limits; the [loading-speed hosted release](evaluation/loading-speed-release-20261023.md) records actual serving revisions and preserved configuration, with timing outliers retained.

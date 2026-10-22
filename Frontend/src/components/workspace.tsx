@@ -1,7 +1,8 @@
 "use client";
 import { useReadResource } from "@/hooks/use-read-resource";
 import { ResourceFeedback } from "./resource-feedback";
-import { initialRead } from "@/lib/api";
+import { initialRead, revalidatedRead } from "@/lib/api";
+import { loadingMark } from "@/lib/loading-performance";
 import { savedResult } from "@/lib/saved-result-loader";
 import { retainEqualRead } from "@/lib/read-equality";
 import { useWorkspaceScroll } from "@/hooks/use-workspace-scroll";
@@ -227,10 +228,11 @@ export default function Workspace() {
   const analysisToast = useRef<string | null>(null);
   const { shell, scroller, registerBottom, resetFollowing, jumpToLatest, showJump, onScroll, pauseFollowing } = useWorkspaceScroll(preferences.autoScroll);
 
-  const historyResource = useReadResource("public-explorations", (signal) => api<{ conversations: Conversation[] }>("/conversations", { signal }), (v) => setConversations(v.conversations), 8000);
+  const historyResource = useReadResource("public-explorations", (signal) => revalidatedRead<{ conversations: Conversation[] }>("/conversations", signal), (v) => { setConversations(previous => retainEqualRead(previous, v.conversations)); loadingMark("history-ready"); }, 30000);
   const refreshList = historyResource.refresh;
   const sourcesResource = useReadResource("analytical-sources", (signal) => api<{ mode: string; period?: string; connections: Connection[] }>("/connections", { signal }), (v) => {
     setConnections(v.connections);
+    loadingMark("sources-ready");
     setMode(v.mode);
     setDataPeriod(v.period ?? "SYNTHETIC RETAIL");
   });
@@ -248,13 +250,14 @@ export default function Workspace() {
 
   const loadMessages = useCallback(
     async (id: string, signal?: AbortSignal) => {
-      const result = await api<{
+      const result = await revalidatedRead<{
         conversation: Conversation;
         messages: Message[];
-      }>(`/conversations/${id}`, { signal });
+      }>(`/conversations/${id}`, signal);
       if (signal?.aborted || activeConversation.current !== id) return result;
       setConversation((previous) => retainEqualRead(previous, result.conversation));
       setMessages((previous) => retainEqualRead(previous, result.messages));
+      loadingMark("conversation-text-ready");
       return result;
     },
     [],
@@ -420,14 +423,21 @@ export default function Workspace() {
   useEffect(() => {
     let pending = false;
     const pollController = new AbortController();
-    const interval = setInterval(() => {
+    const revalidate = () => {
       if (document.hidden || pending || chatPending.current) return;
       if (activeConversation.current && !runId && voiceState === "off") {
         pending = true;
         void loadMessages(activeConversation.current, pollController.signal).catch(() => {}).finally(() => { pending = false; });
       }
-    }, 8000);
-    return () => { clearInterval(interval); pollController.abort(); };
+    };
+    const interval = setInterval(revalidate, 30000);
+    window.addEventListener("focus", revalidate);
+    document.addEventListener("visibilitychange", revalidate);
+    return () => {
+      clearInterval(interval); pollController.abort();
+      window.removeEventListener("focus", revalidate);
+      document.removeEventListener("visibilitychange", revalidate);
+    };
   }, [runId, voiceState, loadMessages]);
 
   useEffect(() => {
@@ -951,6 +961,7 @@ export default function Workspace() {
                             <span>
                               <strong>{connection.engine}</strong>
                               <small>{connection.name}</small>
+                              {connection.checked_at && <small>Checked {new Date(connection.checked_at * 1000).toLocaleTimeString()}{connection.cached ? " · recent status" : ""}</small>}
                               <span className="sr-only">
                                 {connection.connected
                                   ? "Connected"
@@ -1650,7 +1661,7 @@ function SavedConversationCard({ id }: { id: string }) {
     observer.observe(node);
     return () => observer.disconnect();
   }, [id]);
-  const resource = useReadResource(`conversation-card:${id}:${visible}`, (signal) => visible ? savedResult<Artifact>(`/artifacts/${id}?metadata_only=true`, signal) : Promise.resolve(null), (value) => { if (value) setArtifact(value); });
+  const resource = useReadResource(`conversation-card:${id}:${visible}`, (signal) => visible ? savedResult<Artifact>(`/artifacts/${id}?metadata_only=true&initial_chart=true`, signal) : Promise.resolve(null), (value) => { if (value) setArtifact(value); });
   return <div ref={root} className="saved-conversation-card" aria-label="Saved chart">
     {artifact ? <ResultCard artifact={artifact} /> : visible ? <ResourceFeedback resource={resource} label="Loading saved result" skeleton /> : <div className="saved-card-placeholder"><span>Saved chart · loads when nearby</span><Skeleton className="result-loading" /></div>}
   </div>;
