@@ -3,7 +3,7 @@
 import { AppSelect, AppSelectItem } from "@/components/ui/app-select";
 import "@/app/dashboards.css";
 
-import Link from "next/link";
+import Link from "@/components/ui/app-link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Pin, Plus } from "lucide-react";

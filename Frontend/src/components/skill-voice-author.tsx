@@ -7,7 +7,7 @@ import {
   useState,
   type FormEvent,
 } from "react";
-import Link from "next/link";
+import Link from "@/components/ui/app-link";
 import {
   ArrowUpRight,
   Check,

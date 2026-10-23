@@ -1,7 +1,7 @@
 "use client";
 import { useReadResource } from "@/hooks/use-read-resource";
 import { ResourceFeedback } from "./resource-feedback";
-import Link from "next/link";
+import Link from "@/components/ui/app-link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import {

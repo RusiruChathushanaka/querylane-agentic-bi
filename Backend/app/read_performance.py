@@ -6,6 +6,7 @@ import logging
 import re
 import time
 from contextvars import ContextVar
+from uuid import uuid4
 
 logger = logging.getLogger(__name__)
 CONDITIONAL = re.compile(r"^/api/v1/conversations(?:/[a-f0-9]{32})?$")
@@ -28,8 +29,9 @@ def accepts_gzip(value):
 
 
 class ReadPerformanceMiddleware:
-    def __init__(self, app):
+    def __init__(self, app, allowed_origins=()):
         self.app = app
+        self.allowed_origins = frozenset(allowed_origins)
 
     async def __call__(self, scope, receive, send):
         path = scope.get("path", "")
@@ -79,10 +81,16 @@ class ReadPerformanceMiddleware:
             body = b"".join(chunks)
             headers = dict(response_start["headers"])
             elapsed = (time.perf_counter() - start) * 1000
+            read_id = uuid4().hex[:16]
+            headers[b"x-querylane-read-id"] = read_id.encode()
             headers[b"server-timing"] = (
                 f"app;dur={elapsed:.2f}"
+                + f', read;desc="{read_id}"'
                 + "".join(f", {name};dur={duration:.2f}" for name, duration in sorted(spans.items()))
             ).encode()
+            origin = request.get(b"origin", b"").decode(errors="replace")
+            if origin in self.allowed_origins:
+                headers[b"timing-allow-origin"] = origin.encode()
             status = response_start["status"]
             if CONDITIONAL.fullmatch(path):
                 etag = b'W/"' + hashlib.sha256(body).hexdigest().encode() + b'"'
@@ -100,12 +108,15 @@ class ReadPerformanceMiddleware:
             vary = [v.strip() for v in headers.get(b"vary", b"").split(b",") if v.strip()]
             if b"accept-encoding" not in [v.lower() for v in vary]:
                 vary.append(b"Accept-Encoding")
+            if b"timing-allow-origin" in headers and b"origin" not in [v.lower() for v in vary]:
+                vary.append(b"Origin")
             headers[b"vary"] = b", ".join(vary)
             headers.pop(b"content-length", None)
             if status != 304:
                 headers[b"content-length"] = str(len(body)).encode()
             logger.info(
-                "public_read route=%s duration_ms=%.2f status=%s bytes=%s",
+                "public_read read_id=%s route=%s duration_ms=%.2f status=%s bytes=%s",
+                read_id,
                 scope.get("route", path),
                 elapsed,
                 status,

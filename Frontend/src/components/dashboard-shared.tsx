@@ -1,5 +1,5 @@
 "use client";
-import Link from "next/link";
+import Link from "@/components/ui/app-link";
 import { workspacePath } from "@/lib/workspace-links";
 import { useEffect, useRef, useState } from "react";
 import {

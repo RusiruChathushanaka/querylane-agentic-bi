@@ -20,7 +20,10 @@ flowchart LR
     Browser -->|Mutations and SSE / unchanged| API
     Warm[Frontend and API service minima one / verified 22 Oct UTC] -.-> API
     Warm -.-> Browser
+    Browser --> NavPolicy[Application links / click-only route fetch]
     Browser --> Scroll[Viewport shell / conversation-only scrolling / nearby saved cards]
+    Scroll --> CardAssets[Nearby cards / parallel module and metadata / synchronous ready code]
+    Transport --> ReadTiming[Approved-origin timing phases / fresh read correlation ID]
     Browser --> Choices[Shared Radix choice controls / portal and keyboard focus]
     Browser --> Sources[Header Sources sheet / schema inspection]
     Sources -->|Existing connection and schema reads| API
@@ -319,3 +322,7 @@ Application-only `RuntimeConfig` layouts and `RuntimeBootstrap` deliver the publ
 `ReadPerformanceMiddleware` bounds JSON buffering to 1 MiB, adds gzip, eligible ETags and Server-Timing, and leaves execution streams and saved download bytes unchanged. `FirestoreStore` records request-local read spans without changing persistence. Successful UI source status has a fifteen-second checked-at snapshot; execution and readiness guards stay fresh.
 
 `SavedChartCache` binds deterministic views to live-read artifact metadata, all view parameters and presentation version. Thirty-second, 32-entry/8-MiB limits, one-MiB values and existing two chart slots bound reuse. Optional small initial previews eliminate a second request only when parameters match. Report evidence uses nearby admission, with all provenance resolved on entering the evidence section. No new public endpoint, data schema, source/model workflow or cloud setting changes. See [the local verification](evaluation/loading-speed-local-20261023.md) for measured request reductions, the small HTML rendering tradeoff and verification limits; the [loading-speed hosted release](evaluation/loading-speed-release-20261023.md) records actual serving revisions and preserved configuration, with timing outliers retained.
+
+## Further loading contention correction (deployed, 23 October 2026)
+
+Application-only `ui/app-link.tsx` suppresses speculative route traffic; explicit clicks retain Next.js navigation. `saved-card-loader.ts` starts the result module alongside admitted metadata; `prepared-result-card.tsx` reuses its stable imported component synchronously to avoid a new fallback wait after data arrives. Unprepared/streamed cards retain the dynamic import and skeleton. This changes browser code scheduling, not analytical execution or the two-read concurrency limit. Origin-scoped timing and fresh safe read IDs correlate phases with application logs without telemetry or question/auth logging. See [the investigation](evaluation/loading-contention-local-20261023.md); the historical outlier remains unproven. The [hosted release](evaluation/loading-contention-release-20261023.md) verifies deployment, exact-origin timing correlation, desktop/mobile behavior and unchanged warm/data/TimesFM settings.

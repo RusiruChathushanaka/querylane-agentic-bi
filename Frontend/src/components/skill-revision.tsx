@@ -3,7 +3,7 @@ import { useReadResource } from "@/hooks/use-read-resource";
 import { ResourceFeedback } from "./resource-feedback";
 
 import { useState } from "react";
-import Link from "next/link";
+import Link from "@/components/ui/app-link";
 import { ArrowLeft, BookOpen } from "lucide-react";
 import { api } from "@/lib/api";
 import type { Skill } from "@/lib/types";

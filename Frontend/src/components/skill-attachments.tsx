@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import Link from "@/components/ui/app-link";
 import { BookOpen, Check, X } from "lucide-react";
 import { toast } from "sonner";
 import { api } from "@/lib/api";

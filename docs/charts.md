@@ -42,3 +42,7 @@ Follow the [deployment guide](deployment-guide.md) for a requested release, expl
 ## Bounded saved-view reuse (local implementation)
 
 [The 23 October local assessment](evaluation/loading-speed-local-20261023.md) records an optional `initial_chart=true` metadata preview for at most 500 rows/two pages. Existing presenter validation and full selected rows still determine the view; clients reuse only matching parameters. Larger artifacts retain separate chart-data reads. Cache keys include live artifact metadata, all view parameters and presentation version; thirty-second/32-entry/8-MiB bounds and existing two-render/two-client-slot limits remain. Deleted artifacts are checked before cache access. No source query, inference, persistent browser cache or export regeneration is introduced.
+
+## Chart code scheduling — local correction
+
+[The loading investigation](evaluation/loading-contention-local-20261023.md) adds parallel code/saved-metadata loading after viewport admission and synchronous use of the ready result-card component, with the existing dynamic fallback retained. App/evidence links use the shared click-only AppLink policy. Saved parameters, full-row evidence, exported bytes and revision controls are unchanged. Off-screen evidence is not fetched merely to warm code. The [hosted release](evaluation/loading-contention-release-20261023.md) verifies desktop/mobile scheduling and unchanged exports/settings; the historical 4.52s cause remains unproven.

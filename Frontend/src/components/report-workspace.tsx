@@ -1,12 +1,13 @@
 "use client";
+import { loadSavedCard } from "@/components/saved-card-loader";
 import { useReadResource } from "@/hooks/use-read-resource";
 import { ResourceFeedback } from "./resource-feedback";
 import { useNearViewport } from "@/hooks/use-near-viewport";
 import { savedResult } from "@/lib/saved-result-loader";
 
 import { AppSelect, AppSelectItem } from "@/components/ui/app-select";
-import dynamic from "next/dynamic";
-import Link from "next/link";
+import ResultCard from "@/components/prepared-result-card";
+import Link from "@/components/ui/app-link";
 import { workspacePath } from "@/lib/workspace-links";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -42,9 +43,6 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-const ResultCard = dynamic(() => import("@/components/result-card"), {
-  loading: () => <Skeleton className="h-80" />,
-});
 
 export function ReportWorkspace({
   id,
@@ -1049,7 +1047,7 @@ function SavedReportCard({ id, onLoaded }: { id: string; onLoaded: (artifact: Ar
   const { ref: setCardNode, near } = useNearViewport<HTMLDivElement>();
   const [artifact, setArtifact] = useState<Artifact | null>(null);
   const resource = useReadResource(`saved-report-card:${id}:${near}`, signal => near
-    ? savedResult<Artifact>(`/artifacts/${id}?metadata_only=true&initial_chart=true`, signal)
+    ? loadSavedCard(`/artifacts/${id}?metadata_only=true&initial_chart=true`, signal)
     : Promise.resolve(null), value => { if (value) { setArtifact(value); onLoaded(value); } });
   return <div ref={setCardNode} className="report-result-section" style={{ minHeight: 320 }}>
     {artifact ? <>{artifact.prediction && <ReportPrediction artifact={artifact} />}<ResultCard artifact={artifact} showPredictionEvidence={false} /></>

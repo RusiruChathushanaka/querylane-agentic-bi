@@ -1,7 +1,7 @@
 "use client";
 import { useReadResource } from "@/hooks/use-read-resource";
 import { ResourceFeedback } from "./resource-feedback";
-import Link from "next/link";
+import Link from "@/components/ui/app-link";
 import { useState } from "react";
 import { api } from "@/lib/api";
 import type { MetricDefinition } from "@/lib/planning-types";

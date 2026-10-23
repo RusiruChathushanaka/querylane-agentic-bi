@@ -108,3 +108,7 @@ The [21 October hosted release](evaluation/report-dropdown-release-20261021.md) 
 ## Nearby reader evidence (local implementation)
 
 The reader now admits chart metadata/rendering within 200px of the document viewport through the shared two-request loader. Text and version downloads are independent. Each failed chart has a local retry; entering Evidence & limitations resolves remaining metadata so source timestamps remain complete. Only current-version artifact IDs appear in provenance. The saved PDF/Word/data endpoints still read immutable stored bytes, independent of browser placeholders; see [local verification](evaluation/loading-speed-local-20261023.md). This change is not new worker or numerical acceptance.
+
+## Nearby report card code — local correction
+
+[The loading investigation](evaluation/loading-contention-local-20261023.md) adds parallel code/saved-metadata loading after viewport admission and synchronous use of the ready result-card component, with the existing dynamic fallback retained. App/evidence links use the shared click-only AppLink policy. Saved parameters, full-row evidence, exported bytes and revision controls are unchanged. Off-screen evidence is not fetched merely to warm code. The [hosted release](evaluation/loading-contention-release-20261023.md) verifies desktop/mobile scheduling and unchanged exports/settings; the historical 4.52s cause remains unproven.

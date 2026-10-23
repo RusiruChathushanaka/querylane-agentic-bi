@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/ui/app-link";
 import { workspacePath } from "@/lib/workspace-links";
 import { useState } from "react";
 import { useTheme } from "next-themes";

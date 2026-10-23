@@ -1,11 +1,12 @@
 "use client";
+import { loadSavedCard } from "@/components/saved-card-loader";
 import { useReadResource } from "@/hooks/use-read-resource";
 import { ResourceFeedback } from "./resource-feedback";
 
 import { AppSelect, AppSelectItem } from "@/components/ui/app-select";
-import Link from "next/link";
+import Link from "@/components/ui/app-link";
 import { workspacePath } from "@/lib/workspace-links";
-import dynamic from "next/dynamic";
+import ResultCard from "@/components/prepared-result-card";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -25,7 +26,6 @@ import { motion } from "motion/react";
 import { useAppMotion } from "@/hooks/use-app-motion";
 import { SPRING_LAYOUT } from "@/lib/ease";
 import { api } from "@/lib/api";
-import { savedResult } from "@/lib/saved-result-loader";
 import { dashboardPath } from "@/lib/dashboard-links";
 import type { Artifact } from "@/lib/types";
 import type {
@@ -77,9 +77,6 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 
-const ResultCard = dynamic(() => import("@/components/result-card"), {
-  loading: () => <Skeleton className="h-80 w-full" />,
-});
 
 function DashboardWidget({
   item,
@@ -129,7 +126,7 @@ function DashboardWidget({
     if (root.current) observer.observe(root.current);
     return () => observer.disconnect();
   }, []);
-  const cardResource = useReadResource(`dashboard-card:${item.artifact_id}:${visible}`, (signal) => visible ? savedResult<Artifact>(`/artifacts/${item.artifact_id}?metadata_only=true&initial_chart=true`, signal) : Promise.resolve(null), (v) => { if (v) setArtifact(v); });
+  const cardResource = useReadResource(`dashboard-card:${item.artifact_id}:${visible}`, (signal) => visible ? loadSavedCard(`/artifacts/${item.artifact_id}?metadata_only=true&initial_chart=true`, signal) : Promise.resolve(null), (v) => { if (v) setArtifact(v); });
   const dirty =
     title !== item.title ||
     note !== item.note ||

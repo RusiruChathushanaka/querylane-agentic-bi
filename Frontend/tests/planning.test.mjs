@@ -40,7 +40,7 @@ test('an ambiguous mutation retains its identity while changed definitions get a
 });
 test('saved metric evidence links to immutable versions and escapes visitor text', () => {
   const { MetricEvidence } = load('../src/components/metric-evidence.tsx', {
-    'next/link': { default: props => React.createElement('a', props) },
+    '@/components/ui/app-link': load('../src/components/ui/app-link.tsx', { 'next/link': { default: props => { const copy = {...props}; delete copy.prefetch; return React.createElement('a', copy); } } }),
   });
   const html = renderToStaticMarkup(React.createElement(MetricEvidence, { metrics: [
     { id: 'abc', version: 3, definition: { name: '<script>bad</script>', description: 'After discounts' } },

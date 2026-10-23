@@ -128,3 +128,7 @@ The [22 October UTC workspace/loading release](../evaluation/workspace-loading-r
 The [23 October local loading optimization](../evaluation/loading-speed-local-20261023.md) adds application runtime bootstrap, conditional transport/timing, short UI status snapshots, bounded immutable views and nearby report evidence. The graph describes implemented local behavior; it does not establish a new deployment or change warm-service settings.
 
 The [23 October local-date hosted loading-speed release](../evaluation/loading-speed-release-20261023.md) records runtime bootstrap, conditional/gzip reads, nearby report charts and saved-view reuse. Warm settings/data/TimesFM and immutable exports are preserved. Browser median/request reductions and the p95 outlier are distinct from graph extraction evidence.
+
+The [local contention investigation](../evaluation/loading-contention-local-20261023.md) adds click-only app links, parallel admitted chart code/metadata, synchronous ready-component reuse and exact-origin timing correlation. Curated diagrams reflect the implemented flow; the original investigation did not change cloud state. The subsequent hosted release is recorded below.
+
+The [loading-contention hosted release](../evaluation/loading-contention-release-20261023.md) records actual revisions, source hashes, timing correlation, desktop/mobile checks and immutable downloads. Graph extraction describes those flows; dated hosted evidence establishes release behavior. Warm minima, larger data and TimesFM are preserved.

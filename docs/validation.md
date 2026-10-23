@@ -464,3 +464,13 @@ See [the hosted release assessment](evaluation/report-dropdown-release-20261021.
 ## Loading speed — hosted, 23 October 2026 local / 22 October UTC
 
 The [hosted assessment](evaluation/loading-speed-release-20261023.md) records three verified image-only revisions, 23 hosted HTTP checks, 24 preservation checks, desktop/320px/390px interactions and six byte-identical downloads. Frontend/API minima remain one; worker scaling and TimesFM/data settings are unchanged. Ten-sample browser median chart-data response improved from 1.45s to 0.91s and initial API requests fell from eight to six; a retained 4.52s candidate outlier worsens p95, so no universal latency gain is claimed. Full local suites passed 455 backend tests (one existing skip) and 84 frontend tests; targeted backend regressions and Cloud builds passed. No new analytical/model job or source mutation occurred. Physical-device and full accessibility limitations remain explicit.
+
+
+## Remaining loading delays — local investigation, 23 October 2026
+
+The [assessment](evaluation/loading-contention-local-20261023.md) records twenty new hosted warm traces without reproducing the 4.52s incident, a red/green startup-network reproduction, click-only app links, parallel nearby code/data and synchronous ready-component reuse. Controlled chart-ready median improves 1.06s → 0.76s; data timing is unchanged. Backend 456 pass/one existing skip, frontend 88 pass, Ruff/lint/types/build and desktop/mobile checks pass. Origin-scoped browser timing and per-read IDs improve future attribution. Twenty-one live preservation comparisons and six unchanged local copied downloads pass. No deployment, GitHub publication, inference, source mutation or cloud setting change occurred.
+
+
+## Loading-contention correction — hosted, 23 October 2026
+
+The [release assessment](evaluation/loading-contention-release-20261023.md) records ready image-only frontend `00027-26h`, API `00028-4rq` and worker `00017-ghr`, each at 100% traffic. Desktop/320px/390px layout, draft/focus/click navigation, deferred report evidence, saved dashboard and landing independence pass. All 29 hosted HTTP and 24 preservation checks pass; six saved downloads are identical. Ten warm samples improve chart-ready median 1.14s → 0.87s and post-data wait 314ms → 8ms, with twenty → zero speculative route reads. Per-endpoint medians vary; no universal speedup or proof of the historical 4.52s cause is claimed. Read IDs correlate exact-origin browser timing to safe application logs. Full local 456 backend/one existing skip and 88 frontend suites, Ruff/lint/types/build and targeted release regressions pass. Warm minima/data/TimesFM/worker settings remain unchanged; no analytical/model execution or source write occurred.

@@ -110,7 +110,7 @@ def create_app(settings: Settings | None = None, store_override=None, credential
         allow_origins=settings.origins,
         allow_methods=["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
         allow_headers=["Authorization", "Content-Type", "Last-Event-ID", "If-None-Match"],
-        expose_headers=["X-Request-ID", "ETag", "Server-Timing"],
+        expose_headers=["X-Request-ID", "ETag", "Server-Timing", "X-Querylane-Read-Id"],
     )
 
     @app.middleware("http")
@@ -133,7 +133,7 @@ def create_app(settings: Settings | None = None, store_override=None, credential
         response.headers["Cache-Control"] = "no-store"
         return response
 
-    app.add_middleware(ReadPerformanceMiddleware)
+    app.add_middleware(ReadPerformanceMiddleware, allowed_origins=settings.origins)
 
     @app.exception_handler(AppError)
     async def app_error(request, exc):

@@ -1,14 +1,14 @@
 "use client";
+import { loadSavedCard } from "@/components/saved-card-loader";
 import { useReadResource } from "@/hooks/use-read-resource";
 import { ResourceFeedback } from "./resource-feedback";
 import { initialRead, revalidatedRead } from "@/lib/api";
 import { loadingMark } from "@/lib/loading-performance";
-import { savedResult } from "@/lib/saved-result-loader";
 import { retainEqualRead } from "@/lib/read-equality";
 import { useWorkspaceScroll } from "@/hooks/use-workspace-scroll";
 
-import dynamic from "next/dynamic";
-import Link from "next/link";
+import ResultCard from "@/components/prepared-result-card";
+import Link from "@/components/ui/app-link";
 import { workspacePath } from "@/lib/workspace-links";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
@@ -103,9 +103,6 @@ import type { ReportRun } from "@/lib/report-types";
 import { SkillEvidence } from "@/components/skill-evidence";
 import { SPRING_PRESS, EASE_OUT } from "@/lib/ease";
 
-const ResultCard = dynamic(() => import("./result-card"), {
-  loading: () => <Skeleton className="result-loading" />,
-});
 const suggestions = [
   {
     icon: TrendingUp,
@@ -1661,7 +1658,7 @@ function SavedConversationCard({ id }: { id: string }) {
     observer.observe(node);
     return () => observer.disconnect();
   }, [id]);
-  const resource = useReadResource(`conversation-card:${id}:${visible}`, (signal) => visible ? savedResult<Artifact>(`/artifacts/${id}?metadata_only=true&initial_chart=true`, signal) : Promise.resolve(null), (value) => { if (value) setArtifact(value); });
+  const resource = useReadResource(`conversation-card:${id}:${visible}`, (signal) => visible ? loadSavedCard(`/artifacts/${id}?metadata_only=true&initial_chart=true`, signal) : Promise.resolve(null), (value) => { if (value) setArtifact(value); });
   return <div ref={root} className="saved-conversation-card" aria-label="Saved chart">
     {artifact ? <ResultCard artifact={artifact} /> : visible ? <ResourceFeedback resource={resource} label="Loading saved result" skeleton /> : <div className="saved-card-placeholder"><span>Saved chart · loads when nearby</span><Skeleton className="result-loading" /></div>}
   </div>;

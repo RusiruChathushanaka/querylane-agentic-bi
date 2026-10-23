@@ -3,7 +3,7 @@ import { useReadResource } from "@/hooks/use-read-resource";
 import { ResourceFeedback } from "./resource-feedback";
 
 import { AppSelect, AppSelectItem } from "@/components/ui/app-select";
-import Link from "next/link";
+import Link from "@/components/ui/app-link";
 import { dashboardChanges } from "@/lib/planning-review";
 import { PlanningSkills } from "./planning-skills";
 import { useUnsavedNavigation } from "@/hooks/use-unsaved-navigation";

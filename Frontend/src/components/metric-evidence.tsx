@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/ui/app-link";
 import type { Artifact } from "@/lib/types";
 
 export function MetricEvidence({

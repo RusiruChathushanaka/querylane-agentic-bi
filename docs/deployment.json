@@ -18,32 +18,32 @@
   },
   "data_profile": "timeseries",
   "postgres_schema": "retail_timeseries",
-  "date": "2026-10-22",
-  "verified_at": "2026-10-22T19:59:07.590635+00:00",
-  "release": "Loading-speed optimizations: runtime bootstrap, conditional reads and saved charts",
+  "date": "2026-10-23",
+  "verified_at": "2026-10-23T05:21:52.733300+00:00",
+  "release": "Loading-contention corrections: click-only navigation, parallel saved-card code/data and read correlation",
   "services": {
     "agentic-bi-frontend": {
       "url": "https://agentic-bi-frontend-wekihucn7q-as.a.run.app",
-      "ready_revision": "agentic-bi-frontend-00026-g5t",
-      "previous_revision": "agentic-bi-frontend-00025-5cz",
+      "ready_revision": "agentic-bi-frontend-00027-26h",
+      "previous_revision": "agentic-bi-frontend-00026-g5t",
       "service_account": "agentic-bi-frontend@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
-      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:6e79dbd5adb5d80b14d0cae5d3470f52d04c0655c7d18f230f6546a2e2e799a6",
-      "image_digest": "sha256:6e79dbd5adb5d80b14d0cae5d3470f52d04c0655c7d18f230f6546a2e2e799a6",
-      "build_id": "4f97194f-5590-435b-ad71-75d07115a52c",
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/frontend@sha256:4f701add710b0829b64c4ef4b25e3bb8005de4df3fc20ce0f851d40b0632540c",
+      "image_digest": "sha256:4f701add710b0829b64c4ef4b25e3bb8005de4df3fc20ce0f851d40b0632540c",
+      "build_id": "3af0edac-3506-4f60-a966-2c52430e4062",
       "build_source": {
         "storageSource": {
           "bucket": "project-e8b1593d-009a-4822-abf-agentic-bi-build",
-          "generation": "1792698371295915",
-          "object": "source/1792698359.824711-ca768a2ca9e84664a0b5482293392afa.tgz"
+          "generation": "1792732371740882",
+          "object": "source/1792732369.666659-cf9b26362fa44bf9bd20d1a1b0d02898.tgz"
         }
       },
-      "source_base_commit": "7db9c58fa7641b48094480f6c0fd4c3d46072828",
+      "source_base_commit": "d6727163b9e1ec27441bd0875dd7fe09ad19d05b",
       "source_is_working_tree": true,
       "ready": true,
       "traffic": [
         {
           "percent": 100,
-          "revisionName": "agentic-bi-frontend-00026-g5t"
+          "revisionName": "agentic-bi-frontend-00027-26h"
         }
       ],
       "runtime_environment": [
@@ -60,31 +60,31 @@
       },
       "container_concurrency": 40,
       "timeout_seconds": 300,
-      "source_verification_manifest": "evaluation/loading-speed-release-20261023-source.json",
+      "source_verification_manifest": "evaluation/loading-contention-release-20261023-source.json",
       "service_minimum_instances": 1
     },
     "agentic-bi-backend": {
       "url": "https://agentic-bi-backend-wekihucn7q-as.a.run.app",
-      "ready_revision": "agentic-bi-backend-00027-cgw",
-      "previous_revision": "agentic-bi-backend-00026-9r5",
+      "ready_revision": "agentic-bi-backend-00028-4rq",
+      "previous_revision": "agentic-bi-backend-00027-cgw",
       "service_account": "agentic-bi-backend@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
-      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:50de61f0b41d924fba6013069fead67b30578664afe1f8cd26f84998782cdf44",
-      "image_digest": "sha256:50de61f0b41d924fba6013069fead67b30578664afe1f8cd26f84998782cdf44",
-      "build_id": "06c0b571-4981-406f-a93f-4b60fcb1d83b",
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:9cbe6c53a3de83a23bd06e52d2551a4256d22caf307d99ff541e86aeaf73a779",
+      "image_digest": "sha256:9cbe6c53a3de83a23bd06e52d2551a4256d22caf307d99ff541e86aeaf73a779",
+      "build_id": "48ba206d-876f-4093-a7af-e323702be75d",
       "build_source": {
         "storageSource": {
           "bucket": "project-e8b1593d-009a-4822-abf-agentic-bi-build",
-          "generation": "1792698375654115",
-          "object": "source/1792698362.370203-cfb6667987a942378d347023e209b550.tgz"
+          "generation": "1792732380430062",
+          "object": "source/1792732374.316276-00ed6a1c821e482f947e6dee0194c7b0.tgz"
         }
       },
-      "source_base_commit": "7db9c58fa7641b48094480f6c0fd4c3d46072828",
+      "source_base_commit": "d6727163b9e1ec27441bd0875dd7fe09ad19d05b",
       "source_is_working_tree": true,
       "ready": true,
       "traffic": [
         {
           "percent": 100,
-          "revisionName": "agentic-bi-backend-00027-cgw"
+          "revisionName": "agentic-bi-backend-00028-4rq"
         }
       ],
       "runtime_environment": [
@@ -219,31 +219,31 @@
       },
       "container_concurrency": 8,
       "timeout_seconds": 3600,
-      "source_verification_manifest": "evaluation/loading-speed-release-20261023-source.json",
+      "source_verification_manifest": "evaluation/loading-contention-release-20261023-source.json",
       "service_minimum_instances": 1
     },
     "agentic-bi-report-worker": {
       "url": "https://agentic-bi-report-worker-wekihucn7q-as.a.run.app",
-      "ready_revision": "agentic-bi-report-worker-00016-477",
-      "previous_revision": "agentic-bi-report-worker-00015-d4h",
+      "ready_revision": "agentic-bi-report-worker-00017-ghr",
+      "previous_revision": "agentic-bi-report-worker-00016-477",
       "service_account": "agentic-bi-report-worker@project-e8b1593d-009a-4822-abf.iam.gserviceaccount.com",
-      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:50de61f0b41d924fba6013069fead67b30578664afe1f8cd26f84998782cdf44",
-      "image_digest": "sha256:50de61f0b41d924fba6013069fead67b30578664afe1f8cd26f84998782cdf44",
-      "build_id": "06c0b571-4981-406f-a93f-4b60fcb1d83b",
+      "image": "asia-southeast1-docker.pkg.dev/project-e8b1593d-009a-4822-abf/agentic-bi-demo/backend@sha256:9cbe6c53a3de83a23bd06e52d2551a4256d22caf307d99ff541e86aeaf73a779",
+      "image_digest": "sha256:9cbe6c53a3de83a23bd06e52d2551a4256d22caf307d99ff541e86aeaf73a779",
+      "build_id": "48ba206d-876f-4093-a7af-e323702be75d",
       "build_source": {
         "storageSource": {
           "bucket": "project-e8b1593d-009a-4822-abf-agentic-bi-build",
-          "generation": "1792698375654115",
-          "object": "source/1792698362.370203-cfb6667987a942378d347023e209b550.tgz"
+          "generation": "1792732380430062",
+          "object": "source/1792732374.316276-00ed6a1c821e482f947e6dee0194c7b0.tgz"
         }
       },
-      "source_base_commit": "7db9c58fa7641b48094480f6c0fd4c3d46072828",
+      "source_base_commit": "d6727163b9e1ec27441bd0875dd7fe09ad19d05b",
       "source_is_working_tree": true,
       "ready": true,
       "traffic": [
         {
           "percent": 100,
-          "revisionName": "agentic-bi-report-worker-00016-477"
+          "revisionName": "agentic-bi-report-worker-00017-ghr"
         }
       ],
       "runtime_environment": [
@@ -378,25 +378,25 @@
       },
       "container_concurrency": 1,
       "timeout_seconds": 660,
-      "source_verification_manifest": "evaluation/loading-speed-release-20261023-source.json",
+      "source_verification_manifest": "evaluation/loading-contention-release-20261023-source.json",
       "service_minimum_instances": 0
     }
   },
   "analytical_seed_or_history_reset": false,
-  "configuration_changes": "Image-only rollout; existing warm frontend/API minima, worker scaling, all runtime specifications/IAM and analytical settings preserved.",
+  "configuration_changes": "Image-only rollout; all runtime/IAM/scaling and warm minima preserved.",
   "verification_reports": [
-    "evaluation/loading-speed-release-20261023.md",
-    "evaluation/loading-speed-release-20261023.json",
-    "evaluation/loading-speed-release-20261023-source.json",
-    "evaluation/loading-speed-release-20261023-preservation.json"
+    "evaluation/loading-contention-release-20261023.md",
+    "evaluation/loading-contention-release-20261023.json",
+    "evaluation/loading-contention-release-20261023-source.json",
+    "evaluation/loading-contention-release-20261023-preservation.json"
   ],
-  "source_verification_manifest": "evaluation/loading-speed-release-20261023-source.json",
+  "source_verification_manifest": "evaluation/loading-contention-release-20261023-source.json",
   "github": {
     "repository": "https://github.com/RusiruChathushanaka/querylane-agentic-bi",
     "branch": "main",
     "publication_note": "Code and documentation published after hosted verification; identify commit through Git history. Both Submission spellings excluded."
   },
-  "previous_release": "evaluation/workspace-loading-release-20261022.md",
+  "previous_release": "evaluation/loading-speed-release-20261023.md",
   "latest_verified_reports": [
     {
       "kind": "forecast",
@@ -433,12 +433,12 @@
   ],
   "runtime_configuration_preserved": true,
   "known_interface_limits": [
-    "Emulated desktop/mobile widths; no physical keyboard, microphone, complete screen-reader, contrast or 200% zoom certification.",
-    "Ten warm samples are a small observational comparison; chart-data response is not first paint or a guaranteed speedup. One retained candidate chart-data outlier increases browser p95 from 1.65s to 4.52s despite a lower median.",
-    "Report/chart tests reused immutable saved evidence; no fresh analytical/model, TimesFM, scenario, dashboard-builder or forecast-plan worker execution.",
-    "Five BigQuery tables were compared by row/byte/schema/modification metadata; no content scans or PostgreSQL customer recount.",
-    "An initial scenario chart wait used a scroll offset before the actual chart; explicit section/placeholder navigation passed. Dropdown checks required waiting for transition completion; stale snapshot references were not counted as product failures."
+    "Emulated Chromium desktop/mobile widths; no physical device/keyboard, microphone, exhaustive screen-reader, contrast, cross-browser or 200% zoom certification repeated.",
+    "Ten warm samples per phase are a small sequential observation, not a controlled network guarantee. Chart-ready is an application effect mark, not paint. Per-resource transport variation remains.",
+    "The historical 4.52-second stall was not reproduced in this release sample or the preceding twenty-sample investigation; its exact historical cause is unproven. The observed speculative-traffic and post-data rendering delays are separately verified.",
+    "Saved report/dashboard checks and six unchanged downloads do not establish fresh analytical, TimesFM, scenario or planning worker acceptance. No such new jobs ran.",
+    "Dataset preservation compares five BigQuery tables by row/byte/schema/modification metadata, without content scans. Previously verified 25,000 PostgreSQL profiles were not recounted."
   ],
-  "fresh_planning_acceptance": "Not exercised by this loading-speed release; use separately dated worker acceptance evidence.",
+  "fresh_planning_acceptance": "Not exercised by this loading-contention release; use separate dated worker acceptance evidence.",
   "latest_verified_reports_scope": "Prior presentation versions; this release reread six immutable downloads without generating new reports."
 }

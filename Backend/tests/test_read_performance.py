@@ -12,6 +12,26 @@ from app.saved_chart_cache import SavedChartCache
 from app.storage import MemoryStore
 
 
+def test_browser_timing_is_origin_scoped_and_each_read_has_its_own_identity():
+    with TestClient(create_app(Settings(environment="test"))) as client:
+        first = client.get("/api/v1/conversations", headers={"Origin": "http://localhost:3000"})
+        assert first.headers["timing-allow-origin"] == "http://localhost:3000"
+        read_id = first.headers["x-querylane-read-id"]
+        assert len(read_id) == 16 and f'read;desc="{read_id}"' in first.headers["server-timing"]
+        unchanged = client.get(
+            "/api/v1/conversations",
+            headers={"Origin": "http://localhost:3000", "If-None-Match": first.headers["etag"]},
+        )
+        assert unchanged.status_code == 304
+        assert unchanged.headers["x-querylane-read-id"] != read_id
+        assert unchanged.headers["timing-allow-origin"] == "http://localhost:3000"
+        assert "Origin" in unchanged.headers["vary"]
+        foreign = client.get("/api/v1/conversations", headers={"Origin": "https://unapproved.invalid"})
+        assert "timing-allow-origin" not in foreign.headers
+        assert "timing-allow-origin" not in client.get("/api/v1/conversations").headers
+        assert "X-Querylane-Read-Id" in first.headers["access-control-expose-headers"]
+
+
 def test_json_compression_conditional_reads_and_changed_evidence():
     store = MemoryStore()
     with TestClient(create_app(Settings(environment="test"), store_override=store)) as client:
